@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { base64urlToArrayBuffer, arrayBufferToBase64url } from '@/lib/webauthn';
 
 interface Credential {
@@ -81,16 +81,16 @@ const register = async () => {
         id: base64urlToArrayBuffer(c.id),
       })),
     };
-    // @ts-ignore
+    // @ts-expect-error WebAuthn API typings not available in project lib
     const cred: PublicKeyCredential = await navigator.credentials.create({ publicKey: pubKey });
     const attestation = {
       id: cred.id,
       rawId: arrayBufferToBase64url(cred.rawId),
       type: cred.type,
       response: {
-        // @ts-ignore
+        // @ts-expect-error Response properties not typed reliably by TS for this API
         attestationObject: arrayBufferToBase64url(cred.response.attestationObject),
-        // @ts-ignore
+        // @ts-expect-error Response properties not typed reliably by TS for this API
         clientDataJSON: arrayBufferToBase64url(cred.response.clientDataJSON),
       },
     };

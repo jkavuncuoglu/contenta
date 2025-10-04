@@ -42,7 +42,7 @@
           >
             {{ saving ? 'Saving...' : 'Save changes' }}
           </button>
-          <RouterLink :to="{ name: 'admin.pages' }" class="text-gray-600 hover:underline">Cancel</RouterLink>
+          <Link href="/admin/pages" class="text-gray-600 hover:underline">Cancel</Link>
         </div>
 
         <p v-if="error" class="text-red-600">{{ error }}</p>
@@ -53,13 +53,17 @@
 
 <script setup lang="ts">
 import { reactive, ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { router as inertia } from '@inertiajs/vue3';
+import { router as inertia, Link } from '@inertiajs/vue3';
 
-const route = useRoute();
-const router = useRouter();
-
-const id = route.params.id as string;
+// Helper to get the last path segment (page id)
+function getIdFromPath(): string | null {
+  try {
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    return segments[segments.length - 1] ?? null;
+  } catch {
+    return null;
+  }
+}
 
 const form = reactive({
   title: '',
@@ -75,6 +79,11 @@ const load = async () => {
   loading.value = true;
   error.value = null;
   try {
+    const id = getIdFromPath();
+    if (!id) {
+      error.value = 'Invalid page id';
+      return;
+    }
     inertia.get(`/admin/pages/${encodeURIComponent(id)}`, {}, {
       preserveState: true,
       onSuccess: (page) => {
@@ -100,10 +109,15 @@ const submit = async () => {
   saving.value = true;
   error.value = null;
   try {
+    const id = getIdFromPath();
+    if (!id) {
+      error.value = 'Invalid page id';
+      return;
+    }
     inertia.put(`/admin/pages/${encodeURIComponent(id)}`, { ...form }, {
       preserveState: true,
       onSuccess: () => {
-        router.push({ name: 'admin.pages' });
+        inertia.get('/admin/pages');
       },
       onError: (page) => {
         error.value = 'Failed to save page';

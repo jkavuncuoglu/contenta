@@ -40,7 +40,7 @@
         >
           {{ loading ? 'Saving...' : 'Save' }}
         </button>
-        <RouterLink :to="{ name: 'admin.pages' }" class="text-gray-600 hover:underline">Cancel</RouterLink>
+        <Link href="/admin/pages" class="text-gray-600 hover:underline">Cancel</Link>
       </div>
 
       <p v-if="error" class="text-red-600">{{ error }}</p>
@@ -50,10 +50,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { router as inertia } from '@inertiajs/vue3';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
+import { router as inertia, Link } from '@inertiajs/vue3';
 
 const form = reactive({
   title: '',
@@ -71,7 +68,7 @@ const submit = async () => {
     inertia.post('/admin/pages', { ...form }, {
       preserveState: true,
       onSuccess: () => {
-        router.push({ name: 'admin.pages' });
+        inertia.get('/admin/pages');
       },
       onError: (page) => {
         // Inertia validation errors are typically on page.props.errors

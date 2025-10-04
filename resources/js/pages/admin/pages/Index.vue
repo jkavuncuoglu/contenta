@@ -2,12 +2,12 @@
   <div class="p-6">
     <div class="flex items-center justify-between mb-4">
       <h1 class="text-2xl font-bold">Pages</h1>
-      <RouterLink
-        :to="{ name: 'admin.pages.create' }"
+      <Link
+        href="/admin/pages/create"
         class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
       >
         New Page
-      </RouterLink>
+      </Link>
     </div>
 
     <div v-if="loading" class="text-gray-500">Loading pages...</div>
@@ -26,12 +26,9 @@
           <td class="px-4 py-2">{{ page.title }}</td>
           <td class="px-4 py-2 text-gray-500">{{ page.slug }}</td>
           <td class="px-4 py-2 text-right">
-            <RouterLink
-              :to="{ name: 'admin.pages.edit', params: { id: page.id } }"
-              class="text-blue-600 hover:underline"
-            >
+            <Link href={`/admin/pages/${page.id}/edit`} class="text-blue-600 hover:underline">
               Edit
-            </RouterLink>
+            </Link>
           </td>
         </tr>
       </tbody>
@@ -41,7 +38,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { router as inertia } from '@inertiajs/vue3';
+import { router as inertia, Link } from '@inertiajs/vue3';
 
 interface CmsPage { id: number; title: string; slug: string; }
 

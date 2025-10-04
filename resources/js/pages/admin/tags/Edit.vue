@@ -8,13 +8,13 @@
           Update tag information and settings
         </p>
       </div>
-      <router-link
-        to="/admin/tags"
+      <Link
+        href="/admin/tags"
         class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700"
       >
         <ArrowLeftIcon class="w-4 h-4 mr-2" />
         Back to Tags
-      </router-link>
+      </Link>
     </div>
 
     <!-- Loading State -->
@@ -194,12 +194,12 @@
 
       <!-- Actions -->
       <div class="flex items-center justify-end space-x-4">
-        <router-link
-          to="/admin/tags"
+        <Link
+          href="/admin/tags"
           class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
         >
           Cancel
-        </router-link>
+        </Link>
         <button
           type="submit"
           :disabled="isLoading"
@@ -215,13 +215,23 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { router, usePage } from '@inertiajs/vue3';
+import { router as inertia, Link } from '@inertiajs/vue3';
 import { useTagsStore } from '@/stores/tags';
 import type { TagForm, UpdateTagData } from '@/types';
 import { ArrowLeftIcon } from 'lucide-vue-next';
 
-const route = useRoute();
-const router = useRouter();
+// Helper: extract numeric id from the current path
+function getIdFromPath(): number | null {
+  try {
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    const last = segments[segments.length - 1];
+    const n = Number(last);
+    return Number.isNaN(n) ? null : n;
+  } catch {
+    return null;
+  }
+}
+
 const tagsStore = useTagsStore();
 
 // Form state
@@ -250,7 +260,8 @@ const generateSlug = () => {
 };
 
 const loadTag = async () => {
-  const tagId = parseInt(route.params.id as string);
+  const tagId = getIdFromPath();
+  if (!tagId) return;
   await tagsStore.fetchTag(tagId);
 
   if (tag.value) {
@@ -269,7 +280,8 @@ const handleSubmit = async () => {
   errors.value = {};
 
   try {
-    const tagId = parseInt(route.params.id as string);
+    const tagId = getIdFromPath();
+    if (!tagId) return;
     const data: UpdateTagData = {
       name: form.value.name,
       slug: form.value.slug,
@@ -280,7 +292,7 @@ const handleSubmit = async () => {
     };
 
     await tagsStore.updateTag(tagId, data);
-    router.push('/admin/tags');
+    inertia.get('/admin/tags');
   } catch (error: any) {
     if (error.response?.data?.errors) {
       errors.value = error.response.data.errors;

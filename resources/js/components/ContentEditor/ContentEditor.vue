@@ -12,6 +12,5 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
 
-const props = defineProps<{ modelValue?: string }>();
+defineProps<{ modelValue?: string }>();
 </script>
-

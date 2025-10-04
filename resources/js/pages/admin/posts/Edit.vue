@@ -63,15 +63,13 @@ interface Props {
   id: number | string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const postsStore = usePostsStore();
 const { currentPost, loading, error } = postsStore;
 
 const fetchPost = async () => {
-  const postId = Number(({} as any).id ?? undefined);
-  // prefer the prop passed by Inertia; fallback to currentPost.id
-  const propId = (typeof ({} as any).id !== 'undefined') ? Number(({} as any).id) : undefined;
+  const propId = typeof props.id !== 'undefined' ? Number(props.id) : undefined;
   const id = propId ?? currentPost?.id;
   if (id) {
     await postsStore.fetchPost(Number(id));

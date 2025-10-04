@@ -216,7 +216,7 @@
                                 type="text"
                                 v-model="tagInput"
                                 @keydown.enter.prevent="addTag"
-                                @keydown.comma.prevent="addTag"
+                                @keydown="handleTagKeydown"
                                 placeholder="Add tags separated by commas or press Enter"
                                 class="p-2 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:bg-gray-700 dark:text-white"
                             />
@@ -250,7 +250,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, reactive, computed} from 'vue';
+import {ref, reactive} from 'vue';
 import { router } from '@inertiajs/vue3';
 import {usePostsStore} from '@/stores/posts';
 import type {PostForm} from '@/types';
@@ -293,6 +293,13 @@ const addTag = () => {
         form.tags.push(tag);
     }
     tagInput.value = '';
+};
+
+const handleTagKeydown = (e: KeyboardEvent) => {
+  if (e.key === ',') {
+    e.preventDefault();
+    addTag();
+  }
 };
 
 const removeTag = (index: number) => {

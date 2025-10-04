@@ -8,13 +8,13 @@
           Update category information and settings
         </p>
       </div>
-      <router-link
-        to="/admin/categories"
+      <Link
+        href="/admin/categories"
         class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700"
       >
         <ArrowLeftIcon class="w-4 h-4 mr-2" />
         Back to Categories
-      </router-link>
+      </Link>
     </div>
 
     <!-- Loading State -->
@@ -232,12 +232,12 @@
 
       <!-- Actions -->
       <div class="flex items-center justify-end space-x-4">
-        <router-link
-          to="/admin/categories"
+        <Link
+          href="/admin/categories"
           class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
         >
           Cancel
-        </router-link>
+        </Link>
         <button
           type="submit"
           :disabled="isLoading"
@@ -253,13 +253,23 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { router, usePage } from '@inertiajs/vue3';
+import { router as inertia, Link } from '@inertiajs/vue3';
 import { useCategoriesStore } from '@/stores/categories';
 import type { CategoryForm, UpdateCategoryData } from '@/types';
 import { ArrowLeftIcon } from 'lucide-vue-next';
 
-const route = useRoute();
-const router = useRouter();
+// Helper: extract numeric ID from the current URL path (last path segment)
+function getIdFromPath(): number | null {
+  try {
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    const last = segments[segments.length - 1];
+    const n = Number(last);
+    return Number.isNaN(n) ? null : n;
+  } catch {
+    return null;
+  }
+}
+
 const categoriesStore = useCategoriesStore();
 
 // Form state
@@ -283,7 +293,7 @@ const imageInput = ref<HTMLInputElement>();
 const { category, isLoading, hasError, error } = categoriesStore;
 
 const availableParents = computed(() => {
-  const categoryId = parseInt(route.params.id as string);
+  const categoryId = getIdFromPath();
   return categoriesStore.categories.filter(cat => !cat.parent_id && cat.id !== categoryId);
 });
 
@@ -305,7 +315,8 @@ const handleImageChange = (event: Event) => {
 };
 
 const loadCategory = async () => {
-  const categoryId = parseInt(route.params.id as string);
+  const categoryId = getIdFromPath();
+  if (!categoryId) return;
   await categoriesStore.fetchCategory(categoryId);
 
   if (category.value) {
@@ -328,7 +339,8 @@ const handleSubmit = async () => {
   errors.value = {};
 
   try {
-    const categoryId = parseInt(route.params.id as string);
+    const categoryId = getIdFromPath();
+    if (!categoryId) return;
     const data: UpdateCategoryData = {
       name: form.value.name,
       slug: form.value.slug,
@@ -343,7 +355,8 @@ const handleSubmit = async () => {
     };
 
     await categoriesStore.updateCategory(categoryId, data);
-    router.push('/admin/categories');
+    // Navigate back to categories using Inertia
+    inertia.get('/admin/categories');
   } catch (error: any) {
     if (error.response?.data?.errors) {
       errors.value = error.response.data.errors;

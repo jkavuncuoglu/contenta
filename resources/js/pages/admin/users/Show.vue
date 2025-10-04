@@ -15,13 +15,12 @@ import type { BreadcrumbItem } from '@/types';
 
 interface Props { id: number | string }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
-const id = (props as any)?.id ?? '';
+const id = props.id ?? '';
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Users', href: '/admin/users' },
   { title: `User #${id}` },
 ];
 </script>
-
