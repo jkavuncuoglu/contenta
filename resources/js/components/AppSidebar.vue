@@ -14,67 +14,72 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import {
-    BarChart3,
-    BookOpen,
-    FileText,
-    Folder,
-    FolderOpen,
-    Image,
-    LayoutGrid,
-    MessageSquare,
-    Settings,
-    Tag,
-    Users,
-} from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-
-    {
-        title: 'Admin Dashboard',
+        title: 'Administration',
         href: '/admin',
-        icon: BarChart3,
-    },
-    {
-        title: 'Posts',
-        href: '/admin/posts',
-        icon: FileText,
-    },
-    {
-        title: 'Categories',
-        href: '/admin/categories',
-        icon: FolderOpen,
-    },
-    {
-        title: 'Tags',
-        href: '/admin/tags',
-        icon: Tag,
-    },
-    {
-        title: 'Users',
-        href: '/admin/users',
-        icon: Users,
-    },
-    {
-        title: 'Media',
-        href: '/admin/content/media',
-        icon: Image,
-    },
-    {
-        title: 'Comments',
-        href: '/admin/content/comments',
-        icon: MessageSquare,
-    },
-    {
-        title: 'Settings',
-        href: '/admin/settings',
-        icon: Settings,
+        redirect: '/admin/dashboard',
+        children: [
+            {
+                title: 'Dashboard',
+                href: '/admin/dashboard',
+                icon: 'barChart3',
+            },
+            {
+                title: 'Posts',
+                href: '/admin/posts',
+                icon: 'fileText',
+            },
+            {
+                title: 'Categories',
+                href: '/admin/categories',
+                icon: 'folderOpen',
+            },
+            {
+                title: 'Tags',
+                href: '/admin/tags',
+                icon: 'tag',
+            },
+            {
+                title: 'Media',
+                href: '/admin/content/media',
+                icon: 'image',
+            },
+            {
+                title: 'Comments',
+                href: '/admin/content/comments',
+                icon: 'messageSquare',
+            },
+            {
+                title: 'Settings',
+                href: '/admin/settings',
+                icon: 'settings',
+                children: [
+                    {
+                        title: 'Site Settings',
+                        href: '/admin/settings/site',
+                        icon: 'settings',
+                    },
+                    {
+                        title: 'Security',
+                        href: '/admin/settings/security',
+                        icon: 'shield',
+                    },
+                    {
+                        title: 'Users',
+                        href: '/admin/settings/users',
+                        icon: 'users',
+                    },
+                    {
+                        title: 'Roles & Permissions',
+                        href: '/admin/settings/permissions',
+                        icon: 'lock',
+                    },
+                ],
+            },
+        ],
     },
 ];
 
@@ -82,12 +87,12 @@ const footerNavItems: NavItem[] = [
     {
         title: 'Github Repo',
         href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
+        icon: 'folder',
     },
     {
         title: 'Documentation',
         href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
+        icon: 'bookOpen',
     },
 ];
 </script>

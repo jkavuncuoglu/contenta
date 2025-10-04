@@ -1,0 +1,4 @@
+Replace API with Inertia
+Update all stores to make inertia calls
+Remove luicide icons and replace all lucide icons with iconify icons and the materia light library
+AppSidebar NavItems add to parent items with children a dropdown option hide children until clicked

@@ -5,8 +5,13 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
-    // Dashboard
+    // Admin root redirect to dashboard
     Route::get('/', function () {
+        return redirect()->route('admin.dashboard');
+    });
+
+    // Dashboard
+    Route::get('/dashboard', function () {
         return Inertia::render('admin/Dashboard');
     })->name('dashboard');
 

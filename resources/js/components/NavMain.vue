@@ -9,17 +9,22 @@ import {
 import { urlIsActive } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
+import Icon from '@/components/Icon.vue';
 
 defineProps<{
     items: NavItem[];
 }>();
 
 const page = usePage();
+
+function isStringIcon(icon: any) {
+    return typeof icon === 'string' || icon instanceof String;
+}
 </script>
 
 <template>
     <SidebarGroup class="px-2 py-0">
-        <SidebarGroupLabel>Platform</SidebarGroupLabel>
+        <SidebarGroupLabel></SidebarGroupLabel>
         <SidebarMenu>
             <SidebarMenuItem v-for="item in items" :key="item.title">
                 <SidebarMenuButton
@@ -27,11 +32,19 @@ const page = usePage();
                     :is-active="urlIsActive(item.href, page.url)"
                     :tooltip="item.title"
                 >
-                    <Link :href="item.href">
-                        <component :is="item.icon" />
+                    <Link :href="item.redirect || item.href" class="flex items-center gap-2">
+                        <template v-if="isStringIcon(item.icon)">
+                            <Icon :name="item.icon as string" class="w-4 h-4" />
+                        </template>
+                        <template v-else>
+                            <component :is="item.icon" class="w-4 h-4" />
+                        </template>
                         <span>{{ item.title }}</span>
                     </Link>
                 </SidebarMenuButton>
+                <template v-if="item.children">
+                    <NavMain :items="item.children" />
+                </template>
             </SidebarMenuItem>
         </SidebarMenu>
     </SidebarGroup>

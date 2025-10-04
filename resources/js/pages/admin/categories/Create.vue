@@ -1,0 +1,325 @@
+<template>
+  <div class="space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Create Category</h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          Add a new category to organize your content
+        </p>
+      </div>
+      <router-link
+        to="/admin/categories"
+        class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700"
+      >
+        <ArrowLeftIcon class="w-4 h-4 mr-2" />
+        Back to Categories
+      </router-link>
+    </div>
+
+    <!-- Form -->
+    <form @submit.prevent="handleSubmit" class="space-y-6">
+      <div class="bg-white dark:bg-gray-800 shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white">Category Details</h3>
+        </div>
+
+        <div class="p-6 space-y-6">
+          <!-- Name -->
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Name <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="name"
+              v-model="form.name"
+              type="text"
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              placeholder="Enter category name"
+              @input="generateSlug"
+            />
+            <p v-if="errors.name" class="mt-1 text-sm text-red-600">{{ errors.name[0] }}</p>
+          </div>
+
+          <!-- Slug -->
+          <div>
+            <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Slug
+            </label>
+            <input
+              id="slug"
+              v-model="form.slug"
+              type="text"
+              class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              placeholder="category-slug"
+            />
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              URL-friendly version of the name. Leave empty to auto-generate.
+            </p>
+            <p v-if="errors.slug" class="mt-1 text-sm text-red-600">{{ errors.slug[0] }}</p>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Description
+            </label>
+            <textarea
+              id="description"
+              v-model="form.description"
+              rows="3"
+              class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              placeholder="Brief description of this category"
+            ></textarea>
+            <p v-if="errors.description" class="mt-1 text-sm text-red-600">{{ errors.description[0] }}</p>
+          </div>
+
+          <!-- Parent Category -->
+          <div>
+            <label for="parent_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Parent Category
+            </label>
+            <select
+              id="parent_id"
+              v-model="form.parent_id"
+              class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            >
+              <option value="">No Parent (Root Category)</option>
+              <option v-for="category in availableParents" :key="category.id" :value="category.id">
+                {{ category.name }}
+              </option>
+            </select>
+            <p v-if="errors.parent_id" class="mt-1 text-sm text-red-600">{{ errors.parent_id[0] }}</p>
+          </div>
+
+          <!-- Color -->
+          <div>
+            <label for="color" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Color
+            </label>
+            <div class="mt-1 flex items-center space-x-3">
+              <input
+                id="color"
+                v-model="form.color"
+                type="color"
+                class="h-10 w-20 rounded border border-gray-300 dark:border-gray-600"
+              />
+              <input
+                v-model="form.color"
+                type="text"
+                placeholder="#000000"
+                class="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              Choose a color to help identify this category
+            </p>
+            <p v-if="errors.color" class="mt-1 text-sm text-red-600">{{ errors.color[0] }}</p>
+          </div>
+
+          <!-- Featured Image -->
+          <div>
+            <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Featured Image
+            </label>
+            <div class="mt-1">
+              <input
+                id="image"
+                ref="imageInput"
+                type="file"
+                accept="image/*"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                @change="handleImageChange"
+              />
+            </div>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              Upload an image to represent this category (max 2MB)
+            </p>
+            <p v-if="errors.image" class="mt-1 text-sm text-red-600">{{ errors.image[0] }}</p>
+          </div>
+
+          <!-- Settings -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Featured -->
+            <div class="flex items-center">
+              <input
+                id="is_featured"
+                v-model="form.is_featured"
+                type="checkbox"
+                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              />
+              <label for="is_featured" class="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Featured Category
+              </label>
+            </div>
+
+            <!-- Sort Order -->
+            <div>
+              <label for="sort_order" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Sort Order
+              </label>
+              <input
+                id="sort_order"
+                v-model.number="form.sort_order"
+                type="number"
+                min="0"
+                max="9999"
+                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+              <p v-if="errors.sort_order" class="mt-1 text-sm text-red-600">{{ errors.sort_order[0] }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEO Section -->
+      <div class="bg-white dark:bg-gray-800 shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white">SEO Settings</h3>
+        </div>
+
+        <div class="p-6 space-y-6">
+          <!-- Meta Title -->
+          <div>
+            <label for="meta_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Meta Title
+            </label>
+            <input
+              id="meta_title"
+              v-model="form.meta_title"
+              type="text"
+              maxlength="255"
+              class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              placeholder="SEO title for search engines"
+            />
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              {{ (form.meta_title || '').length }}/255 characters
+            </p>
+            <p v-if="errors.meta_title" class="mt-1 text-sm text-red-600">{{ errors.meta_title[0] }}</p>
+          </div>
+
+          <!-- Meta Description -->
+          <div>
+            <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Meta Description
+            </label>
+            <textarea
+              id="meta_description"
+              v-model="form.meta_description"
+              rows="3"
+              maxlength="500"
+              class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              placeholder="Brief description for search engines"
+            ></textarea>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              {{ (form.meta_description || '').length }}/500 characters
+            </p>
+            <p v-if="errors.meta_description" class="mt-1 text-sm text-red-600">{{ errors.meta_description[0] }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center justify-end space-x-4">
+        <router-link
+          to="/admin/categories"
+          class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
+          Cancel
+        </router-link>
+        <button
+          type="submit"
+          :disabled="isLoading"
+          class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 disabled:opacity-50"
+        >
+          <div v-if="isLoading" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+          {{ isLoading ? 'Creating...' : 'Create Category' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { router } from '@inertiajs/vue3';
+import { useCategoriesStore } from '@/stores/categories';
+import type { CategoryForm, CreateCategoryData } from '@/types';
+import { ArrowLeftIcon } from 'lucide-vue-next';
+
+const router = useRouter();
+const categoriesStore = useCategoriesStore();
+
+// Form state
+const form = ref<CategoryForm>({
+  name: '',
+  slug: '',
+  description: '',
+  parent_id: undefined,
+  color: '#3b82f6',
+  meta_title: '',
+  meta_description: '',
+  is_featured: false,
+  sort_order: 0,
+  image: undefined
+});
+
+const errors = ref<Record<string, string[]>>({});
+const imageInput = ref<HTMLInputElement>();
+
+// Computed properties
+const { isLoading } = categoriesStore;
+
+const availableParents = computed(() => {
+  return categoriesStore.categories.filter(cat => !cat.parent_id);
+});
+
+// Methods
+const generateSlug = () => {
+  if (!form.value.slug && form.value.name) {
+    form.value.slug = form.value.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  }
+};
+
+const handleImageChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files[0]) {
+    form.value.image = target.files[0];
+  }
+};
+
+const handleSubmit = async () => {
+  errors.value = {};
+
+  try {
+    const data: CreateCategoryData = {
+      name: form.value.name,
+      slug: form.value.slug,
+      description: form.value.description || undefined,
+      parent_id: form.value.parent_id || undefined,
+      color: form.value.color || undefined,
+      meta_title: form.value.meta_title || undefined,
+      meta_description: form.value.meta_description || undefined,
+      is_featured: form.value.is_featured,
+      sort_order: form.value.sort_order,
+      image: form.value.image
+    };
+
+    await categoriesStore.createCategory(data);
+    router.push('/admin/categories');
+  } catch (error: any) {
+    if (error.response?.data?.errors) {
+      errors.value = error.response.data.errors;
+    }
+  }
+};
+
+// Load categories for parent selection
+onMounted(() => {
+  categoriesStore.fetchCategories();
+});
+</script>
