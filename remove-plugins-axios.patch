@@ -1,0 +1,27 @@
+From 15cea1400f21553ac3a6a0a42f38e53c9350e6d4 Mon Sep 17 00:00:00 2001
+From: Jeremy Kavuncuoglu <jkavuncuoglu@outlook.com>
+Date: Sat, 4 Oct 2025 11:38:26 -0400
+Subject: [PATCH] chore: remove old axios plugin shim; use Inertia-backed api
+ wrapper
+
+---
+ resources/js/plugins/axios.ts | 7 -------
+ 1 file changed, 7 deletions(-)
+ delete mode 100644 resources/js/plugins/axios.ts
+
+diff --git a/resources/js/plugins/axios.ts b/resources/js/plugins/axios.ts
+deleted file mode 100644
+index 31fd509..0000000
+--- a/resources/js/plugins/axios.ts
++++ /dev/null
+@@ -1,7 +0,0 @@
+-// NOTE: This file used to provide a fetch-based shim for axios; it has been replaced
+-// with an Inertia-backed implementation in `resources/js/lib/api.ts`.
+-// We re-export `api` here for backwards compatibility so imports of '@/plugins/axios'
+-// keep working while the codebase migrates fully to Inertia.
+-
+-export { api } from '@/lib/api';
+-export default api;
+-- 
+2.43.0
+
