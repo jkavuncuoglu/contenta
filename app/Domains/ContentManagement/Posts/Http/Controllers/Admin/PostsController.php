@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domains\ContentManagement\Http\Controllers\Admin;
+namespace App\Domains\ContentManagement\Posts\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Domains\ContentManagement\Models\Post;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -57,7 +57,4 @@ class PostsController extends Controller
     {
         return Inertia::render('admin/posts/Show', ['id' => $id]);
     }
-
-    // Optionally you could add store/update/destroy methods here to handle form submissions
 }
-

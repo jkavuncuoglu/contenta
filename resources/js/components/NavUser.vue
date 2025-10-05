@@ -31,7 +31,7 @@ const { isMobile, state } = useSidebar();
                         data-test="sidebar-menu-button"
                     >
                         <UserInfo :user="user" />
-                        <Icon icon="material-symbols-light:expand_more" class="ml-auto size-4" />
+                        <Icon name="material-symbols-light:expand_more" class="ml-auto size-4" />
                     </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent

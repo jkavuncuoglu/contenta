@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\ContentManagement\Models;
+namespace App\Domains\ContentManagement\Tags\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,7 +30,7 @@ class Tag extends Model
     // Relationships
     public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(Post::class, 'post_tags');
+        return $this->belongsToMany(\App\Domains\ContentManagement\Posts\Models\Post::class, 'post_tags');
     }
 
     // Scopes

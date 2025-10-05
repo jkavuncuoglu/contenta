@@ -122,7 +122,7 @@ onMounted(() => {
                     <p class="text-muted-foreground text-sm">Enable two-factor authentication to add an extra layer of security to your account. You'll scan a QR code or enter a setup key into an authenticator app (Google Authenticator, 1Password, Authy, etc.).</p>
 
                     <div v-if="!enablingFlowStarted">
-                        <Button @click="startEnableFlow"><Icon icon="material-symbols-light:shield_check" class="mr-1" /> Enable 2FA</Button>
+                        <Button @click="startEnableFlow"><Icon name="material-symbols-light:shield_check" class="mr-1" /> Enable 2FA</Button>
                     </div>
 
                     <div v-else class="space-y-6 border rounded p-4">
@@ -170,7 +170,7 @@ onMounted(() => {
 
                     <!-- Regeneration Request -->
                     <div class="border rounded p-4 space-y-3">
-                        <h3 class="font-semibold text-sm flex items-center gap-2"><Icon icon="material-symbols-light:refresh" class="w-4 h-4" /> Regenerate Recovery Codes</h3>
+                        <h3 class="font-semibold text-sm flex items-center gap-2"><Icon name="material-symbols-light:refresh" class="w-4 h-4" /> Regenerate Recovery Codes</h3>
                         <p class="text-xs text-muted-foreground">To regenerate, confirm with your password and a current 2FA code. You'll receive an email with a confirmation link. Existing codes become invalid after regeneration.</p>
                         <div v-if="!awaitingRegenerationConfirmation" class="space-y-2">
                             <input v-model="passwordForRegeneration" type="password" placeholder="Current password" class="w-full border rounded px-2 py-1 text-sm" />
@@ -184,7 +184,7 @@ onMounted(() => {
                     </div>
 
                     <div>
-                        <Button variant="destructive" @click="handleDisable"><Icon icon="material-symbols-light:shield" class="mr-1" /> Disable 2FA</Button>
+                        <Button variant="destructive" @click="handleDisable"><Icon name="material-symbols-light:shield" class="mr-1" /> Disable 2FA</Button>
                     </div>
                 </div>
             </div>

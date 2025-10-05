@@ -44,4 +44,29 @@ class RegisteredUserController extends Controller
 
         return to_route('dashboard');
     }
+
+    /**
+     * Check if a username is available.
+     */
+    public function checkUsername(Request $request)
+    {
+        $username = $request->query('username');
+        $available = !User::where('username', $username)->exists();
+        return Inertia::render('auth/Register', ['available' => $available]);
+    }
+
+    /**
+     * Check if an email is available (unique in users and user_emails tables).
+     */
+    public function checkEmail(Request $request)
+    {
+        $email = $request->query('email');
+        $existsInUsers = \App\Models\User::where('email', $email)->exists();
+        $existsInUserEmails = false;
+        if (\Schema::hasTable('user_emails')) {
+            $existsInUserEmails = \DB::table('user_emails')->where('email', $email)->exists();
+        }
+        $available = !$existsInUsers && !$existsInUserEmails;
+        return Inertia::render('auth/Register', ['emailAvailable' => $available]);
+    }
 }

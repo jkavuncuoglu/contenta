@@ -61,7 +61,7 @@
               </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              <tr v-for="post in posts" :key="post.id" class="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <tr v-for="post in posts.value.filter(Boolean)" :key="post.id" class="hover:bg-gray-50 dark:hover:bg-gray-700">
                 <td class="px-6 py-4">
                   <div class="flex items-center">
                     <div class="flex-1 min-w-0">
@@ -151,10 +151,11 @@ const props = defineProps<Props>();
 // Fallback to Inertia page props if the component wasn't passed `posts` directly
 const page = usePage();
 const posts = computed<Post[]>(() => {
-  // page.props may contain posts under different keys; try common locations
   const p = (page.props as any)?.value ?? (page as any)?.props ?? {};
-  const fromPage = p.posts ?? p.data?.posts ?? p.postList ?? undefined;
-  return props.posts ?? fromPage ?? [];
+  const fromPage = props.posts ?? p.posts ?? p.data?.posts ?? p.postList ?? [];
+  if (Array.isArray(fromPage)) return fromPage;
+  if (fromPage && Array.isArray(fromPage.data)) return fromPage.data;
+  return [];
 });
 
 const breadcrumbs: BreadcrumbItem[] = [

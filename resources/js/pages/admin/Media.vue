@@ -15,7 +15,7 @@
           @click="uploadFile"
           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700"
         >
-          <Icon icon="material-symbols-light:add" class="w-4 h-4 mr-2" />
+          <Icon name="material-symbols-light:add" class="w-4 h-4 mr-2" />
           Upload Media
         </button>
       </div>
@@ -23,7 +23,7 @@
       <!-- Media Grid -->
       <div class="bg-white dark:bg-gray-800 shadow rounded-lg">
         <div v-if="!media.length" class="p-12 text-center">
-          <Icon icon="material-symbols-light:image" class="mx-auto h-12 w-12 text-gray-400" />
+          <Icon name="material-symbols-light:image" class="mx-auto h-12 w-12 text-gray-400" />
           <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No media files</h3>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by uploading your first media file.</p>
         </div>
@@ -42,7 +42,7 @@
                 class="w-full h-full object-cover"
               />
               <div v-else class="w-full h-full flex items-center justify-center">
-                <Icon icon="material-symbols-light:description" class="w-8 h-8 text-gray-400" />
+                <Icon name="material-symbols-light:description" class="w-8 h-8 text-gray-400" />
               </div>
 
               <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -51,13 +51,13 @@
                     @click="viewMedia(item)"
                     class="p-2 bg-white rounded-full text-gray-700 hover:bg-gray-100"
                   >
-                    <Icon icon="material-symbols-light:visibility" class="w-4 h-4" />
+                    <Icon name="material-symbols-light:visibility" class="w-4 h-4" />
                   </button>
                   <button
                     @click="deleteMedia(item)"
                     class="p-2 bg-white rounded-full text-red-600 hover:bg-gray-100"
                   >
-                    <Icon icon="material-symbols-light:delete" class="w-4 h-4" />
+                    <Icon name="material-symbols-light:delete" class="w-4 h-4" />
                   </button>
                 </div>
               </div>

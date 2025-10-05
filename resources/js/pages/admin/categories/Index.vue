@@ -24,11 +24,11 @@
       <div class="bg-white dark:bg-gray-800 shadow rounded-lg">
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-            Categories ({{ categories.length }})
+            Categories ({{ categoriesArray.length }})
           </h3>
         </div>
 
-        <div v-if="!categories.length" class="p-12 text-center">
+        <div v-if="!categoriesArray.length" class="p-12 text-center">
           <FolderIcon class="mx-auto h-12 w-12 text-gray-400" />
           <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No categories</h3>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating a new category.</p>
@@ -69,7 +69,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                <tr v-for="category in categories" :key="category.id" class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <tr v-for="category in categoriesArray" :key="category.id" class="hover:bg-gray-50 dark:hover:bg-gray-700">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       <div>
@@ -130,7 +130,7 @@ import {
   Trash as TrashIcon,
   Folder as FolderIcon,
 } from 'lucide-vue-next';
-import { defineProps } from 'vue';
+import { defineProps, computed } from 'vue';
 
 interface Category {
   id: number;
@@ -169,12 +169,4 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const deleteCategory = (category: Category) => {
-  if (confirm(`Are you sure you want to delete "${category.name}"?`)) {
-    router.delete(`/admin/categories/${category.id}`);
-  }
-};
-
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString();
-};
-</script>
+  if

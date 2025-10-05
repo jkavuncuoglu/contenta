@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\ContentManagement\Models;
+namespace App\Domains\ContentManagement\Posts\Models;
 
-use app\Domains\ContentManagement\Aggregates\PostAggregate;
-use app\Domains\ContentManagement\Models\Category;
-use app\Domains\ContentManagement\Models\Comment;
-use app\Domains\ContentManagement\Models\PostRevision;
-use app\Domains\ContentManagement\Models\PostType;
-use app\Domains\ContentManagement\Models\Tag;
+use App\Domains\ContentManagement\Posts\Aggregates\PostAggregate;
+use App\Domains\ContentManagement\Posts\Models\Category;
+use App\Domains\ContentManagement\Posts\Models\Comment;
+use App\Domains\ContentManagement\Posts\Models\PostRevision;
+use App\Domains\ContentManagement\Posts\Models\PostType;
+use App\Domains\ContentManagement\Posts\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

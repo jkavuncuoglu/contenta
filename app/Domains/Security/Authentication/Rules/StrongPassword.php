@@ -4,8 +4,6 @@ namespace App\Domains\Security\Authentication\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Validation\Rules\Password as PasswordRule;
 
 class StrongPassword implements ValidationRule
 {
@@ -37,12 +35,6 @@ class StrongPassword implements ValidationRule
         // If neither strategy is satisfied, it's weak
         if (!($isPassphrase || $isRandomStrong)) {
             $fail('The :attribute is too weak. Use a passphrase (12+ chars, 3+ words) or a 12+ character password with upper, lower, number, and symbol.');
-            return;
-        }
-
-        // Check if password is compromised using Have I Been Pwned API
-        if (PasswordRule::uncompromised()->passes('password', $password) === false) {
-            $fail('The :attribute has been found in a data breach. Please choose a different password.');
             return;
         }
     }

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+`<script setup lang="ts">
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
@@ -18,66 +18,71 @@ import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Administration',
-        href: '/admin',
-        redirect: '/admin/dashboard',
+        title: 'Dashboard',
+        href: '/admin/dashboard',
+        icon: 'material-symbols-light:bar-chart',
+    },
+    {
+        title: 'Content',
+        redirect: '/admin/posts',
+        icon: 'material-symbols-light:ad-group-outline-sharp',
         children: [
             {
-                title: 'Dashboard',
-                href: '/admin/dashboard',
-                icon: 'bar-chart',
+                title: 'Pages',
+                href: '/admin/pages',
+                icon: 'material-symbols-light:web',
             },
             {
                 title: 'Posts',
                 href: '/admin/posts',
-                icon: 'insert-text-rounded',
+                icon: 'material-symbols-light:insert-text',
             },
             {
                 title: 'Categories',
                 href: '/admin/categories',
-                icon: 'category',
+                icon: 'material-symbols-light:category',
             },
             {
                 title: 'Tags',
                 href: '/admin/tags',
-                icon: 'tag',
+                icon: 'material-symbols-light:tag',
+            },
+        ],
+    },
+    {
+        title: 'Media',
+        href: '/admin/content/media',
+        icon: 'material-symbols-light:perm-media',
+    },
+    {
+        title: 'Comments',
+        href: '/admin/content/comments',
+        icon: 'material-symbols-light:comment',
+    },
+    {
+        title: 'Settings',
+        href: '/admin/settings',
+        icon: 'material-symbols-light:settings',
+        children: [
+            {
+                title: 'Site Settings',
+                href: '/admin/settings/site',
+                icon: 'material-symbols-light:web',
             },
             {
-                title: 'Media',
-                href: '/admin/content/media',
-                icon: 'perm-media',
+                title: 'Security',
+                href: '/admin/settings/security',
+                icon: 'material-symbols-light:shield',
             },
             {
-                title: 'Comments',
-                href: '/admin/content/comments',
-                icon: 'comment',
+                title: 'Users',
+                href: '/admin/settings/users',
+                icon: 'lucide:users-round',
             },
             {
-                title: 'Settings',
-                href: '/admin/settings',
-                icon: 'display-settings',
-                children: [
-                    {
-                        title: 'Site Settings',
-                        href: '/admin/settings/site',
-                        icon: 'web',
-                    },
-                    {
-                        title: 'Security',
-                        href: '/admin/settings/security',
-                        icon: 'shield',
-                    },
-                    {
-                        title: 'Users',
-                        href: '/admin/settings/users',
-                        icon: 'users',
-                    },
-                    {
-                        title: 'Roles & Permissions',
-                        href: '/admin/settings/permissions',
-                        icon: 'lock',
-                    },
-                ],
+                title: 'Roles & Permissions',
+                href: '/admin/settings/permissions',
+                icon: 'material-symbols-light:lock',
             },
         ],
     },
@@ -87,12 +92,12 @@ const footerNavItems: NavItem[] = [
     {
         title: 'Github Repo',
         href: 'https://github.com/laravel/vue-starter-kit',
-        icon: 'folder',
+        icon: 'material-symbols-light:folder',
     },
     {
         title: 'Documentation',
         href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: 'bookOpen',
+        icon: 'material-symbols-light:bookOpen',
     },
 ];
 </script>
@@ -112,7 +117,7 @@ const footerNavItems: NavItem[] = [
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavItems" />
+            <NavMain :items="mainNavItems" :level="0" />
         </SidebarContent>
 
         <SidebarFooter>
@@ -122,3 +127,4 @@ const footerNavItems: NavItem[] = [
     </Sidebar>
     <slot />
 </template>
+`

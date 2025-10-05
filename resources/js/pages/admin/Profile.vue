@@ -31,7 +31,7 @@
     <!-- Placeholder content -->
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
       <div class="text-center py-12">
-        <Icon icon="material-symbols-light:person" class="mx-auto h-12 w-12 text-gray-400" />
+        <Icon name="material-symbols-light:person" class="mx-auto h-12 w-12 text-gray-400" />
         <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Profile Settings</h3>
         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Profile management interface will be implemented here.

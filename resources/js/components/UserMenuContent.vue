@@ -7,7 +7,6 @@ import {
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { logout } from '@/routes';
-import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
 import { Icon } from '@iconify/vue';
@@ -32,7 +31,7 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="edit()" prefetch as="button">
+            <Link class="block w-full" :href="'/profile/edit'" prefetch as="button">
                 <Icon icon="material-symbols-light:settings" class="mr-2 h-4 w-4" />
                 Settings
             </Link>
