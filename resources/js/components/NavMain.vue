@@ -68,7 +68,13 @@ function isExpanded(item: NavItem): boolean {
                     :is-active="isItemActive(item)"
                     :tooltip="item.title"
                     class="flex"
-                    :class="{ 'bg-blue-600 text-white': isItemActive(item) }"
+                    :class="[
+                        'transition-all',
+                        isItemActive(item) ? 'bg-charcoal-200 text-white' : '',
+                        item.children && isExpanded(item) ? 'rounded-tl-lg rounded-tr-lg' : 'rounded-lg',
+                        // Remove bottom rounding if open
+                        item.children && isExpanded(item) ? 'rounded-b-none' : 'rounded-tl-lg rounded-tr-lg'
+                    ]"
                 >
                     <Link :href="item.redirect || item.href" class="flex items-center gap-2">
                         <template v-if="isStringIcon(item.icon)">
@@ -84,6 +90,13 @@ function isExpanded(item: NavItem): boolean {
                         class="p-3 absolute inline-flex items-center justify-end right-0 -top-1"
                         @click="toggleChildren(item.title)">
                         <Icon
+                            v-if="isExpanded(item)"
+                            name="chevron-right"
+                            icon="material-symbols-light:chevron-right"
+                            class="w-4 h-4 text-white rotate-90"
+                        />
+                        <Icon
+                            v-else
                             name="chevron-right"
                             icon="material-symbols-light:chevron-right"
                             class="w-4 h-4 text-white"
@@ -91,7 +104,9 @@ function isExpanded(item: NavItem): boolean {
                     </button>
                 </SidebarMenuButton>
                 <template v-if="item.children && isExpanded(item)">
-                    <NavMain :items="item.children" :level="(props.level ?? 0) + 1" />
+                    <div class="py-2 bg-neutral-700 rounded-lg rounded-t-none">
+                        <NavMain :items="item.children" :level="(props.level ?? 0) + 1" />
+                    </div>
                 </template>
             </SidebarMenuItem>
         </SidebarMenu>
