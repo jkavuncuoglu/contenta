@@ -4,9 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { store } from '@/routes/password/confirm';
-import { Form, Head } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
+import { Form, Head, useForm } from '@inertiajs/vue3';
+import { Icon } from '@iconify/vue';
+
+// Use useForm for confirm password form state
+const form = useForm({
+    password: '',
+});
 </script>
 
 <template>
@@ -17,7 +21,7 @@ import { LoaderCircle } from 'lucide-vue-next';
         <Head title="Confirm password" />
 
         <Form
-            v-bind="store.form()"
+            :form="form"
             reset-on-success
             v-slot="{ errors, processing }"
         >
@@ -32,6 +36,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                         required
                         autocomplete="current-password"
                         autofocus
+                        v-model="form.password"
                     />
 
                     <InputError :message="errors.password" />
@@ -43,10 +48,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                         :disabled="processing"
                         data-test="confirm-password-button"
                     >
-                        <LoaderCircle
-                            v-if="processing"
-                            class="h-4 w-4 animate-spin"
-                        />
+                        <Icon icon="material-symbols-light:progress_activity" />
                         Confirm Password
                     </Button>
                 </div>

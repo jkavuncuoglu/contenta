@@ -12,7 +12,7 @@
         @click="showCreateRole = true"
         class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
       >
-        <PlusIcon class="w-4 h-4 mr-2" />
+        <Icon icon="material-symbols-light:add" class="w-4 h-4 mr-2" />
         Create Role
       </button>
     </div>
@@ -24,7 +24,7 @@
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <ShieldCheckIcon class="w-8 h-8 text-blue-500" />
+                <Icon icon="material-symbols-light:shield" class="w-8 h-8 text-blue-500" />
               </div>
               <div class="ml-4">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ role.name }}</h3>
@@ -38,14 +38,14 @@
                 @click="editRole(role)"
                 class="p-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
               >
-                <PencilIcon class="w-4 h-4" />
+                <Icon icon="material-symbols-light:edit" class="w-4 h-4" />
               </button>
               <button
                 @click="confirmDeleteRole(role)"
                 :disabled="role.name === 'super-admin'"
                 class="p-2 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <TrashIcon class="w-4 h-4" />
+                <Icon icon="material-symbols-light:delete" class="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -180,12 +180,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import type { Role, Permission } from '@/types';
-import {
-  PlusIcon,
-  ShieldCheckIcon,
-  PencilIcon,
-  TrashIcon
-} from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 
 interface PermissionGroup {
   name: string;

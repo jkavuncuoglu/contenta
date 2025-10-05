@@ -10,7 +10,7 @@ import AuthBase from '@/layouts/AuthLayout.vue';
 import { register } from '@/routes';
 import { request } from '@/routes/password';
 import { Head, useForm } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 
 defineProps<{
     status?: string;
@@ -104,8 +104,9 @@ const submit = () => {
                     :disabled="form.processing"
                     data-test="login-button"
                 >
-                    <LoaderCircle
+                    <Icon
                         v-if="form.processing"
+                        icon="material-symbols-light:progress_activity"
                         class="h-4 w-4 animate-spin"
                     />
                     Log in

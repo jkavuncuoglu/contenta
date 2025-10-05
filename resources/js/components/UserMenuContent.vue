@@ -10,7 +10,7 @@ import { logout } from '@/routes';
 import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
-import { LogOut, Settings } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 
 interface Props {
     user: User;
@@ -33,7 +33,7 @@ defineProps<Props>();
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="edit()" prefetch as="button">
-                <Settings class="mr-2 h-4 w-4" />
+                <Icon icon="material-symbols-light:settings" class="mr-2 h-4 w-4" />
                 Settings
             </Link>
         </DropdownMenuItem>
@@ -47,7 +47,7 @@ defineProps<Props>();
             as="button"
             data-test="logout-button"
         >
-            <LogOut class="mr-2 h-4 w-4" />
+            <Icon icon="material-symbols-light:logout" class="mr-2 h-4 w-4" />
             Log out
         </Link>
     </DropdownMenuItem>

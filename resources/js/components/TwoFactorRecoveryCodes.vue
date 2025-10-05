@@ -11,7 +11,7 @@ import {
 import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
 import { regenerateRecoveryCodes } from '@/routes/two-factor';
 import { Form } from '@inertiajs/vue3';
-import { Eye, EyeOff, LockKeyhole, RefreshCw } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 import { nextTick, onMounted, ref } from 'vue';
 
 const { recoveryCodesList, fetchRecoveryCodes, errors } = useTwoFactorAuth();
@@ -42,7 +42,8 @@ onMounted(async () => {
     <Card class="w-full">
         <CardHeader>
             <CardTitle class="flex gap-3">
-                <LockKeyhole class="size-4" />2FA Recovery Codes
+                <Icon icon="material-symbols-light:lock" class="size-4" />2FA
+                Recovery Codes
             </CardTitle>
             <CardDescription>
                 Recovery codes let you regain access if you lose your 2FA
@@ -55,7 +56,7 @@ onMounted(async () => {
             >
                 <Button @click="toggleRecoveryCodesVisibility" class="w-fit">
                     <component
-                        :is="isRecoveryCodesVisible ? EyeOff : Eye"
+                        :is="isRecoveryCodesVisible ? 'material-symbols-light:visibility_off' : 'material-symbols-light:visibility'"
                         class="size-4"
                     />
                     {{ isRecoveryCodesVisible ? 'Hide' : 'View' }} Recovery
@@ -75,7 +76,8 @@ onMounted(async () => {
                         type="submit"
                         :disabled="processing"
                     >
-                        <RefreshCw /> Regenerate Codes
+                        <Icon icon="material-symbols-light:refresh" /> Regenerate
+                        Codes
                     </Button>
                 </Form>
             </div>

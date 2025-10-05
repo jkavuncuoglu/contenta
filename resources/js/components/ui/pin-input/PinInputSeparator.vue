@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PrimitiveProps } from "reka-ui"
-import { Minus } from "lucide-vue-next"
+import { Icon } from '@iconify/vue';
 import { Primitive, useForwardProps } from "reka-ui"
 
 const props = defineProps<PrimitiveProps>()
@@ -13,7 +13,7 @@ const forwardedProps = useForwardProps(props)
     v-bind="forwardedProps"
   >
     <slot>
-      <Minus />
+      <Icon icon="material-symbols-light:remove" />
     </slot>
   </Primitive>
 </template>

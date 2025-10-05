@@ -15,7 +15,7 @@
           href="/admin/tags/create"
           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700"
         >
-          <PlusIcon class="w-4 h-4 mr-2" />
+          <Icon icon="material-symbols-light:add" class="w-4 h-4 mr-2" />
           Add Tag
         </Link>
       </div>
@@ -23,7 +23,7 @@
       <!-- Tags List -->
       <div class="bg-white dark:bg-gray-800 shadow rounded-lg">
         <div v-if="!tags.length" class="p-12 text-center">
-          <TagIcon class="mx-auto h-12 w-12 text-gray-400" />
+          <Icon icon="material-symbols-light:label" class="mx-auto h-12 w-12 text-gray-400" />
           <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No tags</h3>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating a new tag.</p>
           <div class="mt-6">
@@ -31,7 +31,7 @@
               href="/admin/tags/create"
               class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700"
             >
-              <PlusIcon class="w-4 h-4 mr-2" />
+              <Icon icon="material-symbols-light:add" class="w-4 h-4 mr-2" />
               Add Tag
             </Link>
           </div>
@@ -65,10 +65,10 @@
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div class="flex items-center justify-end space-x-2">
                     <Link :href="`/admin/tags/${tag.id}/edit`" class="text-indigo-600 hover:text-indigo-900">
-                      <PencilIcon class="w-4 h-4" />
+                      <Icon icon="material-symbols-light:edit" class="w-4 h-4" />
                     </Link>
                     <button @click="deleteTag(tag)" class="text-red-600 hover:text-red-900">
-                      <TrashIcon class="w-4 h-4" />
+                      <Icon icon="material-symbols-light:delete" class="w-4 h-4" />
                     </button>
                   </div>
                 </td>
@@ -85,7 +85,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
-import { Plus as PlusIcon, Pencil as PencilIcon, Trash as TrashIcon, Tag as TagIcon } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 
 interface Tag {
   id: number;

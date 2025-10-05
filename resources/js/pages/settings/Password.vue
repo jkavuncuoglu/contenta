@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import PasswordController from '@/actions/App/Domains/Settings/Http/Controllers/Settings/PasswordController';
 import InputError from '@/components/InputError.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { edit } from '@/routes/password';
-import { Form, Head } from '@inertiajs/vue3';
+import { Form, Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
@@ -22,6 +21,13 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
 const passwordInput = ref<HTMLInputElement | null>(null);
 const currentPasswordInput = ref<HTMLInputElement | null>(null);
+
+// Use useForm for password form state
+const form = useForm({
+    current_password: '',
+    password: '',
+    password_confirmation: '',
+});
 </script>
 
 <template>
@@ -36,7 +42,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                 />
 
                 <Form
-                    v-bind="PasswordController.update.form()"
+                    :form="form"
                     :options="{
                         preserveScroll: true,
                     }"
@@ -59,6 +65,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                             class="mt-1 block w-full"
                             autocomplete="current-password"
                             placeholder="Current password"
+                            v-model="form.current_password"
                         />
                         <InputError :message="errors.current_password" />
                     </div>
@@ -73,6 +80,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                             class="mt-1 block w-full"
                             autocomplete="new-password"
                             placeholder="New password"
+                            v-model="form.password"
                         />
                         <InputError :message="errors.password" />
                     </div>
@@ -88,6 +96,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                             class="mt-1 block w-full"
                             autocomplete="new-password"
                             placeholder="Confirm password"
+                            v-model="form.password_confirmation"
                         />
                         <InputError :message="errors.password_confirmation" />
                     </div>

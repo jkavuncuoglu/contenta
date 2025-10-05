@@ -34,7 +34,7 @@ import { toUrl, urlIsActive } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import type { BreadcrumbItem, NavItem } from '@/types';
 import { InertiaLinkProps, Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 import { computed } from 'vue';
 
 interface Props {
@@ -64,7 +64,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
-        icon: LayoutGrid,
+        icon: 'material-symbols-light:grid_view',
     },
 ];
 
@@ -72,12 +72,12 @@ const rightNavItems: NavItem[] = [
     {
         title: 'Repository',
         href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
+        icon: 'material-symbols-light:folder',
     },
     {
         title: 'Documentation',
         href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
+        icon: 'material-symbols-light:menu_book',
     },
 ];
 </script>
@@ -95,7 +95,7 @@ const rightNavItems: NavItem[] = [
                                 size="icon"
                                 class="mr-2 h-9 w-9"
                             >
-                                <Menu class="h-5 w-5" />
+                                <Icon icon="material-symbols-light:menu" class="h-5 w-5" />
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="left" class="w-[300px] p-6">
@@ -118,9 +118,9 @@ const rightNavItems: NavItem[] = [
                                         class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
                                         :class="activeItemStyles(item.href)"
                                     >
-                                        <component
+                                        <Icon
                                             v-if="item.icon"
-                                            :is="item.icon"
+                                            :icon="item.icon"
                                             class="h-5 w-5"
                                         />
                                         {{ item.title }}
@@ -135,9 +135,9 @@ const rightNavItems: NavItem[] = [
                                         rel="noopener noreferrer"
                                         class="flex items-center space-x-2 text-sm font-medium"
                                     >
-                                        <component
+                                        <Icon
                                             v-if="item.icon"
-                                            :is="item.icon"
+                                            :icon="item.icon"
                                             class="h-5 w-5"
                                         />
                                         <span>{{ item.title }}</span>
@@ -171,9 +171,9 @@ const rightNavItems: NavItem[] = [
                                     ]"
                                     :href="item.href"
                                 >
-                                    <component
+                                    <Icon
                                         v-if="item.icon"
-                                        :is="item.icon"
+                                        :icon="item.icon"
                                         class="mr-2 h-4 w-4"
                                     />
                                     {{ item.title }}
@@ -194,7 +194,8 @@ const rightNavItems: NavItem[] = [
                             size="icon"
                             class="group h-9 w-9 cursor-pointer"
                         >
-                            <Search
+                            <Icon
+                                icon="material-symbols-light:search"
                                 class="size-5 opacity-80 group-hover:opacity-100"
                             />
                         </Button>
@@ -221,8 +222,8 @@ const rightNavItems: NavItem[] = [
                                                     <span class="sr-only">{{
                                                         item.title
                                                     }}</span>
-                                                    <component
-                                                        :is="item.icon"
+                                                    <Icon
+                                                        :icon="item.icon"
                                                         class="size-5 opacity-80 group-hover:opacity-100"
                                                     />
                                                 </a>

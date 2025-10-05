@@ -126,9 +126,10 @@
 
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
 import Icon from '@/components/Icon.vue';
+import { computed } from 'vue';
 
 interface Post {
   id: number;
@@ -142,10 +143,19 @@ interface Post {
 }
 
 interface Props {
-  posts: Post[];
+  posts?: Post[]; // make optional because Inertia may provide via page props
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+// Fallback to Inertia page props if the component wasn't passed `posts` directly
+const page = usePage();
+const posts = computed<Post[]>(() => {
+  // page.props may contain posts under different keys; try common locations
+  const p = (page.props as any)?.value ?? (page as any)?.props ?? {};
+  const fromPage = p.posts ?? p.data?.posts ?? p.postList ?? undefined;
+  return props.posts ?? fromPage ?? [];
+});
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -165,7 +175,7 @@ const deletePost = (post: Post) => {
 };
 
 const getStatusClass = (status: string) => {
-  const classes = {
+  const classes: Record<string, string> = {
     published: 'bg-green-100 text-green-800',
     draft: 'bg-yellow-100 text-yellow-800',
     private: 'bg-gray-100 text-gray-800',

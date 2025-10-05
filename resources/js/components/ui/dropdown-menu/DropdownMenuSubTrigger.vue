@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
-import { ChevronRight } from 'lucide-vue-next'
+import { Icon } from '@iconify/vue';
 import {
   DropdownMenuSubTrigger,
   type DropdownMenuSubTriggerProps,
@@ -25,6 +25,6 @@ const forwardedProps = useForwardProps(delegatedProps)
     )"
   >
     <slot />
-    <ChevronRight class="ml-auto size-4" />
+    <Icon icon="material-symbols-light:chevron_right" class="ml-auto size-4" />
   </DropdownMenuSubTrigger>
 </template>

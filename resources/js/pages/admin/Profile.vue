@@ -31,7 +31,7 @@
     <!-- Placeholder content -->
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
       <div class="text-center py-12">
-        <UserIcon class="mx-auto h-12 w-12 text-gray-400" />
+        <Icon icon="material-symbols-light:person" class="mx-auto h-12 w-12 text-gray-400" />
         <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Profile Settings</h3>
         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Profile management interface will be implemented here.
@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import { User as UserIcon } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 
 const authStore = useAuthStore();
 const user = computed(() => authStore.user);

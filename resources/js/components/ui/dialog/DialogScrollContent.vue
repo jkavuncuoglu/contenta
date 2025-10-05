@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils'
-import { X } from 'lucide-vue-next'
+import { Icon } from '@iconify/vue';
 import {
   DialogClose,
   DialogContent,
@@ -50,7 +50,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
         <DialogClose
           class="absolute top-4 right-4 p-0.5 transition-colors rounded-md hover:bg-secondary"
         >
-          <X class="w-4 h-4" />
+          <Icon icon="material-symbols-light:close" />
           <span class="sr-only">Close</span>
         </DialogClose>
       </DialogContent>

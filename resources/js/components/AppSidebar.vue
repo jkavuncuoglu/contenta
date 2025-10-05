@@ -25,17 +25,17 @@ const mainNavItems: NavItem[] = [
             {
                 title: 'Dashboard',
                 href: '/admin/dashboard',
-                icon: 'barChart3',
+                icon: 'bar-chart',
             },
             {
                 title: 'Posts',
                 href: '/admin/posts',
-                icon: 'fileText',
+                icon: 'insert-text-rounded',
             },
             {
                 title: 'Categories',
                 href: '/admin/categories',
-                icon: 'folderOpen',
+                icon: 'category',
             },
             {
                 title: 'Tags',
@@ -45,22 +45,22 @@ const mainNavItems: NavItem[] = [
             {
                 title: 'Media',
                 href: '/admin/content/media',
-                icon: 'image',
+                icon: 'perm-media',
             },
             {
                 title: 'Comments',
                 href: '/admin/content/comments',
-                icon: 'messageSquare',
+                icon: 'comment',
             },
             {
                 title: 'Settings',
                 href: '/admin/settings',
-                icon: 'settings',
+                icon: 'display-settings',
                 children: [
                     {
                         title: 'Site Settings',
                         href: '/admin/settings/site',
-                        icon: 'settings',
+                        icon: 'web',
                     },
                     {
                         title: 'Security',

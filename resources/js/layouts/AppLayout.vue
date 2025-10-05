@@ -52,7 +52,7 @@ const logout = () => {
               <span class="sr-only">Open user menu</span>
               <div class="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
                 <span class="text-foreground font-medium">
-                  {{ user?.name?.charAt(0) || 'U' }}
+                  {{ user?.first_name?.charAt(0) || 'U' }}
                 </span>
               </div>
             </button>

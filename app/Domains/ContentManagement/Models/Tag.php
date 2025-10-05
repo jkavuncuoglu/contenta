@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Models;
 
-use app\Domains\ContentManagement\Models\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+
 
 class Tag extends Model
 {

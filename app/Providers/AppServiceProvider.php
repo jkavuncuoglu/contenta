@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Domains\Security\Contracts\TwoFactorAuthenticationServiceInterface;
+use App\Domains\Security\Services\TwoFactorAuthenticationService;
+use PragmaRX\Google2FA\Google2FA;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(TwoFactorAuthenticationServiceInterface::class, function ($app) {
+            return new TwoFactorAuthenticationService(new Google2FA());
+        });
     }
 
     /**

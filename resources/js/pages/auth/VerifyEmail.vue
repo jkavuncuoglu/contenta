@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { logout } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 
 defineProps<{
     status?: string;
@@ -33,7 +33,11 @@ defineProps<{
             v-slot="{ processing }"
         >
             <Button :disabled="processing" variant="secondary">
-                <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
+                <Icon
+                    v-if="processing"
+                    icon="material-symbols-light:progress_activity"
+                    class="h-4 w-4 animate-spin"
+                />
                 Resend verification email
             </Button>
 

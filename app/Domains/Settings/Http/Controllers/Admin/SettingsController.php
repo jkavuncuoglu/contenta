@@ -101,4 +101,43 @@ class SettingsController extends Controller
 
         return response()->json($pages);
     }
+
+    /**
+     * Display the site settings page
+     *
+     * @return Response
+     */
+    public function site(): Response
+    {
+        // You can customize the data returned here
+        return Inertia::render('admin/SettingsSite', [
+            'settings' => []
+        ]);
+    }
+
+    /**
+     * Display the security settings page
+     *
+     * @return Response
+     */
+    public function security(): Response
+    {
+        // You can customize the data returned here
+        return Inertia::render('admin/SettingsSecurity', [
+            'settings' => []
+        ]);
+    }
+
+    /**
+     * Display the users settings page
+     *
+     * @return Response
+     */
+    public function users(): Response
+    {
+        // You can customize the data returned here
+        return Inertia::render('admin/SettingsUsers', [
+            'settings' => []
+        ]);
+    }
 }

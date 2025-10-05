@@ -130,6 +130,7 @@ import {
   Trash as TrashIcon,
   Folder as FolderIcon,
 } from 'lucide-vue-next';
+import { defineProps } from 'vue';
 
 interface Category {
   id: number;
@@ -147,7 +148,18 @@ interface Props {
   categories: Category[];
 }
 
-defineProps<Props>();
+const props = defineProps({
+  categories: {
+    type: Array,
+    default: () => [],
+    required: false
+  },
+  meta: {
+    type: Object,
+    default: () => ({ current_page: 1, last_page: 1, per_page: 15, total: 0 }),
+    required: false
+  }
+});
 
 const breadcrumbs: BreadcrumbItem[] = [
   {

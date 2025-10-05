@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 
 defineProps<{
     status?: string;
@@ -53,8 +53,9 @@ defineProps<{
                         :disabled="processing"
                         data-test="email-password-reset-link-button"
                     >
-                        <LoaderCircle
+                        <Icon
                             v-if="processing"
+                            icon="material-symbols-light:progress_activity"
                             class="h-4 w-4 animate-spin"
                         />
                         Email password reset link

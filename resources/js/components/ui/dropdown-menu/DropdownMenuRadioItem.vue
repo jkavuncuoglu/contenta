@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils'
-import { Circle } from 'lucide-vue-next'
+import { Icon } from '@iconify/vue';
 import {
   DropdownMenuItemIndicator,
   DropdownMenuRadioItem,
@@ -34,7 +34,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   >
     <span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
       <DropdownMenuItemIndicator>
-        <Circle class="size-2 fill-current" />
+        <Icon icon="material-symbols-light:radio_button_unchecked" />
       </DropdownMenuItemIndicator>
     </span>
     <slot />

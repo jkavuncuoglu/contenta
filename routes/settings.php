@@ -25,4 +25,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
+    Route::post('settings/two-factor', [TwoFactorAuthenticationController::class, 'store'])
+        ->name('two-factor.store');
+    Route::delete('settings/two-factor', [TwoFactorAuthenticationController::class, 'destroy'])
+        ->name('two-factor.destroy');
 });

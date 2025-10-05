@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { Form, Head } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 import { ref } from 'vue';
 
 const props = defineProps<{
@@ -80,8 +80,9 @@ const inputEmail = ref(props.email);
                     :disabled="processing"
                     data-test="reset-password-button"
                 >
-                    <LoaderCircle
+                    <Icon
                         v-if="processing"
+                        icon="material-symbols-light:progress_activity"
                         class="h-4 w-4 animate-spin"
                     />
                     Reset password

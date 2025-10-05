@@ -12,7 +12,7 @@ import {
     useSidebar,
 } from '@/components/ui/sidebar';
 import { usePage } from '@inertiajs/vue3';
-import { ChevronsUpDown } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 import UserMenuContent from './UserMenuContent.vue';
 
 const page = usePage();
@@ -31,7 +31,7 @@ const { isMobile, state } = useSidebar();
                         data-test="sidebar-menu-button"
                     >
                         <UserInfo :user="user" />
-                        <ChevronsUpDown class="ml-auto size-4" />
+                        <Icon icon="material-symbols-light:expand_more" class="ml-auto size-4" />
                     </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import ProfileController from '@/actions/App/Domains/Settings/Http/Controllers/Settings/ProfileController';
+import { Form, Head, Link, usePage, useForm } from '@inertiajs/vue3';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
-import { Form, Head, Link, usePage } from '@inertiajs/vue3';
 
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
@@ -30,6 +29,11 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
 const page = usePage();
 const user = page.props.auth.user;
+
+const form = useForm({
+    name: user.name,
+    email: user.email,
+});
 </script>
 
 <template>
@@ -44,7 +48,7 @@ const user = page.props.auth.user;
                 />
 
                 <Form
-                    v-bind="ProfileController.update.form()"
+                    :form="form"
                     class="space-y-6"
                     v-slot="{ errors, processing, recentlySuccessful }"
                 >
@@ -54,7 +58,7 @@ const user = page.props.auth.user;
                             id="name"
                             class="mt-1 block w-full"
                             name="name"
-                            :default-value="user.name"
+                            v-model="form.name"
                             required
                             autocomplete="name"
                             placeholder="Full name"
@@ -69,7 +73,7 @@ const user = page.props.auth.user;
                             type="email"
                             class="mt-1 block w-full"
                             name="email"
-                            :default-value="user.email"
+                            v-model="form.email"
                             required
                             autocomplete="username"
                             placeholder="Email address"

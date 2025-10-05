@@ -362,7 +362,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, defineProps } from 'vue';
 import { useTagsStore } from '@/stores/tags';
 import Icon from '@/components/Icon.vue';
 import { Link } from '@inertiajs/vue3';
@@ -379,6 +379,19 @@ function debounce<F extends (...args: any[]) => any>(fn: F, wait = 200) {
 }
 
 import type { Tag, TagFilters } from '@/types';
+
+const props = defineProps({
+  tags: {
+    type: Array,
+    default: () => [],
+    required: false
+  },
+  meta: {
+    type: Object,
+    default: () => ({ current_page: 1, last_page: 1, per_page: 15, total: 0 }),
+    required: false
+  }
+});
 
 const tagsStore = useTagsStore();
 
