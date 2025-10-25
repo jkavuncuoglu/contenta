@@ -9,8 +9,8 @@ import { Label } from '@/components/ui/label';
 import InputError from '@/components/InputError.vue';
 import TextLink from '@/components/TextLink.vue';
 import AuthBase from '@/layouts/AuthLayout.vue';
-import Multiselect from 'vue-multiselect';
-import 'vue-multiselect/dist/vue-multiselect.min.css';
+import TimezoneSelect from '@/components/TimezoneSelect.vue';
+import LanguageSelect from '@/components/LanguageSelect.vue';
 import { login } from '@/routes';
 import { Form, Head, useForm } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3';
@@ -24,68 +24,6 @@ const form = useForm({
     password_confirmation: '',
     language: 'en-US',
     timezone: 'UTC',
-});
-
-// Get all timezones from Intl API
-const allTimezones =
-    typeof Intl.supportedValuesOf === 'function'
-        ? Intl.supportedValuesOf('timeZone')
-        : [
-              'UTC',
-              'Europe/London',
-              'Europe/Istanbul',
-              'America/New_York',
-              'Asia/Tokyo',
-              'Asia/Shanghai',
-              'Europe/Paris',
-              'Europe/Berlin',
-              'America/Los_Angeles',
-              'Australia/Sydney',
-          ];
-
-const timezoneOptions = allTimezones;
-
-// Simple mapping from timezone to likely languages
-const timezoneLanguages: Record<string, string[]> = {
-    'Europe/Istanbul': ['tr-TR', 'en-US'],
-    'Europe/London': ['en-GB', 'en-US'],
-    'America/New_York': ['en-US', 'es-US'],
-    'Asia/Tokyo': ['ja-JP', 'en-US'],
-    'Asia/Shanghai': ['zh-CN', 'en-US'],
-    'Europe/Paris': ['fr-FR', 'en-US'],
-    'Europe/Berlin': ['de-DE', 'en-US'],
-    'America/Los_Angeles': ['en-US', 'es-US'],
-    'Australia/Sydney': ['en-AU', 'en-US'],
-    UTC: ['en-US'],
-};
-
-const languageOptions = ref(['en-US']);
-
-watch(
-    () => form.timezone,
-    (tz) => {
-        const langs = timezoneLanguages[tz] || ['en-US'];
-        languageOptions.value = langs;
-        if (!langs.includes(form.language)) {
-            form.language = langs[0];
-        }
-    },
-);
-
-const searchTimezone = ref('');
-const filteredTimezoneOptions = computed(() => {
-    if (!searchTimezone.value) return timezoneOptions;
-    return timezoneOptions.filter((opt) =>
-        opt.label.toLowerCase().includes(searchTimezone.value.toLowerCase()),
-    );
-});
-
-const searchLanguage = ref('');
-const filteredLanguageOptions = computed(() => {
-    if (!searchLanguage.value) return languageOptions.value;
-    return languageOptions.value.filter((opt) =>
-        opt.toLowerCase().includes(searchLanguage.value.toLowerCase()),
-    );
 });
 
 const handleRegister = () => {
@@ -323,29 +261,18 @@ watch(() => form.email, (val) => {
                     </div>
                     <InputError :message="errors.username" />
                 </div>
-                <!-- Timezone Select (moved before Language) -->
-                <div class="grid gap-2">
-                    <Label for="timezone">Timezone</Label>
-                    <Multiselect
-                        v-model="form.timezone"
-                        :options="filteredTimezoneOptions"
-                        placeholder="Select timezone..."
-                        :searchable="true"
-                        :clearable="false"
-                    />
-                    <InputError :message="errors.timezone" />
-                </div>
-                <div class="grid gap-2">
-                    <Label for="language">Language</Label>
-                    <Multiselect
-                        v-model="form.language"
-                        :options="filteredLanguageOptions"
-                        placeholder="Select language..."
-                        :searchable="true"
-                        :clearable="false"
-                    />
-                    <InputError :message="errors.language" />
-                </div>
+
+                <TimezoneSelect
+                    v-model="form.timezone"
+                    :error="errors.timezone"
+                />
+
+                <LanguageSelect
+                    v-model="form.language"
+                    :timezone="form.timezone"
+                    :error="errors.language"
+                />
+
                 <div class="grid gap-2">
                     <Label for="password">Password</Label>
                     <div class="relative flex items-center">

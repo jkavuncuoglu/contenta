@@ -3,9 +3,7 @@ import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { toUrl, urlIsActive } from '@/lib/utils';
-import { edit as editPassword } from '@/routes/password';
 import { edit } from '@/routes/profile';
-import { show } from '@/routes/two-factor';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 
@@ -13,14 +11,6 @@ const sidebarNavItems: NavItem[] = [
     {
         title: 'Profile',
         href: edit(),
-    },
-    {
-        title: 'Password',
-        href: editPassword(),
-    },
-    {
-        title: 'Two-Factor Auth',
-        href: show(),
     },
 ];
 
@@ -31,8 +21,8 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
     <div class="px-4 py-6">
         <Heading title="Settings" description="Manage your profile and account settings" />
 
-        <div class="flex flex-col lg:flex-row lg:space-x-12">
-            <aside class="w-full max-w-xl lg:w-48">
+        <div class="flex flex-col lg:flex-row lg:space-x-12 mt-8">
+            <aside class="w-full max-w-xl lg:w-48  bg-neutral-900/30">
                 <nav class="flex flex-col space-y-1 space-x-0">
                     <Button
                         v-for="item in sidebarNavItems"

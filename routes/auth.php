@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\PasswordController;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -51,4 +52,23 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+});
+
+Route::group([
+    'prefix' => 'user',
+    'middleware' => ['auth', 'verified'],
+], function () {
+    Route::group([
+        'prefix' => '{id}',
+        'as' => 'user.',
+    ], function () {
+        Route::group([
+            'prefix' => 'password',
+            'as' => 'password.',
+        ], function () {
+            Route::put('', [PasswordController::class, 'update'])
+                ->middleware('throttle:6,1')
+                ->name('password.update');
+        });
+    });
 });

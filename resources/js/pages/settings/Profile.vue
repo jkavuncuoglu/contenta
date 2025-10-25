@@ -2,10 +2,15 @@
 import { Form, Head, Link, usePage, useForm } from '@inertiajs/vue3';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
+import { watch } from 'vue';
+import { useAppearance } from '@/composables/useAppearance';
 
-import DeleteUser from '@/components/DeleteUser.vue';
+import AvatarUpload from '@/components/AvatarUpload.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import InputError from '@/components/InputError.vue';
+import TimezoneSelect from '@/components/TimezoneSelect.vue';
+import LanguageSelect from '@/components/LanguageSelect.vue';
+import ThemeModeSelect from '@/components/ThemeModeSelect.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,7 +20,7 @@ import { type BreadcrumbItem } from '@/types';
 
 interface Props {
     mustVerifyEmail: boolean;
-    status?: string;
+    status?: string | null;
 }
 
 defineProps<Props>();
@@ -30,21 +35,39 @@ const breadcrumbItems: BreadcrumbItem[] = [
 const page = usePage();
 const user = page.props.auth.user;
 
+const { appearance, updateAppearance } = useAppearance();
+
 const form = useForm({
-    name: user.name,
+    first_name: user.first_name,
+    last_name: user.last_name,
     email: user.email,
+    username: user.username,
+    bio: user.bio,
+    avatar: user.avatar,
+    timezone: user.timezone || 'UTC',
+    language: user.language || 'en',
+    theme_mode: appearance.value || 'system',
+    preferences: (user as any).preferences || {},
+    social_links: (user as any).social_links || {},
+});
+
+// Watch for theme_mode changes and update appearance immediately
+watch(() => form.theme_mode, (newValue) => {
+    updateAppearance(newValue as 'light' | 'dark' | 'system');
 });
 </script>
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Profile settings" />
+        <Head
+            title="Profile settings"
+        />
 
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
                 <HeadingSmall
                     title="Profile information"
-                    description="Update your name and email address"
+                    description="Update your name, email address and other profile details."
                 />
 
                 <Form
@@ -52,18 +75,43 @@ const form = useForm({
                     class="space-y-6"
                     v-slot="{ errors, processing, recentlySuccessful }"
                 >
-                    <div class="grid gap-2">
-                        <Label for="name">Name</Label>
-                        <Input
-                            id="name"
+                    <div class="grid gap-2 mb-8">
+                        <AvatarUpload
+                            id="avatar"
                             class="mt-1 block w-full"
-                            name="name"
-                            v-model="form.name"
+                            name="avatar"
+                            v-model="form.avatar"
                             required
-                            autocomplete="name"
+                        />
+                        <InputError class="mt-2" :message="errors.avatar" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="firstName">Name</Label>
+                        <Input
+                            id="firstName"
+                            class="mt-1 block w-full"
+                            name="first_name"
+                            v-model="form.first_name"
+                            required
+                            autocomplete="first_name"
+                            placeholder="First name"
+                        />
+                        <InputError class="mt-2" :message="errors.first_name" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="last_name">Name</Label>
+                        <Input
+                            id="last_name"
+                            class="mt-1 block w-full"
+                            name="last_name"
+                            v-model="form.last_name"
+                            required
+                            autocomplete="last_name"
                             placeholder="Full name"
                         />
-                        <InputError class="mt-2" :message="errors.name" />
+                        <InputError class="mt-2" :message="errors.last_name" />
                     </div>
 
                     <div class="grid gap-2">
@@ -102,6 +150,52 @@ const form = useForm({
                         </div>
                     </div>
 
+                    <div class="grid gap-2">
+                        <Label for="username">Username</Label>
+                        <Input
+                            id="username"
+                            type="text"
+                            class="mt-1 block w-full"
+                            name="username"
+                            v-model="form.username"
+                            required
+                            autocomplete="username"
+                            placeholder="Username"
+                        />
+                        <InputError class="mt-2" :message="errors.username" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="bio">Bio</Label>
+                        <textarea
+                            id="bio"
+                            rows="7"
+                            class="placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input min-w-0 rounded-md border bg-transparent text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive mt-1 block w-full p-3"
+                            name="bio"
+                            v-model="form.bio"
+                            required
+                            autocomplete="bio"
+                            placeholder="Short Bio"
+                        />
+                        <InputError class="mt-2" :message="errors.bio" />
+                    </div>
+
+                    <TimezoneSelect
+                        v-model="form.timezone"
+                        :error="errors.timezone"
+                    />
+
+                    <LanguageSelect
+                        v-model="form.language"
+                        :timezone="form.timezone"
+                        :error="errors.language"
+                    />
+
+                    <ThemeModeSelect
+                        v-model="form.theme_mode"
+                        :error="errors.theme_mode"
+                    />
+
                     <div class="flex items-center gap-4">
                         <Button
                             :disabled="processing"
@@ -125,8 +219,6 @@ const form = useForm({
                     </div>
                 </Form>
             </div>
-
-            <DeleteUser />
         </SettingsLayout>
     </AppLayout>
 </template>

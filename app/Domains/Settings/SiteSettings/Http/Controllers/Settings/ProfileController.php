@@ -3,6 +3,7 @@
 namespace App\Domains\Settings\SiteSettings\Http\Controllers\Settings;
 
 use App\Domains\Settings\SiteSettings\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Domains\Settings\SiteSettings\Services\AvatarService;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -13,6 +14,10 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        private AvatarService $avatarService
+    ) {}
+
     /**
      * Show the user's profile settings page.
      */
@@ -29,13 +34,31 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $data = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // Handle avatar upload or URL
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar
+            $this->avatarService->deleteIfLocal($user->avatar);
+
+            // Process and store new avatar
+            $data['avatar'] = $this->avatarService->processUpload($request->file('avatar'));
+        } elseif (isset($data['avatar']) && is_string($data['avatar'])) {
+            // It's a URL, validate and keep it
+            if ($this->avatarService->isValidAvatarUrl($data['avatar'])) {
+                // Only delete old file if it exists and we're replacing with a URL
+                $this->avatarService->deleteIfLocal($user->avatar);
+            }
         }
 
-        $request->user()->save();
+        $user->fill($data);
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
 
         return to_route('profile.edit');
     }
@@ -50,6 +73,9 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+
+        // Delete avatar
+        $this->avatarService->deleteIfLocal($user->avatar);
 
         Auth::logout();
 

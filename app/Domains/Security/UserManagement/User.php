@@ -2,8 +2,8 @@
 
 namespace App\Domains\Security\UserManagement;
 
+use App\Domains\Security\UserManagement\Services\UserServiceContract;
 use Illuminate\Support\Facades\Facade;
-use App\Domains$1$2;
 
 class User extends Facade
 {
