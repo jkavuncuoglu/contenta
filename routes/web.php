@@ -19,5 +19,6 @@ Route::get('/check-username', [RegisteredUserController::class, 'checkUsername']
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/two-factor.php';
+require __DIR__.'/webauthn.php';
 
 require __DIR__.'/profile.php';

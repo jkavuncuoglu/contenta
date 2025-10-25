@@ -37,7 +37,7 @@ class RecoveryCodesRegenerationConfirmation extends Mailable
      */
     public function content(): Content
     {
-        $confirmationUrl = route('two-factor.confirm-regeneration', ['token' => $this->token]);
+        $confirmationUrl = route('two-factor.recovery-codes.confirm', ['token' => $this->token]);
 
         return new Content(
             view: 'emails.recovery-codes-regeneration-confirmation',

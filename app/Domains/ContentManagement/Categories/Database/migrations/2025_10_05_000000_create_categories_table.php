@@ -11,19 +11,20 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreignId('parent_id')
+                ->nullable()
+                ->constrained('categories')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->integer('sort_order')->default(0);
             $table->boolean('is_featured')->default(false);
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->string('slug')->unique();
             $table->string('color')->nullable();
-            $table->unsignedInteger('parent_id')->nullable()
-                ->constrained('categories')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
             $table->timestamps();
         });
+
     }
 
     public function down()

@@ -2,192 +2,364 @@
 
 namespace App\Domains\Settings\SiteSettings\Http\Controllers\Settings;
 
-use App\Domains\Settings\SiteSettings\Http\Requests\Settings\TwoFactorAuthenticationRequest;
 use App\Http\Controllers\Controller;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
-use Laravel\Fortify\Features;
 use OTPHP\TOTP;
 
-class TwoFactorAuthenticationController extends Controller implements HasMiddleware
+class TwoFactorAuthenticationController extends Controller
 {
-    /**
-     * Get the middleware that should be assigned to the controller.
-     */
-    public static function middleware(): array
-    {
-        return Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')
-            ? [new Middleware('password.confirm', only: ['show'])]
-            : [];
-    }
-
     /**
      * Show the user's two-factor authentication settings page.
      */
-    public function show(TwoFactorAuthenticationRequest $request): Response
+    public function show(Request $request): Response
     {
-        $request->ensureStateIsValid();
         $user = $request->user();
-        $recoveryCodes = [];
-        if ($user->hasEnabledTwoFactorAuthentication() && $user->two_factor_recovery_codes) {
-            $recoveryCodes = json_decode(decrypt($user->two_factor_recovery_codes), true) ?? [];
-        }
-        return Inertia::render('settings/TwoFactor', [
-            'twoFactorEnabled' => $user->hasEnabledTwoFactorAuthentication(),
-            'requiresConfirmation' => Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm'),
-            'recoveryCodes' => $recoveryCodes,
+
+        return Inertia::render('settings/Security', [
+            'twoFactorEnabled' => $user->hasTwoFactorEnabled(),
         ]);
-    }
-
-    /**
-     * Enable two-factor authentication for the user.
-     */
-    public function store(TwoFactorAuthenticationRequest $request)
-    {
-        $user = $request->user();
-        if (! $user->hasEnabledTwoFactorAuthentication()) {
-            $user->forceFill([
-                'two_factor_secret' => encrypt(bin2hex(random_bytes(32))),
-                'two_factor_confirmed_at' => null,
-                'two_factor_recovery_codes' => encrypt(json_encode(collect(range(1, 8))->map(fn () => bin2hex(random_bytes(8)))->all())),
-            ])->save();
-        }
-        // Optionally, you can return recovery codes or other setup data here
-        return redirect()->route('two-factor.show')->with('success', 'Two-factor authentication enabled.');
-    }
-
-    /**
-     * Disable two-factor authentication for the user.
-     */
-    public function destroy(TwoFactorAuthenticationRequest $request)
-    {
-        $user = $request->user();
-        $user->forceFill([
-            'two_factor_secret' => null,
-            'two_factor_confirmed_at' => null,
-            'two_factor_recovery_codes' => null,
-        ])->save();
-        return redirect()->route('two-factor.show')->with('success', 'Two-factor authentication disabled.');
     }
 
     /**
      * Get QR code and manual entry for 2FA setup.
      */
-    public function getSetupData(Request $request)
+    public function getSetupData(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $secret = $user->two_factor_secret ? decrypt($user->two_factor_secret) : bin2hex(random_bytes(32));
-        $totp = TOTP::create($secret);
-        $totp->setLabel($user->email);
-        $totp->setIssuer(config('app.name'));
-        $qrCode = new QrCode($totp->getProvisioningUri());
-        $writer = new PngWriter();
-        $qrCodeData = base64_encode($writer->write($qrCode)->getString());
-        return response()->json([
-            'qrCode' => $qrCodeData,
-            'manualEntry' => $secret,
-        ]);
+        try {
+            $user = $request->user();
+
+            if ($user->hasTwoFactorEnabled()) {
+                return response()->json([
+                    'message' => 'Two-Factor Authentication is already enabled.'
+                ], 409);
+            }
+
+            // Generate a new secret
+            $secret = bin2hex(random_bytes(32));
+
+            // Store temporarily (will be saved permanently on enable)
+            $user->forceFill([
+                'two_factor_secret' => encrypt($secret),
+                'two_factor_confirmed_at' => null,
+            ])->save();
+
+            // Generate TOTP
+            $totp = TOTP::create($secret);
+            $totp->setLabel($user->email);
+            $totp->setIssuer(config('app.name'));
+
+            // Generate QR code
+            $qrCode = new QrCode($totp->getProvisioningUri());
+            $writer = new PngWriter();
+            $qrCodeData = base64_encode($writer->write($qrCode)->getString());
+
+            return response()->json([
+                'qrCode' => $qrCodeData,
+                'manualEntry' => $secret,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to generate setup data.',
+                'errors' => [$e->getMessage()]
+            ], 500);
+        }
     }
 
     /**
-     * Validate 2FA code and enable 2FA.
+     * Enable 2FA after verifying TOTP code.
      */
-    public function confirm(Request $request)
+    public function enable(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $secret = $user->two_factor_secret ? decrypt($user->two_factor_secret) : null;
-        if (! $secret) {
-            return response()->json(['error' => 'No secret found'], 400);
+        try {
+            $user = $request->user();
+
+            if ($user->hasTwoFactorEnabled()) {
+                return response()->json([
+                    'message' => 'Two-Factor Authentication is already enabled.'
+                ], 409);
+            }
+
+            $request->validate([
+                'code' => 'required|string|size:6',
+            ]);
+
+            $code = $request->input('code');
+            $secret = $user->two_factor_secret ? decrypt($user->two_factor_secret) : null;
+
+            if (!$secret) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No setup data found. Please start the setup process.',
+                    'errors' => ['No setup data found.']
+                ], 422);
+            }
+
+            // Verify the code
+            $totp = TOTP::create($secret);
+            if (!$totp->verify($code)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid authentication code.',
+                    'errors' => ['Invalid authentication code.']
+                ], 422);
+            }
+
+            // Generate recovery codes
+            $recoveryCodes = collect(range(1, 10))
+                ->map(fn () => bin2hex(random_bytes(8)))
+                ->all();
+
+            // Enable 2FA
+            $user->forceFill([
+                'two_factor_confirmed_at' => now(),
+                'two_factor_recovery_codes' => encrypt(json_encode($recoveryCodes)),
+                'two_factor_used_recovery_codes' => [],
+                'two_factor_recovery_codes_viewed_at' => null,
+            ])->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Two-Factor Authentication enabled successfully.',
+                'recovery_codes' => $recoveryCodes,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to enable Two-Factor Authentication.',
+                'errors' => [$e->getMessage()]
+            ], 500);
         }
-        $totp = TOTP::create($secret);
-        if (! $totp->verify($request->input('code'))) {
-            return response()->json(['error' => 'Invalid code'], 422);
-        }
-        $user->forceFill([
-            'two_factor_confirmed_at' => now(),
-            'two_factor_recovery_codes' => encrypt(json_encode(collect(range(1, 10))->map(fn () => bin2hex(random_bytes(8)))->all())),
-        ])->save();
-        return response()->json(['success' => true]);
     }
 
     /**
-     * Download recovery codes (only once).
+     * Disable 2FA.
      */
-    public function downloadRecoveryCodes(Request $request)
+    public function disable(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            $user->forceFill([
+                'two_factor_secret' => null,
+                'two_factor_confirmed_at' => null,
+                'two_factor_recovery_codes' => null,
+                'two_factor_used_recovery_codes' => [],
+                'two_factor_recovery_codes_viewed_at' => null,
+            ])->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Two-Factor Authentication disabled successfully.'
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to disable Two-Factor Authentication.',
+                'errors' => [$e->getMessage()]
+            ], 500);
+        }
+    }
+
+    /**
+     * Get recovery codes (only shown once until regenerated).
+     */
+    public function getRecoveryCodes(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            if (!$user->hasTwoFactorEnabled()) {
+                return response()->json([
+                    'message' => 'Two-Factor Authentication is not enabled.',
+                    'errors' => ['Two-Factor Authentication is not enabled.']
+                ], 422);
+            }
+
+            $hasViewed = $user->hasViewedRecoveryCodes();
+            $codes = [];
+
+            if (!$hasViewed) {
+                $codes = $user->two_factor_recovery_codes
+                    ? json_decode(decrypt($user->two_factor_recovery_codes), true) ?? []
+                    : [];
+            }
+
+            $availableCount = $user->getAvailableRecoveryCodesCount();
+
+            return response()->json([
+                'recovery_codes' => $codes,
+                'has_viewed' => $hasViewed,
+                'show_warning' => $user->shouldShowRecoveryCodesWarning(),
+                'available_count' => $availableCount,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to retrieve recovery codes.',
+                'errors' => [$e->getMessage()]
+            ], 500);
+        }
+    }
+
+    /**
+     * Download recovery codes as text file.
+     */
+    public function downloadRecoveryCodes(Request $request): \Illuminate\Http\Response
     {
         $user = $request->user();
-        $codes = $user->two_factor_recovery_codes ? json_decode(decrypt($user->two_factor_recovery_codes), true) : [];
-        // Mark codes as downloaded (could add a flag in user model)
-        // For now, just return as txt
-        return response(implode("\n", $codes), 200, [
+
+        if (!$user->hasTwoFactorEnabled()) {
+            abort(422, 'Two-Factor Authentication is not enabled.');
+        }
+
+        if ($user->hasViewedRecoveryCodes()) {
+            abort(410, 'Recovery codes already viewed. Regenerate to view again.');
+        }
+
+        $recoveryCodes = $user->two_factor_recovery_codes
+            ? json_decode(decrypt($user->two_factor_recovery_codes), true) ?? []
+            : [];
+
+        $content = "Recovery Codes for " . config('app.name') . "\n";
+        $content .= "Generated on: " . now()->format('Y-m-d H:i:s') . "\n";
+        $content .= "User: " . $user->email . "\n\n";
+        $content .= "Keep these codes safe. Each code can only be used once.\n\n";
+
+        foreach ($recoveryCodes as $i => $code) {
+            $content .= ($i + 1) . '. ' . $code . "\n";
+        }
+
+        // Mark as viewed after offering download
+        $user->markRecoveryCodesAsViewed();
+
+        return response($content, 200, [
             'Content-Type' => 'text/plain',
-            'Content-Disposition' => 'attachment; filename="recovery-codes.txt"',
+            'Content-Disposition' => 'attachment; filename="recovery-codes-' . now()->format('Y-m-d') . '.txt"'
         ]);
     }
 
     /**
-     * Mark a recovery code as used.
+     * Request regeneration of recovery codes (requires password + 2FA code).
      */
-    public function useRecoveryCode(Request $request)
+    public function requestRegeneration(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $code = $request->input('code');
-        $codes = $user->two_factor_recovery_codes ? json_decode(decrypt($user->two_factor_recovery_codes), true) : [];
-        if (!in_array($code, $codes)) {
-            return response()->json(['error' => 'Invalid code'], 422);
+        try {
+            $user = $request->user();
+
+            $request->validate([
+                'password' => 'required|string',
+                'code' => 'required|string|size:6',
+            ]);
+
+            $password = $request->input('password');
+            $code = $request->input('code');
+
+            // Verify password
+            if (!Hash::check($password, $user->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid password.',
+                    'errors' => ['Invalid password.']
+                ], 422);
+            }
+
+            // Verify 2FA code
+            $secret = $user->two_factor_secret ? decrypt($user->two_factor_secret) : null;
+            if (!$secret) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Two-Factor Authentication is not properly configured.',
+                    'errors' => ['Two-Factor Authentication is not properly configured.']
+                ], 422);
+            }
+
+            $totp = TOTP::create($secret);
+            if (!$totp->verify($code)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid authentication code.',
+                    'errors' => ['Invalid authentication code.']
+                ], 422);
+            }
+
+            // Generate token for email confirmation
+            $token = $user->generateRecoveryCodesRegenerationToken();
+
+            // Send confirmation email
+            Mail::to($user->email)->send(new \App\Mail\RecoveryCodesRegenerationConfirmation($user, $token));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Regeneration email sent. Check your inbox to confirm.'
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to request regeneration.',
+                'errors' => [$e->getMessage()]
+            ], 500);
         }
-        $codes = array_values(array_diff($codes, [$code]));
-        $user->forceFill([
-            'two_factor_recovery_codes' => encrypt(json_encode($codes)),
-        ])->save();
-        $warning = count($codes) < 2;
-        return response()->json(['success' => true, 'warning' => $warning]);
     }
 
     /**
-     * Regenerate recovery codes (requires password + 2FA validation, sends email).
+     * Confirm regeneration using emailed token.
      */
-    public function regenerateRecoveryCodes(Request $request)
+    public function confirmRegeneration(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $password = $request->input('password');
-        $code = $request->input('code');
-        if (!Hash::check($password, $user->password)) {
-            return response()->json(['error' => 'Invalid password'], 422);
-        }
-        $secret = $user->two_factor_secret ? decrypt($user->two_factor_secret) : null;
-        $totp = TOTP::create($secret);
-        if (! $totp->verify($code)) {
-            return response()->json(['error' => 'Invalid 2FA code'], 422);
-        }
-        // Send confirmation email
-        Mail::to($user->email)->send(new \App\Mail\RecoveryCodesRegenerationConfirmation());
-        // Set a flag (e.g., user->pending_recovery_codes_regeneration = true)
-        $user->forceFill(['pending_recovery_codes_regeneration' => true])->save();
-        return response()->json(['success' => true]);
-    }
+        try {
+            $token = $request->query('token');
 
-    /**
-     * Confirm regeneration (from email link), show new codes (only once).
-     */
-    public function confirmRegeneration(Request $request)
-    {
-        $user = $request->user();
-        if (! $user->pending_recovery_codes_regeneration) {
-            return response()->json(['error' => 'No pending regeneration'], 400);
+            if (!$token) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Regeneration token is required.',
+                    'errors' => ['Regeneration token is required.']
+                ], 422);
+            }
+
+            $user = $request->user();
+
+            // Validate token
+            if (!$user->validateRecoveryCodesRegenerationToken($token)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid or expired regeneration token.',
+                    'errors' => ['Invalid or expired regeneration token.']
+                ], 422);
+            }
+
+            // Generate new recovery codes
+            $newRecoveryCodes = collect(range(1, 10))
+                ->map(fn () => bin2hex(random_bytes(8)))
+                ->all();
+
+            // Update user with new codes
+            $user->forceFill([
+                'two_factor_recovery_codes' => encrypt(json_encode($newRecoveryCodes)),
+                'two_factor_used_recovery_codes' => [],
+                'two_factor_recovery_codes_viewed_at' => null,
+                'recovery_codes_regeneration_token' => null,
+                'recovery_codes_regeneration_expires_at' => null,
+            ])->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Recovery codes regenerated successfully.',
+                'recovery_codes' => $newRecoveryCodes
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to confirm regeneration.',
+                'errors' => [$e->getMessage()]
+            ], 500);
         }
-        $codes = collect(range(1, 10))->map(fn () => bin2hex(random_bytes(8)))->all();
-        $user->forceFill([
-            'two_factor_recovery_codes' => encrypt(json_encode($codes)),
-            'pending_recovery_codes_regeneration' => false,
-        ])->save();
-        return response()->json(['codes' => $codes]);
     }
 }

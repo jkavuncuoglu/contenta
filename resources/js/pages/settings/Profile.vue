@@ -11,6 +11,7 @@ import InputError from '@/components/InputError.vue';
 import TimezoneSelect from '@/components/TimezoneSelect.vue';
 import LanguageSelect from '@/components/LanguageSelect.vue';
 import ThemeModeSelect from '@/components/ThemeModeSelect.vue';
+import SocialLinksInput from '@/components/SocialLinksInput.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -165,6 +166,11 @@ watch(() => form.theme_mode, (newValue) => {
                         <InputError class="mt-2" :message="errors.username" />
                     </div>
 
+                    <HeadingSmall
+                        title="Biography"
+                        description="A short description about yourself."
+                    />
+
                     <div class="grid gap-2">
                         <Label for="bio">Bio</Label>
                         <textarea
@@ -180,6 +186,17 @@ watch(() => form.theme_mode, (newValue) => {
                         <InputError class="mt-2" :message="errors.bio" />
                     </div>
 
+                    <SocialLinksInput
+                        v-model="form.social_links"
+                        :error="errors.social_links"
+                    />
+
+
+                    <HeadingSmall
+                        title="Timezone & Language"
+                        description="Set your preferred timezone and language."
+                    />
+
                     <TimezoneSelect
                         v-model="form.timezone"
                         :error="errors.timezone"
@@ -189,6 +206,11 @@ watch(() => form.theme_mode, (newValue) => {
                         v-model="form.language"
                         :timezone="form.timezone"
                         :error="errors.language"
+                    />
+
+                    <HeadingSmall
+                        title="Preferences"
+                        description="Set your appearance preferences."
                     />
 
                     <ThemeModeSelect

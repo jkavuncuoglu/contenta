@@ -6,12 +6,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laragear\WebAuthn\Contracts\WebAuthnAuthenticatable;
+use Laragear\WebAuthn\WebAuthnAuthentication;
+use Laragear\WebAuthn\WebAuthnData;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements WebAuthnAuthenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, WebAuthnAuthentication;
 
     /**
      * The attributes that are mass assignable.
@@ -158,5 +161,33 @@ class User extends Authenticatable
             'recovery_codes_regeneration_token' => null,
             'recovery_codes_regeneration_expires_at' => null
         ]);
+    }
+
+    /**
+     * Get the column name for the primary key (used by WebAuthn).
+     * This should return the column name, not the value.
+     */
+    public function getAuthIdentifierName(): string
+    {
+        return 'id';
+    }
+
+    /**
+     * Get the user's display name for WebAuthn.
+     */
+    public function getAuthDisplayName(): string
+    {
+        return trim($this->first_name . ' ' . $this->last_name) ?: ($this->username ?? $this->email ?? '');
+    }
+
+    /**
+     * Returns displayable data to be used to create WebAuthn Credentials.
+     * Override the trait method to use first_name and last_name instead of name.
+     */
+    public function webAuthnData(): WebAuthnData
+    {
+        $displayName = trim($this->first_name . ' ' . $this->last_name) ?: ($this->username ?? $this->email ?? 'User');
+
+        return WebAuthnData::make($this->email ?? '', $displayName);
     }
 }
