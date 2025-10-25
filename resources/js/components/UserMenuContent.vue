@@ -32,8 +32,8 @@ defineProps<Props>();
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="'/profile/edit'" prefetch as="button">
-                <Icon icon="material-symbols-light:settings" class="mr-2 h-4 w-4" />
-                Settings
+                <Icon icon="material-symbols-light:manage-accounts" class="mr-2 h-6 w-6" />
+                Your Profile
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>

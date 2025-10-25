@@ -24,18 +24,18 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Content',
-        redirect: '/admin/posts',
+        redirect: '/admin/pages',
         icon: 'material-symbols-light:ad-group-outline-sharp',
         children: [
-            {
-                title: 'Pages',
-                href: '/admin/pages',
-                icon: 'material-symbols-light:web',
-            },
             {
                 title: 'Posts',
                 href: '/admin/posts',
                 icon: 'material-symbols-light:insert-text',
+            },
+            {
+                title: 'Pages',
+                href: '/admin/pages',
+                icon: 'material-symbols-light:web',
             },
             {
                 title: 'Categories',
@@ -61,7 +61,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Settings',
-        href: '/admin/settings',
+        href: '/admin/settings/site',
         icon: 'material-symbols-light:settings',
         children: [
             {

@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import EmailVerificationNotificationController from '@/actions/App/Http/Controllers/Auth/EmailVerificationNotificationController';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { logout } from '@/routes';
-import { Form, Head } from '@inertiajs/vue3';
+import { useForm, Head } from '@inertiajs/vue3';
 import { Icon } from '@iconify/vue';
 
 defineProps<{
     status?: string;
 }>();
+
+// Use Inertia useForm for resending verification email
+const form = useForm({});
+const resendVerification = () => {
+  form.post('/email/verification-notification', {
+    preserveScroll: true,
+  });
+};
 </script>
 
 <template>
@@ -27,27 +34,23 @@ defineProps<{
             provided during registration.
         </div>
 
-        <Form
-            v-bind="EmailVerificationNotificationController.store.form()"
-            class="space-y-6 text-center"
-            v-slot="{ processing }"
-        >
-            <Button :disabled="processing" variant="secondary">
+        <form @submit.prevent="resendVerification" class="space-y-6 text-center">
+            <Button :disabled="form.processing" variant="secondary">
                 <Icon
-                    v-if="processing"
+                    v-if="form.processing"
                     icon="material-symbols-light:progress_activity"
                     class="h-4 w-4 animate-spin"
                 />
                 Resend verification email
             </Button>
+        </form>
 
-            <TextLink
-                :href="logout()"
-                as="button"
-                class="mx-auto block text-sm"
-            >
-                Log out
-            </TextLink>
-        </Form>
+        <TextLink
+            :href="logout()"
+            as="button"
+            class="mx-auto block text-sm"
+        >
+            Log out
+        </TextLink>
     </AuthLayout>
 </template>

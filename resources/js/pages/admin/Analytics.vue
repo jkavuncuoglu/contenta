@@ -19,7 +19,7 @@
           <div class="p-5">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <EyeIcon class="h-6 w-6 text-gray-400" />
+                <Icon icon="lucide:eye" class="h-6 w-6 text-gray-400" />
               </div>
               <div class="ml-5 w-0 flex-1">
                 <dl>
@@ -39,7 +39,7 @@
           <div class="p-5">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <UsersIcon class="h-6 w-6 text-gray-400" />
+                <Icon icon="lucide:users" class="h-6 w-6 text-gray-400" />
               </div>
               <div class="ml-5 w-0 flex-1">
                 <dl>
@@ -59,7 +59,7 @@
           <div class="p-5">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <DocumentTextIcon class="h-6 w-6 text-gray-400" />
+                <Icon icon="lucide:file-text" class="h-6 w-6 text-gray-400" />
               </div>
               <div class="ml-5 w-0 flex-1">
                 <dl>
@@ -79,7 +79,7 @@
           <div class="p-5">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <ChatBubbleLeftIcon class="h-6 w-6 text-gray-400" />
+                <Icon icon="lucide:message-circle" class="h-6 w-6 text-gray-400" />
               </div>
               <div class="ml-5 w-0 flex-1">
                 <dl>
@@ -123,12 +123,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
-import {
-  Eye as EyeIcon,
-  Users as UsersIcon,
-  FileText as DocumentTextIcon,
-  MessageCircle as ChatBubbleLeftIcon
-} from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 
 interface AnalyticsStats {
   totalViews: number;

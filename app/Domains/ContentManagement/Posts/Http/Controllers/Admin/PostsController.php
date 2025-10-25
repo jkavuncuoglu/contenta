@@ -32,7 +32,7 @@ class PostsController extends Controller
             ];
         });
 
-        return Inertia::render('admin/posts/Index', [
+        return Inertia::render('admin/content/posts/Index', [
             'posts' => $posts,
             'meta' => [
                 'current_page' => $paginator->currentPage(),
@@ -45,16 +45,16 @@ class PostsController extends Controller
 
     public function create()
     {
-        return Inertia::render('admin/posts/Create');
+        return Inertia::render('admin/content/posts/Create');
     }
 
     public function edit($id)
     {
-        return Inertia::render('admin/posts/Edit', ['id' => $id]);
+        return Inertia::render('admin/content/posts/Edit', ['id' => $id]);
     }
 
     public function show($id)
     {
-        return Inertia::render('admin/posts/Show', ['id' => $id]);
+        return Inertia::render('admin/content/posts/Show', ['id' => $id]);
     }
 }

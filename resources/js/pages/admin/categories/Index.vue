@@ -15,7 +15,7 @@
           href="/admin/categories/create"
           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
         >
-          <PlusIcon class="w-4 h-4 mr-2" />
+          <Icon icon="lucide:plus" class="w-4 h-4 mr-2" />
           Add Category
         </Link>
       </div>
@@ -29,7 +29,7 @@
         </div>
 
         <div v-if="!categoriesArray.length" class="p-12 text-center">
-          <FolderIcon class="mx-auto h-12 w-12 text-gray-400" />
+          <Icon icon="lucide:folder" class="mx-auto h-12 w-12 text-gray-400" />
           <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No categories</h3>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating a new category.</p>
           <div class="mt-6">
@@ -37,7 +37,7 @@
               href="/admin/categories/create"
               class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700"
             >
-              <PlusIcon class="w-4 h-4 mr-2" />
+              <Icon icon="lucide:plus" class="w-4 h-4 mr-2" />
               Add Category
             </Link>
           </div>
@@ -100,13 +100,13 @@
                         :href="`/admin/categories/${category.id}/edit`"
                         class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
                       >
-                        <PencilIcon class="w-4 h-4" />
+                        <Icon icon="lucide:pencil" class="w-4 h-4" />
                       </Link>
                       <button
                         @click="deleteCategory(category)"
                         class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                       >
-                        <TrashIcon class="w-4 h-4" />
+                        <Icon icon="lucide:trash" class="w-4 h-4" />
                       </button>
                     </div>
                   </td>
@@ -124,12 +124,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
-import {
-  Plus as PlusIcon,
-  Pencil as PencilIcon,
-  Trash as TrashIcon,
-  Folder as FolderIcon,
-} from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 import { defineProps, computed } from 'vue';
 
 interface Category {
@@ -169,4 +164,28 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const deleteCategory = (category: Category) => {
-  if
+  if (confirm(`Are you sure you want to delete the category "${category.name}"?`)) {
+    router.delete(`/admin/categories/${category.id}`);
+  }
+};
+
+const categoriesArray = computed(() => {
+  return props.categories;
+});
+
+const formatDate = (dateString: string) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  };
+  return new Date(dateString).toLocaleString('en-US', options);
+};
+</script>
+
+<style scoped>
+/* Add any component-specific styles here */
+</style>

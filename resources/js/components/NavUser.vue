@@ -12,8 +12,8 @@ import {
     useSidebar,
 } from '@/components/ui/sidebar';
 import { usePage } from '@inertiajs/vue3';
-import { Icon } from '@iconify/vue';
 import UserMenuContent from './UserMenuContent.vue';
+import Icon from '@/components/Icon.vue';
 
 const page = usePage();
 const user = page.props.auth.user;
@@ -31,7 +31,7 @@ const { isMobile, state } = useSidebar();
                         data-test="sidebar-menu-button"
                     >
                         <UserInfo :user="user" />
-                        <Icon name="material-symbols-light:expand_more" class="ml-auto size-4" />
+                        <Icon name="material-symbols-light:expand_less" class="ml-auto size-4" />
                     </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent

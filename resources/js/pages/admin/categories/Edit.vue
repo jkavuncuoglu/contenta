@@ -12,7 +12,7 @@
         href="/admin/categories"
         class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700"
       >
-        <ArrowLeftIcon class="w-4 h-4 mr-2" />
+        <Icon icon="lucide:arrow-left" class="w-4 h-4 mr-2" />
         Back to Categories
       </Link>
     </div>
@@ -256,7 +256,7 @@ import { ref, computed, onMounted } from 'vue';
 import { router as inertia, Link } from '@inertiajs/vue3';
 import { useCategoriesStore } from '@/stores/categories';
 import type { CategoryForm, UpdateCategoryData } from '@/types';
-import { ArrowLeftIcon } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 
 // Helper: extract numeric ID from the current URL path (last path segment)
 function getIdFromPath(): number | null {

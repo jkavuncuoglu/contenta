@@ -88,11 +88,12 @@ interface MediaItem {
   created_at: string;
 }
 
-interface Props {
-  media: MediaItem[];
-}
-
-defineProps<Props>();
+defineProps({
+  media: {
+    type: Array,
+    default: () => [],
+  },
+});
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Media', href: '/admin/media' },

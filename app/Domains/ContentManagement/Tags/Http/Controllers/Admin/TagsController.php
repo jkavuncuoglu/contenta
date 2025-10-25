@@ -28,7 +28,7 @@ class TagsController extends Controller
             ];
         });
 
-        return Inertia::render('admin/tags/Index', [
+        return Inertia::render('admin/content/tags/Index', [
             'tags' => $paginator->items(), // Pass only the array of tag items
             'meta' => [
                 'current_page' => $paginator->currentPage(),
@@ -41,11 +41,11 @@ class TagsController extends Controller
 
     public function create()
     {
-        return Inertia::render('admin/tags/Create');
+        return Inertia::render('admin/content/tags/Create');
     }
 
     public function edit($id)
     {
-        return Inertia::render('admin/tags/Edit', ['id' => $id]);
+        return Inertia::render('admin/content/tags/Edit', ['id' => $id]);
     }
 }
