@@ -133,7 +133,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbs">
         <Head title="Security" />
         <SettingsLayout>
             <div class="space-y-6">
@@ -489,5 +488,4 @@ onMounted(() => {
                 </div>
             </div>
         </SettingsLayout>
-    </AppLayout>
 </template>
