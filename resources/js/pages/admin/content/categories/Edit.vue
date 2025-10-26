@@ -1,5 +1,7 @@
 <template>
-  <div class="space-y-6">
+    <Head title="Edit Category" />
+    <AppLayout>
+        <div class="space-y-6">
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
@@ -249,14 +251,16 @@
       </div>
     </form>
   </div>
+    </AppLayout>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { router as inertia, Link } from '@inertiajs/vue3';
+import { router as inertia, Link, Head } from '@inertiajs/vue3';
 import { useCategoriesStore } from '@/stores/categories';
 import type { CategoryForm, UpdateCategoryData } from '@/types';
 import { Icon } from '@iconify/vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 // Helper: extract numeric ID from the current URL path (last path segment)
 function getIdFromPath(): number | null {

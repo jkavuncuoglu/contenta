@@ -8,10 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
-import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import settings from '@/routes/settings';
-import { BreadcrumbItem } from '@/types';
 import { Icon } from '@iconify/vue';
 import { Form, Head, useForm } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from 'vue';
@@ -23,10 +20,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     twoFactorEnabled: false,
 });
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Security', href: settings.twoFactor.show().url },
-];
 
 // Password form
 const passwordForm = useForm({

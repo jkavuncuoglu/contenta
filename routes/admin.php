@@ -10,7 +10,7 @@ Route::group([
 ], function () {
     // Admin root redirect to dashboard
     Route::get('/', function () {
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('admin.dashboard.index');
     });
 
     require __DIR__.'/admin/dashboard.php';

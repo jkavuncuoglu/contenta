@@ -1,6 +1,7 @@
 <template>
-    <AppLayout></AppLayout>
-    <div class="max-w-7xl mx-auto space-y-6">
+    <Head title="Create Post" />
+    <AppLayout >
+    <div class="max-w-7xl mx-auto space-y-6 p-4">
         <!-- Page header -->
         <div class="flex items-center justify-between">
             <div>
@@ -248,16 +249,18 @@
             </div>
         </form>
     </div>
+    </AppLayout>
 </template>
 
 <script setup lang="ts">
 import {ref, reactive} from 'vue';
-import { router } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import {usePostsStore} from '@/stores/posts';
 import type {PostForm} from '@/types';
 import ContentEditor from "@/components/ContentEditor/ContentEditor.vue";
 import { Link } from '@inertiajs/vue3';
 import Icon from '@/components/Icon.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 
 const postsStore = usePostsStore();

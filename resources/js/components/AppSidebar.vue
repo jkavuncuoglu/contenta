@@ -11,10 +11,14 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import AppLogo from './AppLogo.vue';
+import dashboard from '@/routes/admin/dashboard';
+import posts from '@/routes/admin/posts';
+import pages from '@/routes/admin/pages';
+import categories from '@/routes/admin/categories';
+import tags from '@/routes/admin/tags';
 
 const mainNavItems: NavItem[] = [
     {
@@ -24,27 +28,27 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Content',
-        redirect: '/admin/pages',
+        redirect: pages.index().url,
         icon: 'material-symbols-light:ad-group-outline-sharp',
         children: [
             {
                 title: 'Posts',
-                href: '/admin/posts',
+                href: posts.index().url,
                 icon: 'material-symbols-light:insert-text',
             },
             {
                 title: 'Pages',
-                href: '/admin/pages',
+                href: pages.index().url,
                 icon: 'material-symbols-light:web',
             },
             {
                 title: 'Categories',
-                href: '/admin/categories',
+                href: categories.index().url,
                 icon: 'material-symbols-light:category',
             },
             {
                 title: 'Tags',
-                href: '/admin/tags',
+                href: tags.index().url,
                 icon: 'material-symbols-light:tag',
             },
         ],
@@ -108,7 +112,7 @@ const footerNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="dashboard()">
+                        <Link :href="dashboard.index().url" prefetch>
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>

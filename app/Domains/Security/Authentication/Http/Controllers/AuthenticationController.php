@@ -2,19 +2,21 @@
 
 namespace App\Domains\Security\Authentication\Http\Controllers;
 
+use App\Domains\Security\Authentication\Authentication;
+use App\Domains\Security\Authentication\Http\Requests\ChangePasswordRequest;
+use App\Domains\Security\Authentication\Http\Requests\ForgotPasswordRequest;
+use App\Domains\Security\Authentication\Http\Requests\UserLoginRequest;
+use App\Domains\Security\Authentication\Http\Requests\UserRegistrationRequest;
+use App\Domains\Security\Authentication\Inputs\AuthenticationChangePasswordInput;
+use App\Domains\Security\Authentication\Inputs\AuthenticationLoginInput;
+use App\Domains\Security\Authentication\Inputs\UserUpdateInput;
+use App\Domains\Security\UserManagement\Models\UserEmail;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Nette\Schema\ValidationException;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
 
 class AuthenticationController extends Controller
 {
@@ -63,6 +65,10 @@ class AuthenticationController extends Controller
 
     public function verifyEmail(Request $request)
     {
-
+        $userEmail = UserEmail::getByUserEmail($request->userEmail);
+        $response = $userEmail->verifyEmail($request->hash);
+        return response()->json($response);
     }
+
+
 }

@@ -1,6 +1,8 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\ProfileController;
+
 
 Route::group([
     'prefix' => 'profile',
@@ -9,4 +11,5 @@ Route::group([
     Route::get('', [ProfileController::class, 'edit'])->name('edit');
 
     Route::patch('', [ProfileController::class, 'update'])->name('update');
+    Route::delete('', [ProfileController::class, 'destroy'])->name('destroy');
 });

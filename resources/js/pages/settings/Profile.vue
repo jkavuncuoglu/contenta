@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAppearance } from '@/composables/useAppearance';
-import { edit } from '@/routes/profile';
+import settings from '@/routes/user/settings';
 import { send } from '@/routes/verification';
 import { Form, Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { watch } from 'vue';
@@ -28,7 +28,7 @@ defineProps<Props>();
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         title: 'Profile settings',
-        href: edit().url,
+        href: settings.profile.edit().url,
     },
 ];
 

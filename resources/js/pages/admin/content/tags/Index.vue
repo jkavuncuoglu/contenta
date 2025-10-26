@@ -1,4 +1,5 @@
 <template>
+    <Head title="Tags" />
     <AppLayout>
         <div class="space-y-6">
             <!-- Header -->
@@ -365,7 +366,7 @@
 import { ref, computed, onMounted, defineProps } from 'vue';
 import { useTagsStore } from '@/stores/tags';
 import Icon from '@/components/Icon.vue';
-import { Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 
 // replaced lodash-es debounce with a small local implementation

@@ -1,4 +1,6 @@
 <template>
+    <Head :title="`Edit Tag - ${tag ? tag.name : ''}`" />
+    <AppLayout>
   <div class="space-y-6">
     <!-- Header -->
     <div class="flex items-center justify-between">
@@ -211,14 +213,16 @@
       </div>
     </form>
   </div>
+    </AppLayout>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { router as inertia, Link } from '@inertiajs/vue3';
+import { router as inertia, Link, Head } from '@inertiajs/vue3';
 import { useTagsStore } from '@/stores/tags';
 import type { TagForm, UpdateTagData } from '@/types';
 import { Icon } from '@iconify/vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 // Helper: extract numeric id from the current path
 function getIdFromPath(): number | null {
