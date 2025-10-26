@@ -3,7 +3,7 @@
 namespace App\Domains\Security\UserManagement\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Domains\Security\UserManagement\Models\User;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 

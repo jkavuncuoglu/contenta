@@ -3,7 +3,7 @@
 namespace App\Domains\Settings\SiteSettings\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Domains\Security\UserManagement\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

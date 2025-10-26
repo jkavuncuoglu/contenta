@@ -2,7 +2,7 @@
 
 namespace App\Domains\Settings\SiteSettings\Http\Requests\Auth;
 
-use App\Models\User;
+use App\Domains\Security\UserManagement\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;

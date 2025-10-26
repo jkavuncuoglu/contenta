@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\ContentManagement\Models;
+namespace App\Domains\ContentManagement\Posts\Models;
 
-use app\Domains\ContentManagement\Models\Post;
-use App\Models\User;
+use app\Domains\ContentManagement\Posts\Models\Post;
+use App\Domains\Security\UserManagement\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

@@ -6,7 +6,7 @@ import { toUrl, urlIsActive } from '@/lib/utils';
 import { edit } from '@/routes/profile';
 import settings from '@/routes/settings';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -18,6 +18,27 @@ const sidebarNavItems: NavItem[] = [
         href: settings.twoFactor.show(),
     },
 ];
+
+const page = usePage();
+// Try a couple of common shapes so this works with different backends:
+const isAdmin = (() => {
+    const user = page.props.auth?.user as any;
+    if (!user) return false;
+    console.log(user)
+    // Common boolean attribute
+    if (typeof user.is_admin === 'boolean') return user.is_admin;
+    // camelCase / method-like flag
+    if (typeof user.isAdmin === 'boolean') return user.isAdmin;
+    // Roles array (spatie) - check for admin role
+    if (Array.isArray(user.roles)) {
+        return user.roles.some((r: any) => (r?.name || r) === 'admin' || (r?.name || r) === 'super-admin');
+    }
+    // As a fallback, check for a simple role string
+    if (typeof user.role === 'string') {
+        return ['admin', 'super-admin'].includes(user.role);
+    }
+    return false;
+})();
 
 const currentPath = typeof window !== undefined ? window.location.pathname : '';
 </script>
@@ -41,6 +62,28 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
                         </Link>
                     </Button>
                 </nav>
+
+                <!-- Footer links: Website and Admin (admin shown conditionally) -->
+                <div class="mt-6 border-t pt-4 absolute bottom-6 w-full max-w-xl lg:w-48">
+                    <nav class="flex flex-col space-y-2 px-1">
+                        <a
+                            href="/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-sm text-muted-foreground hover:text-foreground"
+                        >
+                            Website
+                        </a>
+
+                        <a
+                            v-if="isAdmin"
+                            href="/admin"
+                            class="text-sm text-muted-foreground hover:text-foreground"
+                        >
+                            Admin
+                        </a>
+                    </nav>
+                </div>
             </aside>
 
             <Separator class="my-6 lg:hidden" />

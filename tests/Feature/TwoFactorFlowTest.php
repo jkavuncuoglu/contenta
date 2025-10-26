@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Domains\Security\UserManagement\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use PragmaRX\Google2FA\Google2FA;

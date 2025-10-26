@@ -3,7 +3,7 @@
 
 namespace App\Domains\Security\Authentication\Models;
 
-use App\Models\User;
+use App\Domains\Security\UserManagement\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
