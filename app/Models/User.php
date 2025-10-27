@@ -6,19 +6,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 use Laragear\WebAuthn\Contracts\WebAuthnAuthenticatable;
 use Laragear\WebAuthn\WebAuthnAuthentication;
-use Laragear\WebAuthn\WebAuthnData;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements WebAuthnAuthenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+    use HasApiTokens;
     use HasRoles;
     use Notifiable;
     use TwoFactorAuthenticatable;

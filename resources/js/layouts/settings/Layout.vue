@@ -16,6 +16,14 @@ const sidebarNavItems: NavItem[] = [
         title: 'Security',
         href: settings.security.twoFactor.show(),
     },
+    {
+        title: 'Notifications',
+        href: '#',
+    },
+    {
+        title: 'API Tokens',
+        href: settings.apiTokens.index(),
+    },
 ];
 
 const page = usePage();
@@ -39,6 +47,27 @@ const isAdmin = (() => {
     return false;
 })();
 
+const canUseApiTokens = (() => {
+    const user = page.props.auth?.user as any;
+    if (!user) return false;
+
+    // Check if user has the 'can' attribute (common pattern)
+    if (typeof user.can === 'object' && user.can !== null) {
+        return user.can['api-tokens.use'] === true;
+    }
+
+    // Fallback: super-admin and admin always have access
+    return isAdmin;
+})();
+
+const filteredSidebarNavItems = sidebarNavItems.filter(item => {
+    // Filter out API Tokens if user doesn't have permission
+    if (item.title === 'API Tokens') {
+        return canUseApiTokens;
+    }
+    return true;
+});
+
 const currentPath = typeof window !== undefined ? window.location.pathname : '';
 </script>
 
@@ -50,7 +79,7 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
             <aside class="w-full max-w-xl lg:w-48  bg-neutral-900/30">
                 <nav class="flex flex-col space-y-1 space-x-0">
                     <Button
-                        v-for="item in sidebarNavItems"
+                        v-for="item in filteredSidebarNavItems"
                         :key="toUrl(item.href)"
                         variant="ghost"
                         :class="['w-full justify-start', { 'bg-muted': urlIsActive(item.href, currentPath) }]"

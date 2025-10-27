@@ -1,4 +1,0 @@
-Update all stores to make inertia calls
-Remove luicide icons package and replace all lucide icons with matching iconify icons from the materia light library
-Update AppSidebar NavItems add to parent items with children a dropdown option hide children until clicked
-Create UnitTests for app/Domains and frontend routes, components and stores

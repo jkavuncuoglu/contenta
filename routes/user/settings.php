@@ -12,4 +12,5 @@ Route::group([
 
     require __DIR__ . '/settings/profile.php';
     require __DIR__ . '/settings/security.php';
+    require __DIR__ . '/settings/api-tokens.php';
 });

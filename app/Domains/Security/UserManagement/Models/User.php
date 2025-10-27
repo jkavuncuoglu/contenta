@@ -99,7 +99,8 @@ class User extends Authenticatable
     protected $appends = [
         'direct_permissions',
         'permissions_via_roles',
-        'permissions',
+        // renamed to avoid colliding with Spatie relation accessor
+        'permission_names',
         'can',
     ];
 
@@ -182,8 +183,10 @@ class User extends Authenticatable
      */
     public function getDirectPermissionsAttribute(): array
     {
+        $modelTypes = [User::class, self::class];
+
         $permissionIds = DB::table('model_has_permissions')
-            ->where('model_type', self::class)
+            ->whereIn('model_type', $modelTypes)
             ->where('model_id', $this->getKey())
             ->pluck('permission_id')
             ->toArray();
@@ -196,11 +199,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Compatibility alias: expose direct permissions as `permissions`.
+     * Compatibility alias: expose direct permissions as `permission_names` (renamed from `permissions`).
      *
      * @return array<int, string>
      */
-    public function getPermissionsAttribute(): array
+    public function getPermissionNamesAttribute(): array
     {
         return $this->getDirectPermissionsAttribute();
     }
@@ -404,8 +407,10 @@ class User extends Authenticatable
      */
     public function getDirectPermissions()
     {
+        $modelTypes = [\App\Models\User::class, self::class];
+
         $permissionIds = DB::table('model_has_permissions')
-            ->where('model_type', self::class)
+            ->whereIn('model_type', $modelTypes)
             ->where('model_id', $this->getKey())
             ->pluck('permission_id')
             ->toArray();
@@ -459,41 +464,41 @@ class User extends Authenticatable
      * to be handled gracefully. If an instance or id is provided as the first argument
      * we'll forward the call to that instance; otherwise return a sensible default.
      */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic($method, $parameters)
     {
         $permissionAccessors = [
             'getDirectPermissionsAttribute',
             'getPermissionsViaRolesAttribute',
             'getAllPermissionsAttribute',
             'getCanAttribute',
-            'getPermissionsAttribute',
+            'getPermissionNamesAttribute',
             'getPermissionsViaRoleAttribute',
         ];
 
-        if (!in_array($name, $permissionAccessors, true)) {
+        if (!in_array($method, $permissionAccessors, true)) {
             // Let PHP handle other static calls (will trigger usual error)
             return null;
         }
 
         // If the first argument is an instance of this class, call the instance method
-        if (!empty($arguments) && $arguments[0] instanceof self) {
-            $instance = $arguments[0];
+        if (!empty($parameters) && $parameters[0] instanceof self) {
+            $instance = $parameters[0];
             // Call the instance method (if exists)
-            if (method_exists($instance, $name)) {
-                return $instance->{$name}(...array_slice($arguments, 1));
+            if (method_exists($instance, $method)) {
+                return $instance->{$method}(...array_slice($parameters, 1));
             }
         }
 
         // If the first argument is a numeric id, try to load the user and forward
-        if (!empty($arguments) && is_numeric($arguments[0])) {
-            $instance = self::find($arguments[0]);
-            if ($instance && method_exists($instance, $name)) {
-                return $instance->{$name}(...array_slice($arguments, 1));
+        if (!empty($parameters) && is_numeric($parameters[0])) {
+            $instance = self::find($parameters[0]);
+            if ($instance && method_exists($instance, $method)) {
+                return $instance->{$method}(...array_slice($parameters, 1));
             }
         }
 
         // Fallback sensible defaults
-        if ($name === 'getCanAttribute') {
+        if ($method === 'getCanAttribute') {
             return [];
         }
 
@@ -506,21 +511,21 @@ class User extends Authenticatable
      * appropriate accessor or method so callers (including older code) don't
      * trigger undefined method errors.
      */
-    public function __call($method, $arguments)
+    public function __call($method, $parameters)
     {
         $map = [
             'getDirectPermissionsAttribute' => fn() => $this->getDirectPermissionsAttribute(),
             'getPermissionsViaRolesAttribute' => fn() => $this->getPermissionsViaRolesAttribute(),
             'getAllPermissionsAttribute' => fn() => $this->getAllPermissionsAttribute(),
             'getCanAttribute' => fn() => $this->getCanAttribute(),
-            'getPermissionsAttribute' => fn() => $this->getPermissionsAttribute(),
+            'getPermissionNamesAttribute' => fn() => $this->getPermissionNamesAttribute(),
             'getPermissionsViaRoleAttribute' => fn() => $this->getPermissionsViaRoleAttribute(),
         ];
 
         if (isset($map[$method])) {
-            return $map[$method](...$arguments);
+            return $map[$method](...$parameters);
         }
 
-        return parent::__call($method, $arguments);
+        return parent::__call($method, $parameters);
     }
 }

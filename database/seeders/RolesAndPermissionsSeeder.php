@@ -65,6 +65,9 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // Security
             'security.view-logs', 'security.manage-ip-restrictions', 'security.test-captcha', 'security.audit-log', 'security.clear-audit-log', 'security.logs',
+
+            // Api Tokens
+            'api-tokens.use', 'api-tokens.manage'
         ];
 
         // Create permissions idempotently with explicit guard
@@ -80,6 +83,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $admin      = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $editor     = Role::firstOrCreate(['name' => 'editor', 'guard_name' => 'web']);
         $author     = Role::firstOrCreate(['name' => 'author', 'guard_name' => 'web']);
+
         $contrib    = Role::firstOrCreate(['name' => 'contributor', 'guard_name' => 'web']);
         $subscriber = Role::firstOrCreate(['name' => 'subscriber', 'guard_name' => 'web']);
 
@@ -102,6 +106,8 @@ class RolesAndPermissionsSeeder extends Seeder
             // Post types management reserved for admins+
             'post-types.manage',
             'post-types.view','post-types.create','post-types.update','post-types.delete',
+            // Api Tokens
+            'api-tokens.use','api-tokens.manage',
         ]);
 
         $editor->syncPermissions([
@@ -114,6 +120,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'tags.view','tags.create','tags.update','tags.popular','tags.search',
             'comments.view','comments.moderate',
             'analytics.view',
+            // Api Tokens
+            'api-tokens.use',
         ]);
 
         $author->syncPermissions([
@@ -124,6 +132,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'categories.view','categories.tree',
             'tags.view','tags.create','tags.popular','tags.search',
             'comments.view',
+            // Api Tokens
+            'api-tokens.use',
         ]);
 
         $contrib->syncPermissions([
@@ -132,12 +142,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'categories.view',
             'tags.view',
             'comments.view',
+            // Api Tokens
+            'api-tokens.use',
         ]);
 
         $subscriber->syncPermissions([
             'posts.view',
             'pages.view',
             'comments.view','comments.create',
+            // Api Tokens
+            'api-tokens.use',
         ]);
     }
 }
