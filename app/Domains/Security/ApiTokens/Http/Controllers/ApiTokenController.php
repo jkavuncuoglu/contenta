@@ -36,7 +36,11 @@ class ApiTokenController extends Controller
                     'created_at_human' => $token->created_at->diffForHumans(),
                 ];
             }),
+            'availableAbilities' => TokenAbility::all(),
             'maxTokens' => 10,
+            // Surface flash data as top-level props for convenience
+            'plainTextToken' => session('plainTextToken'),
+            'tokenName' => session('tokenName'),
         ]);
     }
 
@@ -48,20 +52,26 @@ class ApiTokenController extends Controller
         $user = auth()->user();
 
         if ($this->apiTokenService->hasReachedMaxTokens($user)) {
-            return back()->with('error', 'You have reached the maximum number of API tokens.');
+            // Use 303 so Inertia follows redirect after POST
+            return back(status: 303)->with('error', 'You have reached the maximum number of API tokens.');
         }
 
         $validated = $request->validated();
 
-        // API tokens inherit the user's permissions via the 'can' check
-        // So we give them full access (*) to all API routes
+        // If no abilities provided, default to full access ['*']
+        $abilities = $validated['abilities'] ?? ['*'];
+        if (empty($abilities)) {
+            $abilities = ['*'];
+        }
+
         $token = $this->apiTokenService->createToken(
             $user,
             $validated['name'],
-            ['*']
+            $abilities
         );
 
-        return back()->with([
+        // Use 303 so Inertia follows redirect after POST
+        return back(status: 303)->with([
             'success' => 'API token created successfully.',
             'plainTextToken' => $token->plainTextToken,
             'tokenName' => $validated['name'],
@@ -78,10 +88,12 @@ class ApiTokenController extends Controller
         $deleted = $this->apiTokenService->deleteToken($user, $tokenId);
 
         if (!$deleted) {
-            return back()->with('error', 'Token not found.');
+            // Use 303 so Inertia follows redirect after DELETE
+            return back(status: 303)->with('error', 'Token not found.');
         }
 
-        return back()->with('success', 'API token deleted successfully.');
+        // Use 303 so Inertia follows redirect after DELETE
+        return back(status: 303)->with('success', 'API token deleted successfully.');
     }
 
     /**
@@ -92,7 +104,7 @@ class ApiTokenController extends Controller
         $user = auth()->user();
         $count = $this->apiTokenService->deleteAllTokens($user);
 
-        return back()->with('success', "All {$count} API tokens have been deleted.");
+        // Use 303 so Inertia follows redirect after DELETE
+        return back(status: 303)->with('success', "All {$count} API tokens have been deleted.");
     }
 }
-

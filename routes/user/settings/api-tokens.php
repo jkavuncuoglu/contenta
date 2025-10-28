@@ -10,7 +10,7 @@ Route::group([
 ], function () {
     Route::get('/', [ApiTokenController::class, 'index'])->name('index');
     Route::post('/', [ApiTokenController::class, 'store'])->name('store');
-    Route::delete('/all', [ApiTokenController::class, 'destroyAll'])->name('destroy-all');
+    // Delete all tokens via DELETE /user/settings/api-tokens
+    Route::delete('/', [ApiTokenController::class, 'destroyAll'])->name('destroy-all');
     Route::delete('/{tokenId}', [ApiTokenController::class, 'destroy'])->name('destroy');
 });
-

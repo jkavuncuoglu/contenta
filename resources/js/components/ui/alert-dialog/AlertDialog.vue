@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { AlertDialogRoot } from 'reka-ui'
 
-defineProps<{
+const props = defineProps<{
   open?: boolean
   defaultOpen?: boolean
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   'update:open': [value: boolean]
 }>()
 </script>
@@ -15,8 +15,10 @@ defineEmits<{
   <AlertDialogRoot
     data-slot="alert-dialog"
     v-bind="$attrs"
+    :open="props.open"
+    :default-open="props.defaultOpen"
+    @update:open="emit('update:open', $event)"
   >
     <slot />
   </AlertDialogRoot>
 </template>
-

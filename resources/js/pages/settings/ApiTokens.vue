@@ -2,7 +2,6 @@
 import Heading from '@/components/Heading.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import InputError from '@/components/InputError.vue';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -29,7 +28,7 @@ import {
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import settings from '@/routes/user/settings';
 import { Icon } from '@iconify/vue';
-import { Head, router, useForm, usePage } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
 
 interface Token {
@@ -124,6 +123,7 @@ const closeTokenDialog = () => {
 const confirmDelete = (token: Token) => {
     tokenToDelete.value = token;
     showDeleteDialog.value = true;
+    // Removed immediate deletion; user will confirm in the dialog
 };
 
 const deleteToken = () => {
@@ -151,30 +151,22 @@ const deleteAllTokens = () => {
     });
 };
 
-
-const abilities = computed(() => {
-    const page = usePage();
-    const user = (page.props.auth as any)?.user;
-    const can = (user?.can ?? {}) as Record<string, boolean>;
-
-    const groups = new Map<string, Set<string>>();
-
-    for (const [key, allowed] of Object.entries(can)) {
-        if (!allowed) continue;
-
-        const [maybeCategory, maybeAbility] = key.split('.');
-        const category = maybeAbility ? maybeCategory : 'general';
-        const ability = maybeAbility ?? maybeCategory;
-
-        if (!groups.has(category)) groups.set(category, new Set());
-        groups.get(category)!.add(ability);
-    }
-
-    // Format: [{category: [ability, ability]}, ...]
-    return Array.from(groups.entries())
-        .sort(([a], [b]) => a.localeCompare(b))
-        .map(([category, set]) => ({ [category]: Array.from(set).sort() }));
-});
+const downloadToken = () => {
+    const element = document.createElement('a');
+    const file = new Blob(
+        [
+            `Token Name: ${displayedTokenName.value}\n\nToken: ${displayedToken.value}\n\nKeep this token secure. It will not be shown again.`,
+        ],
+        { type: 'text/plain' },
+    );
+    element.href = URL.createObjectURL(file);
+    element.download = `${displayedTokenName.value
+        .replace(/\s+/g, '_')
+        .toLowerCase()}_api_token.txt`;
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+    document.body.removeChild(element);
+};
 </script>
 
 <template>
@@ -260,23 +252,6 @@ const abilities = computed(() => {
                                 <Icon icon="material-symbols:delete-outline" />
                             </Button>
                         </div>
-<!--                        <div class="p-4">-->
-<!--                            <HeadingSmall title="Abilities:" class="mt-2" />-->
-<!--                            <hr />-->
-<!--                            <div class="mt-2 space-y-3">-->
-<!--                                <template v-for="group in abilities">-->
-<!--                                    <template v-for="(list, category) in group" :key="category">-->
-<!--                                        <div>-->
-<!--                                            <div class="text-sm font-medium">{{ category }}</div>-->
-<!--                                            <hr />-->
-<!--                                            <badge class="text-xs text-muted-foreground">-->
-<!--                                                {{ (list || []).join(', ') }}-->
-<!--                                            </badge>-->
-<!--                                        </div>-->
-<!--                                    </template>-->
-<!--                                </template>-->
-<!--                            </div>-->
-<!--                        </div>-->
                     </div>
                 </div>
 
@@ -387,21 +362,8 @@ const abilities = computed(() => {
 
                     <div class="space-y-2">
                         <Label>Token</Label>
-                        <div class="flex gap-2">
-                            <Input
-                                :value="displayedToken"
-                                readonly
-                                class="font-mono text-xs"
-                            />
-                            <Button @click="copyToken" size="sm">
-                                <Icon
-                                    :icon="
-                                        tokenCopied
-                                            ? 'material-symbols:check'
-                                            : 'material-symbols:content-copy'
-                                    "
-                                />
-                            </Button>
+                        <div class="flex gap-2 p-2 rounded border hover:cursor-text">
+                            <span class="text-xs font-mono"> {{displayedToken}}</span>
                         </div>
                         <p class="text-xs text-amber-600">
                             <Icon
@@ -411,6 +373,27 @@ const abilities = computed(() => {
                             Make sure to copy your token now. You won't be able
                             to see it again!
                         </p>
+                        <Button @click="copyToken" size="sm" class="mr-2">
+                            <Icon
+                                :icon="
+                                        tokenCopied
+                                            ? 'material-symbols:check'
+                                            : 'material-symbols:content-copy'
+                                    "
+                            />
+                            Copy
+                        </Button>
+                        <Button @click="downloadToken" size="sm">
+                            <Icon
+                                :icon="
+                                        tokenCopied
+                                            ? 'material-symbols:check'
+                                            : 'material-symbols:download-2'
+                                    "
+                                class=""
+                            />
+                            Download
+                        </Button>
                     </div>
                 </div>
 
