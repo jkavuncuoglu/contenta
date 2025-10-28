@@ -57,6 +57,7 @@ const tokenToDelete = ref<Token | null>(null);
 const displayedToken = ref('');
 const displayedTokenName = ref('');
 const tokenCopied = ref(false);
+const tokenDownloaded = ref(false);
 
 const createForm = useForm({
     name: '',
@@ -166,6 +167,10 @@ const downloadToken = () => {
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
     document.body.removeChild(element);
+    tokenDownloaded.value = true;
+    setTimeout(() => {
+        tokenDownloaded.value = false;
+    }, 2000);
 };
 </script>
 
@@ -178,11 +183,12 @@ const downloadToken = () => {
                 description="Manage API tokens for accessing your account programmatically"
             />
 
-            <div class="mb-4 space-y-6 rounded bg-neutral-800/30 p-4">
+            <div class="mb-4 space-y-6 rounded border bg-neutral-100 dark:bg-neutral-800/30 p-4">
                 <div class="flex items-center justify-between">
                     <HeadingSmall
                         title="Personal Access Tokens"
                         :description="`${tokens.length} of ${maxTokens} tokens created`"
+                        class="text-wh"
                     />
                     <Button
                         @click="openCreateDialog"
@@ -206,7 +212,7 @@ const downloadToken = () => {
                 <div class="space-y-3">
                     <div
                         v-if="tokens.length === 0"
-                        class="rounded border border-dashed p-8 text-center text-muted-foreground"
+                        class="rounded border border-dashed border-neutral-400 p-8 text-center text-muted-foreground"
                     >
                         <Icon
                             icon="material-symbols:key-outline"
@@ -284,7 +290,7 @@ const downloadToken = () => {
                             Authorization header:
                         </p>
                         <code
-                            class="block rounded bg-black/50 p-2 font-mono text-xs"
+                            class="block rounded bg-neutral-300/50 dark:bg-neutral-800 p-2 font-mono text-xs"
                         >
                             Authorization: Bearer YOUR_TOKEN_HERE
                         </code>
@@ -386,7 +392,7 @@ const downloadToken = () => {
                         <Button @click="downloadToken" size="sm">
                             <Icon
                                 :icon="
-                                        tokenCopied
+                                        tokenDownloaded
                                             ? 'material-symbols:check'
                                             : 'material-symbols:download-2'
                                     "
