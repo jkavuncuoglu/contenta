@@ -74,9 +74,12 @@ const submitEnable = async () => {
 const handleDisable = async () => {
     errors.value.length = 0;
     try {
-        const resp = await fetch('/two-factor/disable', {
+        const tokenEl = document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null;
+        const csrf = tokenEl?.content || '';
+        const resp = await fetch('/user/settings/security/two-factor/disable', {
             method: 'DELETE',
-            headers: { Accept: 'application/json' },
+            headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrf },
+            credentials: 'same-origin',
         });
         if (!resp.ok) {
             errors.value.push('Failed to disable 2FA');

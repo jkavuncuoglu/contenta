@@ -1,6 +1,5 @@
 import { ref } from 'vue';
 import { startRegistration } from '@simplewebauthn/browser';
-import { router } from '@inertiajs/vue3';
 
 interface WebAuthnCredential {
     id: string;
@@ -12,8 +11,10 @@ interface WebAuthnCredential {
 // Helper to get CSRF token
 const getCsrfToken = () => {
     const meta = document.querySelector('meta[name="csrf-token"]');
-    return meta ? meta.getAttribute('content') : '';
+    return meta?.getAttribute('content') ?? '';
 };
+
+const BASE = '/user/settings/security/webauthn';
 
 export function useWebAuthn() {
     const credentials = ref<WebAuthnCredential[]>([]);
@@ -25,7 +26,7 @@ export function useWebAuthn() {
             isLoading.value = true;
             errors.value = [];
 
-            const response = await fetch('/webauthn/credentials', {
+            const response = await fetch(`${BASE}/credentials`, {
                 credentials: 'same-origin',
                 headers: {
                     Accept: 'application/json',
@@ -52,7 +53,7 @@ export function useWebAuthn() {
             errors.value = [];
 
             // Get registration options from the server
-            const optionsResponse = await fetch('/webauthn/register/options', {
+            const optionsResponse = await fetch(`${BASE}/register/options`, {
                 method: 'POST',
                 credentials: 'same-origin',
                 headers: {
@@ -72,7 +73,7 @@ export function useWebAuthn() {
             const credential = await startRegistration(options);
 
             // Send the credential to the server
-            const registerResponse = await fetch('/webauthn/register', {
+            const registerResponse = await fetch(`${BASE}/register`, {
                 method: 'POST',
                 credentials: 'same-origin',
                 headers: {
@@ -117,7 +118,7 @@ export function useWebAuthn() {
             isLoading.value = true;
             errors.value = [];
 
-            const response = await fetch(`/webauthn/credentials/${id}`, {
+            const response = await fetch(`${BASE}/credentials/${id}`, {
                 method: 'PATCH',
                 credentials: 'same-origin',
                 headers: {
@@ -153,7 +154,7 @@ export function useWebAuthn() {
             isLoading.value = true;
             errors.value = [];
 
-            const response = await fetch(`/webauthn/credentials/${id}`, {
+            const response = await fetch(`${BASE}/credentials/${id}`, {
                 method: 'DELETE',
                 credentials: 'same-origin',
                 headers: {

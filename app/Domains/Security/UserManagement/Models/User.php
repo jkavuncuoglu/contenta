@@ -2,13 +2,15 @@
 
 namespace App\Domains\Security\UserManagement\Models;
 
-use app\Domains\ContentManagement\Posts\Models\Post;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Laragear\WebAuthn\Contracts\WebAuthnAuthenticatable;
+use Laragear\WebAuthn\WebAuthnAuthentication;
 use Laragear\WebAuthn\WebAuthnData;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
@@ -17,7 +19,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
 
-class User extends Authenticatable
+class User extends Authenticatable implements WebAuthnAuthenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
@@ -26,6 +28,7 @@ class User extends Authenticatable
     use HasApiTokens;
     use HasRoles;
     use LogsActivity;
+    use WebAuthnAuthentication;
 
     /**
      * Ensure Spatie Permission uses the expected guard and morph type.

@@ -1,4 +1,10 @@
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
+
+const BASE = '/user/settings/security';
+const getCsrfToken = () => {
+    const meta = document.querySelector('meta[name="csrf-token"]');
+    return meta ? meta.getAttribute('content') || '' : '';
+};
 
 interface SetupData {
     qrCode: string; // base64
@@ -39,7 +45,11 @@ const errors = ref<string[]>([]);
 
 const fetchJson = async <T>(input: RequestInfo, init: RequestInit = {}): Promise<T> => {
     const resp = await fetch(input, {
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': getCsrfToken(),
+        },
         credentials: 'same-origin',
         ...init,
     });
@@ -50,11 +60,6 @@ const fetchJson = async <T>(input: RequestInfo, init: RequestInit = {}): Promise
     }
     return resp.json();
 };
-
-const postJson = async <T>(url: string, payload: any): Promise<T> => {
-    return fetchJson<T>(url, { method: 'POST', body: JSON.stringify(payload) });
-};
-
 const hasSetupData = computed(() => !!setupData.value);
 
 export const useTwoFactorAuth = () => {
@@ -64,8 +69,10 @@ export const useTwoFactorAuth = () => {
         try {
             clearErrors();
             isLoadingSetup.value = true;
-            const data = await fetchJson<SetupData>('/two-factor/setup');
-            setupData.value = data;
+
+            setupData.value = await fetchJson<SetupData>(
+                `${BASE}/two-factor/setup`,
+            );
         } catch (e: any) {
             errors.value.push(e.message || 'Failed to load setup data');
         } finally {
@@ -81,7 +88,7 @@ export const useTwoFactorAuth = () => {
         try {
             clearErrors();
             isEnabling.value = true;
-            const resp = await postJson<EnableResponse>('/two-factor/enable', { code });
+            const resp = await fetchJson<EnableResponse>(`${BASE}/two-factor/enable`, { method: 'POST', body: JSON.stringify({ code }) });
             if (resp.success && resp.recovery_codes) {
                 recoveryCodesList.value = resp.recovery_codes;
                 hasViewedCodes.value = false;
@@ -100,7 +107,7 @@ export const useTwoFactorAuth = () => {
     const fetchRecoveryCodes = async () => {
         try {
             clearErrors();
-            const resp = await fetchJson<RecoveryCodesResponse>('/two-factor/recovery-codes');
+            const resp = await fetchJson<RecoveryCodesResponse>(`${BASE}/two-factor/recovery-codes`);
             recoveryCodesList.value = resp.recovery_codes || [];
             hasViewedCodes.value = resp.has_viewed;
             recoveryCodesWarning.value = resp.show_warning;
@@ -112,19 +119,17 @@ export const useTwoFactorAuth = () => {
     const downloadCodes = async () => {
         try {
             clearErrors();
-            // Using normal navigation so browser downloads file; only if not already viewed
             if (hasViewedCodes.value) {
                 errors.value.push('Codes already viewed. Regenerate to download again.');
                 return;
             }
             const link = document.createElement('a');
-            link.href = '/two-factor/recovery-codes/download';
+            link.href = `${BASE}/two-factor/recovery-codes/download`;
             link.download = 'recovery-codes.txt';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             recoveryCodesDownloaded.value = true;
-            // Mark as viewed by also calling fetch to update state (will now be empty on subsequent fetch)
             setTimeout(fetchRecoveryCodes, 800);
         } catch (e: any) {
             errors.value.push(e.message || 'Failed to download recovery codes');
@@ -143,7 +148,7 @@ export const useTwoFactorAuth = () => {
         try {
             clearErrors();
             isRequestingRegeneration.value = true;
-            const resp = await postJson<RegenerationResponse>('/two-factor/recovery-codes/regenerate', { password, code });
+            const resp = await fetchJson<RegenerationResponse>(`${BASE}/two-factor/recovery-codes/regenerate`, { method: 'POST', body: JSON.stringify({ password, code }) });
             if (!resp.success && resp.errors) {
                 errors.value.push(...resp.errors);
             }
@@ -160,11 +165,11 @@ export const useTwoFactorAuth = () => {
         try {
             clearErrors();
             isConfirmingRegeneration.value = true;
-            const url = token ? `/two-factor/recovery-codes/confirm?token=${encodeURIComponent(token)}` : '/two-factor/recovery-codes/confirm';
+            const url = token ? `${BASE}/two-factor/recovery-codes/confirm?token=${encodeURIComponent(token)}` : `${BASE}/two-factor/recovery-codes/confirm`;
             const resp = await fetchJson<RegenerationResponse>(url);
             if (resp.success && resp.recovery_codes) {
                 recoveryCodesList.value = resp.recovery_codes;
-                hasViewedCodes.value = false; // not yet marked viewed until user downloads or retrieval endpoint called
+                hasViewedCodes.value = false;
             } else if (!resp.success && resp.errors) {
                 errors.value.push(...resp.errors);
             }
