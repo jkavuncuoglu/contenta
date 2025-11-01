@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Domains\Settings\Models\Setting;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -46,6 +47,41 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'analytics' => $this->getAnalyticsSettings(),
         ];
+    }
+
+    /**
+     * Get analytics settings for frontend
+     */
+    private function getAnalyticsSettings(): array
+    {
+        try {
+            $settings = Setting::getMultiple([
+                'site' => [
+                    'site_analytics_enabled',
+                    'site_google_analytics_id',
+                    'site_google_tag_manager_id',
+                    'site_facebook_pixel_id',
+                    'site_cookie_consent_enabled'
+                ]
+            ]);
+
+            return [
+                'enabled' => $settings['site']['site_analytics_enabled'] ?? false,
+                'googleAnalyticsId' => $settings['site']['site_google_analytics_id'] ?? '',
+                'googleTagManagerId' => $settings['site']['site_google_tag_manager_id'] ?? '',
+                'facebookPixelId' => $settings['site']['site_facebook_pixel_id'] ?? '',
+                'cookieConsentEnabled' => $settings['site']['site_cookie_consent_enabled'] ?? true,
+            ];
+        } catch (\Exception $e) {
+            return [
+                'enabled' => false,
+                'googleAnalyticsId' => '',
+                'googleTagManagerId' => '',
+                'facebookPixelId' => '',
+                'cookieConsentEnabled' => true,
+            ];
+        }
     }
 }

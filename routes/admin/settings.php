@@ -5,6 +5,8 @@ use App\Domains\Security\UserManagement\Http\Controllers\UserManagementControlle
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\PasswordController;
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\ProfileController;
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\TwoFactorAuthenticationController;
+use App\Domains\Settings\Http\Controllers\Admin\SiteSettingsController;
+use App\Domains\Settings\Http\Controllers\Admin\SecuritySettingsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -88,16 +90,16 @@ Route::group([
         'prefix' => 'site',
         'as' => 'site.',
     ], function () {
-        Route::get('', function () {
-            return Inertia::render('admin/settings/site/Index');
-        })->name('index');
+        Route::get('', [SiteSettingsController::class, 'index'])->name('index');
+        Route::put('', [SiteSettingsController::class, 'update'])->name('update');
     });
 
     Route::group([
         'prefix' => 'security',
         'as' => 'security.',
     ], function () {
-
+        Route::get('', [SecuritySettingsController::class, 'index'])->name('index');
+        Route::put('', [SecuritySettingsController::class, 'update'])->name('update');
     });
 
     Route::group([
