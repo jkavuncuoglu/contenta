@@ -4,6 +4,8 @@ use App\Domains\ContentManagement\Categories\Http\Controllers\Admin\CategoriesCo
 use App\Domains\ContentManagement\Pages\Http\Controllers\Admin\PagesController;
 use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsController;
 use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsController;
+use App\Domains\ContentManagement\Comments\Http\Controllers\Admin\CommentsController;
+use App\Domains\Media\Http\Controllers\Admin\MediaController;
 use Illuminate\Support\Facades\Route;
 
 // Pages Management
@@ -36,4 +38,22 @@ Route::prefix('tags')->name('tags.')->group(function () {
     Route::get('/', [TagsController::class, 'index'])->name('index');
     Route::get('/create', [TagsController::class, 'create'])->name('create');
     Route::get('/{id}/edit', [TagsController::class, 'edit'])->name('edit');
+});
+
+// Comments Management
+Route::prefix('comments')->name('comments.')->group(function () {
+    Route::get('/', [CommentsController::class, 'index'])->name('index');
+    Route::get('/{id}', [CommentsController::class, 'show'])->name('show');
+    Route::patch('/{id}/status', [CommentsController::class, 'updateStatus'])->name('update-status');
+    Route::patch('/bulk-status', [CommentsController::class, 'bulkUpdateStatus'])->name('bulk-update-status');
+    Route::delete('/{id}', [CommentsController::class, 'destroy'])->name('destroy');
+});
+
+// Media Management
+Route::prefix('media')->name('media.')->group(function () {
+    Route::get('/', [MediaController::class, 'index'])->name('index');
+    Route::post('/', [MediaController::class, 'store'])->name('store');
+    Route::get('/{id}', [MediaController::class, 'show'])->name('show');
+    Route::delete('/{id}', [MediaController::class, 'destroy'])->name('destroy');
+    Route::get('/collection/{collection}', [MediaController::class, 'collection'])->name('collection');
 });

@@ -76,8 +76,8 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
         <Heading title="Settings" description="Manage your profile and account settings" />
 
         <div class="flex flex-col lg:flex-row lg:space-x-12 mt-8">
-            <aside class="w-full max-w-xl lg:w-48  bg-neutral-900/30">
-                <nav class="flex flex-col space-y-1 space-x-0">
+            <aside class="w-full max-w-xl lg:w-48 bg-neutral-900/30">
+                <nav class="flex flex-col space-y-1 space-x-0  ">
                     <Button
                         v-for="item in filteredSidebarNavItems"
                         :key="toUrl(item.href)"
@@ -92,7 +92,7 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
                 </nav>
 
                 <!-- Footer links: Website and Admin (admin shown conditionally) -->
-                <div class="mt-6 border-t pt-4 absolute bottom-6 w-full max-w-xl lg:w-48">
+                <div class="mt-6 border-t pt-4 w-full max-w-xl lg:w-48 absolute bottom-6">
                     <nav class="flex flex-col space-y-2 px-1">
                         <a
                             href="/"

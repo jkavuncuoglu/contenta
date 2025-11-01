@@ -55,12 +55,12 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Media',
-        href: '/admin/content/media',
+        href: '/admin/media',
         icon: 'material-symbols-light:perm-media',
     },
     {
         title: 'Comments',
-        href: '/admin/content/comments',
+        href: '/admin/comments',
         icon: 'material-symbols-light:comment',
     },
     {
