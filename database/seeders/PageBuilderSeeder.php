@@ -795,5 +795,71 @@ class PageBuilderSeeder extends Seeder
                 'is_active' => true,
             ]
         );
+
+        Block::updateOrCreate(
+            ['type' => 'navigation-menu-block'],
+            [
+                'name' => 'Navigation Menu Block',
+                'category' => Block::CATEGORY_NAVIGATION,
+                'config_schema' => [
+                    'menu_id' => [
+                        'type' => 'number',
+                        'required' => true,
+                        'default' => null,
+                        'label' => 'Select Menu',
+                        'description' => 'Choose which menu to display'
+                    ],
+                    'display_style' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => 'horizontal',
+                        'label' => 'Display Style',
+                        'description' => 'How to display the menu',
+                        'options' => ['horizontal', 'vertical', 'dropdown', 'mega']
+                    ],
+                    'alignment' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => 'left',
+                        'label' => 'Alignment',
+                        'description' => 'Menu alignment',
+                        'options' => ['left', 'center', 'right', 'justify']
+                    ],
+                    'show_icons' => [
+                        'type' => 'boolean',
+                        'required' => false,
+                        'default' => true,
+                        'label' => 'Show Icons',
+                        'description' => 'Display menu item icons'
+                    ],
+                    'max_depth' => [
+                        'type' => 'number',
+                        'required' => false,
+                        'default' => 3,
+                        'label' => 'Maximum Depth',
+                        'description' => 'Maximum nesting level to display'
+                    ],
+                    'mobile_breakpoint' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => 'md',
+                        'label' => 'Mobile Breakpoint',
+                        'description' => 'When to switch to mobile menu',
+                        'options' => ['sm', 'md', 'lg', 'xl']
+                    ],
+                    'theme' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => 'default',
+                        'label' => 'Theme',
+                        'description' => 'Visual theme for the menu',
+                        'options' => ['default', 'minimal', 'modern', 'classic']
+                    ]
+                ],
+                'component_path' => 'navigation-menu-block',
+                'description' => 'Display a custom navigation menu with various styles',
+                'is_active' => true,
+            ]
+        );
     }
 }

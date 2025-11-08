@@ -1,4 +1,5 @@
-`<script setup lang="ts">
+`
+<script setup lang="ts">
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
@@ -11,14 +12,14 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import categories from '@/routes/admin/categories';
+import dashboard from '@/routes/admin/dashboard';
+import pageBuilder from '@/routes/admin/page-builder';
+import posts from '@/routes/admin/posts';
+import tags from '@/routes/admin/tags';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import AppLogo from './AppLogo.vue';
-import dashboard from '@/routes/admin/dashboard';
-import posts from '@/routes/admin/posts';
-import categories from '@/routes/admin/categories';
-import tags from '@/routes/admin/tags';
-import pageBuilder from '@/routes/admin/page-builder';
 
 const mainNavItems: NavItem[] = [
     {
@@ -26,32 +27,31 @@ const mainNavItems: NavItem[] = [
         href: '/admin/dashboard',
         icon: 'material-symbols-light:bar-chart',
     },
+
     {
-        title: 'Content',
-        redirect: posts.index().url,
-        icon: 'material-symbols-light:ad-group-outline-sharp',
-        children: [
-            {
-                title: 'Posts',
-                href: posts.index().url,
-                icon: 'material-symbols-light:insert-text',
-            },
-            {
-                title: 'PageBuilder',
-                href: pageBuilder.index().url,
-                icon: 'material-symbols-light:view-quilt',
-            },
-            {
-                title: 'Categories',
-                href: categories.index().url,
-                icon: 'material-symbols-light:category',
-            },
-            {
-                title: 'Tags',
-                href: tags.index().url,
-                icon: 'material-symbols-light:tag',
-            },
-        ],
+        title: 'Posts',
+        href: posts.index().url,
+        icon: 'material-symbols-light:insert-text',
+    },
+    {
+        title: 'PageBuilder',
+        href: pageBuilder.index().url,
+        icon: 'material-symbols-light:view-quilt',
+    },
+    {
+        title: 'Categories',
+        href: categories.index().url,
+        icon: 'material-symbols-light:category',
+    },
+    {
+        title: 'Tags',
+        href: tags.index().url,
+        icon: 'material-symbols-light:tag',
+    },
+    {
+        title: 'Menus',
+        href: '/admin/menus',
+        icon: 'material-symbols-light:menu',
     },
     {
         title: 'Media',
@@ -108,7 +108,7 @@ const footerNavItems: NavItem[] = [
 
 <template>
     <Sidebar collapsible="icon" variant="inset">
-        <SidebarHeader class="pb-2 border-b">
+        <SidebarHeader class="border-b pb-2">
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
