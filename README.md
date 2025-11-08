@@ -280,8 +280,4 @@ Key `.env` toggles:
 | E2E | Playwright configured; tests not enumerated |
 
 ## 22. License
-MIT (per `composer.json`).
-
----
-Feel free to extend this README and split deeper technical details into `docs/` (e.g., `ARCHITECTURE.md`, `SECURITY.md`) as the codebase grows.
-
+MIT
