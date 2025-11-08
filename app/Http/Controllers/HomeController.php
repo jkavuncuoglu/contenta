@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Domains\ContentManagement\Pages\Models\Page;
+use App\Domains\PageBuilder\Models\Page;
 use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\Settings\Models\Setting;
 use App\Http\Controllers\BlogController;

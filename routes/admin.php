@@ -18,4 +18,6 @@ Route::group([
     require __DIR__ . '/admin/content.php';
 
     require __DIR__.'/admin/settings.php';
+
+    require __DIR__.'/admin/pagebuilder.php';
 });

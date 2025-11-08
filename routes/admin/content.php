@@ -1,22 +1,11 @@
 <?php
 
 use App\Domains\ContentManagement\Categories\Http\Controllers\Admin\CategoriesController;
-use App\Domains\ContentManagement\Pages\Http\Controllers\Admin\PagesController;
 use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsController;
 use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsController;
 use App\Domains\ContentManagement\Comments\Http\Controllers\Admin\CommentsController;
 use App\Domains\Media\Http\Controllers\Admin\MediaController;
 use Illuminate\Support\Facades\Route;
-
-// Pages Management
-Route::prefix('pages')->name('pages.')->group(function () {
-    Route::get('/', [PagesController::class, 'index'])->name('index');
-    Route::get('/create', [PagesController::class, 'create'])->name('create');
-    Route::post('/', [PagesController::class, 'store'])->name('store');
-    Route::get('/{page}/edit', [PagesController::class, 'edit'])->name('edit');
-    Route::put('/{page}', [PagesController::class, 'update'])->name('update');
-    Route::delete('/{page}', [PagesController::class, 'destroy'])->name('destroy');
-});
 
 // Posts Management
 Route::prefix('posts')->name('posts.')->group(function () {

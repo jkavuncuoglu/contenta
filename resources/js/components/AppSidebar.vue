@@ -16,9 +16,9 @@ import { Link } from '@inertiajs/vue3';
 import AppLogo from './AppLogo.vue';
 import dashboard from '@/routes/admin/dashboard';
 import posts from '@/routes/admin/posts';
-import pages from '@/routes/admin/pages';
 import categories from '@/routes/admin/categories';
 import tags from '@/routes/admin/tags';
+import pageBuilder from '@/routes/admin/page-builder';
 
 const mainNavItems: NavItem[] = [
     {
@@ -28,7 +28,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Content',
-        redirect: pages.index().url,
+        redirect: posts.index().url,
         icon: 'material-symbols-light:ad-group-outline-sharp',
         children: [
             {
@@ -37,9 +37,9 @@ const mainNavItems: NavItem[] = [
                 icon: 'material-symbols-light:insert-text',
             },
             {
-                title: 'Pages',
-                href: pages.index().url,
-                icon: 'material-symbols-light:web',
+                title: 'PageBuilder',
+                href: pageBuilder.index().url,
+                icon: 'material-symbols-light:view-quilt',
             },
             {
                 title: 'Categories',

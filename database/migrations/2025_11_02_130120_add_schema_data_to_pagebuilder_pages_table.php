@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->text('content')->nullable();
-            $table->boolean('published')->default(false);
-            $table->timestamps();
+        Schema::table('pagebuilder_pages', function (Blueprint $table) {
+            $table->json('schema_data')->nullable()->after('meta_keywords');
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pages');
+        Schema::table('pagebuilder_pages', function (Blueprint $table) {
+            $table->dropColumn('schema_data');
+        });
     }
 };

@@ -121,7 +121,7 @@ resources/js/
 - `/dashboard` - Authenticated dashboard
 - `/admin/*` - Admin content management
   - `/admin/posts` - Posts management
-  - `/admin/pages` - Pages management
+  - `/admin/page-builder` - PageBuilder (drag & drop page editor)
   - `/admin/categories` - Categories management
   - `/admin/tags` - Tags management
   - `/admin/comments` - Comments moderation
