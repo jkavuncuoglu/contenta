@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @property string $key
+ * @property mixed $value
+ * @property string $type
+ * @property string|null $description
+ * @property bool $autoload
+ */
 class SiteSetting extends Model
 {
     protected $fillable = [
@@ -24,6 +31,8 @@ class SiteSetting extends Model
 
     /**
      * Get the typed value of the setting
+     *
+     * @return Attribute<mixed, string>
      */
     protected function value(): Attribute
     {
@@ -50,17 +59,17 @@ class SiteSetting extends Model
     /**
      * Boot the model
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
         // Clear cache when settings are modified
-        static::saved(function ($setting) {
+        static::saved(function (SiteSetting $setting): void {
             Cache::forget('site_settings');
             Cache::forget("site_setting_{$setting->key}");
         });
 
-        static::deleted(function ($setting) {
+        static::deleted(function (SiteSetting $setting): void {
             Cache::forget('site_settings');
             Cache::forget("site_setting_{$setting->key}");
         });
@@ -73,7 +82,7 @@ class SiteSetting extends Model
     {
         return Cache::remember("site_setting_{$key}", 3600, function () use ($key, $default) {
             $setting = static::where('key', $key)->first();
-            return $setting?->value ?? $default;
+            return $setting->value ?? $default;
         });
     }
 
@@ -94,13 +103,15 @@ class SiteSetting extends Model
 
     /**
      * Get all autoload settings
+     *
+     * @return array<string, mixed>
      */
     public static function getAutoloadSettings(): array
     {
         return Cache::remember('site_settings', 3600, function () {
             return static::where('autoload', true)
                 ->get()
-                ->mapWithKeys(function ($setting) {
+                ->mapWithKeys(function (SiteSetting $setting) {
                     return [$setting->key => $setting->value];
                 })
                 ->toArray();

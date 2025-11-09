@@ -9,6 +9,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @property string $group
+ * @property string $key
+ * @property mixed $value
+ * @property string $type
+ * @property string|null $description
+ * @property bool $autoload
+ *
+ * @use HasFactory<\Database\Factories\SettingFactory>
+ */
 class Setting extends Model
 {
     use HasFactory;
@@ -28,6 +38,8 @@ class Setting extends Model
 
     /**
      * Type casting for the value attribute
+     *
+     * @return Attribute<mixed, string>
      */
     protected function value(): Attribute
     {
@@ -93,6 +105,8 @@ class Setting extends Model
 
     /**
      * Get all settings for a group
+     *
+     * @return array<string, array<string, mixed>>
      */
     public static function getGroup(string $group): array
     {
@@ -101,7 +115,7 @@ class Setting extends Model
         return Cache::remember($cacheKey, 3600, function () use ($group) {
             return static::where('group', $group)
                 ->get()
-                ->mapWithKeys(function ($setting) {
+                ->mapWithKeys(function (Setting $setting) {
                     return [$setting->key => [
                         'value' => $setting->value,
                         'type' => $setting->type,
@@ -114,6 +128,9 @@ class Setting extends Model
 
     /**
      * Get multiple settings efficiently
+     *
+     * @param array<string, string|array<int, string>> $settings
+     * @return array<string, array<string, mixed>>
      */
     public static function getMultiple(array $settings): array
     {

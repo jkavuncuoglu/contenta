@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domains\PageBuilder\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @use HasFactory<\Database\Factories\PageBuilder\BlockFactory>
+ */
 class Block extends Model
 {
     use HasFactory;
@@ -45,22 +49,30 @@ class Block extends Model
 
     /**
      * Scope for active blocks
+     *
+     * @param Builder<Block> $query
+     * @return Builder<Block>
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
     }
 
     /**
      * Scope by category
+     *
+     * @param Builder<Block> $query
+     * @return Builder<Block>
      */
-    public function scopeByCategory($query, string $category)
+    public function scopeByCategory(Builder $query, string $category): Builder
     {
         return $query->where('category', $category);
     }
 
     /**
      * Get available categories
+     *
+     * @return array<string, string>
      */
     public static function getCategories(): array
     {
@@ -76,6 +88,8 @@ class Block extends Model
 
     /**
      * Get default configuration
+     *
+     * @return array<string, mixed>
      */
     public function getDefaultConfigAttribute(): array
     {
@@ -91,6 +105,9 @@ class Block extends Model
 
     /**
      * Validate configuration against schema
+     *
+     * @param array<string, mixed> $config
+     * @return array<string, string>
      */
     public function validateConfig(array $config): array
     {

@@ -26,7 +26,7 @@ class MediaServiceTest extends TestCase
         Storage::fake('public');
     }
 
-    
+
     public function test_it_can_get_paginated_media(): void
     {
         // Arrange
@@ -38,7 +38,6 @@ class MediaServiceTest extends TestCase
         $result = $this->service->getPaginatedMedia(10);
 
         // Assert
-        $this->assertNotNull($result);
         $this->assertGreaterThan(0, $result->total());
     }
 
@@ -88,7 +87,7 @@ class MediaServiceTest extends TestCase
         $this->assertEquals($media->id, $result->id);
     }
 
-    
+
     public function test_it_can_get_media_by_collection(): void
     {
         // Arrange
@@ -100,7 +99,6 @@ class MediaServiceTest extends TestCase
         $result = $this->service->getMediaByCollection('test-collection');
 
         // Assert
-        $this->assertIsArray($result);
         $this->assertCount(1, $result);
     }
 }

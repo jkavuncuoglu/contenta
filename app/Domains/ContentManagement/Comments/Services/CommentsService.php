@@ -13,6 +13,9 @@ class CommentsService implements CommentsServiceContract
 {
     /**
      * Get paginated comments with filters
+     *
+     * @param array<string, mixed> $filters
+     * @return LengthAwarePaginator<array-key, mixed>
      */
     public function getPaginatedComments(array $filters = [], int $perPage = 20): LengthAwarePaginator
     {
@@ -28,7 +31,7 @@ class CommentsService implements CommentsServiceContract
             $query->where('status', $filters['status']);
         }
 
-        if (!empty($filters['search'])) {
+        if (!empty($filters['search']) && is_string($filters['search'])) {
             $search = '%' . $filters['search'] . '%';
             $query->where(function ($q) use ($search) {
                 $q->where('content', 'LIKE', $search)
@@ -54,8 +57,8 @@ class CommentsService implements CommentsServiceContract
                     'content' => $comment->content,
                     'content_excerpt' => Str::limit($comment->content, 100),
                     'status' => $comment->status,
-                    'created_at' => $comment->created_at->format('M j, Y H:i'),
-                    'updated_at' => $comment->updated_at->format('M j, Y H:i'),
+                    'created_at' => $comment->created_at?->format('M j, Y H:i'),
+                    'updated_at' => $comment->updated_at?->format('M j, Y H:i'),
                     'is_reply' => !is_null($comment->parent_id),
                 ];
             });
@@ -85,6 +88,8 @@ class CommentsService implements CommentsServiceContract
 
     /**
      * Bulk update comment statuses
+     *
+     * @param array<int> $ids
      */
     public function bulkUpdateStatus(array $ids, string $status): int
     {
@@ -101,11 +106,13 @@ class CommentsService implements CommentsServiceContract
             return false;
         }
 
-        return $comment->delete();
+        return (bool) $comment->delete();
     }
 
     /**
      * Get comment statistics
+     *
+     * @return array<string, mixed>
      */
     public function getStatistics(): array
     {
@@ -128,6 +135,8 @@ class CommentsService implements CommentsServiceContract
 
     /**
      * Get comments for a specific post
+     *
+     * @return array<int, mixed>
      */
     public function getPostComments(int $postId, string $status = 'approved'): array
     {
@@ -139,22 +148,22 @@ class CommentsService implements CommentsServiceContract
             }])
             ->orderBy('created_at')
             ->get()
-            ->map(function ($comment) {
+            ->map(function (Comment $comment) {
                 return [
                     'id' => $comment->id,
                     'author_name' => $comment->author_name,
                     'author_email' => $comment->author_email,
                     'content' => $comment->content,
-                    'created_at' => $comment->created_at->format('M j, Y H:i'),
+                    'created_at' => $comment->created_at?->format('M j, Y H:i'),
                     'replies_count' => $comment->replies->count(),
-                    'replies' => $comment->replies->map(function ($reply) {
+                    'replies' => $comment->replies->map(function (Comment $reply) {
                         return [
                             'id' => $reply->id,
                             'author_name' => $reply->author_name,
                             'content' => $reply->content,
-                            'created_at' => $reply->created_at->format('M j, Y H:i'),
+                            'created_at' => $reply->created_at?->format('M j, Y H:i'),
                         ];
-                    }),
+                    })->toArray(),
                 ];
             })
             ->toArray();

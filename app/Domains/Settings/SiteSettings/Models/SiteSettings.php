@@ -6,12 +6,19 @@ use App\Domains\Settings\Models\Setting;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @property string $key
+ * @property mixed $value
+ * @property string $type
+ * @property string $group
+ * @property string|null $description
+ */
 class SiteSettings extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'key', 'value', 'type', 'group', 'description'
@@ -20,7 +27,7 @@ class SiteSettings extends Model
     /**
      * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'created_at' => 'datetime',
@@ -30,16 +37,12 @@ class SiteSettings extends Model
     /**
      * Cache duration in minutes
      */
-    protected static $cacheDuration = 60;
+    protected static int $cacheDuration = 60;
 
     /**
      * Get a setting by key
-     *
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
      */
-    public static function get($key, $default = null)
+    public static function get(string $key, mixed $default = null): mixed
     {
         return Cache::remember("setting.{$key}", self::$cacheDuration, function () use ($key, $default) {
             $setting = self::where('key', $key)->first();
@@ -54,15 +57,8 @@ class SiteSettings extends Model
 
     /**
      * Set a setting value
-     *
-     * @param string $key
-     * @param mixed $value
-     * @param string $type
-     * @param string $group
-     * @param string|null $description
-     * @return Setting
      */
-    public static function set($key, $value, $type = 'string', $group = 'general', $description = null)
+    public static function set(string $key, mixed $value, string $type = 'string', string $group = 'general', ?string $description = null): SiteSettings
     {
         $setting = self::updateOrCreate(
             ['key' => $key],
@@ -83,9 +79,9 @@ class SiteSettings extends Model
     /**
      * Get all settings as a key-value array
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public static function allSettings()
+    public static function allSettings(): array
     {
         return Cache::remember('settings.all', self::$cacheDuration, function () {
             $settings = [];
@@ -99,10 +95,9 @@ class SiteSettings extends Model
     /**
      * Get settings by group
      *
-     * @param string $group
-     * @return array
+     * @return array<string, mixed>
      */
-    public static function getByGroup($group)
+    public static function getByGroup(string $group): array
     {
         return Cache::remember("settings.group.{$group}", self::$cacheDuration, function () use ($group) {
             $settings = [];
@@ -115,12 +110,8 @@ class SiteSettings extends Model
 
     /**
      * Cast value to the specified type
-     *
-     * @param mixed $value
-     * @param string $type
-     * @return mixed
      */
-    protected static function castValue($value, $type)
+    protected static function castValue(mixed $value, string $type): mixed
     {
         if (is_null($value)) {
             return null;
@@ -144,7 +135,7 @@ class SiteSettings extends Model
     /**
      * Clear all settings cache
      */
-    public static function clearCache()
+    public static function clearCache(): void
     {
         Cache::forget('settings.all');
 

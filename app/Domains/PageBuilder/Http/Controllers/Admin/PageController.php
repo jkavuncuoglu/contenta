@@ -33,10 +33,14 @@ class PageController extends Controller
 
         // Search by title
         if ($request->has('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+            $search = $request->input('search');
+            if (is_string($search)) {
+                $query->where('title', 'like', '%' . $search . '%');
+            }
         }
 
-        $pages = $query->paginate($request->get('per_page', 15));
+        $perPage = $request->input('per_page', 15);
+        $pages = $query->paginate(is_numeric($perPage) ? (int) $perPage : 15);
 
         return response()->json($pages);
     }
@@ -67,13 +71,14 @@ class PageController extends Controller
             }
         }
 
-        $validated['author_id'] = auth()->id();
+        $userId = auth()->id();
+        $validated['author_id'] = $userId;
         $validated['status'] = Page::STATUS_DRAFT;
 
         $page = Page::create($validated);
 
         // Create initial revision
-        $this->createRevision($page, auth()->id(), 'Initial version');
+        $this->createRevision($page, is_int($userId) ? $userId : null, 'Initial version');
 
         return response()->json($page->load(['layout', 'author']), 201);
     }
@@ -117,7 +122,8 @@ class PageController extends Controller
         $page->update($validated);
 
         // Create revision for this update
-        $this->createRevision($page, auth()->id(), 'Updated page');
+        $userId = auth()->id();
+        $this->createRevision($page, is_int($userId) ? $userId : null, 'Updated page');
 
         return response()->json($page->fresh(['layout', 'author']));
     }
@@ -158,13 +164,15 @@ class PageController extends Controller
 
     public function duplicate(Page $page): JsonResponse
     {
+        $userId = auth()->id();
         $duplicatedPage = $page->replicate();
         $duplicatedPage->title = $page->title . ' (Copy)';
         $duplicatedPage->slug = $page->slug . '-copy-' . time();
         $duplicatedPage->status = Page::STATUS_DRAFT;
         $duplicatedPage->published_html = null;
         $duplicatedPage->published_at = null;
-        $duplicatedPage->author_id = auth()->id();
+        // Cast auth()->id() to int|null for type safety
+        $duplicatedPage->author_id = $userId !== null ? (int) $userId : null;
         $duplicatedPage->save();
 
         return response()->json($duplicatedPage->load(['layout', 'author']), 201);
@@ -191,6 +199,7 @@ class PageController extends Controller
      */
     private function createRevision(Page $page, ?int $userId, ?string $reason = null): PageRevision
     {
+        /** @var PageRevision|null $latestRevision */
         $latestRevision = $page->revisions()->orderBy('revision_number', 'desc')->first();
         $revisionNumber = $latestRevision ? $latestRevision->revision_number + 1 : 1;
 

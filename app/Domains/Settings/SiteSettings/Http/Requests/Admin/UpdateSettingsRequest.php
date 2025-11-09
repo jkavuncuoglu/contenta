@@ -44,9 +44,9 @@ class UpdateSettingsRequest extends FormRequest
     /**
      * Get custom messages for validator errors.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'blog.blog_slug.regex' => 'The blog slug may only contain lowercase letters, numbers, and hyphens.',

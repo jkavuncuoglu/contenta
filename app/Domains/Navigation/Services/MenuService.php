@@ -12,6 +12,8 @@ class MenuService implements MenuServiceContract
 {
     /**
      * Create a new menu
+     *
+     * @param array<string, mixed> $data
      */
     public function createMenu(array $data): Menu
     {
@@ -24,6 +26,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Update a menu
+     *
+     * @param array<string, mixed> $data
      */
     public function updateMenu(Menu $menu, array $data): Menu
     {
@@ -53,6 +57,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Create a menu item
+     *
+     * @param array<string, mixed> $data
      */
     public function createMenuItem(Menu $menu, array $data): MenuItem
     {
@@ -71,6 +77,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Update a menu item
+     *
+     * @param array<string, mixed> $data
      */
     public function updateMenuItem(MenuItem $item, array $data): MenuItem
     {
@@ -88,6 +96,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Reorder menu items
+     *
+     * @param array<int, array<string, mixed>> $items
      */
     public function reorderItems(Menu $menu, array $items): void
     {
@@ -96,6 +106,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Export menu to JSON
+     *
+     * @return array<string, mixed>
      */
     public function exportMenu(Menu $menu): array
     {
@@ -110,6 +122,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Import menu from JSON
+     *
+     * @param array<string, mixed> $data
      */
     public function importMenu(array $data): Menu
     {
@@ -131,6 +145,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Import menu items recursively
+     *
+     * @param array<int, array<string, mixed>> $items
      */
     private function importMenuItems(Menu $menu, array $items, ?int $parentId = null, int $order = 0): void
     {
@@ -152,6 +168,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Get available menu locations
+     *
+     * @return array<string, string>
      */
     public function getAvailableLocations(): array
     {

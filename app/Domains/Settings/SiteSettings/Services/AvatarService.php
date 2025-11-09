@@ -22,6 +22,11 @@ class AvatarService
         // Store the file
         $path = $file->storeAs('avatars', $filename, 'public');
 
+        // Ensure path is not false
+        if ($path === false) {
+            throw new \RuntimeException('Failed to store avatar file');
+        }
+
         // Return the public URL
         return Storage::disk('public')->url($path);
     }

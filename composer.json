@@ -80,6 +80,17 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
+        ],
+        "analyse": "vendor/bin/phpstan analyse",
+        "insights": "php artisan insights",
+        "fix-style": "vendor/bin/php-cs-fixer fix",
+        "code:quality": [
+            "@analyse",
+            "@insights",
+            "npx eslint resources/js --ext .js,.vue",
+            "npx prettier --check \"resources/js/**/*.{js,vue,css,scss,html}\"",
+            "npx stylelint \"resources/css/**/*.{css,scss}\"",
+            "semgrep --config=.semgrep.yml"
         ]
     },
     "extra": {

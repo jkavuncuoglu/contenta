@@ -41,7 +41,7 @@ class MediaController extends Controller
     /**
      * Store a newly uploaded media file
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'file' => 'required|file|max:10240', // 10MB max
@@ -65,7 +65,7 @@ class MediaController extends Controller
     /**
      * Display the specified media file
      */
-    public function show(int $id)
+    public function show(int $id): \Illuminate\Http\JsonResponse
     {
         $media = $this->mediaService->getMediaById($id);
 
@@ -96,7 +96,7 @@ class MediaController extends Controller
     /**
      * Remove the specified media file
      */
-    public function destroy(int $id)
+    public function destroy(int $id): \Illuminate\Http\RedirectResponse
     {
         $deleted = $this->mediaService->deleteMedia($id);
 
@@ -112,7 +112,7 @@ class MediaController extends Controller
     /**
      * Get media by collection
      */
-    public function collection(string $collection)
+    public function collection(string $collection): \Illuminate\Http\JsonResponse
     {
         $media = $this->mediaService->getMediaByCollection($collection);
 

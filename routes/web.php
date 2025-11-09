@@ -14,9 +14,9 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::get('/check-username', [RegisteredUserController::class, 'checkUsername']);
 
-// PageBuilder pages - this should be last to act as a catch-all
-Route::get('/{slug}', [PageController::class, 'show'])->name('page.show')->where('slug', '[a-z0-9\-]+');
-
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/user.php';
+
+// PageBuilder pages - this should be last to act as a catch-all
+Route::get('/{slug}', [PageController::class, 'show'])->name('page.show')->where('slug', '[a-z0-9\-]+');

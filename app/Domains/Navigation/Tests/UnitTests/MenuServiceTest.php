@@ -90,16 +90,16 @@ class MenuServiceTest extends TestCase
         $this->assertEquals($menu->id, $item->menu_id);
     }
 
-    
+
     public function test_it_can_get_available_locations(): void
     {
         // Act
         $locations = $this->service->getAvailableLocations();
 
         // Assert
-        $this->assertIsArray($locations);
         $this->assertArrayHasKey('primary', $locations);
         $this->assertArrayHasKey('footer', $locations);
+        $this->assertCount(4, $locations);
     }
 
     
@@ -121,7 +121,7 @@ class MenuServiceTest extends TestCase
         $this->assertEquals('primary', $menu->location);
     }
 
-    
+
     public function test_it_can_export_menu(): void
     {
         // Arrange
@@ -136,8 +136,8 @@ class MenuServiceTest extends TestCase
         $exported = $this->service->exportMenu($menu);
 
         // Assert
-        $this->assertIsArray($exported);
         $this->assertEquals('Export Menu', $exported['name']);
         $this->assertArrayHasKey('items', $exported);
+        $this->assertArrayHasKey('settings', $exported);
     }
 }

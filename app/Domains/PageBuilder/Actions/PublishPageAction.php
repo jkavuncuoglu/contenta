@@ -35,7 +35,12 @@ class PublishPageAction
             'published_at' => now(),
         ]);
 
-        return $page->fresh();
+        $freshPage = $page->fresh();
+        if (!$freshPage) {
+            throw new \Exception('Failed to refresh page after publishing');
+        }
+
+        return $freshPage;
     }
 
     public function unpublish(Page $page): Page
@@ -45,6 +50,11 @@ class PublishPageAction
             'published_at' => null,
         ]);
 
-        return $page->fresh();
+        $freshPage = $page->fresh();
+        if (!$freshPage) {
+            throw new \Exception('Failed to refresh page after unpublishing');
+        }
+
+        return $freshPage;
     }
 }

@@ -57,6 +57,8 @@ class HandleInertiaRequests extends Middleware
 
     /**
      * Get analytics settings for frontend
+     *
+     * @return array<string, mixed>
      */
     private function getAnalyticsSettings(): array
     {
@@ -91,6 +93,8 @@ class HandleInertiaRequests extends Middleware
 
     /**
      * Get theme colors for frontend
+     *
+     * @return array<string, mixed>
      */
     private function getThemeColors(): array
     {
@@ -104,6 +108,8 @@ class HandleInertiaRequests extends Middleware
 
     /**
      * Get navigation menu for frontend
+     *
+     * @return array<string, mixed>
      */
     private function getNavigation(): array
     {
@@ -130,6 +136,8 @@ class HandleInertiaRequests extends Middleware
 
     /**
      * Format footer navigation into sections
+     *
+     * @return array<int, array<string, mixed>>
      */
     private function formatFooterNav(Menu $menu): array
     {
@@ -153,6 +161,8 @@ class HandleInertiaRequests extends Middleware
 
     /**
      * Get default primary navigation
+     *
+     * @return array<int, array<string, mixed>>
      */
     private function getDefaultPrimaryNav(): array
     {
@@ -166,6 +176,8 @@ class HandleInertiaRequests extends Middleware
 
     /**
      * Get default footer navigation
+     *
+     * @return array<int, array<string, mixed>>
      */
     private function getDefaultFooterNav(): array
     {

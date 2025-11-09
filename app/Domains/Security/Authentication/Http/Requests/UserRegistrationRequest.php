@@ -8,6 +8,9 @@ use App\Domains\Security\Authentication\Rules\StrongPassword;
 
 class UserRegistrationRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<int, string|StrongPassword|PasswordRule>>
+     */
     public function rules(): array
     {
         return [
@@ -23,6 +26,9 @@ class UserRegistrationRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [

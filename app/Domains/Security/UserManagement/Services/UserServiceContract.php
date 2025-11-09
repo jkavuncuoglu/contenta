@@ -2,8 +2,8 @@
 
 namespace App\Domains\Security\UserManagement\Services;
 
-use \Illuminate\Support\Collection;
-use App\Domains$1$2;
+use App\Domains\Security\UserManagement\Models\User;
+use Illuminate\Support\Collection;
 
 interface UserServiceContract
 {

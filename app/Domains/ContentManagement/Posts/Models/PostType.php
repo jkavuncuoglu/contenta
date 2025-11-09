@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\ContentManagement\Models;
+namespace App\Domains\ContentManagement\Posts\Models;
 
-use app\Domains\ContentManagement\Models\Post;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -53,30 +53,45 @@ class PostType extends Model
         'menu_position' => 'integer',
     ];
 
+    /**
+     * @return HasMany<Post, $this>
+     */
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
-    // Check if post type supports a feature
+    /**
+     * Check if post type supports a feature
+     */
     public function supports(string $feature): bool
     {
         return in_array($feature, $this->supports ?? []);
     }
 
-    // Check if post type has a taxonomy
+    /**
+     * Check if post type has a taxonomy
+     */
     public function hasTaxonomy(string $taxonomy): bool
     {
         return in_array($taxonomy, $this->taxonomies ?? []);
     }
 
-    // Get template options for this post type
+    /**
+     * Get template options for this post type
+     *
+     * @return array<string, mixed>
+     */
     public function getTemplateOptions(): array
     {
         return $this->template_options ?? [];
     }
 
-    // Default post types seeder data
+    /**
+     * Default post types seeder data
+     *
+     * @return array<int, array<string, mixed>>
+     */
     public static function getDefaultTypes(): array
     {
         return [

@@ -1,7 +1,7 @@
 <?php
 
+use App\Domains\Security\Authentication\Http\Controllers\AuthenticationController;
 use Illuminate\Support\Facades\Route;
-use App\Domains$1$2;
 
 Route::prefix('v1')->group(function () {
     // Public routes

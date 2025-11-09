@@ -3,7 +3,7 @@
 namespace App\Domains\Security\Authentication\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Domains$1$2;
+use App\Domains\Security\Authentication\Rules\StrongPassword;
 
 class ChangePasswordRequest extends FormRequest
 {
@@ -12,6 +12,9 @@ class ChangePasswordRequest extends FormRequest
         return true;
     }
 
+    /**
+     * @return array<string, array<int, string|StrongPassword>>
+     */
     public function rules(): array
     {
         return [
@@ -27,6 +30,9 @@ class ChangePasswordRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [

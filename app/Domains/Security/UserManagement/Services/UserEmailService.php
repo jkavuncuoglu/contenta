@@ -2,27 +2,26 @@
 
 namespace App\Domains\Security\UserManagement\Services;
 
+use App\Domains\Security\UserManagement\Models\User;
+use App\Domains\Security\UserManagement\Models\UserEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use App\Domains$1$2;
-use App\Domains$1$2;
 
 class UserEmailService implements UserEmailServiceContract
 {
-    public function getById(int $id): User
+    public function getById(int $id): UserEmail
     {
-        return User::query()
+        return UserEmail::query()
             ->where('id', $id)
             ->firstOrFail();
     }
 
-    public function getByUserEmail(string $email): User
+    public function getByUserEmail(string $email): UserEmail
     {
-        return User::query()
-            ->whereHas('emails', function ($q) use ($email) {
-                $q->where('email', $email);
-            })->firstOrFail();
+        return UserEmail::query()
+            ->where('email', $email)
+            ->firstOrFail();
     }
 
     public function getPrimaryEmail(int $userId): UserEmail
@@ -78,7 +77,7 @@ class UserEmailService implements UserEmailServiceContract
 
     public function generateEmailVerificationCode(UserEmail $userEmail): string
     {
-        $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         $userEmail->update(['email_verification_code' => $code]);
         return $code;
     }

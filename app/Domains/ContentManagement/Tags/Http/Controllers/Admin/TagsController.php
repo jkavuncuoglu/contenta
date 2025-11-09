@@ -6,30 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Domains\ContentManagement\Tags\Models\Tag;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class TagsController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
-        $perPage = (int) $request->input('per_page', 15);
-        $page = (int) $request->input('page', 1);
+        $perPage = $request->integer('per_page', 15);
+        $page = $request->integer('page', 1);
 
         $paginator = Tag::withCount('posts')
             ->orderBy('name')
             ->paginate($perPage, ['*'], 'page', $page);
 
-        $tags = $paginator->through(function ($t) {
+        $tags = $paginator->through(function (Tag $t) {
             return [
                 'id' => $t->id,
                 'name' => $t->name,
                 'slug' => $t->slug,
                 'posts_count' => $t->posts_count ?? 0,
-                'created_at' => optional($t->created_at)->toDateTimeString(),
+                'created_at' => $t->created_at?->toDateTimeString(),
             ];
         });
 
         return Inertia::render('admin/content/tags/Index', [
-            'tags' => $paginator->items(), // Pass only the array of tag items
+            'tags' => $tags,
             'meta' => [
                 'current_page' => $paginator->currentPage(),
                 'last_page' => $paginator->lastPage(),
@@ -39,12 +40,12 @@ class TagsController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('admin/content/tags/Create');
     }
 
-    public function edit($id)
+    public function edit(int $id): Response
     {
         return Inertia::render('admin/content/tags/Edit', ['id' => $id]);
     }

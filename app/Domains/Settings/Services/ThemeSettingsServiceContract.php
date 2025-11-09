@@ -15,11 +15,15 @@ interface ThemeSettingsServiceContract
 
     /**
      * Update theme settings
+     *
+     * @param array<string, mixed> $data
      */
     public function updateTheme(array $data): ThemeSettings;
 
     /**
      * Get theme colors for frontend
+     *
+     * @return array<string, array<string, string|null>>
      */
     public function getThemeColors(): array;
 

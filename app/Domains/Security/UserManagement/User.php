@@ -2,19 +2,20 @@
 
 namespace App\Domains\Security\UserManagement;
 
+use App\Domains\Security\UserManagement\Models\User as UserModel;
 use App\Domains\Security\UserManagement\Services\UserServiceContract;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @method static UserModel getById(int $id)
+ * @method static UserModel getByUserEmail(string $email)
+ * @method static UserModel getByUsername(string $username)
+ * @method static Collection getRoles(UserModel $user)
+ * @method static Collection getAbilities(UserModel $user)
+ */
 class User extends Facade
 {
-    /**
-     * @method static getById(int $id): User
-     * @method static getByUserEmail(string $email): User
-     * @method static getByUsername(string $username): User
-     * @method static getRoles(User $user): Collection
-     * @method static getAbilities(User $user): Collection
-     */
-
     protected static function getFacadeAccessor(): string
     {
         return UserServiceContract::class;

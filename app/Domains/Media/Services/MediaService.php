@@ -114,6 +114,7 @@ class MediaService implements MediaServiceContract
 
     /**
      * Get media by collection
+     * @return array<int, array<string, mixed>>
      */
     public function getMediaByCollection(string $collection): array
     {

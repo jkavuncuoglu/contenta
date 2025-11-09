@@ -19,11 +19,12 @@ class TagsApiController extends Controller
             ->orderBy('name');
 
         // Search by name
-        if ($request->has('search') && !empty($request->search)) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+        $search = $request->string('search')->toString();
+        if ($request->has('search') && !empty($search)) {
+            $query->where('name', 'like', '%' . $search . '%');
         }
 
-        $tags = $query->paginate($request->get('per_page', 50));
+        $tags = $query->paginate($request->integer('per_page', 50));
 
         return response()->json([
             'data' => $tags->items(),

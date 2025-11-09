@@ -6,6 +6,24 @@ namespace App\Domains\Settings\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string $name
+ * @property bool $is_active
+ * @property string|null $light_primary
+ * @property string|null $light_secondary
+ * @property string|null $light_accent
+ * @property string|null $light_background
+ * @property string|null $light_surface
+ * @property string|null $light_text
+ * @property string|null $light_text_secondary
+ * @property string|null $dark_primary
+ * @property string|null $dark_secondary
+ * @property string|null $dark_accent
+ * @property string|null $dark_background
+ * @property string|null $dark_surface
+ * @property string|null $dark_text
+ * @property string|null $dark_text_secondary
+ */
 class ThemeSettings extends Model
 {
     protected $fillable = [
@@ -41,6 +59,8 @@ class ThemeSettings extends Model
 
     /**
      * Get light theme colors as array
+     *
+     * @return array<string, string|null>
      */
     public function getLightColors(): array
     {
@@ -57,6 +77,8 @@ class ThemeSettings extends Model
 
     /**
      * Get dark theme colors as array
+     *
+     * @return array<string, string|null>
      */
     public function getDarkColors(): array
     {
@@ -73,6 +95,8 @@ class ThemeSettings extends Model
 
     /**
      * Get all theme colors
+     *
+     * @return array<string, array<string, string|null>>
      */
     public function getAllColors(): array
     {

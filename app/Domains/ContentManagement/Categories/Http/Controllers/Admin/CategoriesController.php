@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Domains\ContentManagement\Categories\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CategoriesController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $perPage = (int) $request->input('per_page', 15);
         $page = (int) $request->input('page', 1);
@@ -37,12 +38,12 @@ class CategoriesController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('admin/categories/Create');
     }
 
-    public function edit($id)
+    public function edit(int $id): Response
     {
         return Inertia::render('admin/categories/Edit', ['id' => $id]);
     }

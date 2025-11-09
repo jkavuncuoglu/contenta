@@ -41,7 +41,7 @@ class SiteSettingsController extends Controller
     /**
      * Update the site settings
      */
-    public function update(Request $request)
+    public function update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'site_title' => 'required|string|max:255',

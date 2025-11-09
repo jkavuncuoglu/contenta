@@ -2,10 +2,10 @@
 
 namespace App\Domains\Security\Authentication;
 
+use App\Domains\Security\Authentication\Services\AuthenticationService;
+use App\Domains\Security\Authentication\Services\AuthenticationServiceContract;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use App\Domains$1$2;
-use App\Domains$1$2;
 
 class AuthenticationServiceProvider extends ServiceProvider
 {

@@ -9,7 +9,7 @@
         "format:check": "prettier --check resources/",
         "lint": "eslint . --fix",
         "test:e2e": "playwright test",
-        "prepare": "husky"
+        "prepare": "husky install"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.1",
@@ -64,5 +64,9 @@
         "@rollup/rollup-linux-x64-gnu": "4.9.5",
         "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
         "lightningcss-linux-x64-gnu": "^1.29.1"
+    },
+    "lint-staged": {
+        "resources/js/**/*.{js,vue}": ["eslint --fix", "prettier --write"],
+        "resources/css/**/*.{css,scss}": ["stylelint --fix"]
     }
 }

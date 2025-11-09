@@ -19,16 +19,20 @@ class PostsApiController extends Controller
             ->orderBy('created_at', 'desc');
 
         // Search by title
-        if ($request->has('search') && !empty($request->search)) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+        $search = $request->input('search');
+        if ($request->has('search') && is_string($search) && !empty($search)) {
+            $query->where('title', 'like', '%' . $search . '%');
         }
 
         // Filter by status
-        if ($request->has('status') && !empty($request->status)) {
-            $query->where('status', $request->status);
+        $status = $request->input('status');
+        if ($request->has('status') && is_string($status) && !empty($status)) {
+            $query->where('status', $status);
         }
 
-        $posts = $query->paginate($request->get('per_page', 50));
+        $perPageInput = $request->input('per_page', 50);
+        $perPage = is_numeric($perPageInput) ? (int) $perPageInput : 50;
+        $posts = $query->paginate($perPage);
 
         return response()->json([
             'data' => $posts->items(),
