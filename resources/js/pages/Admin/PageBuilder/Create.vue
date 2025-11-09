@@ -22,7 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     href: '/admin/dashboard',
   },
   {
-    title: 'PageBuilder',
+    title: 'Pages',
     href: '/admin/page-builder',
   },
   {
@@ -99,7 +99,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Head title="Create Page - PageBuilder" />
+  <Head title="Create Page - Pages" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
     <div class="space-y-6">
@@ -108,7 +108,7 @@ onMounted(() => {
         <div>
           <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Create New Page</h1>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Build a new page with the PageBuilder
+            Build a new page with the Pages
           </p>
         </div>
       </div>

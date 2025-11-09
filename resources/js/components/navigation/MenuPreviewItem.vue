@@ -142,7 +142,7 @@ interface MenuItem {
   is_visible: boolean
   attributes: Record<string, any> | null
   metadata: Record<string, any> | null
-  children: MenuItem[]
+  children?: MenuItem[]
 }
 
 interface Props {
@@ -156,7 +156,7 @@ const props = defineProps<Props>()
 const mobileExpanded = ref(false)
 
 const visibleChildren = computed(() => {
-  return props.item.children.filter(child => child.is_visible)
+  return (props.item.children || []).filter(child => child.is_visible)
 })
 
 const hasVisibleChildren = computed(() => {

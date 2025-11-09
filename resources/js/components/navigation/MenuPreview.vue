@@ -114,7 +114,7 @@ interface MenuItem {
   is_visible: boolean
   attributes: Record<string, any> | null
   metadata: Record<string, any> | null
-  children: MenuItem[]
+  children?: MenuItem[]
 }
 
 interface Props {

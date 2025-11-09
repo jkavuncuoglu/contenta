@@ -16,7 +16,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     href: '/admin/dashboard',
   },
   {
-    title: 'PageBuilder',
+    title: 'Pages',
     href: '/admin/page-builder',
   },
   {
@@ -156,7 +156,7 @@ const goBack = () => {
 </script>
 
 <template>
-  <Head title="Create Block - PageBuilder" />
+  <Head title="Create Block - Pages" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
     <div class="space-y-6">
@@ -165,7 +165,7 @@ const goBack = () => {
         <div>
           <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Create New Block</h1>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Create a reusable content block for the PageBuilder
+            Create a reusable content block for the Pages
           </p>
         </div>
       </div>

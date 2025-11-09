@@ -79,25 +79,34 @@
 
       <!-- Items List -->
       <div class="max-h-64 overflow-y-auto space-y-2">
-        <label
-          v-for="item in filteredItems"
-          :key="item.id"
-          class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
-        >
-          <input
-            v-model="selectedItems"
-            type="checkbox"
-            :value="item.id"
-            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-          />
-          <span class="ml-3 text-sm text-gray-900 dark:text-white">
-            {{ item.title || item.name }}
-          </span>
-        </label>
-
-        <div v-if="filteredItems.length === 0" class="text-center py-8 text-gray-500 dark:text-gray-400">
-          <p class="text-sm">No items found</p>
+        <!-- Loading State -->
+        <div v-if="loading" class="text-center py-8">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Loading...</p>
         </div>
+
+        <!-- Items -->
+        <template v-else>
+          <label
+            v-for="item in filteredItems"
+            :key="item.id"
+            class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
+          >
+            <input
+              v-model="selectedItems"
+              type="checkbox"
+              :value="item.id"
+              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <span class="ml-3 text-sm text-gray-900 dark:text-white">
+              {{ item.title || item.name }}
+            </span>
+          </label>
+
+          <div v-if="filteredItems.length === 0" class="text-center py-8 text-gray-500 dark:text-gray-400">
+            <p class="text-sm">No items found</p>
+          </div>
+        </template>
       </div>
 
       <!-- Add Selected Button -->
@@ -113,12 +122,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 interface SourceItem {
   id: number
   title?: string
   name?: string
+  slug?: string
+  status?: string
 }
 
 interface Props {
@@ -138,6 +149,7 @@ const search = ref('')
 const selectedItems = ref<number[]>([])
 const customLink = ref({ title: '', url: '' })
 const adding = ref(false)
+const loading = ref(false)
 
 const tabs = [
   { id: 'custom', label: 'Custom Link' },
@@ -159,10 +171,62 @@ const filteredItems = computed(() => {
 })
 
 const fetchItems = async (type: string) => {
-  // This would fetch from appropriate endpoints
-  // For now, returning empty array as placeholder
-  items.value = []
+  if (type === 'custom') {
+    items.value = []
+    return
+  }
+
+  loading.value = true
+  try {
+    let endpoint = ''
+
+    switch (type) {
+      case 'page':
+        endpoint = '/admin/page-builder/api/pages'
+        break
+      case 'post':
+        endpoint = '/admin/api/posts'
+        break
+      case 'category':
+        endpoint = '/admin/api/categories'
+        break
+      case 'tag':
+        endpoint = '/admin/api/tags'
+        break
+    }
+
+    const response = await fetch(endpoint + '?per_page=50', {
+      headers: {
+        'Accept': 'application/json',
+      },
+    })
+
+    if (response.ok) {
+      const result = await response.json()
+      // Handle both paginated responses and direct arrays
+      if (result.data) {
+        items.value = Array.isArray(result.data) ? result.data : []
+      } else {
+        items.value = Array.isArray(result) ? result : []
+      }
+    } else {
+      console.error('Failed to fetch items:', response.statusText)
+      items.value = []
+    }
+  } catch (error) {
+    console.error('Failed to fetch items:', error)
+    items.value = []
+  } finally {
+    loading.value = false
+  }
 }
+
+// Watch for tab changes and fetch items
+watch(activeTab, (newTab) => {
+  selectedItems.value = []
+  search.value = ''
+  fetchItems(newTab)
+}, { immediate: true })
 
 const addCustomLink = async () => {
   adding.value = true
@@ -224,8 +288,4 @@ const addSelectedItems = async () => {
     adding.value = false
   }
 }
-
-onMounted(() => {
-  // Fetch initial items if needed
-})
 </script>

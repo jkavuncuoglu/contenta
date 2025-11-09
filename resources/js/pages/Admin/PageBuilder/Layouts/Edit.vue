@@ -25,7 +25,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     href: '/admin/dashboard',
   },
   {
-    title: 'PageBuilder',
+    title: 'Pages',
     href: '/admin/page-builder',
   },
   {
@@ -119,7 +119,7 @@ const goBack = () => {
 </script>
 
 <template>
-  <Head :title="`Edit ${layout.name} - PageBuilder`" />
+  <Head :title="`Edit ${layout.name} - Pages`" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
     <div class="space-y-6">

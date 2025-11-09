@@ -1,8 +1,11 @@
 <?php
 
 use App\Domains\ContentManagement\Categories\Http\Controllers\Admin\CategoriesController;
+use App\Domains\ContentManagement\Categories\Http\Controllers\Admin\CategoriesApiController;
 use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsController;
+use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsApiController;
 use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsController;
+use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsApiController;
 use App\Domains\ContentManagement\Comments\Http\Controllers\Admin\CommentsController;
 use App\Domains\Media\Http\Controllers\Admin\MediaController;
 use Illuminate\Support\Facades\Route;
@@ -45,4 +48,11 @@ Route::prefix('media')->name('media.')->group(function () {
     Route::get('/{id}', [MediaController::class, 'show'])->name('show');
     Route::delete('/{id}', [MediaController::class, 'destroy'])->name('destroy');
     Route::get('/collection/{collection}', [MediaController::class, 'collection'])->name('collection');
+});
+
+// API Routes for menu item selection
+Route::prefix('api')->name('api.')->group(function () {
+    Route::get('/posts', [PostsApiController::class, 'index'])->name('posts.index');
+    Route::get('/categories', [CategoriesApiController::class, 'index'])->name('categories.index');
+    Route::get('/tags', [TagsApiController::class, 'index'])->name('tags.index');
 });

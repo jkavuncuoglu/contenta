@@ -27,16 +27,15 @@ const mainNavItems: NavItem[] = [
         href: '/admin/dashboard',
         icon: 'material-symbols-light:bar-chart',
     },
-
+    {
+        title: 'Pages',
+        href: pageBuilder.index().url,
+        icon: 'material-symbols-light:view-quilt',
+    },
     {
         title: 'Posts',
         href: posts.index().url,
         icon: 'material-symbols-light:insert-text',
-    },
-    {
-        title: 'PageBuilder',
-        href: pageBuilder.index().url,
-        icon: 'material-symbols-light:view-quilt',
     },
     {
         title: 'Categories',

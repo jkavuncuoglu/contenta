@@ -30,7 +30,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     href: '/admin/dashboard',
   },
   {
-    title: 'PageBuilder',
+    title: 'Pages',
     href: '/admin/page-builder',
   },
   {
@@ -111,7 +111,7 @@ const deleteBlock = async (block: Block) => {
 </script>
 
 <template>
-  <Head title="Blocks - PageBuilder" />
+  <Head title="Blocks - Pages" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
     <div class="space-y-6">
@@ -120,7 +120,7 @@ const deleteBlock = async (block: Block) => {
         <div>
           <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Blocks</h1>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Manage reusable content blocks for the PageBuilder
+            Manage reusable content blocks for the Pages
           </p>
         </div>
         <Link

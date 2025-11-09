@@ -26,7 +26,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     href: '/admin/dashboard',
   },
   {
-    title: 'PageBuilder',
+    title: 'Pages',
     href: '/admin/page-builder',
   },
   {
@@ -108,7 +108,7 @@ const deleteLayout = async (layout: Layout) => {
 </script>
 
 <template>
-  <Head title="Layouts - PageBuilder" />
+  <Head title="Layouts - Pages" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
     <div class="space-y-6">
@@ -117,7 +117,7 @@ const deleteLayout = async (layout: Layout) => {
         <div>
           <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Layouts</h1>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Manage page layouts and templates for the PageBuilder
+            Manage page layouts and templates for the Pages
           </p>
         </div>
         <Link

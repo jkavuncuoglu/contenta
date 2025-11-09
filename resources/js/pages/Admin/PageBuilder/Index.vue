@@ -40,7 +40,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     href: '/admin/dashboard',
   },
   {
-    title: 'PageBuilder',
+    title: 'Pages',
     href: '/admin/page-builder',
   },
 ]
@@ -135,14 +135,14 @@ const unpublishPage = (page: Page) => {
 </script>
 
 <template>
-  <Head title="PageBuilder" />
+  <Head title="Pages" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
     <div class="space-y-6">
       <!-- Page header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">PageBuilder</h1>
+          <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Pages</h1>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Create and manage your pages with the visual page builder
           </p>
@@ -166,7 +166,7 @@ const unpublishPage = (page: Page) => {
           </svg>
           <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No pages</h3>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Get started by creating your first page with the PageBuilder.
+            Get started by creating your first page with the Pages.
           </p>
           <div class="mt-6">
             <Link

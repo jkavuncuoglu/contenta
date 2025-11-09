@@ -68,7 +68,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     href: '/admin/dashboard',
   },
   {
-    title: 'PageBuilder',
+    title: 'Pages',
     href: '/admin/page-builder',
   },
   {
@@ -209,7 +209,7 @@ const handleConfigUpdate = (config) => {
 </script>
 
 <template>
-  <Head :title="`Edit ${page.title} - PageBuilder`" />
+  <Head :title="`Edit ${page.title} - Pages`" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
     <div class="space-y-6">

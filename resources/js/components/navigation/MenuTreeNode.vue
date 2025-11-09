@@ -56,6 +56,33 @@
         {{ item.type }}
       </span>
 
+      <!-- Nesting Controls -->
+      <div class="flex-shrink-0 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <!-- Outdent (move left) -->
+        <button
+          v-if="level > 0"
+          @click.stop="$emit('outdent', item.id)"
+          class="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          title="Move Left (Outdent)"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <!-- Indent (move right) -->
+        <button
+          v-if="canIndent"
+          @click.stop="$emit('indent', item.id)"
+          class="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          title="Move Right (Indent)"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
       <!-- Actions -->
       <div class="flex-shrink-0 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
@@ -95,20 +122,23 @@
     <!-- Children -->
     <div v-if="expanded && item.children && item.children.length > 0" class="mt-2 menu-tree-children">
       <MenuTreeNode
-        v-for="child in item.children"
+        v-for="(child, index) in item.children"
         :key="child.id"
         :item="child"
         :level="level + 1"
+        :is-first="index === 0"
         @edit="$emit('edit', $event)"
         @delete="$emit('delete', $event)"
         @toggle-visibility="$emit('toggle-visibility', $event)"
+        @indent="$emit('indent', $event)"
+        @outdent="$emit('outdent', $event)"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 interface MenuItem {
   id: number
@@ -127,18 +157,24 @@ interface MenuItem {
 interface Props {
   item: MenuItem
   level: number
+  isFirst?: boolean
 }
 
 interface Emits {
   (e: 'edit', item: MenuItem): void
   (e: 'delete', itemId: number): void
   (e: 'toggle-visibility', itemId: number): void
+  (e: 'indent', itemId: number): void
+  (e: 'outdent', itemId: number): void
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 defineEmits<Emits>()
 
 const expanded = ref(true)
+
+// Can indent if it's not the first item (so there's a previous sibling to become a child of)
+const canIndent = computed(() => !props.isFirst && props.level < 3) // Max 3 levels deep
 </script>
 
 <style scoped>
@@ -148,5 +184,15 @@ const expanded = ref(true)
 
 .rotate-90 {
   transform: rotate(90deg);
+}
+
+/* Prevent children container from interfering with parent drag operations */
+.menu-tree-children {
+  pointer-events: none;
+}
+
+/* Re-enable pointer events for the actual children */
+.menu-tree-children > * {
+  pointer-events: auto;
 }
 </style>
