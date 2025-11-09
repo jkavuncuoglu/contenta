@@ -11,6 +11,14 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
+        <testsuite name="Domain Unit Tests">
+            <directory>app/Domains/*/Tests/UnitTests</directory>
+            <directory>app/Domains/*/*/Tests/UnitTests</directory>
+        </testsuite>
+        <testsuite name="Domain Feature Tests">
+            <directory>app/Domains/*/Tests/FeatureTests</directory>
+            <directory>app/Domains/*/*/Tests/FeatureTests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
