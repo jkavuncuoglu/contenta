@@ -7,6 +7,7 @@ use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\ProfileControlle
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\TwoFactorAuthenticationController;
 use App\Domains\Settings\Http\Controllers\Admin\SiteSettingsController;
 use App\Domains\Settings\Http\Controllers\Admin\SecuritySettingsController;
+use App\Domains\Settings\Http\Controllers\Admin\ThemeSettingsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -110,5 +111,14 @@ Route::group([
         Route::post('roles', [RolesController::class, 'store'])->name('roles.store');
         Route::put('roles/{role}', [RolesController::class, 'update'])->name('roles.update');
         Route::delete('roles/{role}', [RolesController::class, 'destroy'])->name('roles.destroy');
+    });
+
+    Route::group([
+        'prefix' => 'theme',
+        'as' => 'theme.',
+    ], function () {
+        Route::get('', [ThemeSettingsController::class, 'index'])->name('index');
+        Route::get('colors', [ThemeSettingsController::class, 'show'])->name('show');
+        Route::put('', [ThemeSettingsController::class, 'update'])->name('update');
     });
 });

@@ -73,6 +73,11 @@ const mainNavItems: NavItem[] = [
                 icon: 'material-symbols-light:web',
             },
             {
+                title: 'Appearance',
+                href: '/admin/settings/theme',
+                icon: 'material-symbols-light:palette',
+            },
+            {
                 title: 'Security',
                 href: '/admin/settings/security',
                 icon: 'material-symbols-light:shield',
