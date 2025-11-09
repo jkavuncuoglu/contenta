@@ -8,7 +8,7 @@ use App\Domains\Navigation\Models\Menu;
 use App\Domains\Navigation\Models\MenuItem;
 use Illuminate\Support\Str;
 
-class MenuService
+class MenuService implements MenuServiceContract
 {
     /**
      * Create a new menu

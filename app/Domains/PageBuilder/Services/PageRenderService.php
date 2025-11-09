@@ -9,7 +9,7 @@ use App\Domains\PageBuilder\Models\Page;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
-class PageRenderService
+class PageRenderService implements PageRenderServiceContract
 {
     /**
      * Render a page to HTML
