@@ -25,11 +25,16 @@ class PageRenderService implements PageRenderServiceContract
 
         $renderedSections = $this->renderSections($data['sections'] ?? []);
 
-        return $this->renderLayout($layout->structure, $renderedSections, $page);
+        /** @var array<string, mixed> $layoutStructure */
+        $layoutStructure = $layout->structure;
+        return $this->renderLayout($layoutStructure, $renderedSections, $page);
     }
 
     /**
      * Render individual sections
+     *
+     * @param array<int, array<string, mixed>> $sections
+     * @return array<int, string>
      */
     protected function renderSections(array $sections): array
     {
@@ -44,15 +49,24 @@ class PageRenderService implements PageRenderServiceContract
 
     /**
      * Render a single section/block
+     *
+     * @param array<string, mixed> $section
      */
     protected function renderSection(array $section): string
     {
         $blockType = $section['type'] ?? null;
-        $config = $section['config'] ?? [];
-        $blockId = $section['id'] ?? Str::random(8);
-
-        if (!$blockType) {
+        if (!is_string($blockType) || empty($blockType)) {
             return '';
+        }
+
+        $config = $section['config'] ?? [];
+        if (!is_array($config)) {
+            $config = [];
+        }
+
+        $blockId = $section['id'] ?? Str::random(8);
+        if (!is_string($blockId)) {
+            $blockId = Str::random(8);
         }
 
         $block = Block::where('type', $blockType)->where('is_active', true)->first();
@@ -62,19 +76,23 @@ class PageRenderService implements PageRenderServiceContract
         }
 
         // Validate configuration against schema
+        /** @var array<string, mixed> $config */
         $validationErrors = $block->validateConfig($config);
         if (!empty($validationErrors)) {
             return $this->renderErrorBlock("Invalid configuration: " . implode(', ', $validationErrors));
         }
 
         // Merge with default config
-        $finalConfig = array_merge($block->default_config, $config);
+        $defaultConfig = $block->default_config;
+        $finalConfig = array_merge($defaultConfig, $config);
 
         return $this->renderBlock($block, $finalConfig, $blockId);
     }
 
     /**
      * Render a block using its component
+     *
+     * @param array<string, mixed> $config
      */
     protected function renderBlock(Block $block, array $config, string $blockId): string
     {
@@ -97,6 +115,8 @@ class PageRenderService implements PageRenderServiceContract
 
     /**
      * Render default block HTML
+     *
+     * @param array<string, mixed> $config
      */
     protected function renderDefaultBlock(Block $block, array $config, string $blockId): string
     {
@@ -123,14 +143,16 @@ class PageRenderService implements PageRenderServiceContract
 
     /**
      * Render hero block
+     *
+     * @param array<string, mixed> $config
      */
     protected function renderHeroBlock(array $config): string
     {
-        $title = $config['title'] ?? 'Welcome';
-        $subtitle = $config['subtitle'] ?? '';
-        $buttonText = $config['button_text'] ?? '';
-        $buttonUrl = $config['button_url'] ?? '#';
-        $backgroundImage = $config['background_image'] ?? '';
+        $title = is_string($config['title'] ?? null) ? $config['title'] : 'Welcome';
+        $subtitle = is_string($config['subtitle'] ?? null) ? $config['subtitle'] : '';
+        $buttonText = is_string($config['button_text'] ?? null) ? $config['button_text'] : '';
+        $buttonUrl = is_string($config['button_url'] ?? null) ? $config['button_url'] : '#';
+        $backgroundImage = is_string($config['background_image'] ?? null) ? $config['background_image'] : '';
 
         $style = $backgroundImage ? "background-image: url('{$backgroundImage}'); background-size: cover; background-position: center;" : '';
 
@@ -147,12 +169,14 @@ class PageRenderService implements PageRenderServiceContract
 
     /**
      * Render text block
+     *
+     * @param array<string, mixed> $config
      */
     protected function renderTextBlock(array $config): string
     {
-        $content = $config['content'] ?? 'Sample text content';
-        $alignment = $config['alignment'] ?? 'left';
-        $fontSize = $config['font_size'] ?? 'base';
+        $content = is_string($config['content'] ?? null) ? $config['content'] : 'Sample text content';
+        $alignment = is_string($config['alignment'] ?? null) ? $config['alignment'] : 'left';
+        $fontSize = is_string($config['font_size'] ?? null) ? $config['font_size'] : 'base';
 
         $alignmentClass = "text-{$alignment}";
         $fontSizeClass = "text-{$fontSize}";
@@ -170,13 +194,15 @@ class PageRenderService implements PageRenderServiceContract
 
     /**
      * Render image block
+     *
+     * @param array<string, mixed> $config
      */
     protected function renderImageBlock(array $config): string
     {
-        $src = $config['src'] ?? '';
-        $alt = $config['alt'] ?? '';
-        $caption = $config['caption'] ?? '';
-        $alignment = $config['alignment'] ?? 'center';
+        $src = is_string($config['src'] ?? null) ? $config['src'] : '';
+        $alt = is_string($config['alt'] ?? null) ? $config['alt'] : '';
+        $caption = is_string($config['caption'] ?? null) ? $config['caption'] : '';
+        $alignment = is_string($config['alignment'] ?? null) ? $config['alignment'] : 'center';
 
         if (!$src) {
             return '<div class="image-block-placeholder py-8">No image selected</div>';
@@ -198,11 +224,19 @@ class PageRenderService implements PageRenderServiceContract
 
     /**
      * Render layout with sections
+     *
+     * @param array<string, mixed> $layoutStructure
+     * @param array<int, string> $renderedSections
      */
     protected function renderLayout(array $layoutStructure, array $renderedSections, Page $page): string
     {
         $areas = $layoutStructure['areas'] ?? ['main'];
+        if (!is_array($areas)) {
+            $areas = ['main'];
+        }
         $settings = $layoutStructure['settings'] ?? [];
+        // Type assertion since we know it's an array from the layoutStructure
+        assert(is_array($settings));
 
         $html = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n";
         $html .= "<meta charset=\"UTF-8\">\n";

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Domains\ContentManagement\Posts\Models;
 
 use App\Domains\ContentManagement\Posts\Aggregates\PostAggregate;
-use App\Domains\ContentManagement\Cate\Models\Category;
+use App\Domains\ContentManagement\Categories\Models\Category;
 use App\Domains\ContentManagement\Posts\Models\Comment;
 use App\Domains\ContentManagement\Posts\Models\PostRevision;
 use App\Domains\ContentManagement\Posts\Models\PostType;
-use App\Domains\ContentManagement\Posts\Models\Tag;
+use App\Domains\ContentManagement\Tags\Models\Tag;
 use App\Domains\Security\UserManagement\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -70,45 +71,72 @@ class Post extends Model implements HasMedia
         'version' => 'integer',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected static array $logAttributes = ['title', 'status', 'published_at'];
     protected static bool $logOnlyDirty = true;
 
     // Relationships
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
     }
 
+    /**
+     * @return BelongsTo<PostType, $this>
+     */
     public function postType(): BelongsTo
     {
         return $this->belongsTo(PostType::class);
     }
 
+    /**
+     * @return BelongsTo<Post, $this>
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Post::class, 'parent_id');
     }
 
+    /**
+     * @return HasMany<Post, $this>
+     */
     public function children(): HasMany
     {
         return $this->hasMany(Post::class, 'parent_id');
     }
 
+    /**
+     * @return BelongsToMany<Category, $this>
+     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'post_categories');
     }
 
+    /**
+     * @return BelongsToMany<Tag, $this>
+     */
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'post_tags');
     }
 
+    /**
+     * @return HasMany<PostRevision, $this>
+     */
     public function revisions(): HasMany
     {
         return $this->hasMany(PostRevision::class);
     }
 
+    /**
+     * @return HasMany<Comment, $this>
+     */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
@@ -160,12 +188,20 @@ class Post extends Model implements HasMedia
     }
 
     // Scopes
-    public function scopePublished($query)
+    /**
+     * @param Builder<Post> $query
+     * @return Builder<Post>
+     */
+    public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', 'published');
     }
 
-    public function scopeByType($query, string $postType)
+    /**
+     * @param Builder<Post> $query
+     * @return Builder<Post>
+     */
+    public function scopeByType(Builder $query, string $postType): Builder
     {
         return $query->whereHas('postType', function ($q) use ($postType) {
             $q->where('name', $postType);

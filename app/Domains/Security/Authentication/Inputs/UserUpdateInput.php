@@ -4,9 +4,6 @@ namespace App\Domains\Security\Authentication\Inputs;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
 
 class UserUpdateInput
 {
@@ -19,9 +16,19 @@ class UserUpdateInput
     public ?string $avatar;
     public ?string $timezone;
     public ?string $language;
+    /**
+     * @var array<string, mixed>|null
+     */
     public ?array $preferences;
+
+    /**
+     * @var array<string, mixed>|null
+     */
     public ?array $social_links;
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(array $data)
     {
         $this->name = $data['name'] ?? null;
@@ -39,6 +46,7 @@ class UserUpdateInput
 
     /**
      * Return only set fields (for safe mass assignment).
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
@@ -57,4 +65,3 @@ class UserUpdateInput
         ], static fn($v) => $v !== null);
     }
 }
-

@@ -11,11 +11,15 @@ interface MenuServiceContract
 {
     /**
      * Create a new menu
+     *
+     * @param array<string, mixed> $data
      */
     public function createMenu(array $data): Menu;
 
     /**
      * Update a menu
+     *
+     * @param array<string, mixed> $data
      */
     public function updateMenu(Menu $menu, array $data): Menu;
 
@@ -31,11 +35,15 @@ interface MenuServiceContract
 
     /**
      * Create a menu item
+     *
+     * @param array<string, mixed> $data
      */
     public function createMenuItem(Menu $menu, array $data): MenuItem;
 
     /**
      * Update a menu item
+     *
+     * @param array<string, mixed> $data
      */
     public function updateMenuItem(MenuItem $item, array $data): MenuItem;
 
@@ -46,21 +54,29 @@ interface MenuServiceContract
 
     /**
      * Reorder menu items
+     *
+     * @param array<int, array<string, mixed>> $items
      */
     public function reorderItems(Menu $menu, array $items): void;
 
     /**
      * Export menu to JSON
+     *
+     * @return array<string, mixed>
      */
     public function exportMenu(Menu $menu): array;
 
     /**
      * Import menu from JSON
+     *
+     * @param array<string, mixed> $data
      */
     public function importMenu(array $data): Menu;
 
     /**
      * Get available menu locations
+     *
+     * @return array<string, string>
      */
     public function getAvailableLocations(): array;
 

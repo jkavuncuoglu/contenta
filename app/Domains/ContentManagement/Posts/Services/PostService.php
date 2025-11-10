@@ -12,6 +12,8 @@ class PostService implements PostServiceContract
 {
     /**
      * Get paginated posts
+     *
+     * @return LengthAwarePaginator<int, Post>
      */
     public function getPaginatedPosts(int $perPage = 20, ?string $status = null): LengthAwarePaginator
     {
@@ -27,10 +29,12 @@ class PostService implements PostServiceContract
 
     /**
      * Create a new post
+     *
+     * @param array<string, mixed> $data
      */
     public function createPost(array $data): Post
     {
-        if (empty($data['slug'])) {
+        if (empty($data['slug']) && isset($data['title']) && is_string($data['title'])) {
             $data['slug'] = Str::slug($data['title']);
         }
 
@@ -43,15 +47,19 @@ class PostService implements PostServiceContract
 
     /**
      * Update a post
+     *
+     * @param array<string, mixed> $data
      */
     public function updatePost(Post $post, array $data): Post
     {
-        if (isset($data['title']) && empty($data['slug'])) {
+        if (isset($data['title']) && is_string($data['title']) && empty($data['slug'])) {
             $data['slug'] = Str::slug($data['title']);
         }
 
         $post->update($data);
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+        return $freshPost;
     }
 
     /**
@@ -59,7 +67,7 @@ class PostService implements PostServiceContract
      */
     public function deletePost(Post $post): bool
     {
-        return $post->delete();
+        return (bool) $post->delete();
     }
 
     /**
@@ -72,7 +80,9 @@ class PostService implements PostServiceContract
             'published_at' => now(),
         ]);
 
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+        return $freshPost;
     }
 
     /**
@@ -84,7 +94,9 @@ class PostService implements PostServiceContract
             'status' => 'draft',
         ]);
 
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+        return $freshPost;
     }
 
     /**
@@ -97,7 +109,9 @@ class PostService implements PostServiceContract
             'published_at' => $publishAt,
         ]);
 
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+        return $freshPost;
     }
 
     /**
@@ -136,6 +150,8 @@ class PostService implements PostServiceContract
 
     /**
      * Get published posts
+     *
+     * @return LengthAwarePaginator<int, Post>
      */
     public function getPublishedPosts(int $perPage = 20): LengthAwarePaginator
     {
@@ -150,6 +166,8 @@ class PostService implements PostServiceContract
 
     /**
      * Get draft posts
+     *
+     * @return LengthAwarePaginator<int, Post>
      */
     public function getDraftPosts(int $perPage = 20): LengthAwarePaginator
     {
@@ -162,19 +180,27 @@ class PostService implements PostServiceContract
 
     /**
      * Attach categories to post
+     *
+     * @param array<int, int> $categoryIds
      */
     public function attachCategories(Post $post, array $categoryIds): Post
     {
         $post->categories()->sync($categoryIds);
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+        return $freshPost;
     }
 
     /**
      * Attach tags to post
+     *
+     * @param array<int, int> $tagIds
      */
     public function attachTags(Post $post, array $tagIds): Post
     {
         $post->tags()->sync($tagIds);
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+        return $freshPost;
     }
 }

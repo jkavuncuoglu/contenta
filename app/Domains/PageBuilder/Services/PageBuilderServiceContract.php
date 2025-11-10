@@ -13,16 +13,22 @@ interface PageBuilderServiceContract
 {
     /**
      * Get paginated pages
+     *
+     * @return LengthAwarePaginator<Page>
      */
     public function getPaginatedPages(int $perPage = 20): LengthAwarePaginator;
 
     /**
      * Create a new page
+     *
+     * @param array<string, mixed> $data
      */
     public function createPage(array $data): Page;
 
     /**
      * Update a page
+     *
+     * @param array<string, mixed> $data
      */
     public function updatePage(Page $page, array $data): Page;
 
@@ -53,16 +59,22 @@ interface PageBuilderServiceContract
 
     /**
      * Get all layouts
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, Layout>
      */
     public function getAllLayouts(): \Illuminate\Database\Eloquent\Collection;
 
     /**
      * Get all blocks
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, Block>
      */
     public function getAllBlocks(): \Illuminate\Database\Eloquent\Collection;
 
     /**
      * Get active blocks
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, Block>
      */
     public function getActiveBlocks(): \Illuminate\Database\Eloquent\Collection;
 }

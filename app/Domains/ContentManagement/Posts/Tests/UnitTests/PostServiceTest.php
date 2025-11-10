@@ -34,7 +34,6 @@ class PostServiceTest extends TestCase
         $result = $this->service->getPaginatedPosts(10);
 
         // Assert
-        $this->assertNotNull($result);
         $this->assertEquals(5, $result->total());
     }
 

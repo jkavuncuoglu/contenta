@@ -4,6 +4,7 @@ namespace App\Domains\Security\UserManagement\Models;
 
 use App\Domains\ContentManagement\Posts\Models\Post;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,7 +20,11 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
 
-class User extends Authenticatable implements WebAuthnAuthenticatable
+/**
+ * @property-read array<string, bool> $can
+ * @property \Illuminate\Support\Carbon|null $recovery_codes_regeneration_expires_at
+ */
+class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
@@ -92,6 +97,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable
             'is_active' => 'boolean',
             'preferences' => 'array',
             'social_links' => 'array',
+            'recovery_codes_regeneration_expires_at' => 'datetime',
         ];
     }
 
@@ -102,13 +108,12 @@ class User extends Authenticatable implements WebAuthnAuthenticatable
     protected $appends = [
         'direct_permissions',
         'permissions_via_roles',
-        // renamed to avoid colliding with Spatie relation accessor
         'permission_names',
-        'can',
     ];
 
     /**
      * Relationships
+     * @return HasMany<Post, $this>
      */
     public function posts(): HasMany
     {
@@ -117,6 +122,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable
 
     /**
      * Get the user's email addresses
+     * @return HasMany<UserEmail, $this>
      */
     public function emails(): HasMany
     {
@@ -125,6 +131,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable
 
     /**
      * Get the user's primary email address
+     * @return HasMany<UserEmail, $this>
      */
     public function primaryEmail(): HasMany
     {
@@ -165,6 +172,8 @@ class User extends Authenticatable implements WebAuthnAuthenticatable
 
     /**
      * Scope for active users
+     * @param \Illuminate\Database\Eloquent\Builder<User> $query
+     * @return \Illuminate\Database\Eloquent\Builder<User>
      */
     public function scopeActive($query)
     {
@@ -408,7 +417,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable
      *
      * @return \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission>
      */
-    public function getDirectPermissions()
+    public function getDirectPermissions(): \Illuminate\Database\Eloquent\Collection
     {
         $modelTypes = [\App\Models\User::class, self::class];
 
@@ -431,7 +440,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable
      *
      * @return \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission>
      */
-    public function getPermissionsViaRoles()
+    public function getPermissionsViaRoles(): \Illuminate\Database\Eloquent\Collection
     {
         $roleIds = $this->roles->pluck('id')->toArray();
 
@@ -457,7 +466,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable
      *
      * @return \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission>
      */
-    public function getAllPermissions()
+    public function getAllPermissions(): \Illuminate\Database\Eloquent\Collection
     {
         return $this->getDirectPermissions()->merge($this->getPermissionsViaRoles())->unique('id')->values();
     }

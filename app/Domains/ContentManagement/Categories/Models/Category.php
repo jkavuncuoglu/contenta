@@ -15,7 +15,13 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Database\Factories\CategoryFactory;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
+/**
+ * @use HasFactory<CategoryFactory>
+ */
 class Category extends Model implements HasMedia
 {
     use HasFactory;
@@ -42,33 +48,54 @@ class Category extends Model implements HasMedia
     ];
 
     // Relationships
+    /**
+     * @return BelongsTo<Category, $this>
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
 
+    /**
+     * @return HasMany<Category, $this>
+     */
     public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id')->orderBy('sort_order');
     }
 
+    /**
+     * @return BelongsToMany<Post, $this>
+     */
     public function posts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, 'post_categories');
     }
 
     // Scopes
-    public function scopeFeatured($query)
+    /**
+     * @param Builder<Category> $query
+     * @return Builder<Category>
+     */
+    public function scopeFeatured(Builder $query): Builder
     {
         return $query->where('is_featured', true);
     }
 
-    public function scopeParent($query)
+    /**
+     * @param Builder<Category> $query
+     * @return Builder<Category>
+     */
+    public function scopeParent(Builder $query): Builder
     {
         return $query->whereNull('parent_id');
     }
 
-    public function scopeOrdered($query)
+    /**
+     * @param Builder<Category> $query
+     * @return Builder<Category>
+     */
+    public function scopeOrdered(Builder $query): Builder
     {
         return $query->orderBy('sort_order')->orderBy('name');
     }
@@ -100,7 +127,10 @@ class Category extends Model implements HasMedia
         return $depth;
     }
 
-    public function getAllChildren(): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getAllChildren(): Collection
     {
         $children = collect();
 

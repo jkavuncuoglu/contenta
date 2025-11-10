@@ -203,8 +203,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-import { Head, Link, router } from '@inertiajs/vue3'
+import { ref, reactive } from 'vue'
+import { Head, Link } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 import MenuTreeView from '@/components/navigation/MenuTreeView.vue'
 import MenuItemEditor from '@/components/navigation/MenuItemEditor.vue'

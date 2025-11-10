@@ -11,16 +11,22 @@ interface PostServiceContract
 {
     /**
      * Get paginated posts
+     *
+     * @return LengthAwarePaginator<int, Post>
      */
     public function getPaginatedPosts(int $perPage = 20, ?string $status = null): LengthAwarePaginator;
 
     /**
      * Create a new post
+     *
+     * @param array<string, mixed> $data
      */
     public function createPost(array $data): Post;
 
     /**
      * Update a post
+     *
+     * @param array<string, mixed> $data
      */
     public function updatePost(Post $post, array $data): Post;
 
@@ -56,21 +62,29 @@ interface PostServiceContract
 
     /**
      * Get published posts
+     *
+     * @return LengthAwarePaginator<int, Post>
      */
     public function getPublishedPosts(int $perPage = 20): LengthAwarePaginator;
 
     /**
      * Get draft posts
+     *
+     * @return LengthAwarePaginator<int, Post>
      */
     public function getDraftPosts(int $perPage = 20): LengthAwarePaginator;
 
     /**
      * Attach categories to post
+     *
+     * @param array<int, int> $categoryIds
      */
     public function attachCategories(Post $post, array $categoryIds): Post;
 
     /**
      * Attach tags to post
+     *
+     * @param array<int, int> $tagIds
      */
     public function attachTags(Post $post, array $tagIds): Post;
 }

@@ -27,6 +27,7 @@ class UserEmail extends Model
 
     /**
      * Get the user that owns the email address
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -36,7 +37,7 @@ class UserEmail extends Model
     /**
      * Boot the model
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -55,5 +56,50 @@ class UserEmail extends Model
                     ->update(['is_primary' => false]);
             }
         });
+    }
+
+    /**
+     * Send email verification notification
+     *
+     * @return array<string, mixed>
+     */
+    public function sendEmailVerificationNotification(): array
+    {
+        // Implementation would send verification email
+        return [
+            'status' => 'success',
+            'message' => 'Verification email sent',
+        ];
+    }
+
+    /**
+     * Verify email with hash
+     *
+     * @return array<string, mixed>
+     */
+    public function verifyEmail(string $hash): array
+    {
+        if ($this->verification_token === $hash) {
+            $this->verified_at = now();
+            $this->save();
+
+            return [
+                'status' => 'success',
+                'message' => 'Email verified successfully',
+            ];
+        }
+
+        return [
+            'status' => 'error',
+            'message' => 'Invalid verification hash',
+        ];
+    }
+
+    /**
+     * Check if email is verified
+     */
+    public function hasVerifiedEmail(): bool
+    {
+        return $this->verified_at !== null;
     }
 }

@@ -17,4 +17,7 @@ return [
 
     // PageBuilder Domain
     App\Domains\PageBuilder\PageBuilderServiceProvider::class,
+
+    // Settings Domain
+    App\Domains\Settings\SettingsServiceProvider::class,
 ];

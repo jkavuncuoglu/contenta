@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace App\Domains\Navigation\Models;
 
+use Database\Factories\MenuFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @use HasFactory<MenuFactory>
+ */
 class Menu extends Model
 {
-    use HasFactory, SoftDeletes;
+    /** @use HasFactory<MenuFactory> */
+    use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -29,6 +35,8 @@ class Menu extends Model
 
     /**
      * Get all items for this menu
+     *
+     * @return HasMany<MenuItem, $this>
      */
     public function items(): HasMany
     {
@@ -37,6 +45,8 @@ class Menu extends Model
 
     /**
      * Get root-level items (no parent)
+     *
+     * @return HasMany<MenuItem, $this>
      */
     public function rootItems(): HasMany
     {
@@ -47,13 +57,15 @@ class Menu extends Model
 
     /**
      * Get the menu structure as a nested array
+     *
+     * @return array<int, array<string, mixed>>
      */
     public function getStructure(): array
     {
         return $this->rootItems()
             ->with('children')
             ->get()
-            ->map(fn($item) => $item->toTree())
+            ->map(fn(MenuItem $item) => $item->toTree())
             ->toArray();
     }
 
@@ -68,21 +80,24 @@ class Menu extends Model
         $newMenu->save();
 
         // Duplicate all items
+        /** @var array<int, int> $itemMap */
         $itemMap = [];
         foreach ($this->items as $item) {
             $newItem = $item->replicate();
-            $newItem->menu_id = $newMenu->id;
-            $newItem->parent_id = null; // Will be set later
+            $newItem->setAttribute('menu_id', $newMenu->id);
+            $newItem->setAttribute('parent_id', null); // Will be set later
             $newItem->save();
-            $itemMap[$item->id] = $newItem->id;
+            $itemMap[(int) $item->id] = (int) $newItem->id;
         }
 
         // Set parent relationships
         foreach ($this->items as $item) {
-            if ($item->parent_id && isset($itemMap[$item->parent_id])) {
-                $newItem = MenuItem::find($itemMap[$item->id]);
-                $newItem->parent_id = $itemMap[$item->parent_id];
-                $newItem->save();
+            if ($item->parent_id && isset($itemMap[(int) $item->parent_id])) {
+                $newItem = MenuItem::find($itemMap[(int) $item->id]);
+                if ($newItem instanceof MenuItem) {
+                    $newItem->setAttribute('parent_id', $itemMap[(int) $item->parent_id]);
+                    $newItem->save();
+                }
             }
         }
 

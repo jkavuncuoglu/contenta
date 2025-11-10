@@ -25,7 +25,10 @@ class BlockController extends Controller
         }
 
         if ($request->has('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $search = $request->input('search');
+            if (is_string($search)) {
+                $query->where('name', 'like', '%' . $search . '%');
+            }
         }
 
         $blocks = $query->get();

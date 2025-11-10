@@ -2,19 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\ContentManagement\Aggregates;
+namespace App\Domains\ContentManagement\Posts\Aggregates;
 
-use app\Domains\ContentManagement\Events\PostCreated;
-use app\Domains\ContentManagement\Events\PostPublished;
-use app\Domains\ContentManagement\Events\PostUnpublished;
-use app\Domains\ContentManagement\Events\PostUpdated;
-use app\Domains\ContentManagement\Exceptions\InvalidPostStatusException;
-use app\Domains\ContentManagement\Exceptions\PostNotFoundException;
+use App\Domains\ContentManagement\Posts\Events\PostCreated;
+use App\Domains\ContentManagement\Posts\Events\PostPublished;
+use App\Domains\ContentManagement\Posts\Events\PostUnpublished;
+use App\Domains\ContentManagement\Posts\Events\PostUpdated;
+use App\Domains\ContentManagement\Posts\Exceptions\InvalidPostStatusException;
+use App\Domains\ContentManagement\Posts\Exceptions\PostNotFoundException;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class PostAggregate
 {
+    /**
+     * @var array<int, object>
+     */
     private array $events = [];
 
     public const STATUS_DRAFT = 'draft';
@@ -31,6 +34,9 @@ class PostAggregate
         self::STATUS_TRASH,
     ];
 
+    /**
+     * @param array<string, mixed> $customFields
+     */
     public function __construct(
         private ?int $id,
         private string $title,
@@ -47,6 +53,9 @@ class PostAggregate
         $this->validateStatus($status);
     }
 
+    /**
+     * @param array<string, mixed> $customFields
+     */
     public static function create(
         string $title,
         string $contentMarkdown,
@@ -165,6 +174,9 @@ class PostAggregate
         $this->status = self::STATUS_TRASH;
     }
 
+    /**
+     * @param array<string, mixed> $customFields
+     */
     public function updateCustomFields(array $customFields): void
     {
         $this->customFields = array_merge($this->customFields, $customFields);
@@ -234,6 +246,9 @@ class PostAggregate
         return $this->publishedAt;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getCustomFields(): array
     {
         return $this->customFields;
@@ -244,6 +259,9 @@ class PostAggregate
         return $this->version;
     }
 
+    /**
+     * @return array<int, object>
+     */
     public function getEvents(): array
     {
         return $this->events;

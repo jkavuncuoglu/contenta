@@ -2,9 +2,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Domains\Security\Contracts\TwoFactorAuthenticationServiceInterface;
-use App\Domains\Security\Services\TwoFactorAuthenticationService;
-use PragmaRX\Google2FA\Google2FA;
 use App\Domains\Media\Services\MediaServiceContract;
 use App\Domains\Media\Services\MediaService;
 use App\Domains\ContentManagement\Comments\Services\CommentsServiceContract;
@@ -19,9 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(TwoFactorAuthenticationServiceInterface::class, function ($app) {
-            return new TwoFactorAuthenticationService(new Google2FA());
-        });
+        // TwoFactorAuthentication is handled by Laravel Fortify
 
         $this->app->singleton(MediaServiceContract::class, function ($app) {
             return new MediaService();

@@ -11,6 +11,9 @@ interface CommentsServiceContract
 {
     /**
      * Get paginated comments with filters
+     *
+     * @param array<string, mixed> $filters
+     * @return LengthAwarePaginator<array-key, mixed>
      */
     public function getPaginatedComments(array $filters = [], int $perPage = 20): LengthAwarePaginator;
 
@@ -26,6 +29,8 @@ interface CommentsServiceContract
 
     /**
      * Bulk update comment statuses
+     *
+     * @param array<int> $ids
      */
     public function bulkUpdateStatus(array $ids, string $status): int;
 
@@ -36,11 +41,15 @@ interface CommentsServiceContract
 
     /**
      * Get comment statistics
+     *
+     * @return array<string, mixed>
      */
     public function getStatistics(): array;
 
     /**
      * Get comments for a specific post
+     *
+     * @return array<int, mixed>
      */
     public function getPostComments(int $postId, string $status = 'approved'): array;
 }

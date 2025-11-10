@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace App\Domains\Navigation\Models;
 
+use Database\Factories\MenuItemFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @use HasFactory<MenuItemFactory>
+ */
 class MenuItem extends Model
 {
-    use HasFactory, SoftDeletes;
+    /** @use HasFactory<MenuItemFactory> */
+    use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'menu_id',
@@ -40,6 +46,8 @@ class MenuItem extends Model
 
     /**
      * Get the menu this item belongs to
+     *
+     * @return BelongsTo<Menu, $this>
      */
     public function menu(): BelongsTo
     {
@@ -48,6 +56,8 @@ class MenuItem extends Model
 
     /**
      * Get the parent menu item
+     *
+     * @return BelongsTo<MenuItem, $this>
      */
     public function parent(): BelongsTo
     {
@@ -56,6 +66,8 @@ class MenuItem extends Model
 
     /**
      * Get all children menu items
+     *
+     * @return HasMany<MenuItem, $this>
      */
     public function children(): HasMany
     {
@@ -87,6 +99,8 @@ class MenuItem extends Model
 
     /**
      * Convert this item and its children to a tree structure
+     *
+     * @return array<string, mixed>
      */
     public function toTree(): array
     {
@@ -101,12 +115,14 @@ class MenuItem extends Model
             'is_visible' => $this->is_visible,
             'attributes' => $this->attributes,
             'metadata' => $this->metadata,
-            'children' => $this->children->map(fn($child) => $child->toTree())->toArray(),
+            'children' => $this->children->map(fn(MenuItem $child) => $child->toTree())->toArray(),
         ];
     }
 
     /**
      * Reorder items
+     *
+     * @param array<int, array<string, mixed>> $items
      */
     public static function reorder(array $items, ?int $parentId = null): void
     {

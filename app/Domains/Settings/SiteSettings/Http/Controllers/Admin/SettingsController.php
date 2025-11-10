@@ -2,7 +2,7 @@
 
 namespace App\Domains\Settings\SiteSettings\Http\Controllers\Admin;
 
-use App\Domains\Settings\Http\Controllers\Admin\SiteSettings;
+use App\Domains\Settings\SiteSettings\Models\SiteSettings;
 use App\Domains\Settings\SiteSettings\Http\Requests\Admin\UpdateSettingsRequest;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
@@ -43,11 +43,8 @@ class SettingsController extends Controller
 
     /**
      * Update settings
-     *
-     * @param UpdateSettingsRequest $request
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateSettingsRequest $request)
+    public function update(UpdateSettingsRequest $request): \Illuminate\Http\RedirectResponse
     {
         $settings = $request->validated();
 
@@ -88,10 +85,8 @@ class SettingsController extends Controller
 
     /**
      * Get available page options for primary landing page
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function getPageOptions()
+    public function getPageOptions(): \Illuminate\Http\JsonResponse
     {
         // This would typically come from your pages module/database
         $pages = [

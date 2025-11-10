@@ -34,7 +34,6 @@ class PageBuilderServiceTest extends TestCase
         $result = $this->service->getPaginatedPages(10);
 
         // Assert
-        $this->assertNotNull($result);
         $this->assertEquals(5, $result->total());
     }
 
@@ -88,13 +87,13 @@ class PageBuilderServiceTest extends TestCase
     public function test_it_can_publish_page(): void
     {
         // Arrange
-        $page = Page::factory()->create(['is_published' => false]);
+        $page = Page::factory()->create(['status' => Page::STATUS_DRAFT]);
 
         // Act
         $published = $this->service->publishPage($page);
 
         // Assert
-        $this->assertTrue($published->is_published);
+        $this->assertTrue($published->isPublished());
         $this->assertNotNull($published->published_at);
     }
 
@@ -102,13 +101,13 @@ class PageBuilderServiceTest extends TestCase
     public function test_it_can_unpublish_page(): void
     {
         // Arrange
-        $page = Page::factory()->create(['is_published' => true]);
+        $page = Page::factory()->create(['status' => Page::STATUS_PUBLISHED]);
 
         // Act
         $unpublished = $this->service->unpublishPage($page);
 
         // Assert
-        $this->assertFalse($unpublished->is_published);
+        $this->assertFalse($unpublished->isPublished());
     }
 
     
@@ -123,14 +122,14 @@ class PageBuilderServiceTest extends TestCase
         // Assert
         $this->assertEquals('Duplicate', $duplicate->title);
         $this->assertEquals('duplicate', $duplicate->slug);
-        $this->assertFalse($duplicate->is_published);
+        $this->assertFalse($duplicate->isPublished());
     }
 
     
     public function test_it_can_get_page_by_slug(): void
     {
         // Arrange
-        Page::factory()->create(['slug' => 'test-slug', 'is_published' => true]);
+        Page::factory()->create(['slug' => 'test-slug', 'status' => Page::STATUS_PUBLISHED]);
 
         // Act
         $page = $this->service->getPageBySlug('test-slug');

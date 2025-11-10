@@ -12,15 +12,12 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Spatie\MediaLibrary\MediaCollections\Models\Media uploadMedia(\Illuminate\Http\UploadedFile $file, ?string $collection = null)
  * @method static bool deleteMedia(int $mediaId)
  * @method static \Spatie\MediaLibrary\MediaCollections\Models\Media|null getMediaById(int $mediaId)
- * @method static array getMediaByCollection(string $collection)
+ * @method static array<int, array<string, mixed>> getMediaByCollection(string $collection)
  *
  * @see \App\Domains\Media\Services\MediaService
  */
 class MediaFacade extends Facade
 {
-    /**
-     * Get the registered name of the component.
-     */
     protected static function getFacadeAccessor(): string
     {
         return MediaServiceContract::class;

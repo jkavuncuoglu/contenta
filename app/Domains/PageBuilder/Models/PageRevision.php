@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @use HasFactory<\Database\Factories\PageBuilder\PageRevisionFactory>
+ */
 class PageRevision extends Model
 {
     use HasFactory;
@@ -37,6 +40,8 @@ class PageRevision extends Model
 
     /**
      * Get the page that owns the revision
+     *
+     * @return BelongsTo<Page, $this>
      */
     public function page(): BelongsTo
     {
@@ -45,6 +50,8 @@ class PageRevision extends Model
 
     /**
      * Get the user who created the revision
+     *
+     * @return BelongsTo<\App\Domains\Security\UserManagement\Models\User, $this>
      */
     public function user(): BelongsTo
     {
@@ -53,6 +60,8 @@ class PageRevision extends Model
 
     /**
      * Get the layout for this revision
+     *
+     * @return BelongsTo<Layout, $this>
      */
     public function layout(): BelongsTo
     {

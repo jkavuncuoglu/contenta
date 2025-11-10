@@ -11,6 +11,8 @@ class ApiTokenService
 {
     /**
      * Get all API tokens for a user.
+     *
+     * @return Collection<int, PersonalAccessToken>
      */
     public function getTokens(User $user): Collection
     {
@@ -19,6 +21,7 @@ class ApiTokenService
 
     /**
      * Create a new API token for the user.
+     * @param array<int, string> $abilities
      */
     public function createToken(User $user, string $name, array $abilities = ['*']): NewAccessToken
     {
@@ -43,6 +46,7 @@ class ApiTokenService
 
     /**
      * Update token abilities.
+     * @param array<int, string> $abilities
      */
     public function updateTokenAbilities(User $user, string $tokenId, array $abilities): bool
     {
@@ -87,3 +91,5 @@ class ApiTokenService
         return $user->tokens()->count() >= $maxTokens;
     }
 }
+
+
