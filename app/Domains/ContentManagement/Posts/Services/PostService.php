@@ -203,4 +203,122 @@ class PostService implements PostServiceContract
         assert($freshPost instanceof Post);
         return $freshPost;
     }
+
+    /**
+     * Get posts for calendar view (by date range)
+     *
+     * @return array<int, Post>
+     */
+    public function getCalendarPosts(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
+    {
+        return Post::query()
+            ->with(['categories', 'tags', 'author'])
+            ->whereBetween('published_at', [$startDate, $endDate])
+            ->whereIn('status', ['published', 'scheduled'])
+            ->orderBy('published_at')
+            ->get()
+            ->all();
+    }
+
+    /**
+     * Get scheduled posts
+     *
+     * @return LengthAwarePaginator<int, Post>
+     */
+    public function getScheduledPosts(int $perPage = 20): LengthAwarePaginator
+    {
+        return Post::query()
+            ->with(['categories', 'tags', 'author'])
+            ->where('status', 'scheduled')
+            ->whereNotNull('published_at')
+            ->orderBy('published_at')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Publish posts that are due to be published
+     *
+     * @return array<int, Post>
+     */
+    public function publishDuePosts(): array
+    {
+        $duePosts = Post::query()
+            ->where('status', 'scheduled')
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now())
+            ->get();
+
+        $published = [];
+
+        foreach ($duePosts as $post) {
+            $post->update([
+                'status' => 'published',
+            ]);
+            $published[] = $post;
+        }
+
+        return $published;
+    }
+
+    /**
+     * Get posts by status
+     *
+     * @return LengthAwarePaginator<int, Post>
+     */
+    public function getPostsByStatus(string $status, int $perPage = 20): LengthAwarePaginator
+    {
+        return Post::query()
+            ->with(['categories', 'tags', 'author'])
+            ->where('status', $status)
+            ->latest()
+            ->paginate($perPage);
+    }
+
+    /**
+     * Get archived posts
+     *
+     * @return LengthAwarePaginator<int, Post>
+     */
+    public function getArchivedPosts(int $perPage = 20): LengthAwarePaginator
+    {
+        return Post::onlyTrashed()
+            ->with(['categories', 'tags', 'author'])
+            ->latest('deleted_at')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Restore archived post
+     */
+    public function restorePost(int $postId): Post
+    {
+        $post = Post::onlyTrashed()->findOrFail($postId);
+        $post->restore();
+
+        // Set status to draft when restoring
+        $post->update(['status' => 'draft']);
+
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+        return $freshPost;
+    }
+
+    /**
+     * Change post status
+     */
+    public function changeStatus(Post $post, string $status): Post
+    {
+        $updateData = ['status' => $status];
+
+        // If publishing, set published_at if not already set
+        if ($status === 'published' && !$post->published_at) {
+            $updateData['published_at'] = now();
+        }
+
+        $post->update($updateData);
+
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+        return $freshPost;
+    }
 }

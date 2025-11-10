@@ -33,19 +33,37 @@ const mainNavItems: NavItem[] = [
         icon: 'material-symbols-light:view-quilt',
     },
     {
-        title: 'Posts',
-        href: posts.index().url,
+        title: 'Blog',
+        href: posts.calendar().url,
         icon: 'material-symbols-light:insert-text',
-    },
-    {
-        title: 'Categories',
-        href: categories.index().url,
-        icon: 'material-symbols-light:category',
-    },
-    {
-        title: 'Tags',
-        href: tags.index().url,
-        icon: 'material-symbols-light:tag',
+        children: [
+
+            {
+                title: 'Calendar',
+                href: posts.calendar().url,
+                icon: 'material-symbols-light:add-circle',
+            },
+            {
+                title: 'Manage Posts',
+                href: posts.index().url,
+                icon: 'material-symbols-light:insert-text',
+            },
+            {
+                title: 'Add New Post',
+                href: posts.create().url,
+                icon: 'material-symbols-light:add-circle',
+            },
+            {
+                title: 'Categories',
+                href: categories.index().url,
+                icon: 'material-symbols-light:category',
+            },
+            {
+                title: 'Tags',
+                href: tags.index().url,
+                icon: 'material-symbols-light:tag',
+            },
+        ],
     },
     {
         title: 'Menus',

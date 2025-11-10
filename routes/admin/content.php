@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 // Posts Management
 Route::prefix('posts')->name('posts.')->group(function () {
     Route::get('/', [PostsController::class, 'index'])->name('index');
+    Route::get('/calendar', [PostsController::class, 'calendar'])->name('calendar');
     Route::get('/create', [PostsController::class, 'create'])->name('create');
     Route::get('/{id}/edit', [PostsController::class, 'edit'])->name('edit');
     Route::get('/{id}', [PostsController::class, 'show'])->name('show');
@@ -53,6 +54,12 @@ Route::prefix('media')->name('media.')->group(function () {
 // API Routes for menu item selection
 Route::prefix('api')->name('api.')->group(function () {
     Route::get('/posts', [PostsApiController::class, 'index'])->name('posts.index');
+    Route::get('/posts/calendar', [PostsApiController::class, 'calendar'])->name('posts.calendar');
+    Route::get('/posts/scheduled', [PostsApiController::class, 'scheduled'])->name('posts.scheduled');
+    Route::get('/posts/archived', [PostsApiController::class, 'archived'])->name('posts.archived');
+    Route::post('/posts/{id}/reschedule', [PostsApiController::class, 'reschedule'])->name('posts.reschedule');
+    Route::post('/posts/{id}/restore', [PostsApiController::class, 'restore'])->name('posts.restore');
+    Route::patch('/posts/{id}/status', [PostsApiController::class, 'changeStatus'])->name('posts.change-status');
     Route::get('/categories', [CategoriesApiController::class, 'index'])->name('categories.index');
     Route::get('/tags', [TagsApiController::class, 'index'])->name('tags.index');
 });
