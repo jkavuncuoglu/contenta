@@ -87,4 +87,49 @@ interface PostServiceContract
      * @param array<int, int> $tagIds
      */
     public function attachTags(Post $post, array $tagIds): Post;
+
+    /**
+     * Get posts for calendar view (by date range)
+     *
+     * @return array<int, Post>
+     */
+    public function getCalendarPosts(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array;
+
+    /**
+     * Get scheduled posts
+     *
+     * @return LengthAwarePaginator<int, Post>
+     */
+    public function getScheduledPosts(int $perPage = 20): LengthAwarePaginator;
+
+    /**
+     * Publish posts that are due to be published
+     *
+     * @return array<int, Post>
+     */
+    public function publishDuePosts(): array;
+
+    /**
+     * Get posts by status
+     *
+     * @return LengthAwarePaginator<int, Post>
+     */
+    public function getPostsByStatus(string $status, int $perPage = 20): LengthAwarePaginator;
+
+    /**
+     * Get archived posts
+     *
+     * @return LengthAwarePaginator<int, Post>
+     */
+    public function getArchivedPosts(int $perPage = 20): LengthAwarePaginator;
+
+    /**
+     * Restore archived post
+     */
+    public function restorePost(int $postId): Post;
+
+    /**
+     * Change post status
+     */
+    public function changeStatus(Post $post, string $status): Post;
 }

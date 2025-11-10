@@ -201,6 +201,25 @@ class Post extends Model implements HasMedia
      * @param Builder<Post> $query
      * @return Builder<Post>
      */
+    public function scopeScheduled(Builder $query): Builder
+    {
+        return $query->where('status', 'scheduled')
+            ->whereNotNull('published_at');
+    }
+
+    /**
+     * @param Builder<Post> $query
+     * @return Builder<Post>
+     */
+    public function scopeDraft(Builder $query): Builder
+    {
+        return $query->where('status', 'draft');
+    }
+
+    /**
+     * @param Builder<Post> $query
+     * @return Builder<Post>
+     */
     public function scopeByType(Builder $query, string $postType): Builder
     {
         return $query->whereHas('postType', function ($q) use ($postType) {

@@ -44,6 +44,11 @@ class PostsController extends Controller
         ]);
     }
 
+    public function calendar(): Response
+    {
+        return Inertia::render('admin/content/posts/Calendar');
+    }
+
     public function create(): Response
     {
         return Inertia::render('admin/content/posts/Create');
