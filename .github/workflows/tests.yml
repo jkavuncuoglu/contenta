@@ -76,11 +76,3 @@ jobs:
 
       - name: Run Tests (Pest)
         run: ./vendor/bin/pest --colors=always --coverage-clover=coverage.xml
-
-      - name: Upload coverage to Codecov (optional)
-        if: ${{ success() && env.CODECOV_TOKEN != '' }}
-        uses: codecov/codecov-action@v3
-        with:
-          files: contenta/coverage.xml
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: false
