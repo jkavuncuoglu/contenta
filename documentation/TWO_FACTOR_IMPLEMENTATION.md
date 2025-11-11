@@ -1,5 +1,7 @@
 # Two-Factor Authentication Implementation
 
+[← Back: WebAuthn Implementation](WEBAUTHN_IMPLEMENTATION.md) • [Read next: API Tokens →](API_TOKENS.md)
+
 ## Overview
 This document describes the complete Two-Factor Authentication (2FA) implementation that was added to the settings layout with full functionality.
 
@@ -120,3 +122,5 @@ You can test the 2FA flow by:
 - Recovery codes are encrypted in the database
 - Compatible with Laravel Fortify's 2FA challenge during login
 
+---
+Navigation • [Index](INDEX.md) • [Previous: WebAuthn](WEBAUTHN_IMPLEMENTATION.md) • [Next: API Tokens →](API_TOKENS.md) • [Main README](../../README.md)

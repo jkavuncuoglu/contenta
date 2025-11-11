@@ -1,5 +1,7 @@
 # Features Overview
 
+[← Back: Setup](SETUP.md) • [Read next: Backend Guide →](BACKEND.md)
+
 ## Security Keys (WebAuthn)
 
 - Register platform or cross-platform authenticators
@@ -16,3 +18,6 @@ UI entry point:
 - Laravel backend with migrations, controllers, and config
 - Vue + TypeScript frontend, composables, and single-file components
 - npm-based build tooling (Vite) and Composer-managed PHP packages
+
+---
+Navigation • [Index](INDEX.md) • [Previous: Setup](SETUP.md) • [Next: Backend Guide →](BACKEND.md) • [Main README](../../README.md)

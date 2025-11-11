@@ -1,5 +1,7 @@
 # Avatar Upload Feature
 
+[← Back: API Tokens](API_TOKENS.md) • [Read next: User Manual →](USER_MANUAL.md)
+
 ## Overview
 This feature allows users to upload and manage their profile avatars. It supports both:
 1. **Image Upload**: Upload local image files (JPG, PNG, GIF, WebP) up to 5MB
@@ -136,3 +138,5 @@ Possible improvements:
 - Drag & drop upload
 - Avatar gallery/history
 
+---
+Navigation • [Index](INDEX.md) • [Previous: API Tokens](API_TOKENS.md) • [Next: User Manual →](USER_MANUAL.md) • [Main README](../../README.md)

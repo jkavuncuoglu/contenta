@@ -3,12 +3,17 @@
 A modular Laravel 12 + Vue 3 (Inertia.js) application scaffold for content‑centric platforms (CMS / knowledge base / publishing) with opinionated domain separation, rich publishing models, and advanced security (WebAuthn security keys + TOTP two‑factor, recovery codes, roles & permissions).
 
 ## Quick Documentation Links
+- [Documentation Index](documentation/INDEX.md)
 - [Setup & Local Development](documentation/SETUP.md)
 - [Features Overview](documentation/FEATURES.md)
 - [Backend Guide (Laravel)](documentation/BACKEND.md)
 - [Frontend Guide (Vue + Inertia)](documentation/FRONTEND.md)
 - [Security Overview](documentation/SECURITY.md)
 - [WebAuthn Implementation](documentation/WEBAUTHN_IMPLEMENTATION.md)
+- [Two-Factor Implementation](documentation/TWO_FACTOR_IMPLEMENTATION.md)
+- [API Tokens](documentation/API_TOKENS.md)
+- [Avatar Upload](documentation/AVATAR_UPLOAD.md)
+- [User Manual](documentation/USER_MANUAL.md)
 - [Releases & Forking](documentation/RELEASES.md)
 - [Contributing Guide](documentation/CONTRIBUTING.md)
 - [Legal & Risk Notice](documentation/LEGAL.md)

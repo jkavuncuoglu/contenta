@@ -1,5 +1,7 @@
 # API Tokens Management
 
+[← Back: Two-Factor Implementation](TWO_FACTOR_IMPLEMENTATION.md) • [Read next: Avatar Upload →](AVATAR_UPLOAD.md)
+
 This document describes the Personal API Tokens management system implemented in the Security domain.
 
 ## Overview
@@ -258,3 +260,5 @@ Potential improvements:
 - Route Definitions: `resources/js/routes/user/settings/api-tokens/index.ts`
 - Migration: `database/migrations/*_create_personal_access_tokens_table.php`
 
+---
+Navigation • [Index](INDEX.md) • [Previous: Two-Factor](TWO_FACTOR_IMPLEMENTATION.md) • [Next: Avatar Upload →](AVATAR_UPLOAD.md) • [Main README](../../README.md)

@@ -1,5 +1,7 @@
 # Setup and Local Development
 
+[← Back: Index](INDEX.md) • [Read next: Features Overview →](FEATURES.md)
+
 ## Prerequisites
 
 - PHP and Composer
@@ -53,3 +55,6 @@ Visit the app in your browser using the URL shown above.
 
 - Go to `/settings/security`
 - Use the "Security Key (U2F)" section to register and manage keys.
+
+---
+Navigation • [Index](INDEX.md) • [Previous: Index](INDEX.md) • [Next: Features Overview →](FEATURES.md) • [Main README](../../README.md)

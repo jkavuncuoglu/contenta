@@ -1,5 +1,7 @@
 # Contenta - Complete User Manual & Documentation
 
+[← Back: Avatar Upload](AVATAR_UPLOAD.md) • [Read next: Releases & Forking →](RELEASES.md)
+
 > **Version:** 1.0  
 > **Last Updated:** November 11, 2025  
 > **Framework:** Laravel 12 + Vue 3 + Inertia.js
@@ -1787,19 +1789,17 @@ Create reusable components:
 ```vue
 <!-- resources/js/components/YourComponent.vue -->
 <script setup lang="ts">
-interface Props {
+const { title, items } = defineProps<{
   title: string
-  data: any[]
-}
-
-const props = defineProps<Props>()
+  items: Array<{ id: string | number; name: string }>
+}>()
 </script>
 
 <template>
   <div>
     <h2>{{ title }}</h2>
     <ul>
-      <li v-for="item in data" :key="item.id">
+      <li v-for="item in items" :key="item.id">
         {{ item.name }}
       </li>
     </ul>
@@ -2093,3 +2093,6 @@ SOFTWARE.
 **Last Updated:** November 11, 2025  
 **Version:** 1.0.0
 
+---
+
+Navigation • [Index](INDEX.md) • [Previous: Avatar Upload](AVATAR_UPLOAD.md) • [Next: Releases & Forking →](RELEASES.md) • [Main README](../../README.md)

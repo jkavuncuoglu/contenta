@@ -1,5 +1,7 @@
 # WebAuthn Implementation
 
+[← Back: Security Overview](SECURITY.md) • [Read next: Two-Factor Implementation →](TWO_FACTOR_IMPLEMENTATION.md)
+
 This document describes the WebAuthn (Security Keys / U2F) implementation for two-factor authentication.
 
 ## Overview
@@ -185,3 +187,5 @@ Check browser console for detailed error messages during registration or authent
 - [Laragear WebAuthn Documentation](https://github.com/Laragear/WebAuthn)
 - [SimpleWebAuthn Documentation](https://simplewebauthn.dev/)
 
+---
+Navigation • [Index](INDEX.md) • [Previous: Security](SECURITY.md) • [Next: Two-Factor Implementation →](TWO_FACTOR_IMPLEMENTATION.md) • [Main README](../../README.md)
