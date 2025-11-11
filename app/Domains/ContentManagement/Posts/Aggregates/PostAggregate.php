@@ -45,7 +45,6 @@ class PostAggregate
         private string $contentHtml,
         private string $status,
         private int $authorId,
-        private int $postTypeId,
         private ?Carbon $publishedAt = null,
         private array $customFields = [],
         private int $version = 1
@@ -60,7 +59,6 @@ class PostAggregate
         string $title,
         string $contentMarkdown,
         int $authorId,
-        int $postTypeId,
         array $customFields = []
     ): self {
         $slug = Str::slug($title);
@@ -74,7 +72,6 @@ class PostAggregate
             contentHtml: $contentHtml,
             status: self::STATUS_DRAFT,
             authorId: $authorId,
-            postTypeId: $postTypeId,
             customFields: $customFields
         );
 
@@ -82,7 +79,6 @@ class PostAggregate
             title: $title,
             slug: $slug,
             authorId: $authorId,
-            postTypeId: $postTypeId
         ));
 
         return $aggregate;
@@ -236,10 +232,6 @@ class PostAggregate
         return $this->authorId;
     }
 
-    public function getPostTypeId(): int
-    {
-        return $this->postTypeId;
-    }
 
     public function getPublishedAt(): ?Carbon
     {

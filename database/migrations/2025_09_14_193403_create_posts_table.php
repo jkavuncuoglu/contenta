@@ -13,12 +13,12 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->longText('content_markdown');
-            $table->longText('content_html');
+            $table->longText('content_html')->nullable();
+            $table->json('table_of_contents')->nullable();
             $table->text('excerpt')->nullable();
             $table->enum('status', ['draft', 'published', 'scheduled', 'private', 'trash'])->default('draft');
 
             // Relationships
-            $table->foreignId('post_type_id')->constrained()->cascadeOnDelete();
             $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('parent_id')->nullable()->constrained('posts')->cascadeOnDelete();
             $table->foreignId('featured_image_id')->nullable()->constrained('media')->nullOnDelete();
@@ -57,7 +57,6 @@ return new class extends Migration
 
             // Indexes
             $table->index(['status', 'published_at']);
-            $table->index(['post_type_id', 'status']);
             $table->index(['author_id', 'status']);
             $table->index(['slug']);
             $table->index(['parent_id']);

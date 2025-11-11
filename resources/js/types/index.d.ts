@@ -62,3 +62,36 @@ export interface Role {
     created_at: string | null;
     updated_at: string | null;
 }
+
+export interface PostForm {
+    title: string;
+    slug: string;
+    content_markdown: string;
+    content_html?: string;
+    table_of_contents?: Array<{ level: number; text: string; id: string }>;
+    excerpt?: string;
+    status: 'draft' | 'published' | 'scheduled' | 'private';
+    published_at?: string;
+    categories?: number[];
+    tags: string[];
+    custom_fields?: Record<string, unknown>;
+}
+
+export interface Post {
+    id: number;
+    title: string;
+    slug: string;
+    content_markdown: string;
+    content_html?: string;
+    table_of_contents?: Array<{ level: number; text: string; id: string }>;
+    excerpt?: string;
+    status: 'draft' | 'published' | 'scheduled' | 'private';
+    published_at?: string;
+    author_id: number;
+    author?: User;
+    categories?: any[];
+    tags?: any[];
+    created_at: string;
+    updated_at: string;
+}
+

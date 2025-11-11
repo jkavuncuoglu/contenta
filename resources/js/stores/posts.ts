@@ -1,13 +1,19 @@
 import { ref } from 'vue';
 import { router as inertia } from '@inertiajs/vue3';
 
+interface StoreResult<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
 export function usePostsStore() {
   const posts = ref<any[]>([]);
   const currentPost = ref<any | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
 
-  const fetchPost = async (id: number) => {
+  const fetchPost = async (id: number): Promise<StoreResult> => {
     loading.value = true;
     error.value = null;
 
@@ -35,7 +41,7 @@ export function usePostsStore() {
     });
   };
 
-  const createPost = async (payload: any) => {
+  const createPost = async (payload: any): Promise<StoreResult> => {
     loading.value = true;
     error.value = null;
 

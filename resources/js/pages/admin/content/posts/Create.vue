@@ -68,7 +68,11 @@
                         </div>
                     </div>
 
-                    <ContentEditor v-model="form.content_markdown"/>
+                    <MdEditor v-model="form.content_markdown" language="en-US" :theme="theme" />
+
+                    <div v-if="errors.content_markdown" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        {{ errors.content_markdown[0] }}
+                    </div>
 
                     <!-- Excerpt -->
                     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
@@ -126,27 +130,6 @@
                                     type="datetime-local"
                                     class="p-2 mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:bg-gray-700 dark:text-white"
                                 />
-                            </div>
-
-                            <!-- Post Type -->
-                            <div>
-                                <label for="post_type"
-                                       class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Post Type
-                                </label>
-                                <select
-                                    id="post_type"
-                                    v-model="form.post_type_id"
-                                    required
-                                    class="p-2 mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:bg-gray-700 dark:text-white"
-                                >
-                                    <option value="">Select post type</option>
-                                    <option value="1">Post</option>
-                                    <option value="2">Page</option>
-                                </select>
-                                <div v-if="errors.post_type_id" class="mt-1 text-sm text-red-600 dark:text-red-400">
-                                    {{ errors.post_type_id[0] }}
-                                </div>
                             </div>
                         </div>
 
@@ -257,11 +240,60 @@ import {ref, reactive} from 'vue';
 import { Head, router } from '@inertiajs/vue3';
 import {usePostsStore} from '@/stores/posts';
 import type {PostForm} from '@/types';
-import ContentEditor from "@/components/ContentEditor/ContentEditor.vue";
 import { Link } from '@inertiajs/vue3';
 import Icon from '@/components/Icon.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { MdEditor, config } from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
 
+// Import required libraries for MdEditor features
+import screenfull from 'screenfull';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+import Cropper from 'cropperjs';
+import 'cropperjs/dist/cropper.css';
+import mermaid from 'mermaid';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github.css';
+import prettier from 'prettier';
+import parserMarkdown from 'prettier/plugins/markdown';
+import parserBabel from 'prettier/plugins/babel';
+import parserEstree from 'prettier/plugins/estree';
+import { marked } from 'marked';
+
+// Configure MdEditor globally with extensions
+config({
+    editorExtensions: {
+        screenfull: {
+            instance: screenfull
+        },
+        katex: {
+            instance: katex
+        },
+        cropper: {
+            instance: Cropper
+        },
+        highlight: {
+            instance: hljs
+        },
+        mermaid: {
+            instance: mermaid
+        },
+        prettier: {
+            prettierInstance: prettier,
+            parserMarkdownInstance: parserMarkdown,
+            parserBabelInstance: parserBabel,
+            parserEstreeInstance: parserEstree
+        }
+    },
+    editorConfig: {
+        languageUserDefined: {
+            'en-US': {
+                // English language configuration
+            }
+        }
+    }
+});
 
 const postsStore = usePostsStore();
 
@@ -276,7 +308,6 @@ const form = reactive<PostForm>({
     content_markdown: '',
     excerpt: '',
     status: 'draft',
-    post_type_id: 1,
     categories: [],
     tags: [],
     custom_fields: {}
@@ -299,6 +330,10 @@ const addTag = () => {
     tagInput.value = '';
 };
 
+console.log(localStorage.getItem('appearance'))
+
+const theme = ref<'light' | 'dark'>(localStorage.getItem('appearance') === 'dark' ? 'dark' : 'light');
+
 const handleTagKeydown = (e: KeyboardEvent) => {
   if (e.key === ',') {
     e.preventDefault();
@@ -310,11 +345,41 @@ const removeTag = (index: number) => {
     form.tags.splice(index, 1);
 };
 
+// Function to generate table of contents from markdown
+const generateTOC = (markdown: string) => {
+    const headingRegex = /^(#{1,6})\s+(.+)$/gm;
+    const toc: Array<{ level: number; text: string; id: string }> = [];
+    let match;
+
+    while ((match = headingRegex.exec(markdown)) !== null) {
+        const level = match[1].length; // Count number of #
+        const text = match[2].trim();
+        const id = text
+            .toLowerCase()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-');
+
+        toc.push({ level, text, id });
+    }
+
+    return toc;
+};
+
 const handleSubmit = async () => {
     loading.value = true;
     errors.value = {};
 
-    const result = await postsStore.createPost(form);
+    // Convert markdown to HTML
+    const htmlContent = await marked.parse(form.content_markdown || '');
+
+    // Generate table of contents
+    const tableOfContents = generateTOC(form.content_markdown || '');
+
+    const result = await postsStore.createPost({
+        ...form,
+        content_html: htmlContent,
+        table_of_contents: tableOfContents
+    });
 
     if (result.success) {
         // navigate with Inertia router
