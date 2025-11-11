@@ -8,7 +8,6 @@ use App\Domains\ContentManagement\Posts\Aggregates\PostAggregate;
 use App\Domains\ContentManagement\Categories\Models\Category;
 use App\Domains\ContentManagement\Posts\Models\Comment;
 use App\Domains\ContentManagement\Posts\Models\PostRevision;
-use App\Domains\ContentManagement\Posts\Models\PostType;
 use App\Domains\ContentManagement\Tags\Models\Tag;
 use App\Domains\Security\UserManagement\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,9 +34,9 @@ class Post extends Model implements HasMedia
         'slug',
         'content_markdown',
         'content_html',
+        'table_of_contents',
         'excerpt',
         'status',
-        'post_type_id',
         'author_id',
         'parent_id',
         'featured_image_id',
@@ -64,6 +63,7 @@ class Post extends Model implements HasMedia
         'published_at' => 'datetime',
         'custom_fields' => 'array',
         'structured_data' => 'array',
+        'table_of_contents' => 'array',
         'view_count' => 'integer',
         'comment_count' => 'integer',
         'like_count' => 'integer',
@@ -86,13 +86,6 @@ class Post extends Model implements HasMedia
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    /**
-     * @return BelongsTo<PostType, $this>
-     */
-    public function postType(): BelongsTo
-    {
-        return $this->belongsTo(PostType::class);
-    }
 
     /**
      * @return BelongsTo<Post, $this>
@@ -153,7 +146,6 @@ class Post extends Model implements HasMedia
             contentHtml: $this->content_html,
             status: $this->status,
             authorId: $this->author_id,
-            postTypeId: $this->post_type_id,
             publishedAt: $this->published_at,
             customFields: $this->custom_fields ?? [],
             version: $this->version
@@ -216,16 +208,6 @@ class Post extends Model implements HasMedia
         return $query->where('status', 'draft');
     }
 
-    /**
-     * @param Builder<Post> $query
-     * @return Builder<Post>
-     */
-    public function scopeByType(Builder $query, string $postType): Builder
-    {
-        return $query->whereHas('postType', function ($q) use ($postType) {
-            $q->where('name', $postType);
-        });
-    }
 
     public function getActivitylogOptions(): LogOptions
     {

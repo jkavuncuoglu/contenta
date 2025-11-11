@@ -49,4 +49,66 @@ class TagsController extends Controller
     {
         return Inertia::render('admin/content/tags/Edit', ['id' => $id]);
     }
+
+    /**
+     * Store a newly created tag.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:tags,slug',
+            'description' => 'nullable|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
+        ]);
+
+        // Generate slug if not provided
+        if (empty($validated['slug'])) {
+            $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
+        }
+
+        $tag = Tag::create($validated);
+
+        return redirect()->route('admin.tags.edit', $tag->id)
+            ->with('success', 'Tag created successfully.');
+    }
+
+    /**
+     * Update the specified tag.
+     */
+    public function update(Request $request, int $id)
+    {
+        $tag = Tag::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:tags,slug,' . $id,
+            'description' => 'nullable|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
+        ]);
+
+        // Generate slug if not provided
+        if (empty($validated['slug'])) {
+            $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
+        }
+
+        $tag->update($validated);
+
+        return redirect()->route('admin.tags.edit', $tag->id)
+            ->with('success', 'Tag updated successfully.');
+    }
+
+    /**
+     * Remove the specified tag.
+     */
+    public function destroy(int $id)
+    {
+        $tag = Tag::findOrFail($id);
+        $tag->delete();
+
+        return redirect()->route('admin.tags.index')
+            ->with('success', 'Tag deleted successfully.');
+    }
 }

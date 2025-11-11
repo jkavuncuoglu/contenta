@@ -15,22 +15,31 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::get('/', [PostsController::class, 'index'])->name('index');
     Route::get('/calendar', [PostsController::class, 'calendar'])->name('calendar');
     Route::get('/create', [PostsController::class, 'create'])->name('create');
+    Route::post('/', [PostsController::class, 'store'])->name('store');
     Route::get('/{id}/edit', [PostsController::class, 'edit'])->name('edit');
     Route::get('/{id}', [PostsController::class, 'show'])->name('show');
+    Route::put('/{id}', [PostsController::class, 'update'])->name('update');
+    Route::delete('/{id}', [PostsController::class, 'destroy'])->name('destroy');
 });
 
 // Categories Management
 Route::prefix('categories')->name('categories.')->group(function () {
     Route::get('/', [CategoriesController::class, 'index'])->name('index');
     Route::get('/create', [CategoriesController::class, 'create'])->name('create');
+    Route::post('/', [CategoriesController::class, 'store'])->name('store');
     Route::get('/{id}/edit', [CategoriesController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [CategoriesController::class, 'update'])->name('update');
+    Route::delete('/{id}', [CategoriesController::class, 'destroy'])->name('destroy');
 });
 
 // Tags Management
 Route::prefix('tags')->name('tags.')->group(function () {
     Route::get('/', [TagsController::class, 'index'])->name('index');
     Route::get('/create', [TagsController::class, 'create'])->name('create');
+    Route::post('/', [TagsController::class, 'store'])->name('store');
     Route::get('/{id}/edit', [TagsController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [TagsController::class, 'update'])->name('update');
+    Route::delete('/{id}', [TagsController::class, 'destroy'])->name('destroy');
 });
 
 // Comments Management
