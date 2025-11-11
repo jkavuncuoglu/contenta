@@ -456,7 +456,7 @@ class PluginService
     }
 
     /**
-     * Determine if we're currently in admin context
+     * Determine if we're currently in the admin context
      */
     protected function isAdminContext(): bool
     {
@@ -465,9 +465,6 @@ class PluginService
         }
 
         $request = request();
-        if (!$request) {
-            return false;
-        }
 
         // Check if current route starts with /admin
         return str_starts_with($request->path(), 'admin');

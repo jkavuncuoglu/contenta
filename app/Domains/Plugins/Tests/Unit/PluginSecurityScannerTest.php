@@ -185,16 +185,26 @@ PHP;
 
         $result = $this->scanner->scan($this->testPluginDir);
 
-        $this->assertIsArray($result);
-        $this->assertArrayHasKey('safe', $result);
-        $this->assertArrayHasKey('threats', $result);
-        $this->assertArrayHasKey('warnings', $result);
-        $this->assertArrayHasKey('scanned_files', $result);
-        $this->assertArrayHasKey('scanned_at', $result);
-        $this->assertIsBool($result['safe']);
-        $this->assertIsArray($result['threats']);
-        $this->assertIsArray($result['warnings']);
-        $this->assertIsInt($result['scanned_files']);
-        $this->assertIsString($result['scanned_at']);
+        // Keys presence (canonicalizing ensures order doesn't matter)
+        $this->assertEqualsCanonicalizing(
+            ['safe', 'threats', 'warnings', 'scanned_files', 'scanned_at'],
+            array_keys($result),
+            'Scan result must expose the expected top-level keys.'
+        );
+
+        // Safe plugin should have zero threats and zero warnings
+        $this->assertTrue($result['safe'], 'Expected scan to mark file as safe.');
+        $this->assertSame(0, count($result['threats']), 'Expected no threats for safe sample.');
+        $this->assertSame(0, count($result['warnings']), 'Expected no warnings for safe sample.');
+
+        // Files scanned should equal number of PHP files created (1 here)
+        $this->assertSame(1, $result['scanned_files'], 'Expected exactly one PHP file scanned.');
+
+        // scanned_at should look like an ISO-ish timestamp
+        $this->assertMatchesRegularExpression(
+            '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/',
+            $result['scanned_at'],
+            'scanned_at should be an ISO8601-like timestamp.'
+        );
     }
 }
