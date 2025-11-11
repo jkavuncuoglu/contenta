@@ -76,6 +76,11 @@ const mainNavItems: NavItem[] = [
         icon: 'material-symbols-light:perm-media',
     },
     {
+        title: 'Plugins',
+        href: '/admin/plugins',
+        icon: 'typcn:puzzle',
+    },
+    {
         title: 'Comments',
         href: '/admin/comments',
         icon: 'material-symbols-light:comment',
