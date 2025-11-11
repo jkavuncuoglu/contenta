@@ -20,4 +20,7 @@ return [
 
     // Settings Domain
     App\Domains\Settings\SettingsServiceProvider::class,
+
+    // Plugins Domain
+    App\Domains\Plugins\PluginServiceProvider::class,
 ];
