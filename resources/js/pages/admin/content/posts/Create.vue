@@ -119,17 +119,59 @@
                             </div>
 
                             <!-- Scheduled publish date -->
-                            <div v-if="form.status === 'scheduled'">
-                                <label for="published_at"
-                                       class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Publish Date
-                                </label>
-                                <input
-                                    id="published_at"
-                                    v-model="form.published_at"
-                                    type="datetime-local"
-                                    class="p-2 mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:bg-gray-700 dark:text-white"
-                                />
+                            <div v-if="form.status === 'scheduled'" class="space-y-3">
+                                <div>
+                                    <label for="published_date"
+                                           class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Publish Date
+                                    </label>
+                                    <input
+                                        id="published_date"
+                                        v-model="publishDate"
+                                        type="date"
+                                        class="p-2 mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:bg-gray-700 dark:text-white"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="published_time"
+                                           class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Publish Time
+                                    </label>
+                                    <input
+                                        id="published_time"
+                                        v-model="publishTime"
+                                        type="time"
+                                        step="60"
+                                        class="p-2 mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:bg-gray-700 dark:text-white"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="timezone"
+                                           class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Timezone
+                                    </label>
+                                    <select
+                                        id="timezone"
+                                        v-model="selectedTimezone"
+                                        class="p-2 mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:bg-gray-700 dark:text-white"
+                                    >
+                                        <option value="UTC">UTC</option>
+                                        <option value="America/New_York">Eastern Time (ET)</option>
+                                        <option value="America/Chicago">Central Time (CT)</option>
+                                        <option value="America/Denver">Mountain Time (MT)</option>
+                                        <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                                        <option value="Europe/London">London (GMT)</option>
+                                        <option value="Europe/Paris">Paris (CET)</option>
+                                        <option value="Europe/Istanbul">Istanbul (TRT)</option>
+                                        <option value="Asia/Dubai">Dubai (GST)</option>
+                                        <option value="Asia/Tokyo">Tokyo (JST)</option>
+                                        <option value="Asia/Shanghai">Shanghai (CST)</option>
+                                        <option value="Australia/Sydney">Sydney (AEDT)</option>
+                                    </select>
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                        Time will be converted to UTC for storage
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
@@ -302,6 +344,11 @@ const errors = ref<Record<string, string[]>>({});
 const loading = ref(false);
 const tagInput = ref('');
 
+// Timezone handling for scheduled posts
+const publishDate = ref('');
+const publishTime = ref('');
+const selectedTimezone = ref(Intl.DateTimeFormat().resolvedOptions().timeZone);
+
 const form = reactive<PostForm>({
     title: '',
     slug: '',
@@ -312,6 +359,49 @@ const form = reactive<PostForm>({
     tags: [],
     custom_fields: {}
 });
+
+// Helper function to convert local datetime to UTC
+const convertToUTC = (date: string, time: string, timezone: string): string => {
+    if (!date || !time) return '';
+
+    // Create date string in the selected timezone
+    const dateTimeStr = `${date}T${time}:00`;
+
+    // Parse the date in the selected timezone
+    const localDate = new Date(dateTimeStr);
+
+    // Get timezone offset in minutes
+    const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    });
+
+    const parts = formatter.formatToParts(localDate);
+    const values: Record<string, string> = {};
+    parts.forEach(part => {
+        if (part.type !== 'literal') {
+            values[part.type] = part.value;
+        }
+    });
+
+    // Create date in selected timezone
+    const tzDate = new Date(`${values.year}-${values.month}-${values.day}T${values.hour}:${values.minute}:${values.second}`);
+
+    // Get the time difference
+    const utcDate = new Date(date + 'T' + time);
+    const tzOffset = (tzDate.getTime() - utcDate.getTime());
+
+    // Adjust for timezone
+    const finalDate = new Date(utcDate.getTime() - tzOffset);
+
+    return finalDate.toISOString();
+};
 
 const generateSlug = () => {
     if (!form.slug && form.title) {
@@ -375,10 +465,17 @@ const handleSubmit = async () => {
     // Generate table of contents
     const tableOfContents = generateTOC(form.content_markdown || '');
 
+    // Convert scheduled datetime to UTC if status is scheduled
+    let publishedAtUTC = null;
+    if (form.status === 'scheduled' && publishDate.value && publishTime.value) {
+        publishedAtUTC = convertToUTC(publishDate.value, publishTime.value, selectedTimezone.value);
+    }
+
     const result = await postsStore.createPost({
         ...form,
         content_html: htmlContent,
-        table_of_contents: tableOfContents
+        table_of_contents: tableOfContents,
+        published_at: publishedAtUTC
     });
 
     if (result.success) {

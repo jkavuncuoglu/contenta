@@ -105,6 +105,7 @@ class PluginService
             'author_url' => $metadata['author_url'] ?? null,
             'metadata' => $metadata,
             'entry_point' => $metadata['entry_point'] ?? 'plugin.php',
+            'plugin_type' => $metadata['plugin_type'] ?? Plugin::TYPE_UNIVERSAL,
             'is_verified' => $scanResults['safe'],
             'scanned_at' => now(),
             'scan_results' => $scanResults,
@@ -280,6 +281,7 @@ class PluginService
                 'author_url' => $metadata['author_url'] ?? null,
                 'metadata' => $metadata,
                 'entry_point' => $metadata['entry_point'] ?? 'plugin.php',
+                'plugin_type' => $metadata['plugin_type'] ?? Plugin::TYPE_UNIVERSAL,
                 'is_verified' => $scanResults['safe'],
                 'scanned_at' => now(),
                 'scan_results' => $scanResults,
@@ -350,6 +352,7 @@ class PluginService
                 'version' => $metadata['version'],
                 'author' => $metadata['author'] ?? null,
                 'author_url' => $metadata['author_url'] ?? null,
+                'plugin_type' => $metadata['plugin_type'] ?? Plugin::TYPE_UNIVERSAL,
                 'is_safe' => $scanResults['safe'],
                 'is_duplicate' => $isDuplicate,
                 'scan_results' => $scanResults,
@@ -408,6 +411,7 @@ class PluginService
             'author_url' => $metadata['author_url'] ?? null,
             'metadata' => $metadata,
             'entry_point' => $metadata['entry_point'] ?? 'plugin.php',
+            'plugin_type' => $metadata['plugin_type'] ?? Plugin::TYPE_UNIVERSAL,
             'is_verified' => $scanResults['safe'],
             'is_enabled' => true, // Enable immediately
             'scanned_at' => now(),
@@ -423,14 +427,24 @@ class PluginService
     }
 
     /**
-     * Load all enabled plugins
+     * Load all enabled plugins based on current context
      */
     public function loadEnabledPlugins(): void
     {
         $plugins = $this->getEnabledPlugins();
+        $isAdminContext = $this->isAdminContext();
 
         foreach ($plugins as $plugin) {
             if (!$this->isPluginActive($plugin->slug)) {
+                continue;
+            }
+
+            // Skip plugins that don't match the current context
+            if ($isAdminContext && !$plugin->shouldLoadInAdmin()) {
+                continue;
+            }
+
+            if (!$isAdminContext && !$plugin->shouldLoadInFrontend()) {
                 continue;
             }
 
@@ -439,6 +453,24 @@ class PluginService
                 require_once $entryPoint;
             }
         }
+    }
+
+    /**
+     * Determine if we're currently in admin context
+     */
+    protected function isAdminContext(): bool
+    {
+        if (app()->runningInConsole()) {
+            return false;
+        }
+
+        $request = request();
+        if (!$request) {
+            return false;
+        }
+
+        // Check if current route starts with /admin
+        return str_starts_with($request->path(), 'admin');
     }
 
     /**

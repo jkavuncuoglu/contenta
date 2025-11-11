@@ -11,6 +11,10 @@ class Plugin extends Model
 {
     use HasFactory;
 
+    public const TYPE_FRONTEND = 'frontend';
+    public const TYPE_ADMIN = 'admin';
+    public const TYPE_UNIVERSAL = 'universal';
+
     protected $fillable = [
         'slug',
         'name',
@@ -20,6 +24,7 @@ class Plugin extends Model
         'author_url',
         'metadata',
         'entry_point',
+        'plugin_type',
         'is_enabled',
         'is_verified',
         'scanned_at',
@@ -67,5 +72,45 @@ class Plugin extends Model
 
         return !empty($this->scan_results['threats']) ||
                !empty($this->scan_results['warnings']);
+    }
+
+    /**
+     * Check if plugin should load in frontend context
+     */
+    public function shouldLoadInFrontend(): bool
+    {
+        return in_array($this->plugin_type, [self::TYPE_FRONTEND, self::TYPE_UNIVERSAL]);
+    }
+
+    /**
+     * Check if plugin should load in admin context
+     */
+    public function shouldLoadInAdmin(): bool
+    {
+        return in_array($this->plugin_type, [self::TYPE_ADMIN, self::TYPE_UNIVERSAL]);
+    }
+
+    /**
+     * Check if plugin is frontend only
+     */
+    public function isFrontendOnly(): bool
+    {
+        return $this->plugin_type === self::TYPE_FRONTEND;
+    }
+
+    /**
+     * Check if plugin is admin only
+     */
+    public function isAdminOnly(): bool
+    {
+        return $this->plugin_type === self::TYPE_ADMIN;
+    }
+
+    /**
+     * Check if plugin is universal
+     */
+    public function isUniversal(): bool
+    {
+        return $this->plugin_type === self::TYPE_UNIVERSAL;
     }
 }
