@@ -278,16 +278,30 @@ function getPostClass(status: string): string {
 
 function formatTime(dateTime: string | null): string {
   if (!dateTime) return ''
-  return new Date(dateTime).toLocaleTimeString('en-US', {
+  const date = new Date(dateTime)
+
+  // Get formatted time
+  const formattedTime = date.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true
   })
+
+  // Get timezone abbreviation
+  const timeZoneString = date.toLocaleTimeString('en-US', {
+    timeZoneName: 'short'
+  })
+  const tzAbbr = timeZoneString.split(' ').pop() || ''
+
+  return `${formattedTime} ${tzAbbr}`
 }
 
 function formatDateTime(dateTime: string | null): string {
   if (!dateTime) return ''
-  return new Date(dateTime).toLocaleDateString('en-US', {
+  const date = new Date(dateTime)
+
+  // Get formatted date and time
+  const formattedDate = date.toLocaleDateString('en-US', {
     weekday: 'short',
     year: 'numeric',
     month: 'short',
@@ -295,6 +309,14 @@ function formatDateTime(dateTime: string | null): string {
     hour: 'numeric',
     minute: '2-digit'
   })
+
+  // Get timezone abbreviation
+  const timeZoneString = date.toLocaleTimeString('en-US', {
+    timeZoneName: 'short'
+  })
+  const tzAbbr = timeZoneString.split(' ').pop() || ''
+
+  return `${formattedDate} ${tzAbbr}`
 }
 
 function previousMonth() {

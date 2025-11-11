@@ -58,7 +58,36 @@ class PostsController extends Controller
 
     public function edit(int $id): Response
     {
-        return Inertia::render('admin/content/posts/Edit', ['id' => $id]);
+        $post = Post::with(['author', 'categories', 'tags'])
+            ->findOrFail($id);
+
+        return Inertia::render('admin/content/posts/Edit', [
+            'post' => [
+                'id' => $post->id,
+                'title' => $post->title,
+                'slug' => $post->slug,
+                'content_markdown' => $post->content_markdown,
+                'content_html' => $post->content_html,
+                'excerpt' => $post->excerpt,
+                'status' => $post->status,
+                'published_at' => $post->published_at?->toDateTimeString(),
+                'author_id' => $post->author_id,
+                'author' => $post->author ? [
+                    'id' => $post->author->id,
+                    'name' => $post->author->name ?? $post->author->username,
+                ] : null,
+                'categories' => $post->categories->map(fn($c) => [
+                    'id' => $c->id,
+                    'name' => $c->name,
+                ])->toArray(),
+                'tags' => $post->tags->map(fn($t) => [
+                    'id' => $t->id,
+                    'name' => $t->name,
+                ])->toArray(),
+                'created_at' => $post->created_at->toDateTimeString(),
+                'updated_at' => $post->updated_at->toDateTimeString(),
+            ]
+        ]);
     }
 
     public function show(int $id): Response
@@ -76,8 +105,9 @@ class PostsController extends Controller
             'slug' => 'nullable|string|max:255|unique:posts,slug',
             'content_markdown' => 'nullable|string',
             'content_html' => 'nullable|string',
+            'table_of_contents' => 'nullable|array',
             'excerpt' => 'nullable|string|max:500',
-            'status' => 'required|in:draft,published,scheduled',
+            'status' => 'required|in:draft,published,scheduled,private',
             'published_at' => 'nullable|date',
             'featured_image' => 'nullable|string',
             'meta_title' => 'nullable|string|max:255',
@@ -85,6 +115,7 @@ class PostsController extends Controller
             'custom_fields' => 'nullable|array',
         ]);
 
+        // Set author_id from authenticated user (don't accept from request)
         $validated['author_id'] = Auth::id();
 
         // Generate slug if not provided
@@ -117,18 +148,21 @@ class PostsController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:posts,slug',
+            'slug' => 'nullable|string|max:255|unique:posts,slug,' . $id,
             'content_markdown' => 'nullable|string',
             'content_html' => 'nullable|string',
+            'table_of_contents' => 'nullable|array',
             'excerpt' => 'nullable|string|max:500',
-            'status' => 'required|in:draft,published,scheduled',
+            'status' => 'required|in:draft,published,scheduled,private',
             'published_at' => 'nullable|date',
-            'author_id' => 'required|exists:users,id',
             'featured_image' => 'nullable|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'custom_fields' => 'nullable|array',
         ]);
+
+        // Set author_id from authenticated user (don't accept from request)
+        $validated['author_id'] = Auth::id();
 
         // Generate slug if not provided
         if (empty($validated['slug'])) {

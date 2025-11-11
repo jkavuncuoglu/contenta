@@ -79,6 +79,12 @@
                         v{{ plugin.version }}
                       </span>
 
+                      <!-- Plugin Type Badge -->
+                      <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getPluginTypeBadge(plugin.plugin_type).class]">
+                        <Icon :icon="getPluginTypeBadge(plugin.plugin_type).icon" class="w-3 h-3 mr-1" />
+                        {{ getPluginTypeBadge(plugin.plugin_type).label }}
+                      </span>
+
                       <!-- Show Duplicate badge only for duplicates -->
                       <template v-if="plugin.is_duplicate">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300">
@@ -171,6 +177,13 @@
                   <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
                     v{{ plugin.version }}
                   </span>
+
+                  <!-- Plugin Type Badge -->
+                  <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getPluginTypeBadge(plugin.plugin_type).class]">
+                    <Icon :icon="getPluginTypeBadge(plugin.plugin_type).icon" class="w-3 h-3 mr-1" />
+                    {{ getPluginTypeBadge(plugin.plugin_type).label }}
+                  </span>
+
                   <span
                     v-if="plugin.is_enabled"
                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
@@ -311,6 +324,7 @@ interface InstalledPlugin {
   version: string
   author: string | null
   author_url: string | null
+  plugin_type: 'frontend' | 'admin' | 'universal'
   is_enabled: boolean
   is_verified: boolean
   scanned_at: string | null
@@ -325,6 +339,7 @@ interface UninstalledPlugin {
   version: string
   author: string | null
   author_url: string | null
+  plugin_type: 'frontend' | 'admin' | 'universal'
   is_safe: boolean
   is_duplicate: boolean
   scan_results: ScanResults
@@ -586,5 +601,26 @@ function formatDate(date: string): string {
     day: 'numeric',
     year: 'numeric'
   })
+}
+
+function getPluginTypeBadge(pluginType: 'frontend' | 'admin' | 'universal') {
+  const badges = {
+    frontend: {
+      label: 'Frontend',
+      icon: 'material-symbols-light:web',
+      class: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+    },
+    admin: {
+      label: 'Admin',
+      icon: 'material-symbols-light:shield-person',
+      class: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
+    },
+    universal: {
+      label: 'Universal',
+      icon: 'material-symbols-light:language',
+      class: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+    }
+  }
+  return badges[pluginType] || badges.universal
 }
 </script>

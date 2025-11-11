@@ -63,6 +63,11 @@ const mainNavItems: NavItem[] = [
                 href: tags.index().url,
                 icon: 'material-symbols-light:tag',
             },
+            {
+                title: 'Comments',
+                href: '/admin/comments',
+                icon: 'material-symbols-light:comment',
+            },
         ],
     },
     {
@@ -79,11 +84,6 @@ const mainNavItems: NavItem[] = [
         title: 'Plugins',
         href: '/admin/plugins',
         icon: 'typcn:puzzle',
-    },
-    {
-        title: 'Comments',
-        href: '/admin/comments',
-        icon: 'material-symbols-light:comment',
     },
     {
         title: 'Settings',
