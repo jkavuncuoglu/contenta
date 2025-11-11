@@ -3,15 +3,15 @@
 A modular Laravel 12 + Vue 3 (Inertia.js) application scaffold for content‑centric platforms (CMS / knowledge base / publishing) with opinionated domain separation, rich publishing models, and advanced security (WebAuthn security keys + TOTP two‑factor, recovery codes, roles & permissions).
 
 ## Quick Documentation Links
-- Setup & Local Development: `contenta/documentation/SETUP.md`
-- Features Overview: `contenta/documentation/FEATURES.md`
-- Backend Guide (Laravel): `contenta/documentation/BACKEND.md`
-- Frontend Guide (Vue + Inertia): `contenta/documentation/FRONTEND.md`
-- Security Overview: `contenta/documentation/SECURITY.md`
-- WebAuthn Implementation: `contenta/documentation/WEBAUTHN_IMPLEMENTATION.md`
-- Releases & Forking: `contenta/documentation/RELEASES.md`
-- Contributing Guide: `contenta/documentation/CONTRIBUTING.md`
-- Legal & Risk Notice: `contenta/documentation/LEGAL.md`
+- Setup & Local Development: `documentation/SETUP.md`
+- Features Overview: `documentation/FEATURES.md`
+- Backend Guide (Laravel): `documentation/BACKEND.md`
+- Frontend Guide (Vue + Inertia): `documentation/FRONTEND.md`
+- Security Overview: `documentation/SECURITY.md`
+- WebAuthn Implementation: `documentation/WEBAUTHN_IMPLEMENTATION.md`
+- Releases & Forking: `documentation/RELEASES.md`
+- Contributing Guide: `documentation/CONTRIBUTING.md`
+- Legal & Risk Notice: `documentation/LEGAL.md`
 
 ## 1. Key Features
 - Laravel 12 (PHP 8.4) with Inertia.js (Vue 3 + TypeScript)
