@@ -1,5 +1,7 @@
 # Backend Guide (Laravel)
 
+[← Back: Features](FEATURES.md) • [Read next: Frontend Guide →](FRONTEND.md)
+
 ## Dependencies
 
 - WebAuthn: `laragear/webauthn` (v4.0.1)
@@ -42,3 +44,6 @@ Defined in `routes/webauthn.php` (authenticated):
   php artisan test
 - Clear caches (if needed):
   php artisan optimize:clear
+
+---
+Navigation • [Index](INDEX.md) • [Previous: Features](FEATURES.md) • [Next: Frontend Guide →](FRONTEND.md) • [Main README](../../README.md)

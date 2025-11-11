@@ -1,5 +1,7 @@
 # Releases and Forking
 
+[← Back: User Manual](USER_MANUAL.md) • [Read next: Contributing →](CONTRIBUTING.md)
+
 ## Download a Release
 
 - Download the latest packaged build from Google Drive:
@@ -26,3 +28,6 @@ After download:
 
 - Pull latest changes from upstream
 - Run database migrations and rebuild assets when dependencies change
+
+---
+Navigation • [Index](INDEX.md) • [Previous: User Manual](USER_MANUAL.md) • [Next: Contributing →](CONTRIBUTING.md) • [Main README](../../README.md)

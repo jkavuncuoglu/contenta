@@ -1,5 +1,7 @@
 # Security Overview
 
+[← Back: Frontend Guide](FRONTEND.md) • [Read next: WebAuthn Implementation →](WEBAUTHN_IMPLEMENTATION.md)
+
 ## WebAuthn (Security Keys / U2F)
 
 - Strong second factor using platform or roaming authenticators
@@ -26,3 +28,6 @@ Details: `WEBAUTHN_IMPLEMENTATION.md`
 
 - Prefer private disclosure through maintainers
 - If unavailable, open a security advisory or a private issue
+
+---
+Navigation • [Index](INDEX.md) • [Previous: Frontend](FRONTEND.md) • [Next: WebAuthn Implementation →](WEBAUTHN_IMPLEMENTATION.md) • [Main README](../../README.md)
