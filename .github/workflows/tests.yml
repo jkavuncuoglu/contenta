@@ -8,13 +8,35 @@ on:
     branches:
       - dev
 
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ci:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: contenta
+    env:
+      CI: true
+      DB_CONNECTION: sqlite
+      DB_DATABASE: database/database.sqlite
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Ensure Composer cache dir exists
+        run: mkdir -p ~/.cache/composer
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/composer
+          key: composer-${{ runner.os }}-${{ hashFiles('contenta/composer.lock') }}
+          restore-keys: |
+            composer-${{ runner.os }}-
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -22,17 +44,19 @@ jobs:
           php-version: 8.4
           tools: composer:v2
           coverage: xdebug
+          extensions: mbstring, xml, ctype, fileinfo, curl, dom, sqlite, pdo_sqlite
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20'
           cache: 'npm'
+          cache-dependency-path: contenta/package-lock.json
 
       - name: Install Node Dependencies
         run: npm ci
 
-      - name: Install Dependencies
+      - name: Install PHP Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Copy Environment File
@@ -41,8 +65,22 @@ jobs:
       - name: Generate Application Key
         run: php artisan key:generate
 
+      - name: Prepare SQLite Database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+          php artisan migrate --no-interaction --force
+
       - name: Build Assets
         run: npm run build
 
-      - name: Tests
-        run: ./vendor/bin/pest
+      - name: Run Tests (Pest)
+        run: ./vendor/bin/pest --colors=always --coverage-clover=coverage.xml
+
+      - name: Upload coverage to Codecov (optional)
+        if: ${{ success() && env.CODECOV_TOKEN != '' }}
+        uses: codecov/codecov-action@v3
+        with:
+          files: contenta/coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
