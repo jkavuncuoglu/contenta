@@ -37,7 +37,6 @@ const mainNavItems: NavItem[] = [
         href: posts.calendar().url,
         icon: 'material-symbols-light:insert-text',
         children: [
-
             {
                 title: 'Calendar',
                 href: posts.calendar().url,

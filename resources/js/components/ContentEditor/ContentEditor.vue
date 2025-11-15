@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <!-- Simple textarea-based editor as a stub for the real component -->
-    <MdEditor
-      :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
-      class="w-full min-h-[200px] p-2 border rounded dark:bg-gray-800 dark:text-white"
-    />
-  </div>
+    <div>
+        <!-- Simple textarea-based editor as a stub for the real component -->
+        <MdEditor
+            :model-value="modelValue"
+            @update:model-value="$emit('update:modelValue', $event)"
+            class="min-h-[200px] w-full rounded border p-2 dark:bg-gray-800 dark:text-white"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">

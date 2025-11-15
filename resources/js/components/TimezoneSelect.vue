@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { Label } from '@/components/ui/label';
 import InputError from '@/components/InputError.vue';
+import { Label } from '@/components/ui/label';
+import { computed } from 'vue';
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 
@@ -26,17 +26,17 @@ const allTimezones =
     typeof Intl.supportedValuesOf === 'function'
         ? Intl.supportedValuesOf('timeZone')
         : [
-            'UTC',
-            'Europe/London',
-            'Europe/Istanbul',
-            'America/New_York',
-            'Asia/Tokyo',
-            'Asia/Shanghai',
-            'Europe/Paris',
-            'Europe/Berlin',
-            'America/Los_Angeles',
-            'Australia/Sydney',
-        ];
+              'UTC',
+              'Europe/London',
+              'Europe/Istanbul',
+              'America/New_York',
+              'Asia/Tokyo',
+              'Asia/Shanghai',
+              'Europe/Paris',
+              'Europe/Berlin',
+              'America/Los_Angeles',
+              'Australia/Sydney',
+          ];
 
 const timezoneOptions = allTimezones;
 

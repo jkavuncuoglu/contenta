@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { Icon } from '@iconify/vue';
-import { useClipboard } from '@vueuse/core';
-import { faker } from '@faker-js/faker';
+import InputError from '@/components/InputError.vue';
+import LanguageSelect from '@/components/LanguageSelect.vue';
+import TextLink from '@/components/TextLink.vue';
+import TimezoneSelect from '@/components/TimezoneSelect.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import InputError from '@/components/InputError.vue';
-import TextLink from '@/components/TextLink.vue';
 import AuthBase from '@/layouts/AuthLayout.vue';
-import TimezoneSelect from '@/components/TimezoneSelect.vue';
-import LanguageSelect from '@/components/LanguageSelect.vue';
 import { login } from '@/routes';
-import { Form, Head, useForm } from '@inertiajs/vue3';
-import { router } from '@inertiajs/vue3';
+import { faker } from '@faker-js/faker';
+import { Icon } from '@iconify/vue';
+import { Form, Head, router, useForm } from '@inertiajs/vue3';
+import { useClipboard } from '@vueuse/core';
+import { ref, watch } from 'vue';
 
 const form = useForm({
     first_name: '',
@@ -91,19 +90,23 @@ async function checkUsernameAvailability(username: string) {
     }
     checkingUsername.value = true;
     try {
-        router.get('/check-username', { username }, {
-            preserveState: true,
-            only: [],
-            onSuccess: (page) => {
-                usernameAvailable.value = !!(page.props?.available);
+        router.get(
+            '/check-username',
+            { username },
+            {
+                preserveState: true,
+                only: [],
+                onSuccess: (page) => {
+                    usernameAvailable.value = !!page.props?.available;
+                },
+                onError: () => {
+                    usernameAvailable.value = false;
+                },
+                onFinish: () => {
+                    checkingUsername.value = false;
+                },
             },
-            onError: () => {
-                usernameAvailable.value = false;
-            },
-            onFinish: () => {
-                checkingUsername.value = false;
-            }
-        });
+        );
     } catch {
         usernameAvailable.value = false;
     } finally {
@@ -111,21 +114,25 @@ async function checkUsernameAvailability(username: string) {
     }
 }
 
-watch(() => form.username, (val) => {
-    usernameAvailable.value = false;
-    if (usernameCheckTimeout.value) clearTimeout(usernameCheckTimeout.value);
-    usernameCheckTimeout.value = setTimeout(async () => {
-        await checkUsernameAvailability(val);
-        if (!usernameAvailable.value && val) {
-            // Only append random number if not already present
-            if (!/\d{3,}$/.test(val)) {
-                const randomNum = Math.floor(100 + Math.random() * 900);
-                form.username = `${val}${randomNum}`;
-                await checkUsernameAvailability(form.username);
+watch(
+    () => form.username,
+    (val) => {
+        usernameAvailable.value = false;
+        if (usernameCheckTimeout.value)
+            clearTimeout(usernameCheckTimeout.value);
+        usernameCheckTimeout.value = setTimeout(async () => {
+            await checkUsernameAvailability(val);
+            if (!usernameAvailable.value && val) {
+                // Only append random number if not already present
+                if (!/\d{3,}$/.test(val)) {
+                    const randomNum = Math.floor(100 + Math.random() * 900);
+                    form.username = `${val}${randomNum}`;
+                    await checkUsernameAvailability(form.username);
+                }
             }
-        }
-    }, 400);
-});
+        }, 400);
+    },
+);
 
 const emailAvailable = ref(false);
 const checkingEmail = ref(false);
@@ -138,19 +145,23 @@ async function checkEmailAvailability(email: string) {
     }
     checkingEmail.value = true;
     try {
-        router.get('/check-email', { email }, {
-            preserveState: true,
-            only: [],
-            onSuccess: (page) => {
-                emailAvailable.value = !!(page.props?.emailAvailable);
+        router.get(
+            '/check-email',
+            { email },
+            {
+                preserveState: true,
+                only: [],
+                onSuccess: (page) => {
+                    emailAvailable.value = !!page.props?.emailAvailable;
+                },
+                onError: () => {
+                    emailAvailable.value = false;
+                },
+                onFinish: () => {
+                    checkingEmail.value = false;
+                },
             },
-            onError: () => {
-                emailAvailable.value = false;
-            },
-            onFinish: () => {
-                checkingEmail.value = false;
-            }
-        });
+        );
     } catch {
         emailAvailable.value = false;
     } finally {
@@ -158,13 +169,16 @@ async function checkEmailAvailability(email: string) {
     }
 }
 
-watch(() => form.email, (val) => {
-    emailAvailable.value = false;
-    if (emailCheckTimeout.value) clearTimeout(emailCheckTimeout.value);
-    emailCheckTimeout.value = setTimeout(async () => {
-        await checkEmailAvailability(val);
-    }, 400);
-});
+watch(
+    () => form.email,
+    (val) => {
+        emailAvailable.value = false;
+        if (emailCheckTimeout.value) clearTimeout(emailCheckTimeout.value);
+        emailCheckTimeout.value = setTimeout(async () => {
+            await checkEmailAvailability(val);
+        }, 400);
+    },
+);
 </script>
 
 <template>
@@ -183,7 +197,9 @@ watch(() => form.email, (val) => {
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="first_name">First Name <span class="text-red-600">*</span> </Label>
+                    <Label for="first_name"
+                        >First Name <span class="text-red-600">*</span>
+                    </Label>
                     <Input
                         id="first_name"
                         type="text"
@@ -198,7 +214,9 @@ watch(() => form.email, (val) => {
                     <InputError :message="errors.first_name" />
                 </div>
                 <div class="grid gap-2">
-                    <Label for="last_name">Last Name<span class="text-red-600">*</span></Label>
+                    <Label for="last_name"
+                        >Last Name<span class="text-red-600">*</span></Label
+                    >
                     <Input
                         id="last_name"
                         type="text"
@@ -228,13 +246,21 @@ watch(() => form.email, (val) => {
                         />
                         <Icon
                             v-if="checkingEmail"
-                            icon="material-symbols-light:hourglass-top" class="w-4 h-4 text-white animate-spin absolute right-2 top-1/2 -translate-y-1/2" />
+                            icon="material-symbols-light:hourglass-top"
+                            class="absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2 animate-spin text-white"
+                        />
                         <Icon
                             v-else-if="emailAvailable"
-                            icon="material-symbols-light:check" class="w-4 h-4 text-white absolute right-2 top-1/2 -translate-y-1/2 text-green-600" />
+                            icon="material-symbols-light:check"
+                            class="absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2 text-green-600 text-white"
+                        />
                         <Icon
-                            v-else-if="form.email && !emailAvailable && !checkingEmail"
-                            icon="material-symbols-light:close" class="w-4 h-4 text-white absolute right-2 top-1/2 -translate-y-1/2 text-red-600" />
+                            v-else-if="
+                                form.email && !emailAvailable && !checkingEmail
+                            "
+                            icon="material-symbols-light:close"
+                            class="absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2 text-red-600 text-white"
+                        />
                     </div>
                     <InputError :message="errors.email" />
                 </div>
@@ -252,12 +278,16 @@ watch(() => form.email, (val) => {
                             v-model="form.username"
                             class="pr-10"
                         />
-                            <Icon
-                                v-if="checkingUsername"
-                                icon="material-symbols-light:hourglass-top" class="w-4 h-4 text-white animate-spin absolute right-2 top-1/2 -translate-y-1/2" />
+                        <Icon
+                            v-if="checkingUsername"
+                            icon="material-symbols-light:hourglass-top"
+                            class="absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2 animate-spin text-white"
+                        />
                         <Icon
                             v-else-if="usernameAvailable"
-                            icon="material-symbols-light:check" class="w-4 h-4 text-white absolute right-2 top-1/2 -translate-y-1/2 text-green-600" />
+                            icon="material-symbols-light:check"
+                            class="absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2 text-green-600 text-white"
+                        />
                     </div>
                     <InputError :message="errors.username" />
                 </div>
@@ -287,10 +317,10 @@ watch(() => form.email, (val) => {
                             v-model="form.password"
                             class="pr-32"
                         />
-                        <div class="ml-auto flex space-x-1 absolute right-2">
+                        <div class="absolute right-2 ml-auto flex space-x-1">
                             <button
                                 type="button"
-                                class="text-xs p-2 border-l border-dotted border-color-muted-foreground"
+                                class="border-color-muted-foreground border-l border-dotted p-2 text-xs"
                                 @click="generatePassphrase"
                                 title="Generate secure passphrase"
                             >
@@ -303,7 +333,7 @@ watch(() => form.email, (val) => {
                                 v-if="passwordInputType === 'text'"
                                 type="button"
                                 title="Copy to clipboard"
-                                class="text-xs p-2 border-l border-dotted border-color-muted-foreground text-blue-500"
+                                class="border-color-muted-foreground border-l border-dotted p-2 text-xs text-blue-500"
                                 @click="copyPassphrase"
                             >
                                 <Icon
