@@ -59,6 +59,7 @@ class TagsController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:tags,slug',
             'description' => 'nullable|string',
+            'color' => 'nullable|string|max:7',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
         ]);
@@ -85,6 +86,7 @@ class TagsController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:tags,slug,'.$id,
             'description' => 'nullable|string',
+            'color' => 'nullable|string|max:7',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
         ]);

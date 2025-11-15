@@ -157,4 +157,12 @@ class Category extends Model implements HasMedia
             ->logOnly(['name', 'slug', 'parent_id', 'is_featured'])
             ->logOnlyDirty();
     }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): CategoryFactory
+    {
+        return CategoryFactory::new();
+    }
 }

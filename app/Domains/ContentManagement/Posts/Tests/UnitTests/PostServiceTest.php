@@ -190,4 +190,217 @@ class PostServiceTest extends TestCase
         // Assert
         $this->assertEquals(2, $posts->total());
     }
+
+    public function test_it_can_attach_categories(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['author_id' => $user->id]);
+        $categories = \App\Domains\ContentManagement\Categories\Models\Category::factory()->count(3)->create();
+        $categoryIds = $categories->pluck('id')->toArray();
+
+        // Act
+        $result = $this->service->attachCategories($post, $categoryIds);
+
+        // Assert
+        $this->assertCount(3, $result->categories);
+        $this->assertEquals($categoryIds, $result->categories->pluck('id')->sort()->values()->toArray());
+    }
+
+    public function test_it_can_attach_tags(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['author_id' => $user->id]);
+        $tags = \App\Domains\ContentManagement\Tags\Models\Tag::factory()->count(3)->create();
+        $tagIds = $tags->pluck('id')->toArray();
+
+        // Act
+        $result = $this->service->attachTags($post, $tagIds);
+
+        // Assert
+        $this->assertCount(3, $result->tags);
+        $this->assertEquals($tagIds, $result->tags->pluck('id')->sort()->values()->toArray());
+    }
+
+    public function test_it_can_get_calendar_posts(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $startDate = now()->startOfMonth();
+        $endDate = now()->endOfMonth();
+
+        Post::factory()->create([
+            'author_id' => $user->id,
+            'status' => 'published',
+            'published_at' => now()->addDays(5),
+        ]);
+        Post::factory()->create([
+            'author_id' => $user->id,
+            'status' => 'scheduled',
+            'published_at' => now()->addDays(10),
+        ]);
+        Post::factory()->create([
+            'author_id' => $user->id,
+            'status' => 'published',
+            'published_at' => now()->subMonths(2),
+        ]);
+
+        // Act
+        $posts = $this->service->getCalendarPosts($startDate, $endDate);
+
+        // Assert
+        $this->assertCount(2, $posts);
+    }
+
+    public function test_it_can_get_scheduled_posts(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Post::factory()->count(3)->create([
+            'author_id' => $user->id,
+            'status' => 'scheduled',
+            'published_at' => now()->addDays(1),
+        ]);
+        Post::factory()->create([
+            'author_id' => $user->id,
+            'status' => 'published',
+        ]);
+
+        // Act
+        $posts = $this->service->getScheduledPosts(10);
+
+        // Assert
+        $this->assertEquals(3, $posts->total());
+    }
+
+    public function test_it_can_publish_due_posts(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Post::factory()->count(2)->create([
+            'author_id' => $user->id,
+            'status' => 'scheduled',
+            'published_at' => now()->subHour(),
+        ]);
+        Post::factory()->create([
+            'author_id' => $user->id,
+            'status' => 'scheduled',
+            'published_at' => now()->addDay(),
+        ]);
+
+        // Act
+        $published = $this->service->publishDuePosts();
+
+        // Assert
+        $this->assertCount(2, $published);
+        foreach ($published as $post) {
+            $this->assertEquals('published', $post->status);
+        }
+    }
+
+    public function test_it_can_get_posts_by_status(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Post::factory()->count(4)->create([
+            'author_id' => $user->id,
+            'status' => 'draft',
+        ]);
+        Post::factory()->count(2)->create([
+            'author_id' => $user->id,
+            'status' => 'published',
+        ]);
+
+        // Act
+        $posts = $this->service->getPostsByStatus('draft', 10);
+
+        // Assert
+        $this->assertEquals(4, $posts->total());
+    }
+
+    public function test_it_can_get_archived_posts(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $deletedPost = Post::factory()->create(['author_id' => $user->id]);
+        $deletedPost->delete();
+        Post::factory()->count(2)->create(['author_id' => $user->id]);
+
+        // Act
+        $posts = $this->service->getArchivedPosts(10);
+
+        // Assert
+        $this->assertEquals(1, $posts->total());
+    }
+
+    public function test_it_can_restore_post(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['author_id' => $user->id]);
+        $postId = $post->id;
+        $post->delete();
+
+        // Act
+        $restored = $this->service->restorePost($postId);
+
+        // Assert
+        $this->assertEquals('draft', $restored->status);
+        $this->assertNull($restored->deleted_at);
+    }
+
+    public function test_it_can_change_status(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $post = Post::factory()->create([
+            'author_id' => $user->id,
+            'status' => 'draft',
+        ]);
+
+        // Act
+        $updated = $this->service->changeStatus($post, 'published');
+
+        // Assert
+        $this->assertEquals('published', $updated->status);
+        $this->assertNotNull($updated->published_at);
+    }
+
+    public function test_change_status_sets_published_at_when_publishing(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $post = Post::factory()->create([
+            'author_id' => $user->id,
+            'status' => 'draft',
+            'published_at' => null,
+        ]);
+
+        // Act
+        $updated = $this->service->changeStatus($post, 'published');
+
+        // Assert
+        $this->assertEquals('published', $updated->status);
+        $this->assertNotNull($updated->published_at);
+    }
+
+    public function test_change_status_does_not_override_existing_published_at(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $originalPublishedAt = now()->subDays(5);
+        $post = Post::factory()->create([
+            'author_id' => $user->id,
+            'status' => 'draft',
+            'published_at' => $originalPublishedAt,
+        ]);
+
+        // Act
+        $updated = $this->service->changeStatus($post, 'published');
+
+        // Assert
+        $this->assertEquals('published', $updated->status);
+        $this->assertEquals($originalPublishedAt->timestamp, $updated->published_at->timestamp);
+    }
 }

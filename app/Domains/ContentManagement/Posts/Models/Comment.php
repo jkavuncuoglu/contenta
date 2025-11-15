@@ -103,4 +103,12 @@ class Comment extends Model
             ->logOnly(['content', 'status'])
             ->logOnlyDirty();
     }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): \Database\Factories\CommentFactory
+    {
+        return \Database\Factories\CommentFactory::new();
+    }
 }
