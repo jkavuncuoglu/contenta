@@ -2,12 +2,15 @@
 
 namespace App\Domains\Security\Authentication\Http\Requests;
 
+use App\Domains\Security\Authentication\Rules\StrongPassword;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password as PasswordRule;
-use App\Domains\Security\Authentication\Rules\StrongPassword;
 
 class UserRegistrationRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<int, string|StrongPassword|PasswordRule>>
+     */
     public function rules(): array
     {
         return [
@@ -23,6 +26,9 @@ class UserRegistrationRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import InputError from '@/components/InputError.vue';
-import { X, Plus } from 'lucide-vue-next';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Plus, X } from 'lucide-vue-next';
+import { ref, watch } from 'vue';
 
 interface Props {
     modelValue: Record<string, string>;
@@ -58,14 +58,23 @@ const initializeLinks = () => {
 initializeLinks();
 
 // Watch for external changes to modelValue
-watch(() => props.modelValue, (newValue) => {
-    // Only reinitialize if the structure has changed significantly
-    const currentPlatforms = socialLinks.value.map(l => l.platform).sort().join(',');
-    const newPlatforms = Object.keys(newValue || {}).sort().join(',');
-    if (currentPlatforms !== newPlatforms) {
-        initializeLinks();
-    }
-}, { deep: true });
+watch(
+    () => props.modelValue,
+    (newValue) => {
+        // Only reinitialize if the structure has changed significantly
+        const currentPlatforms = socialLinks.value
+            .map((l) => l.platform)
+            .sort()
+            .join(',');
+        const newPlatforms = Object.keys(newValue || {})
+            .sort()
+            .join(',');
+        if (currentPlatforms !== newPlatforms) {
+            initializeLinks();
+        }
+    },
+    { deep: true },
+);
 
 // Add a new empty social link row
 const addLink = () => {
@@ -78,7 +87,7 @@ const addLink = () => {
 
 // Remove a social link
 const removeLink = (id: string) => {
-    socialLinks.value = socialLinks.value.filter(link => link.id !== id);
+    socialLinks.value = socialLinks.value.filter((link) => link.id !== id);
     // Ensure at least one empty row exists
     if (socialLinks.value.length === 0) {
         addLink();
@@ -89,7 +98,7 @@ const removeLink = (id: string) => {
 // Emit updates to parent
 const emitUpdate = () => {
     const result: Record<string, string> = {};
-    socialLinks.value.forEach(link => {
+    socialLinks.value.forEach((link) => {
         if (link.platform.trim() && link.url.trim()) {
             result[link.platform.trim()] = link.url.trim();
         }
@@ -135,7 +144,7 @@ const commonPlatforms = [
                 @click="addLink"
                 class="h-8"
             >
-                <Plus class="h-4 w-4 mr-1" />
+                <Plus class="mr-1 h-4 w-4" />
                 Add Link
             </Button>
         </div>
@@ -144,9 +153,9 @@ const commonPlatforms = [
             <div
                 v-for="link in socialLinks"
                 :key="link.id"
-                class="flex gap-2 items-start"
+                class="flex items-start gap-2"
             >
-                <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div class="grid flex-1 grid-cols-1 gap-2 md:grid-cols-2">
                     <div class="relative">
                         <Input
                             v-model="link.platform"
@@ -173,7 +182,9 @@ const commonPlatforms = [
                     size="icon"
                     @click="removeLink(link.id)"
                     class="h-10 w-10 shrink-0"
-                    :disabled="socialLinks.length === 1 && !link.platform && !link.url"
+                    :disabled="
+                        socialLinks.length === 1 && !link.platform && !link.url
+                    "
                 >
                     <X class="h-4 w-4" />
                 </Button>
@@ -182,11 +193,16 @@ const commonPlatforms = [
 
         <!-- Datalist for platform suggestions -->
         <datalist id="social-platforms">
-            <option v-for="platform in commonPlatforms" :key="platform" :value="platform" />
+            <option
+                v-for="platform in commonPlatforms"
+                :key="platform"
+                :value="platform"
+            />
         </datalist>
 
         <p class="text-xs text-muted-foreground">
-            Add links to your social media profiles. The platform name can be anything (Twitter/X, LinkedIn, GitHub, etc.).
+            Add links to your social media profiles. The platform name can be
+            anything (Twitter/X, LinkedIn, GitHub, etc.).
         </p>
 
         <InputError :message="error" />

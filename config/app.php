@@ -123,4 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'skip_plugin_loading' => env('APP_SKIP_PLUGIN_LOADING', false),
 ];

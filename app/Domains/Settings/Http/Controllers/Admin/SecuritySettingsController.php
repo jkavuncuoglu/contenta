@@ -47,7 +47,7 @@ class SecuritySettingsController extends Controller
     /**
      * Update the security settings
      */
-    public function update(Request $request)
+    public function update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             // General security
@@ -88,7 +88,7 @@ class SecuritySettingsController extends Controller
             'recaptcha_threshold',
         ]));
 
-        if (!$updated) {
+        if (! $updated) {
             return redirect()->route('admin.settings.security.index')
                 ->with('error', 'Failed to update security settings');
         }
@@ -99,6 +99,8 @@ class SecuritySettingsController extends Controller
 
     /**
      * Update security settings in the database
+     *
+     * @param  array<string, mixed>  $settings
      */
     private function updateSecuritySettings(array $settings): bool
     {

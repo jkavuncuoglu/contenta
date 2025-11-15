@@ -2,8 +2,8 @@
 
 namespace App\Domains\Settings\SiteSettings\Http\Controllers\Admin;
 
-use App\Domains\Settings\Http\Controllers\Admin\SiteSettings;
 use App\Domains\Settings\SiteSettings\Http\Requests\Admin\UpdateSettingsRequest;
+use App\Domains\Settings\SiteSettings\Models\SiteSettings;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -12,8 +12,6 @@ class SettingsController extends Controller
 {
     /**
      * Display the settings page
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -33,21 +31,18 @@ class SettingsController extends Controller
                 'honeypot_field_name' => SiteSettings::get('honeypot_field_name', 'honeypot'),
                 'honeypot_timer_field_name' => SiteSettings::get('honeypot_timer_field_name', 'honeypot_timer'),
                 'honeypot_minimum_time' => SiteSettings::get('honeypot_minimum_time', 3),
-            ]
+            ],
         ];
 
         return Inertia::render('admin/Settings', [
-            'settings' => $settings
+            'settings' => $settings,
         ]);
     }
 
     /**
      * Update settings
-     *
-     * @param UpdateSettingsRequest $request
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateSettingsRequest $request)
+    public function update(UpdateSettingsRequest $request): \Illuminate\Http\RedirectResponse
     {
         $settings = $request->validated();
 
@@ -88,10 +83,8 @@ class SettingsController extends Controller
 
     /**
      * Get available page options for primary landing page
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function getPageOptions()
+    public function getPageOptions(): \Illuminate\Http\JsonResponse
     {
         // This would typically come from your pages module/database
         $pages = [
@@ -104,40 +97,34 @@ class SettingsController extends Controller
 
     /**
      * Display the site settings page
-     *
-     * @return Response
      */
     public function site(): Response
     {
         // You can customize the data returned here
         return Inertia::render('admin/SettingsSite', [
-            'settings' => []
+            'settings' => [],
         ]);
     }
 
     /**
      * Display the security settings page
-     *
-     * @return Response
      */
     public function security(): Response
     {
         // You can customize the data returned here
         return Inertia::render('admin/SettingsSecurity', [
-            'settings' => []
+            'settings' => [],
         ]);
     }
 
     /**
      * Display the users settings page
-     *
-     * @return Response
      */
     public function users(): Response
     {
         // You can customize the data returned here
         return Inertia::render('admin/SettingsUsers', [
-            'settings' => []
+            'settings' => [],
         ]);
     }
 }

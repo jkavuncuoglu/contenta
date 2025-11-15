@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { Label } from '@/components/ui/label';
 import InputError from '@/components/InputError.vue';
+import { Label } from '@/components/ui/label';
+import { computed, ref, watch } from 'vue';
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 
@@ -203,14 +203,14 @@ const timezoneLanguageMap: Record<string, string[]> = {
     'Asia/Bahrain': ['ar-SA', 'en-US'],
 
     // UTC & Other
-    'UTC': ['en-US'],
-    'GMT': ['en-GB', 'en-US'],
+    UTC: ['en-US'],
+    GMT: ['en-GB', 'en-US'],
     'Etc/UTC': ['en-US'],
     'Etc/GMT': ['en-GB', 'en-US'],
 };
 
 const languageOptions = ref<LanguageOption[]>([
-    { label: 'English (US)', value: 'en-US' }
+    { label: 'English (US)', value: 'en-US' },
 ]);
 
 // Update language options based on timezone
@@ -219,8 +219,8 @@ watch(
     (tz) => {
         if (tz) {
             const langCodes = timezoneLanguageMap[tz] || ['en-US'];
-            languageOptions.value = allLanguages.filter(lang =>
-                langCodes.includes(lang.value)
+            languageOptions.value = allLanguages.filter((lang) =>
+                langCodes.includes(lang.value),
             );
             if (!langCodes.includes(props.modelValue)) {
                 emit('update:modelValue', langCodes[0]);

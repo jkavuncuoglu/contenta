@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\ContentManagement\Exceptions;
+namespace App\Domains\ContentManagement\Posts\Exceptions;
 
 use DomainException;
 

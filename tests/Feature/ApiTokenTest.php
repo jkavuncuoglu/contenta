@@ -1,11 +1,19 @@
 <?php
 
-use App\Models\User;
+use App\Domains\Security\UserManagement\Models\User;
+use Spatie\Permission\Models\Permission;
+
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\assertDatabaseHas;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
+
+    // Create and assign the required permission with the 'web' guard
+    $permission = Permission::firstOrCreate([
+        'name' => 'api-tokens.use',
+        'guard_name' => 'web',
+    ]);
+    $this->user->givePermissionTo($permission);
 });
 
 test('user can view api tokens page', function () {
@@ -125,8 +133,8 @@ test('token with read ability can access read endpoints', function () {
     $this->withHeaders([
         'Authorization' => "Bearer {$token}",
     ])
-    ->get('/api/posts')
-    ->assertOk();
+        ->get('/api/posts')
+        ->assertOk();
 });
 
 test('token with read ability cannot access write endpoints', function () {
@@ -135,8 +143,8 @@ test('token with read ability cannot access write endpoints', function () {
     $this->withHeaders([
         'Authorization' => "Bearer {$token}",
     ])
-    ->post('/api/posts')
-    ->assertForbidden();
+        ->post('/api/posts')
+        ->assertForbidden();
 });
 
 test('token with delete ability can access delete endpoints', function () {
@@ -145,8 +153,8 @@ test('token with delete ability can access delete endpoints', function () {
     $this->withHeaders([
         'Authorization' => "Bearer {$token}",
     ])
-    ->delete('/api/posts/1')
-    ->assertOk();
+        ->delete('/api/posts/1')
+        ->assertOk();
 });
 
 test('full access token can access all endpoints', function () {
@@ -167,4 +175,3 @@ test('full access token can access all endpoints', function () {
         ->delete('/api/posts/1')
         ->assertOk();
 });
-

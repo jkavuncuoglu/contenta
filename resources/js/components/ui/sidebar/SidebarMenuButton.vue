@@ -19,7 +19,8 @@ const props = withDefaults(defineProps<SidebarMenuButtonProps & {
 const { isMobile, state } = useSidebar()
 
 const delegatedProps = computed(() => {
-  const { tooltip, ...delegated } = props
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { tooltip: _tooltip, ...delegated } = props
   return delegated
 })
 </script>

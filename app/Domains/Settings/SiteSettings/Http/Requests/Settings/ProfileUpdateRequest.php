@@ -24,10 +24,10 @@ class ProfileUpdateRequest extends FormRequest
                 // If it's a file, validate it as an image
                 if ($this->hasFile('avatar')) {
                     $file = $this->file('avatar');
-                    if (!$file->isValid()) {
+                    if (! $file->isValid()) {
                         $fail('The avatar file is invalid.');
                     }
-                    if (!in_array($file->getMimeType(), ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])) {
+                    if (! in_array($file->getMimeType(), ['image/jpeg', 'image/png', 'image/gif', 'image/webp'])) {
                         $fail('The avatar must be an image (jpeg, png, gif, webp).');
                     }
                     if ($file->getSize() > 5 * 1024 * 1024) { // 5MB
@@ -35,8 +35,8 @@ class ProfileUpdateRequest extends FormRequest
                     }
                 }
                 // If it's a string, validate it as a URL
-                elseif (is_string($value) && !empty($value)) {
-                    if (!filter_var($value, FILTER_VALIDATE_URL)) {
+                elseif (is_string($value) && ! empty($value)) {
+                    if (! filter_var($value, FILTER_VALIDATE_URL)) {
                         $fail('The avatar must be a valid URL.');
                     }
                 }

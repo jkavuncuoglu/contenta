@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class MediaServiceProviderTest extends TestCase
 {
-    
     public function test_it_registers_media_service_contract(): void
     {
         // Act
@@ -20,7 +19,6 @@ class MediaServiceProviderTest extends TestCase
         $this->assertInstanceOf(MediaService::class, $service);
     }
 
-    
     public function test_it_registers_media_service_as_singleton(): void
     {
         // Act

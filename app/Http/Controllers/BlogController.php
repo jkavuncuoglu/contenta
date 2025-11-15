@@ -17,7 +17,7 @@ class BlogController extends Controller
      */
     public function index(Request $request): Response
     {
-        $posts = Post::with(['author', 'postType'])
+        $posts = Post::with(['author'])
             ->where('status', 'published')
             ->orderBy('published_at', 'desc')
             ->paginate(10);
@@ -37,7 +37,7 @@ class BlogController extends Controller
      */
     public function show(string $slug): Response
     {
-        $post = Post::with(['author', 'postType', 'comments' => function ($query) {
+        $post = Post::with(['author', 'comments' => function ($query) {
             $query->where('status', 'approved')->orderBy('created_at', 'asc');
         }])
             ->where('slug', $slug)

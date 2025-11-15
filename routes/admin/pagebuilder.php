@@ -2,8 +2,8 @@
 
 use App\Domains\PageBuilder\Http\Controllers\Admin\BlockController;
 use App\Domains\PageBuilder\Http\Controllers\Admin\LayoutController;
-use App\Domains\PageBuilder\Http\Controllers\Admin\PageController;
 use App\Domains\PageBuilder\Http\Controllers\Admin\PageBuilderController;
+use App\Domains\PageBuilder\Http\Controllers\Admin\PageController;
 use App\Domains\PageBuilder\Http\Controllers\Admin\PageRevisionController;
 use Illuminate\Support\Facades\Route;
 

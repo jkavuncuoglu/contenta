@@ -9,8 +9,8 @@ import {
 import { logout } from '@/routes';
 import settings from '@/routes/user/settings';
 import type { User } from '@/types';
-import { Link, router } from '@inertiajs/vue3';
 import { Icon } from '@iconify/vue';
+import { Link, router } from '@inertiajs/vue3';
 
 interface Props {
     user: User;
@@ -32,8 +32,16 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="settings.profile.edit()" prefetch as="button">
-                <Icon icon="material-symbols-light:manage-accounts" class="mr-2 h-6 w-6" />
+            <Link
+                class="block w-full"
+                :href="settings.profile.edit()"
+                prefetch
+                as="button"
+            >
+                <Icon
+                    icon="material-symbols-light:manage-accounts"
+                    class="mr-2 h-6 w-6"
+                />
                 Settings
             </Link>
         </DropdownMenuItem>

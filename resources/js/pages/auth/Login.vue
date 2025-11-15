@@ -9,8 +9,8 @@ import { Label } from '@/components/ui/label';
 import AuthBase from '@/layouts/AuthLayout.vue';
 import { register } from '@/routes';
 import { request } from '@/routes/password';
-import { Head, useForm } from '@inertiajs/vue3';
 import { Icon } from '@iconify/vue';
+import { Head, useForm } from '@inertiajs/vue3';
 
 defineProps<{
     status?: string;
@@ -44,10 +44,7 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <form
-            @submit.prevent="submit"
-            class="flex flex-col gap-6"
-        >
+        <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="grid gap-2">
                     <Label for="email">Email address</Label>
@@ -92,7 +89,12 @@ const submit = () => {
 
                 <div class="flex items-center justify-between">
                     <Label for="remember" class="flex items-center space-x-3">
-                        <Checkbox id="remember" name="remember" v-model="form.remember" :tabindex="3" />
+                        <Checkbox
+                            id="remember"
+                            name="remember"
+                            v-model="form.remember"
+                            :tabindex="3"
+                        />
                         <span>Remember me</span>
                     </Label>
                 </div>

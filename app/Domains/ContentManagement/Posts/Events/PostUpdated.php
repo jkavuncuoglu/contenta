@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\ContentManagement\Events;
+namespace App\Domains\ContentManagement\Posts\Events;
 
 readonly class PostUpdated
 {

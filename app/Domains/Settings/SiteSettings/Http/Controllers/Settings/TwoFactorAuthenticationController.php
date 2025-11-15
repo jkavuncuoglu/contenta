@@ -9,7 +9,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use OTPHP\TOTP;
@@ -38,7 +37,7 @@ class TwoFactorAuthenticationController extends Controller
 
             if ($user->hasTwoFactorEnabled()) {
                 return response()->json([
-                    'message' => 'Two-Factor Authentication is already enabled.'
+                    'message' => 'Two-Factor Authentication is already enabled.',
                 ], 409);
             }
 
@@ -58,7 +57,7 @@ class TwoFactorAuthenticationController extends Controller
 
             // Generate QR code
             $qrCode = new QrCode($totp->getProvisioningUri());
-            $writer = new PngWriter();
+            $writer = new PngWriter;
             $qrCodeData = base64_encode($writer->write($qrCode)->getString());
 
             return response()->json([
@@ -68,7 +67,7 @@ class TwoFactorAuthenticationController extends Controller
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Failed to generate setup data.',
-                'errors' => [$e->getMessage()]
+                'errors' => [$e->getMessage()],
             ], 500);
         }
     }
@@ -83,7 +82,7 @@ class TwoFactorAuthenticationController extends Controller
 
             if ($user->hasTwoFactorEnabled()) {
                 return response()->json([
-                    'message' => 'Two-Factor Authentication is already enabled.'
+                    'message' => 'Two-Factor Authentication is already enabled.',
                 ], 409);
             }
 
@@ -94,21 +93,21 @@ class TwoFactorAuthenticationController extends Controller
             $code = $request->input('code');
             $secret = $user->two_factor_secret ? decrypt($user->two_factor_secret) : null;
 
-            if (!$secret) {
+            if (! $secret) {
                 return response()->json([
                     'success' => false,
                     'message' => 'No setup data found. Please start the setup process.',
-                    'errors' => ['No setup data found.']
+                    'errors' => ['No setup data found.'],
                 ], 422);
             }
 
             // Verify the code
             $totp = TOTP::create($secret);
-            if (!$totp->verify($code)) {
+            if (! $totp->verify($code)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Invalid authentication code.',
-                    'errors' => ['Invalid authentication code.']
+                    'errors' => ['Invalid authentication code.'],
                 ], 422);
             }
 
@@ -134,7 +133,7 @@ class TwoFactorAuthenticationController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to enable Two-Factor Authentication.',
-                'errors' => [$e->getMessage()]
+                'errors' => [$e->getMessage()],
             ], 500);
         }
     }
@@ -157,13 +156,13 @@ class TwoFactorAuthenticationController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Two-Factor Authentication disabled successfully.'
+                'message' => 'Two-Factor Authentication disabled successfully.',
             ]);
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to disable Two-Factor Authentication.',
-                'errors' => [$e->getMessage()]
+                'errors' => [$e->getMessage()],
             ], 500);
         }
     }
@@ -176,17 +175,17 @@ class TwoFactorAuthenticationController extends Controller
         try {
             $user = $request->user();
 
-            if (!$user->hasTwoFactorEnabled()) {
+            if (! $user->hasTwoFactorEnabled()) {
                 return response()->json([
                     'message' => 'Two-Factor Authentication is not enabled.',
-                    'errors' => ['Two-Factor Authentication is not enabled.']
+                    'errors' => ['Two-Factor Authentication is not enabled.'],
                 ], 422);
             }
 
             $hasViewed = $user->hasViewedRecoveryCodes();
             $codes = [];
 
-            if (!$hasViewed) {
+            if (! $hasViewed) {
                 $codes = $user->two_factor_recovery_codes
                     ? json_decode(decrypt($user->two_factor_recovery_codes), true) ?? []
                     : [];
@@ -203,7 +202,7 @@ class TwoFactorAuthenticationController extends Controller
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Failed to retrieve recovery codes.',
-                'errors' => [$e->getMessage()]
+                'errors' => [$e->getMessage()],
             ], 500);
         }
     }
@@ -215,7 +214,7 @@ class TwoFactorAuthenticationController extends Controller
     {
         $user = $request->user();
 
-        if (!$user->hasTwoFactorEnabled()) {
+        if (! $user->hasTwoFactorEnabled()) {
             abort(422, 'Two-Factor Authentication is not enabled.');
         }
 
@@ -227,13 +226,13 @@ class TwoFactorAuthenticationController extends Controller
             ? json_decode(decrypt($user->two_factor_recovery_codes), true) ?? []
             : [];
 
-        $content = "Recovery Codes for " . config('app.name') . "\n";
-        $content .= "Generated on: " . now()->format('Y-m-d H:i:s') . "\n";
-        $content .= "User: " . $user->email . "\n\n";
+        $content = 'Recovery Codes for '.config('app.name')."\n";
+        $content .= 'Generated on: '.now()->format('Y-m-d H:i:s')."\n";
+        $content .= 'User: '.$user->email."\n\n";
         $content .= "Keep these codes safe. Each code can only be used once.\n\n";
 
         foreach ($recoveryCodes as $i => $code) {
-            $content .= ($i + 1) . '. ' . $code . "\n";
+            $content .= ($i + 1).'. '.$code."\n";
         }
 
         // Mark as viewed after offering download
@@ -241,7 +240,7 @@ class TwoFactorAuthenticationController extends Controller
 
         return response($content, 200, [
             'Content-Type' => 'text/plain',
-            'Content-Disposition' => 'attachment; filename="recovery-codes-' . now()->format('Y-m-d') . '.txt"'
+            'Content-Disposition' => 'attachment; filename="recovery-codes-'.now()->format('Y-m-d').'.txt"',
         ]);
     }
 
@@ -262,30 +261,30 @@ class TwoFactorAuthenticationController extends Controller
             $code = $request->input('code');
 
             // Verify password
-            if (!Hash::check($password, $user->password)) {
+            if (! Hash::check($password, $user->password)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Invalid password.',
-                    'errors' => ['Invalid password.']
+                    'errors' => ['Invalid password.'],
                 ], 422);
             }
 
             // Verify 2FA code
             $secret = $user->two_factor_secret ? decrypt($user->two_factor_secret) : null;
-            if (!$secret) {
+            if (! $secret) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Two-Factor Authentication is not properly configured.',
-                    'errors' => ['Two-Factor Authentication is not properly configured.']
+                    'errors' => ['Two-Factor Authentication is not properly configured.'],
                 ], 422);
             }
 
             $totp = TOTP::create($secret);
-            if (!$totp->verify($code)) {
+            if (! $totp->verify($code)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Invalid authentication code.',
-                    'errors' => ['Invalid authentication code.']
+                    'errors' => ['Invalid authentication code.'],
                 ], 422);
             }
 
@@ -297,13 +296,13 @@ class TwoFactorAuthenticationController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Regeneration email sent. Check your inbox to confirm.'
+                'message' => 'Regeneration email sent. Check your inbox to confirm.',
             ]);
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to request regeneration.',
-                'errors' => [$e->getMessage()]
+                'errors' => [$e->getMessage()],
             ], 500);
         }
     }
@@ -316,22 +315,22 @@ class TwoFactorAuthenticationController extends Controller
         try {
             $token = $request->query('token');
 
-            if (!$token) {
+            if (! $token) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Regeneration token is required.',
-                    'errors' => ['Regeneration token is required.']
+                    'errors' => ['Regeneration token is required.'],
                 ], 422);
             }
 
             $user = $request->user();
 
             // Validate token
-            if (!$user->validateRecoveryCodesRegenerationToken($token)) {
+            if (! $user->validateRecoveryCodesRegenerationToken($token)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Invalid or expired regeneration token.',
-                    'errors' => ['Invalid or expired regeneration token.']
+                    'errors' => ['Invalid or expired regeneration token.'],
                 ], 422);
             }
 
@@ -352,13 +351,13 @@ class TwoFactorAuthenticationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Recovery codes regenerated successfully.',
-                'recovery_codes' => $newRecoveryCodes
+                'recovery_codes' => $newRecoveryCodes,
             ]);
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to confirm regeneration.',
-                'errors' => [$e->getMessage()]
+                'errors' => [$e->getMessage()],
             ], 500);
         }
     }

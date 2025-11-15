@@ -145,7 +145,7 @@ class MenuItemController extends Controller
         }
 
         return response()->json([
-            'message' => count($createdItems) . ' items added successfully',
+            'message' => count($createdItems).' items added successfully',
             'items' => $createdItems,
         ], 201);
     }

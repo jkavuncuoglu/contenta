@@ -2,38 +2,53 @@
 
 namespace App\Domains\Security\UserManagement\Resources;
 
+use App\Domains\Security\UserManagement\Models\User;
+use App\Domains\Security\UserManagement\Models\UserEmail;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Domains$1$2;
 
+/**
+ * @mixin User
+ */
 class UserResource extends JsonResource
 {
+    /**
+     * @param  Request  $request
+     * @return array<string, mixed>
+     */
     public function toArray($request): array
     {
+        /** @var User $user */
+        $user = $this->resource;
+
         $primaryEmail = $this->getPrimaryEmail();
 
         return [
-            'id' => $this->id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'username' => $this->username,
-            'email' => $this->email,
-            'primary_email' => $primaryEmail->email,
-            'primary_email_verified_at' => $primaryEmail->verified_at,
-            'bio' => $this->bio,
-            'avatar' => $this->avatar,
-            'timezone' => $this->timezone,
-            'language' => $this->language,
-            'preferences' => $this->preferences,
-            'social_links' => $this->social_links,
-            'roles' => $this->getRoleNames()->toArray() || [],
-            'permissions' => $this->getAllPermissions()->pluck('name')->toArray() || [],
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'username' => $user->username,
+            'email' => $user->email,
+            'primary_email' => $primaryEmail?->email,
+            'primary_email_verified_at' => $primaryEmail?->verified_at,
+            'bio' => $user->bio,
+            'avatar' => $user->avatar,
+            'timezone' => $user->timezone,
+            'language' => $user->language,
+            'preferences' => $user->preferences,
+            'social_links' => $user->social_links,
+            'roles' => $user->getRoleNames()->toArray(),
+            'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
         ];
     }
 
-    private function getPrimaryEmail(): UserEmail
+    private function getPrimaryEmail(): ?UserEmail
     {
-        return $this->emails()->where('is_primary', true)->first();
+        /** @var User $user */
+        $user = $this->resource;
+
+        return $user->emails()->where('is_primary', true)->first();
     }
 }

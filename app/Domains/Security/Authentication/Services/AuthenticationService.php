@@ -2,6 +2,14 @@
 
 namespace App\Domains\Security\Authentication\Services;
 
+use App\Domains\Security\Authentication\Inputs\AuthenticationChangePasswordInput;
+use App\Domains\Security\Authentication\Inputs\AuthenticationLoginInput;
+use App\Domains\Security\Authentication\Inputs\AuthenticationRegisterUserEmailInput;
+use App\Domains\Security\Authentication\Inputs\AuthenticationRegisterUserInput;
+use App\Domains\Security\Authentication\Mail\ResetPasswordEmail;
+use App\Domains\Security\UserManagement\Models\User;
+use App\Domains\Security\UserManagement\Models\UserEmail;
+use App\Domains\Security\UserManagement\Resources\UserResource;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
@@ -10,20 +18,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
-use ResetPasswordEmail;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
-use App\Domains$1$2;
 
 class AuthenticationService implements AuthenticationServiceContract
 {
     public function register(AuthenticationRegisterUserInput $input): JsonResponse
     {
-        $user = User::create($input);
+        $user = User::create($input->toArray());
 
         $userEmailInput = new AuthenticationRegisterUserEmailInput([
             'user_id' => $user->id,
@@ -31,9 +31,9 @@ class AuthenticationService implements AuthenticationServiceContract
             'is_primary' => true,
         ]);
 
-        $userEmail = UserEmail::create($userEmailInput);
+        $userEmail = UserEmail::create($userEmailInput->toArray());
 
-        $verificationCode = $userEmail->generateEmailVerificationCode();
+        $verificationCode = $this->generateEmailVerificationCode($userEmail);
 
         event(new Registered($user));
 
@@ -48,23 +48,24 @@ class AuthenticationService implements AuthenticationServiceContract
 
     public function login(AuthenticationLoginInput $input): JsonResponse
     {
-        $user = User::getByUserEmail($input->email);
+        $userEmail = UserEmail::where('email', $input->email)->firstOrFail();
+        $user = $userEmail->user;
 
-        if (!$user->is_active) {
+        if (! $user->is_active) {
             throw ValidationException::withMessages([
                 'error' => 'Invalid credentials.',
             ]);
         }
 
-        if (!Hash::check($input->password, $user->password)) {
+        if (! Hash::check($input->password, $user->password)) {
             throw ValidationException::withMessages([
-                'error' => 'Invalid credentials.'
+                'error' => 'Invalid credentials.',
             ]);
         }
 
         $user->update([
             'last_login_at' => now(),
-            'last_login_ip' => $input->id,
+            'last_login_ip' => $input->ip,
         ]);
 
         return response()->json([
@@ -81,9 +82,10 @@ class AuthenticationService implements AuthenticationServiceContract
      */
     public function changePassword(AuthenticationChangePasswordInput $input): JsonResponse
     {
-        $user = User::getByUserEmail($input->email);
+        $userEmail = UserEmail::where('email', $input->email)->firstOrFail();
+        $user = $userEmail->user;
 
-        if (!Hash::check($input->currentPassword, $user->password)) {
+        if (! Hash::check($input->currentPassword, $user->password)) {
             throw ValidationException::withMessages([
                 'error' => 'Invalid current password.',
             ]);
@@ -127,9 +129,9 @@ class AuthenticationService implements AuthenticationServiceContract
             ]);
         }
 
-        $resetUrl = rtrim((string) $fronendBase, '/') . '/reset-password'
-            . '?token=' . $token
-            . '&email=' . urlencode($user->email);
+        $resetUrl = rtrim((string) $fronendBase, '/').'/reset-password'
+            .'?token='.$token
+            .'&email='.urlencode($user->email);
 
         if (Mail::to($email)->send(
             new ResetPasswordEmail(
@@ -157,7 +159,7 @@ class AuthenticationService implements AuthenticationServiceContract
         $user = $this->resolveActiveUserByEmailOrFail($input->email);
 
         $user->forceFill([
-            'password' => Hash::make($input->password),
+            'password' => Hash::make($input->newPassword),
             'remember_token' => null,
         ])->save();
 
@@ -172,39 +174,30 @@ class AuthenticationService implements AuthenticationServiceContract
 
     private function resolveActiveUserByEmailOrFail(string $email): User
     {
-        $user = User::getByUserEmail($email);
+        $userEmail = UserEmail::where('email', $email)->first();
 
-        if (empty($user)) {
+        if (empty($userEmail)) {
             throw ValidationException::withMessages([
                 'error' => 'No user found with that email address.',
             ]);
         }
 
-        if (!$user->is_active) {
+        $user = $userEmail->user;
+
+        if (! $user->is_active) {
             throw ValidationException::withMessages([
                 'error' => 'Invalid credentials.',
             ]);
         }
 
-        if (empty($user->email)) {
-            $userPrimaryEmail = $user->emails()->where('is_primary', true)->first();
-
-            if (empty($userPrimaryEmail)) {
-                $userPrimaryEmail = $user->emails()->first();
-
-                if (empty($userPrimaryEmail)) {
-
-                    throw ValidationException::withMessages([
-                        'error' => 'No valid email address found for this user.',
-                    ]);
-                }
-            }
-
-            $user->email = $userPrimaryEmail->email;
-            $user->save();
-        }
-
         return $user;
     }
 
+    private function generateEmailVerificationCode(UserEmail $userEmail): string
+    {
+        $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $userEmail->update(['email_verification_code' => $code]);
+
+        return $code;
+    }
 }

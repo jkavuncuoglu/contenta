@@ -2,7 +2,7 @@
 
 namespace App\Domains\Settings\SiteSettings\Http\Middleware;
 
-use App\Domain\Settings\Support\Facades\Settings;
+use App\Domains\Settings\SiteSettings\Models\SiteSettings;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -11,7 +11,7 @@ class DynamicRoutePrefix
     /**
      * The routes that should be handled by this middleware.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $routes = [
         'blog',
@@ -24,21 +24,17 @@ class DynamicRoutePrefix
 
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         $path = $request->path();
         $segments = explode('/', $path);
-        $firstSegment = $segments[0] ?? '';
+        $firstSegment = $segments[0];
 
         // Check if the first segment is one of our blog routes
         if (in_array($firstSegment, $this->routes)) {
             // Get the blog slug from settings
-            $blogSlug = Settings::get('blog_slug', 'blog');
+            $blogSlug = SiteSettings::get('blog_slug', 'blog');
 
             // Only rewrite if the slug is different
             if ($blogSlug !== 'blog') {
@@ -75,7 +71,7 @@ class DynamicRoutePrefix
         // The API path is typically: api/v1/blog/...
         // We need to check the third segment (index 2)
         if (count($segments) >= 3 && in_array($segments[2], $this->routes)) {
-            $blogSlug = Settings::get('blog_slug', 'blog');
+            $blogSlug = SiteSettings::get('blog_slug', 'blog');
 
             // Only rewrite if the slug is different
             if ($blogSlug !== 'blog') {
@@ -83,7 +79,7 @@ class DynamicRoutePrefix
                 $newPath = implode('/', $segments);
 
                 // Update the request path
-                $request->server->set('REQUEST_URI', '/' . $newPath);
+                $request->server->set('REQUEST_URI', '/'.$newPath);
                 $request->initialize(
                     $request->query->all(),
                     $request->all(),

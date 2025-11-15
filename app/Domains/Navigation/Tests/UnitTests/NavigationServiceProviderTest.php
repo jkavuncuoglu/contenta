@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class NavigationServiceProviderTest extends TestCase
 {
-    
     public function test_it_registers_menu_service_contract(): void
     {
         // Act
@@ -20,7 +19,6 @@ class NavigationServiceProviderTest extends TestCase
         $this->assertInstanceOf(MenuService::class, $service);
     }
 
-    
     public function test_it_registers_menu_service_as_singleton(): void
     {
         // Act

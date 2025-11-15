@@ -23,7 +23,9 @@ const editingCredentialId = ref<string | null>(null);
 const editingCredentialName = ref('');
 
 const handleRegister = async () => {
-    const result = await registerCredential(newCredentialName.value || 'Security Key');
+    const result = await registerCredential(
+        newCredentialName.value || 'Security Key',
+    );
     if (result.success) {
         showRegisterDialog.value = false;
         newCredentialName.value = '';
@@ -44,7 +46,11 @@ const handleUpdate = async (id: string) => {
 };
 
 const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to remove this security key? This action cannot be undone.')) {
+    if (
+        confirm(
+            'Are you sure you want to remove this security key? This action cannot be undone.',
+        )
+    ) {
         await deleteCredential(id);
     }
 };
@@ -73,21 +79,21 @@ onMounted(() => {
             <ul class="list-disc space-y-1 pl-4">
                 <li v-for="err in errors" :key="err">{{ err }}</li>
             </ul>
-            <Button
-                size="sm"
-                variant="ghost"
-                class="mt-2"
-                @click="clearErrors"
-            >
+            <Button size="sm" variant="ghost" class="mt-2" @click="clearErrors">
                 Dismiss
             </Button>
         </div>
 
         <p class="text-sm text-muted-foreground">
-            Security keys provide the strongest form of two-factor authentication. Use a physical device like a YubiKey or your device's built-in authenticator (Face ID, Touch ID, Windows Hello).
+            Security keys provide the strongest form of two-factor
+            authentication. Use a physical device like a YubiKey or your
+            device's built-in authenticator (Face ID, Touch ID, Windows Hello).
         </p>
 
-        <div v-if="credentials.length === 0 && !isLoading" class="rounded border border-dashed p-6 text-center">
+        <div
+            v-if="credentials.length === 0 && !isLoading"
+            class="rounded border border-dashed p-6 text-center"
+        >
             <Icon
                 icon="material-symbols-light:key-outline"
                 class="mx-auto mb-2 h-12 w-12 text-muted-foreground"
@@ -104,7 +110,10 @@ onMounted(() => {
         <div v-else class="space-y-4">
             <div class="flex items-center justify-between">
                 <Badge variant="default">
-                    {{ credentials.length }} key{{ credentials.length !== 1 ? 's' : '' }} registered
+                    {{ credentials.length }} key{{
+                        credentials.length !== 1 ? 's' : ''
+                    }}
+                    registered
                 </Badge>
                 <Button
                     size="sm"
@@ -123,7 +132,10 @@ onMounted(() => {
                     class="flex items-center justify-between rounded border p-4"
                 >
                     <div class="flex-1 space-y-1">
-                        <div v-if="editingCredentialId === credential.id" class="flex items-center gap-2">
+                        <div
+                            v-if="editingCredentialId === credential.id"
+                            class="flex items-center gap-2"
+                        >
                             <Input
                                 v-model="editingCredentialName"
                                 class="max-w-xs"
@@ -150,23 +162,37 @@ onMounted(() => {
                                 icon="material-symbols-light:key"
                                 class="h-5 w-5 text-muted-foreground"
                             />
-                            <span class="font-medium">{{ credential.name }}</span>
+                            <span class="font-medium">{{
+                                credential.name
+                            }}</span>
                         </div>
                         <div class="text-xs text-muted-foreground">
-                            <span>Added {{ formatDate(credential.created_at) }}</span>
+                            <span
+                                >Added
+                                {{ formatDate(credential.created_at) }}</span
+                            >
                             <span class="mx-2">•</span>
-                            <span>Last used {{ formatDate(credential.last_used_at) }}</span>
+                            <span
+                                >Last used
+                                {{ formatDate(credential.last_used_at) }}</span
+                            >
                         </div>
                     </div>
 
-                    <div v-if="editingCredentialId !== credential.id" class="flex gap-2">
+                    <div
+                        v-if="editingCredentialId !== credential.id"
+                        class="flex gap-2"
+                    >
                         <Button
                             size="sm"
                             variant="ghost"
                             @click="startEditing(credential)"
                             :disabled="isLoading"
                         >
-                            <Icon icon="material-symbols-light:edit" class="h-4 w-4" />
+                            <Icon
+                                icon="material-symbols-light:edit"
+                                class="h-4 w-4"
+                            />
                         </Button>
                         <Button
                             size="sm"
@@ -174,7 +200,10 @@ onMounted(() => {
                             @click="handleDelete(credential.id)"
                             :disabled="isLoading"
                         >
-                            <Icon icon="material-symbols-light:delete" class="h-4 w-4 text-destructive" />
+                            <Icon
+                                icon="material-symbols-light:delete"
+                                class="h-4 w-4 text-destructive"
+                            />
                         </Button>
                     </div>
                 </div>
@@ -187,11 +216,14 @@ onMounted(() => {
             class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
             @click.self="showRegisterDialog = false"
         >
-            <div class="w-full max-w-md space-y-4 rounded-lg border bg-background p-6">
+            <div
+                class="w-full max-w-md space-y-4 rounded-lg border bg-background p-6"
+            >
                 <div class="space-y-2">
                     <h3 class="text-lg font-semibold">Register Security Key</h3>
                     <p class="text-sm text-muted-foreground">
-                        Give your security key a memorable name and follow your browser's prompts to register it.
+                        Give your security key a memorable name and follow your
+                        browser's prompts to register it.
                     </p>
                 </div>
 
@@ -211,10 +243,7 @@ onMounted(() => {
                     >
                         Cancel
                     </Button>
-                    <Button
-                        @click="handleRegister"
-                        :disabled="isLoading"
-                    >
+                    <Button @click="handleRegister" :disabled="isLoading">
                         <Icon
                             v-if="isLoading"
                             icon="material-symbols-light:progress-activity"
@@ -227,4 +256,3 @@ onMounted(() => {
         </div>
     </div>
 </template>
-

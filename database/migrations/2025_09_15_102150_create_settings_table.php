@@ -129,7 +129,7 @@ return new class extends Migration
                 'description' => 'Enable/disable honeypot spam protection',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ]);
     }
 

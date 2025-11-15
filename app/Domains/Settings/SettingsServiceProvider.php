@@ -2,9 +2,11 @@
 
 namespace App\Domains\Settings;
 
+use App\Domains\Settings\Services\SiteSettingsService;
+use App\Domains\Settings\Services\SiteSettingsServiceContract;
+use App\Domains\Settings\Services\ThemeSettingsService;
+use App\Domains\Settings\Services\ThemeSettingsServiceContract;
 use Illuminate\Support\ServiceProvider;
-use App\Domains\Settings\Contracts\SettingsContract;
-use App\Domains\Settings\Service$1;
 
 class SettingsServiceProvider extends ServiceProvider
 {
@@ -13,12 +15,8 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(SettingsContract::class, SettingsService::class);
-
-        // Register the Settings facade
-        $this->app->bind('settings', function($app) {
-            return $app->make(SettingsContract::class);
-        });
+        $this->app->singleton(SiteSettingsServiceContract::class, SiteSettingsService::class);
+        $this->app->singleton(ThemeSettingsServiceContract::class, ThemeSettingsService::class);
     }
 
     /**
@@ -32,6 +30,6 @@ class SettingsServiceProvider extends ServiceProvider
         ], 'config');
 
         // Load migrations
-        $this->loadMigrationsFrom(__DIR__.'/../../../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
     }
 }

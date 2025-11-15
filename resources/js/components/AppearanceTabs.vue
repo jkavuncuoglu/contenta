@@ -5,9 +5,17 @@ import { Icon } from '@iconify/vue';
 const { appearance, updateAppearance } = useAppearance();
 
 const tabs = [
-    { value: 'light', icon: 'material-symbols-light:light_mode', label: 'Light' },
+    {
+        value: 'light',
+        icon: 'material-symbols-light:light_mode',
+        label: 'Light',
+    },
     { value: 'dark', icon: 'material-symbols-light:dark_mode', label: 'Dark' },
-    { value: 'system', icon: 'material-symbols-light:monitor', label: 'System' },
+    {
+        value: 'system',
+        icon: 'material-symbols-light:monitor',
+        label: 'System',
+    },
 ] as const;
 </script>
 

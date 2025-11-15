@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { Form, Head, useForm } from '@inertiajs/vue3';
 import { Icon } from '@iconify/vue';
+import { Form, Head, useForm } from '@inertiajs/vue3';
 
 // Use useForm for confirm password form state
 const form = useForm({
@@ -20,11 +20,7 @@ const form = useForm({
     >
         <Head title="Confirm password" />
 
-        <Form
-            :form="form"
-            reset-on-success
-            v-slot="{ errors, processing }"
-        >
+        <Form :form="form" reset-on-success v-slot="{ errors, processing }">
             <div class="space-y-6">
                 <div class="grid gap-2">
                     <Label htmlFor="password">Password</Label>

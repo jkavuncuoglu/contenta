@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-
 Route::group([
     'middleware' => ['auth', 'verified'],
     'prefix' => 'dashboard',

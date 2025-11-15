@@ -1,7 +1,7 @@
 <?php
 
+use App\Domains\Security\Authentication\Http\Controllers\AuthenticationController;
 use Illuminate\Support\Facades\Route;
-use App\Domains$1$2;
 
 Route::prefix('v1')->group(function () {
     // Public routes
@@ -13,6 +13,6 @@ Route::prefix('v1')->group(function () {
         Route::post('reset-password', [AuthenticationController::class, 'resetPassword']);
 
         // Handle CORS preflight for any auth path
-        Route::options('{any}', fn() => response()->noContent())->where('any', '.*');
+        Route::options('{any}', fn () => response()->noContent())->where('any', '.*');
     });
 });

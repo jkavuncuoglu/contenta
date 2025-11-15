@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { dashboard } from '@/routes/admin';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '../../components/PlaceholderPattern.vue';
@@ -21,8 +20,12 @@ const breadcrumbs: BreadcrumbItem[] = [
             class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
         >
             <div class="mb-4">
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
-                <p class="text-gray-600 dark:text-gray-400">Manage your application content and settings</p>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    Admin Dashboard
+                </h1>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Manage your application content and settings
+                </p>
             </div>
 
             <div class="grid auto-rows-min gap-4 md:grid-cols-3">
@@ -30,10 +33,18 @@ const breadcrumbs: BreadcrumbItem[] = [
                     class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
                     <PlaceholderPattern />
-                    <div class="absolute inset-0 flex items-center justify-center">
+                    <div
+                        class="absolute inset-0 flex items-center justify-center"
+                    >
                         <div class="text-center">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Posts</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Manage blog posts</p>
+                            <h3
+                                class="font-semibold text-gray-900 dark:text-white"
+                            >
+                                Posts
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                Manage blog posts
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -41,10 +52,18 @@ const breadcrumbs: BreadcrumbItem[] = [
                     class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
                     <PlaceholderPattern />
-                    <div class="absolute inset-0 flex items-center justify-center">
+                    <div
+                        class="absolute inset-0 flex items-center justify-center"
+                    >
                         <div class="text-center">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Users</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">User management</p>
+                            <h3
+                                class="font-semibold text-gray-900 dark:text-white"
+                            >
+                                Users
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                User management
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -52,10 +71,18 @@ const breadcrumbs: BreadcrumbItem[] = [
                     class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
                     <PlaceholderPattern />
-                    <div class="absolute inset-0 flex items-center justify-center">
+                    <div
+                        class="absolute inset-0 flex items-center justify-center"
+                    >
                         <div class="text-center">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Settings</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">System configuration</p>
+                            <h3
+                                class="font-semibold text-gray-900 dark:text-white"
+                            >
+                                Settings
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                System configuration
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -66,8 +93,12 @@ const breadcrumbs: BreadcrumbItem[] = [
                 <PlaceholderPattern />
                 <div class="absolute inset-0 flex items-center justify-center">
                     <div class="text-center">
-                        <h3 class="font-semibold text-gray-900 dark:text-white">Analytics Overview</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Site statistics and reports</p>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">
+                            Analytics Overview
+                        </h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            Site statistics and reports
+                        </p>
                     </div>
                 </div>
             </div>

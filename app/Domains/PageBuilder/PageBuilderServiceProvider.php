@@ -18,11 +18,11 @@ class PageBuilderServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(PageBuilderServiceContract::class, function ($app) {
-            return new PageBuilderService();
+            return new PageBuilderService;
         });
 
         $this->app->singleton(PageRenderServiceContract::class, function ($app) {
-            return new PageRenderService();
+            return new PageRenderService;
         });
     }
 
@@ -32,13 +32,13 @@ class PageBuilderServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Load routes if routes file exists
-        if (file_exists(__DIR__ . '/Http/routes.php')) {
-            $this->loadRoutesFrom(__DIR__ . '/Http/routes.php');
+        if (file_exists(__DIR__.'/Http/routes.php')) {
+            $this->loadRoutesFrom(__DIR__.'/Http/routes.php');
         }
 
         // Load migrations if migrations directory exists
-        if (is_dir(__DIR__ . '/Database/migrations')) {
-            $this->loadMigrationsFrom(__DIR__ . '/Database/migrations');
+        if (is_dir(__DIR__.'/Database/migrations')) {
+            $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         }
     }
 }

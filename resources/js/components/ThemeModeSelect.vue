@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { Label } from '@/components/ui/label';
 import InputError from '@/components/InputError.vue';
+import { Label } from '@/components/ui/label';
+import { computed } from 'vue';
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 
@@ -31,23 +31,25 @@ const themeModeOptions: ThemeModeOption[] = [
     {
         label: 'Light',
         value: 'light',
-        description: 'Always use light mode'
+        description: 'Always use light mode',
     },
     {
         label: 'Dark',
         value: 'dark',
-        description: 'Always use dark mode'
+        description: 'Always use dark mode',
     },
     {
         label: 'System',
         value: 'system',
-        description: 'Use system preference'
+        description: 'Use system preference',
     },
 ];
 
 const localValue = computed({
     get: () => {
-        const option = themeModeOptions.find(opt => opt.value === props.modelValue);
+        const option = themeModeOptions.find(
+            (opt) => opt.value === props.modelValue,
+        );
         return option || themeModeOptions[2]; // Default to system
     },
     set: (option: ThemeModeOption) => {
@@ -75,7 +77,9 @@ const localValue = computed({
             <template #option="{ option }">
                 <div class="flex flex-col">
                     <span class="font-medium">{{ option.label }}</span>
-                    <span class="text-xs text-muted-foreground">{{ option.description }}</span>
+                    <span class="text-xs text-muted-foreground">{{
+                        option.description
+                    }}</span>
                 </div>
             </template>
             <template #singleLabel="{ option }">
@@ -89,4 +93,3 @@ const localValue = computed({
 <style lang="postcss">
 /* Styles are inherited from TimezoneSelect.vue component */
 </style>
-

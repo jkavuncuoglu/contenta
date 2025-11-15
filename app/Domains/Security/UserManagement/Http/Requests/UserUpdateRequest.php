@@ -2,32 +2,28 @@
 
 namespace App\Domains\Security\UserManagement\Http\Requests;
 
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Domains$1$2;
 
 class UserUpdateRequest extends FormRequest
 {
-    protected $user;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request->user();
-    }
-
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * @return array<string, array<int, string>|string>
+     */
     public function rules(): array
     {
+        $userId = $this->user()->id ?? '';
+
         return [
             'name' => ['sometimes', 'string', 'max:255'],
-            'email' => ['sometimes', 'email', 'max:255', 'unique:users,email,' . $this->user->id],
+            'email' => ['sometimes', 'email', 'max:255', 'unique:users,email,'.$userId],
             'first_name' => ['sometimes', 'nullable', 'string', 'max:255'],
             'last_name' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'username' => ['sometimes', 'nullable', 'string', 'max:255', 'unique:users,username,' . $this->user->id],
+            'username' => ['sometimes', 'nullable', 'string', 'max:255', 'unique:users,username,'.$userId],
             'bio' => ['sometimes', 'nullable', 'string'],
             'avatar' => ['sometimes', 'nullable', 'string'],
             'timezone' => ['sometimes', 'nullable', 'string', 'max:100'],

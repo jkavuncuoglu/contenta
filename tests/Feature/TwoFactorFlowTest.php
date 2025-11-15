@@ -1,15 +1,15 @@
 <?php
 
 use App\Domains\Security\UserManagement\Models\User;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Hash;
-use PragmaRX\Google2FA\Google2FA;
 use App\Mail\RecoveryCodesRegenerationConfirmation;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use PragmaRX\Google2FA\Google2FA;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
-use function Pest\Laravel\deleteJson;
 
 it('enables two-factor authentication and returns recovery codes only once', function () {
     $user = User::factory()->create([
@@ -24,7 +24,7 @@ it('enables two-factor authentication and returns recovery codes only once', fun
 
     // Use the stored encrypted secret to generate valid TOTP
     $secret = decrypt($user->fresh()->two_factor_secret);
-    $g2fa = new Google2FA();
+    $g2fa = new Google2FA;
     $validCode = $g2fa->getCurrentOtp($secret);
 
     // Step 2: enable with valid code
@@ -59,7 +59,7 @@ it('regenerates recovery codes after password + 2fa verification and email confi
     // Setup and enable 2FA first
     getJson('/two-factor/setup')->assertOk();
     $secret = decrypt($user->fresh()->two_factor_secret);
-    $g2fa = new Google2FA();
+    $g2fa = new Google2FA;
     $code = $g2fa->getCurrentOtp($secret);
     postJson('/two-factor/enable', ['code' => $code])->assertOk();
 
@@ -81,7 +81,7 @@ it('regenerates recovery codes after password + 2fa verification and email confi
     $token = $user->recovery_codes_regeneration_token;
 
     // Confirm regeneration
-    $confirmResp = getJson('/two-factor/recovery-codes/confirm?token=' . $token)
+    $confirmResp = getJson('/two-factor/recovery-codes/confirm?token='.$token)
         ->assertOk()
         ->json();
 
@@ -101,7 +101,7 @@ it('disables two-factor authentication successfully', function () {
     // Setup + enable 2FA
     getJson('/two-factor/setup')->assertOk();
     $secret = decrypt($user->fresh()->two_factor_secret);
-    $g2fa = new Google2FA();
+    $g2fa = new Google2FA;
     $code = $g2fa->getCurrentOtp($secret);
     postJson('/two-factor/enable', ['code' => $code])->assertOk();
 
@@ -111,4 +111,3 @@ it('disables two-factor authentication successfully', function () {
     expect($user->two_factor_secret)->toBeNull();
     expect($user->two_factor_confirmed_at)->toBeNull();
 });
-

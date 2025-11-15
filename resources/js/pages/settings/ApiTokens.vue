@@ -183,7 +183,9 @@ const downloadToken = () => {
                 description="Manage API tokens for accessing your account programmatically"
             />
 
-            <div class="mb-4 space-y-6 rounded border bg-neutral-100 dark:bg-neutral-800/30 p-4">
+            <div
+                class="mb-4 space-y-6 rounded border bg-neutral-100 p-4 dark:bg-neutral-800/30"
+            >
                 <div class="flex items-center justify-between">
                     <HeadingSmall
                         title="Personal Access Tokens"
@@ -290,7 +292,7 @@ const downloadToken = () => {
                             Authorization header:
                         </p>
                         <code
-                            class="block rounded bg-neutral-300/50 dark:bg-neutral-800 p-2 font-mono text-xs"
+                            class="block rounded bg-neutral-300/50 p-2 font-mono text-xs dark:bg-neutral-800"
                         >
                             Authorization: Bearer YOUR_TOKEN_HERE
                         </code>
@@ -368,8 +370,12 @@ const downloadToken = () => {
 
                     <div class="space-y-2">
                         <Label>Token</Label>
-                        <div class="flex gap-2 p-2 rounded border hover:cursor-text">
-                            <span class="text-xs font-mono"> {{displayedToken}}</span>
+                        <div
+                            class="flex gap-2 rounded border p-2 hover:cursor-text"
+                        >
+                            <span class="font-mono text-xs">
+                                {{ displayedToken }}</span
+                            >
                         </div>
                         <p class="text-xs text-amber-600">
                             <Icon
@@ -382,20 +388,20 @@ const downloadToken = () => {
                         <Button @click="copyToken" size="sm" class="mr-2">
                             <Icon
                                 :icon="
-                                        tokenCopied
-                                            ? 'material-symbols:check'
-                                            : 'material-symbols:content-copy'
-                                    "
+                                    tokenCopied
+                                        ? 'material-symbols:check'
+                                        : 'material-symbols:content-copy'
+                                "
                             />
                             Copy
                         </Button>
                         <Button @click="downloadToken" size="sm">
                             <Icon
                                 :icon="
-                                        tokenDownloaded
-                                            ? 'material-symbols:check'
-                                            : 'material-symbols:download-2'
-                                    "
+                                    tokenDownloaded
+                                        ? 'material-symbols:check'
+                                        : 'material-symbols:download-2'
+                                "
                                 class=""
                             />
                             Download

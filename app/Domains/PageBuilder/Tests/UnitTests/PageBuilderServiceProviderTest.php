@@ -12,7 +12,6 @@ use Tests\TestCase;
 
 class PageBuilderServiceProviderTest extends TestCase
 {
-    
     public function test_it_registers_page_builder_service_contract(): void
     {
         // Act
@@ -22,7 +21,6 @@ class PageBuilderServiceProviderTest extends TestCase
         $this->assertInstanceOf(PageBuilderService::class, $service);
     }
 
-    
     public function test_it_registers_page_render_service_contract(): void
     {
         // Act
@@ -32,7 +30,6 @@ class PageBuilderServiceProviderTest extends TestCase
         $this->assertInstanceOf(PageRenderService::class, $service);
     }
 
-    
     public function test_it_registers_services_as_singletons(): void
     {
         // Act

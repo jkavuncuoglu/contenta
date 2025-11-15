@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class NavigationFacadeTest extends TestCase
 {
-    
     public function test_it_resolves_to_menu_service_contract(): void
     {
         // Arrange

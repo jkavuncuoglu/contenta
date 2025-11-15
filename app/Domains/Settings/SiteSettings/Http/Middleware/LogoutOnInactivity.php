@@ -12,7 +12,7 @@ class LogoutOnInactivity
     /**
      * Handle an incoming request and logout/revoke user if inactive longer than configured timeout.
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         $timeout = (int) config('auth.inactivity_timeout', 0);
 
@@ -47,22 +47,19 @@ class LogoutOnInactivity
 
             // Handle API tokens (Sanctum)
             $user = $request->user();
-            if ($user && method_exists($user, 'currentAccessToken')) {
+            if ($user) {
                 $token = $user->currentAccessToken();
+                $lastUsedAt = $token->last_used_at ?? $token->created_at;
 
-                if ($token) {
-                    $lastUsedAt = $token->last_used_at ?? $token->created_at;
+                if ($lastUsedAt && now()->diffInMinutes($lastUsedAt) >= $timeout) {
+                    // Revoke the token due to inactivity
+                    $token->delete();
 
-                    if ($lastUsedAt && now()->diffInMinutes($lastUsedAt) >= $timeout) {
-                        // Revoke the token due to inactivity
-                        $token->delete();
-
-                        return response()->json([
-                            'status' => 'error',
-                            'message' => 'Session expired due to inactivity.',
-                            'data' => null,
-                        ], 401);
-                    }
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Session expired due to inactivity.',
+                        'data' => null,
+                    ], 401);
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\ContentManagement\Events;
+namespace App\Domains\ContentManagement\Posts\Events;
 
 use Carbon\Carbon;
 
@@ -12,7 +12,6 @@ readonly class PostCreated
         public string $title,
         public string $slug,
         public int $authorId,
-        public int $postTypeId,
-        public Carbon $createdAt = new Carbon()
+        public Carbon $createdAt = new Carbon
     ) {}
 }

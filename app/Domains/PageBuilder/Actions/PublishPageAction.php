@@ -6,7 +6,6 @@ namespace App\Domains\PageBuilder\Actions;
 
 use App\Domains\PageBuilder\Models\Page;
 use App\Domains\PageBuilder\Services\PageRenderService;
-use Carbon\Carbon;
 
 class PublishPageAction
 {
@@ -17,7 +16,7 @@ class PublishPageAction
     public function execute(Page $page): Page
     {
         // Validate page has required data
-        if (!$page->layout_id) {
+        if (! $page->layout_id) {
             throw new \Exception('Page must have a layout assigned before publishing');
         }
 
@@ -35,7 +34,12 @@ class PublishPageAction
             'published_at' => now(),
         ]);
 
-        return $page->fresh();
+        $freshPage = $page->fresh();
+        if (! $freshPage) {
+            throw new \Exception('Failed to refresh page after publishing');
+        }
+
+        return $freshPage;
     }
 
     public function unpublish(Page $page): Page
@@ -45,6 +49,11 @@ class PublishPageAction
             'published_at' => null,
         ]);
 
-        return $page->fresh();
+        $freshPage = $page->fresh();
+        if (! $freshPage) {
+            throw new \Exception('Failed to refresh page after unpublishing');
+        }
+
+        return $freshPage;
     }
 }

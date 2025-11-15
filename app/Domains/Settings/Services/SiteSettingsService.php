@@ -49,9 +49,11 @@ class SiteSettingsService implements SiteSettingsServiceContract
             }
 
             DB::commit();
+
             return true;
         } catch (\Exception $e) {
             DB::rollBack();
+
             return false;
         }
     }
@@ -85,7 +87,7 @@ class SiteSettingsService implements SiteSettingsServiceContract
         $timezones = [];
 
         foreach (timezone_identifiers_list() as $timezone) {
-            $offset = timezone_offset_get(new \DateTimeZone($timezone), new \DateTime());
+            $offset = timezone_offset_get(new \DateTimeZone($timezone), new \DateTime);
             $offsetHours = $offset / 3600;
             $offsetFormatted = sprintf('%+03d:%02d', floor($offsetHours), abs($offset % 3600) / 60);
 
@@ -93,7 +95,7 @@ class SiteSettingsService implements SiteSettingsServiceContract
         }
 
         // Sort by offset first, then by name
-        uasort($timezones, function($a, $b) {
+        uasort($timezones, function ($a, $b) {
             return strcmp($a, $b);
         });
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Icon from '@/components/Icon.vue';
 import {
     SidebarGroup,
     SidebarMenu,
@@ -8,8 +9,7 @@ import {
 import { urlIsActive } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import Icon from '@/components/Icon.vue';
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{ items: NavItem[]; level?: number }>();
 
@@ -54,7 +54,10 @@ const autoExpandedItems = computed(() => {
 });
 
 function isExpanded(item: NavItem): boolean {
-    return expandedItems.value.has(item.title) || autoExpandedItems.value.has(item.title);
+    return (
+        expandedItems.value.has(item.title) ||
+        autoExpandedItems.value.has(item.title)
+    );
 }
 </script>
 
@@ -70,41 +73,56 @@ function isExpanded(item: NavItem): boolean {
                     :class="[
                         'transition-all',
                         isItemActive(item) ? 'bg-charcoal-200 text-white' : '',
-                        item.children && isExpanded(item) ? 'rounded-tl-lg rounded-tr-lg' : 'rounded-lg',
+                        item.children && isExpanded(item)
+                            ? 'rounded-tl-lg rounded-tr-lg'
+                            : 'rounded-lg',
                         // Remove bottom rounding if open
-                        item.children && isExpanded(item) ? 'rounded-b-none' : 'rounded-tl-lg rounded-tr-lg'
+                        item.children && isExpanded(item)
+                            ? 'rounded-b-none'
+                            : 'rounded-tl-lg rounded-tr-lg',
                     ]"
                 >
-                    <Link :href="item.redirect || item.href" class="flex items-center gap-2">
+                    <Link
+                        :href="item.redirect || item.href"
+                        class="flex items-center gap-2"
+                    >
                         <template v-if="isStringIcon(item.icon)">
-                            <Icon :name="(item.icon as string).split(':')[1]" :icon="item.icon as string" class="w-4 h-4" />
+                            <Icon
+                                :name="(item.icon as string).split(':')[1]"
+                                :icon="item.icon as string"
+                                class="h-4 w-4"
+                            />
                         </template>
                         <template v-else>
-                            <component :is="item.icon" class="w-4 h-4" />
+                            <component :is="item.icon" class="h-4 w-4" />
                         </template>
                         <span>{{ item.title }}</span>
                     </Link>
                     <button
                         v-if="item.children"
-                        class="p-3 absolute inline-flex items-center justify-end right-0 -top-1"
-                        @click="toggleChildren(item.title)">
+                        class="absolute -top-1 right-0 inline-flex items-center justify-end p-3"
+                        @click="toggleChildren(item.title)"
+                    >
                         <Icon
                             v-if="isExpanded(item)"
                             name="chevron-right"
                             icon="material-symbols-light:chevron-right"
-                            class="w-4 h-4 text-white rotate-90"
+                            class="h-4 w-4 rotate-90 text-white"
                         />
                         <Icon
                             v-else
                             name="chevron-right"
                             icon="material-symbols-light:chevron-right"
-                            class="w-4 h-4 text-white"
+                            class="h-4 w-4 text-white"
                         />
                     </button>
                 </SidebarMenuButton>
                 <template v-if="item.children && isExpanded(item)">
-                    <div class="py-2 bg-neutral-700 rounded-lg rounded-t-none">
-                        <NavMain :items="item.children" :level="(props.level ?? 0) + 1" />
+                    <div class="rounded-lg rounded-t-none bg-neutral-700 py-2">
+                        <NavMain
+                            :items="item.children"
+                            :level="(props.level ?? 0) + 1"
+                        />
                     </div>
                 </template>
             </SidebarMenuItem>
