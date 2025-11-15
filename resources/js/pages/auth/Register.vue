@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useClipboard } from '@vueuse/core';
 import { faker } from '@faker-js/faker';
@@ -104,7 +104,7 @@ async function checkUsernameAvailability(username: string) {
                 checkingUsername.value = false;
             }
         });
-    } catch (e) {
+    } catch {
         usernameAvailable.value = false;
     } finally {
         checkingUsername.value = false;
@@ -151,7 +151,7 @@ async function checkEmailAvailability(email: string) {
                 checkingEmail.value = false;
             }
         });
-    } catch (e) {
+    } catch {
         emailAvailable.value = false;
     } finally {
         checkingEmail.value = false;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';

@@ -18,7 +18,7 @@ interface Props {
   layouts: Layout[]
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const breadcrumbs: BreadcrumbItem[] = [
   {

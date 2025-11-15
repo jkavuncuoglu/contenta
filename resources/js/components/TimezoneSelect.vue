@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { Label } from '@/components/ui/label';
 import InputError from '@/components/InputError.vue';
 import Multiselect from 'vue-multiselect';

@@ -406,7 +406,7 @@ async function handleFileUpload(event: Event) {
     } else {
       showMessage(data.message, 'error')
     }
-  } catch (error) {
+  } catch {
     showMessage('Failed to upload plugin', 'error')
   } finally {
     target.value = ''
@@ -432,7 +432,7 @@ async function installAndEnablePlugin(plugin: UninstalledPlugin) {
     } else {
       showMessage(data.message, 'error')
     }
-  } catch (error) {
+  } catch {
     showMessage('Failed to install plugin', 'error')
   } finally {
     processing[plugin.folder_name] = false
@@ -462,7 +462,7 @@ async function deleteUninstalledPlugin(plugin: UninstalledPlugin) {
     } else {
       showMessage(data.message, 'error')
     }
-  } catch (error) {
+  } catch {
     showMessage('Failed to delete plugin folder', 'error')
   } finally {
     processing[plugin.folder_name] = false
@@ -489,7 +489,7 @@ async function togglePlugin(plugin: InstalledPlugin) {
     } else {
       showMessage(data.message, 'error')
     }
-  } catch (error) {
+  } catch {
     showMessage('Failed to toggle plugin', 'error')
   } finally {
     processing[plugin.slug] = false
@@ -515,7 +515,7 @@ async function scanPlugin(plugin: InstalledPlugin) {
     } else {
       showMessage(data.message, 'error')
     }
-  } catch (error) {
+  } catch {
     showMessage('Failed to scan plugin', 'error')
   } finally {
     processing[plugin.slug] = false
@@ -545,7 +545,7 @@ async function uninstallPlugin(plugin: InstalledPlugin) {
     } else {
       showMessage(data.message, 'error')
     }
-  } catch (error) {
+  } catch {
     showMessage('Failed to uninstall plugin', 'error')
   } finally {
     processing[plugin.slug] = false
@@ -571,7 +571,7 @@ async function discoverPlugins() {
     } else {
       showMessage(data.message, 'error')
     }
-  } catch (error) {
+  } catch {
     showMessage('Failed to discover plugins', 'error')
   } finally {
     discovering.value = false

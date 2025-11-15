@@ -110,8 +110,8 @@ class AnalyticsService {
     document.head.appendChild(configScript);
 
     // Make gtag available globally
-    (window as any).gtag = (window as any).gtag || function() {
-      ((window as any).dataLayer = (window as any).dataLayer || []).push(arguments);
+    (window as any).gtag = (window as any).gtag || function(...args: any[]) {
+      ((window as any).dataLayer = (window as any).dataLayer || []).push(...args);
     };
 
     console.log(`Google Analytics loaded: ${gaId}`);

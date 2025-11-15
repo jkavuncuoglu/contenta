@@ -139,10 +139,6 @@ interface Category {
   };
 }
 
-interface Props {
-  categories: Category[];
-}
-
 const props = defineProps({
   categories: {
     type: Array,

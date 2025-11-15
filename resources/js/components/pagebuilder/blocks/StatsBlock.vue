@@ -13,7 +13,7 @@ interface Props {
   };
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   config: () => ({
     title: 'Our Impact',
     stats: [

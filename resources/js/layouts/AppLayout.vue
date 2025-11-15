@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { router, usePage, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import type { BreadcrumbItemType } from '@/types';
 import AppSidebar from '@/components/AppSidebar.vue';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
@@ -10,15 +9,6 @@ interface Props {
 }
 
 defineProps<Props>();
-
-const page = usePage();
-const isProfileMenuOpen = ref(false);
-
-const user = computed(() => page.props.auth?.user);
-
-const logout = () => {
-  router.post('/logout');
-};
 </script>
 
 <template>

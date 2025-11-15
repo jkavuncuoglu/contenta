@@ -17,7 +17,7 @@ interface Props {
   siteName?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   navigation: () => [],
   siteName: 'Contenta',
 });

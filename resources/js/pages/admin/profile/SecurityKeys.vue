@@ -33,6 +33,8 @@
 import { ref, onMounted } from 'vue';
 import { base64urlToArrayBuffer, arrayBufferToBase64url } from '@/lib/webauthn';
 
+type PublicKeyCredentialCreationOptions = globalThis.PublicKeyCredentialCreationOptions;
+
 interface Credential {
   id: string;
   name?: string;

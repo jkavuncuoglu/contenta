@@ -46,7 +46,7 @@ interface Props {
   siteTagline: string;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString('en-US', {

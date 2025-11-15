@@ -167,7 +167,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch, onMounted } from 'vue'
+import { reactive, watch, onMounted } from 'vue'
 import BlockRenderer from './BlockRenderer.vue'
 
 interface Block {

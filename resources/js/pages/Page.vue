@@ -26,7 +26,7 @@ interface Props {
   page: PageData;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
 // Map block types to their Vue components
 const blockComponents: Record<string, Component> = {

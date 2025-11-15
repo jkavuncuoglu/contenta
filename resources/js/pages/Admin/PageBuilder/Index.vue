@@ -32,7 +32,7 @@ interface Props {
   pages: PaginatedPages
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const breadcrumbs: BreadcrumbItem[] = [
   {

@@ -6,11 +6,11 @@ export function useCategoriesStore() {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
-  const fetchCategories = async (params: any = {}) => {
+  const fetchCategories = (params: any = {}) => {
     loading.value = true;
     error.value = null;
 
-    return new Promise(async (resolve) => {
+    return new Promise((resolve) => {
       try {
         inertia.get('/admin/categories', params, {
           preserveState: true,

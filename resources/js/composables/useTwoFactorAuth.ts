@@ -55,7 +55,9 @@ const fetchJson = async <T>(input: RequestInfo, init: RequestInit = {}): Promise
     });
     if (!resp.ok) {
         let body: any = null;
-        try { body = await resp.json(); } catch {}
+        try { body = await resp.json(); } catch {
+            // Ignore JSON parse errors
+        }
         throw new Error(body?.message || `HTTP ${resp.status}`);
     }
     return resp.json();

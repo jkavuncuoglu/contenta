@@ -217,7 +217,7 @@ const duplicateMenu = async (menu: Menu) => {
     } else {
       alert('Failed to duplicate menu')
     }
-  } catch (error) {
+  } catch {
     alert('Failed to duplicate menu')
   }
 }
@@ -240,7 +240,7 @@ const confirmDelete = async (menu: Menu) => {
     } else {
       alert('Failed to delete menu')
     }
-  } catch (error) {
+  } catch {
     alert('Failed to delete menu')
   }
 }

@@ -11,7 +11,7 @@ interface Props {
   };
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   config: () => ({
     title: 'Legal Document',
     lastUpdated: new Date().toLocaleDateString(),

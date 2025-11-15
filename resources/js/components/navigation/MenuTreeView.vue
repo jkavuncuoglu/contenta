@@ -73,7 +73,7 @@ const toggleVisibility = async (itemId: number) => {
 
 // Handle indenting (move item to become child of previous sibling)
 const handleIndent = (itemId: number) => {
-  const indentItem = (items: MenuItem[], parentItems: MenuItem[] | null = null, index: number = -1): MenuItem[] => {
+  const indentItem = (items: MenuItem[]): MenuItem[] => {
     for (let i = 0; i < items.length; i++) {
       const item = items[i]
 
@@ -98,7 +98,7 @@ const handleIndent = (itemId: number) => {
 
       // Recursively check children
       if (item.children && item.children.length > 0) {
-        const newChildren = indentItem(item.children, items, i)
+        const newChildren = indentItem(item.children)
         if (newChildren !== item.children) {
           const newItems = [...items]
           newItems[i] = { ...item, children: newChildren }

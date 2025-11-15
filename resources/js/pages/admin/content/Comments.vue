@@ -418,7 +418,7 @@ const goToPage = (page: number) => {
 
 // Utility function
 function debounce(func: (...args: any[]) => void, wait: number) {
-  let timeout: NodeJS.Timeout;
+  let timeout: ReturnType<typeof setTimeout>;
   return function executedFunction(...args: any[]) {
     const later = () => {
       clearTimeout(timeout);

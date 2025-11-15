@@ -16,7 +16,7 @@ interface Props {
   };
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   config: () => ({
     title: 'Frequently Asked Questions',
     subtitle: 'Find answers to common questions',
