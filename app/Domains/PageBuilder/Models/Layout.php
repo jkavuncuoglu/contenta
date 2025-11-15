@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\PageBuilder\Models;
 
+use Database\Factories\LayoutFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,14 @@ class Layout extends Model
         'is_active' => true,
         'structure' => '{"areas": ["header", "main", "footer"]}',
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): LayoutFactory
+    {
+        return LayoutFactory::new();
+    }
 
     /**
      * Get the pages using this layout

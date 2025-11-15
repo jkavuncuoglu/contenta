@@ -8,6 +8,7 @@ use App\Domains\ContentManagement\Categories\Models\Category;
 use App\Domains\ContentManagement\Posts\Aggregates\PostAggregate;
 use App\Domains\ContentManagement\Tags\Models\Tag;
 use App\Domains\Security\UserManagement\Models\User;
+use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -75,6 +76,14 @@ class Post extends Model implements HasMedia
     protected static array $logAttributes = ['title', 'status', 'published_at'];
 
     protected static bool $logOnlyDirty = true;
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): PostFactory
+    {
+        return PostFactory::new();
+    }
 
     // Relationships
     /**

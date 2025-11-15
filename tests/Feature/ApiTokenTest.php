@@ -1,11 +1,19 @@
 <?php
 
-use App\Models\User;
+use App\Domains\Security\UserManagement\Models\User;
+use Spatie\Permission\Models\Permission;
 
 use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
+
+    // Create and assign the required permission with the 'web' guard
+    $permission = Permission::firstOrCreate([
+        'name' => 'api-tokens.use',
+        'guard_name' => 'web',
+    ]);
+    $this->user->givePermissionTo($permission);
 });
 
 test('user can view api tokens page', function () {

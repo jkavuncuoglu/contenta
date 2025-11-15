@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\PageBuilder\Models;
 
+use Database\Factories\BlockFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +39,14 @@ class Block extends Model
         'category' => 'general',
         'config_schema' => '{}',
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): BlockFactory
+    {
+        return BlockFactory::new();
+    }
 
     // Block categories
     const CATEGORY_GENERAL = 'general';

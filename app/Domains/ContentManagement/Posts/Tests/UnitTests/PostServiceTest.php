@@ -42,7 +42,7 @@ class PostServiceTest extends TestCase
         $user = User::factory()->create();
         $data = [
             'title' => 'Test Post',
-            'content' => 'Test content',
+            'content_markdown' => 'Test content',
             'author_id' => $user->id,
         ];
 
@@ -81,7 +81,7 @@ class PostServiceTest extends TestCase
 
         // Assert
         $this->assertTrue($result);
-        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
+        $this->assertSoftDeleted('posts', ['id' => $post->id]);
     }
 
     public function test_it_can_publish_post(): void

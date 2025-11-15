@@ -12,6 +12,13 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::get('/check-username', [RegisteredUserController::class, 'checkUsername']);
 
+// Dashboard route
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return inertia('Dashboard');
+    })->name('dashboard');
+});
+
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/user.php';

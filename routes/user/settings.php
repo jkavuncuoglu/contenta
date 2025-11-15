@@ -11,6 +11,7 @@ Route::group([
     Route::redirect('', 'settings/profile');
 
     require __DIR__.'/settings/profile.php';
+    require __DIR__.'/settings/password.php';
     require __DIR__.'/settings/security.php';
     require __DIR__.'/settings/api-tokens.php';
 });

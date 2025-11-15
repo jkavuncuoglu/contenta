@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\PageBuilder\Models;
 
+use Database\Factories\PageFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,6 +47,14 @@ class Page extends Model
         'status' => 'draft',
         'data' => '{"layout": "default", "sections": []}',
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): PageFactory
+    {
+        return PageFactory::new();
+    }
 
     // Status constants
     const STATUS_DRAFT = 'draft';

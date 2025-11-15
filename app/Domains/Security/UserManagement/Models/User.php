@@ -51,6 +51,14 @@ class User extends Authenticatable implements MustVerifyEmail, WebAuthnAuthentic
     }
 
     /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
