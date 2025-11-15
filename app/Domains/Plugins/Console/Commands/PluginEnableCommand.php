@@ -18,9 +18,11 @@ class PluginEnableCommand extends Command
         try {
             $pluginService->enable($slug);
             $this->info("Plugin '{$slug}' enabled successfully");
+
             return self::SUCCESS;
         } catch (\Exception $e) {
             $this->error("Failed to enable plugin: {$e->getMessage()}");
+
             return self::FAILURE;
         }
     }

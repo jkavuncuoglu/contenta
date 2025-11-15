@@ -49,7 +49,7 @@ class Layout extends Model
     /**
      * Scope for active layouts
      *
-     * @param Builder<Layout> $query
+     * @param  Builder<Layout>  $query
      * @return Builder<Layout>
      */
     public function scopeActive(Builder $query): Builder

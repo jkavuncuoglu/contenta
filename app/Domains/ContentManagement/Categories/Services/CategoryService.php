@@ -21,7 +21,7 @@ class CategoryService implements CategoryServiceContract
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function createCategory(array $data): Category
     {
@@ -29,19 +29,20 @@ class CategoryService implements CategoryServiceContract
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function updateCategory(int $id, array $data): Category
     {
         $category = Category::findOrFail($id);
         $category->update($data);
+
         return $category;
     }
 
     public function deleteCategory(int $id): ?bool
     {
         $category = Category::findOrFail($id);
+
         return $category->delete();
     }
 }
-

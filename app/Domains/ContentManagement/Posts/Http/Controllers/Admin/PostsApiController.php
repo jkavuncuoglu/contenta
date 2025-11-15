@@ -2,9 +2,9 @@
 
 namespace App\Domains\ContentManagement\Posts\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\ContentManagement\Posts\Services\PostServiceContract;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -25,13 +25,13 @@ class PostsApiController extends Controller
 
         // Search by title
         $search = $request->input('search');
-        if ($request->has('search') && is_string($search) && !empty($search)) {
-            $query->where('title', 'like', '%' . $search . '%');
+        if ($request->has('search') && is_string($search) && ! empty($search)) {
+            $query->where('title', 'like', '%'.$search.'%');
         }
 
         // Filter by status
         $status = $request->input('status');
-        if ($request->has('status') && is_string($status) && !empty($status)) {
+        if ($request->has('status') && is_string($status) && ! empty($status)) {
             $query->where('status', $status);
         }
 
@@ -58,7 +58,7 @@ class PostsApiController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
-        if (!$startDate || !$endDate) {
+        if (! $startDate || ! $endDate) {
             return response()->json([
                 'message' => 'start_date and end_date are required',
             ], 422);
@@ -87,7 +87,7 @@ class PostsApiController extends Controller
                     'id' => $post->author?->id,
                     'name' => $post->author?->name,
                 ],
-                'categories' => $post->categories->map(fn($cat) => [
+                'categories' => $post->categories->map(fn ($cat) => [
                     'id' => $cat->id,
                     'name' => $cat->name,
                 ]),

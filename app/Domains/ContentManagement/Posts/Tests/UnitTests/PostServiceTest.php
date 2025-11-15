@@ -23,7 +23,6 @@ class PostServiceTest extends TestCase
         $this->service = app(PostServiceContract::class);
     }
 
-    
     public function test_it_can_get_paginated_posts(): void
     {
         // Arrange
@@ -37,7 +36,6 @@ class PostServiceTest extends TestCase
         $this->assertEquals(5, $result->total());
     }
 
-    
     public function test_it_can_create_post(): void
     {
         // Arrange
@@ -58,7 +56,6 @@ class PostServiceTest extends TestCase
         $this->assertEquals('draft', $post->status);
     }
 
-    
     public function test_it_can_update_post(): void
     {
         // Arrange
@@ -73,7 +70,6 @@ class PostServiceTest extends TestCase
         $this->assertEquals('updated', $updated->slug);
     }
 
-    
     public function test_it_can_delete_post(): void
     {
         // Arrange
@@ -88,7 +84,6 @@ class PostServiceTest extends TestCase
         $this->assertDatabaseMissing('posts', ['id' => $post->id]);
     }
 
-    
     public function test_it_can_publish_post(): void
     {
         // Arrange
@@ -103,7 +98,6 @@ class PostServiceTest extends TestCase
         $this->assertNotNull($published->published_at);
     }
 
-    
     public function test_it_can_unpublish_post(): void
     {
         // Arrange
@@ -117,7 +111,6 @@ class PostServiceTest extends TestCase
         $this->assertEquals('draft', $unpublished->status);
     }
 
-    
     public function test_it_can_schedule_post(): void
     {
         // Arrange
@@ -133,7 +126,6 @@ class PostServiceTest extends TestCase
         $this->assertEquals($publishAt->timestamp, $scheduled->published_at->timestamp);
     }
 
-    
     public function test_it_can_get_post_by_slug(): void
     {
         // Arrange
@@ -152,7 +144,6 @@ class PostServiceTest extends TestCase
         $this->assertEquals('test-slug', $post->slug);
     }
 
-    
     public function test_it_can_duplicate_post(): void
     {
         // Arrange
@@ -168,7 +159,6 @@ class PostServiceTest extends TestCase
         $this->assertEquals('draft', $duplicate->status);
     }
 
-    
     public function test_it_can_get_published_posts(): void
     {
         // Arrange
@@ -187,7 +177,6 @@ class PostServiceTest extends TestCase
         $this->assertEquals(3, $posts->total());
     }
 
-    
     public function test_it_can_get_draft_posts(): void
     {
         // Arrange

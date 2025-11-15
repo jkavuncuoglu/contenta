@@ -24,7 +24,7 @@ class LayoutController extends Controller
         if ($request->has('search')) {
             $search = $request->input('search');
             if (is_string($search)) {
-                $query->where('name', 'like', '%' . $search . '%');
+                $query->where('name', 'like', '%'.$search.'%');
             }
         }
 
@@ -54,7 +54,7 @@ class LayoutController extends Controller
             $baseSlug = $validated['slug'];
             $counter = 1;
             while (Layout::where('slug', $validated['slug'])->exists()) {
-                $validated['slug'] = $baseSlug . '-' . $counter;
+                $validated['slug'] = $baseSlug.'-'.$counter;
                 $counter++;
             }
         }
@@ -77,7 +77,7 @@ class LayoutController extends Controller
                 'sometimes',
                 'string',
                 'max:255',
-                Rule::unique('pagebuilder_layouts', 'slug')->ignore($layout->id)
+                Rule::unique('pagebuilder_layouts', 'slug')->ignore($layout->id),
             ],
             'structure' => 'sometimes|array',
             'structure.areas' => 'sometimes|array|min:1',
@@ -98,7 +98,7 @@ class LayoutController extends Controller
         if ($layout->pages()->exists()) {
             return response()->json([
                 'error' => 'Cannot delete layout',
-                'message' => 'This layout is currently being used by one or more pages'
+                'message' => 'This layout is currently being used by one or more pages',
             ], 422);
         }
 

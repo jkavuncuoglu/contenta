@@ -28,7 +28,7 @@ class PageBuilderService implements PageBuilderServiceContract
     /**
      * Create a new page
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function createPage(array $data): Page
     {
@@ -43,7 +43,7 @@ class PageBuilderService implements PageBuilderServiceContract
     /**
      * Update a page
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function updatePage(Page $page, array $data): Page
     {
@@ -54,9 +54,10 @@ class PageBuilderService implements PageBuilderServiceContract
 
         $page->update($data);
         $freshPage = $page->fresh();
-        if (!$freshPage) {
+        if (! $freshPage) {
             throw new \Exception('Failed to refresh page after update');
         }
+
         return $freshPage;
     }
 
@@ -79,9 +80,10 @@ class PageBuilderService implements PageBuilderServiceContract
         ]);
 
         $freshPage = $page->fresh();
-        if (!$freshPage) {
+        if (! $freshPage) {
             throw new \Exception('Failed to refresh page after publishing');
         }
+
         return $freshPage;
     }
 
@@ -95,9 +97,10 @@ class PageBuilderService implements PageBuilderServiceContract
         ]);
 
         $freshPage = $page->fresh();
-        if (!$freshPage) {
+        if (! $freshPage) {
             throw new \Exception('Failed to refresh page after unpublishing');
         }
+
         return $freshPage;
     }
 

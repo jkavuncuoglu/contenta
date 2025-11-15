@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::group([
     'middleware' => ['auth', 'verified'],
@@ -15,7 +14,7 @@ Route::group([
 
     require __DIR__.'/admin/dashboard.php';
 
-    require __DIR__ . '/admin/content.php';
+    require __DIR__.'/admin/content.php';
 
     require __DIR__.'/admin/settings.php';
 

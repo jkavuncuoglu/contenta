@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Domains\Security\Authentication\Http\Requests\UserRegistrationRequest;
 use App\Domains\Security\UserManagement\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Domains\Security\Authentication\Http\Requests\UserRegistrationRequest;
 
 class RegisteredUserController extends Controller
 {
@@ -50,7 +50,8 @@ class RegisteredUserController extends Controller
     public function checkUsername(Request $request)
     {
         $username = $request->query('username');
-        $available = !User::where('username', $username)->exists();
+        $available = ! User::where('username', $username)->exists();
+
         return Inertia::render('auth/Register', ['available' => $available]);
     }
 
@@ -65,7 +66,8 @@ class RegisteredUserController extends Controller
         if (\Schema::hasTable('user_emails')) {
             $existsInUserEmails = \DB::table('user_emails')->where('email', $email)->exists();
         }
-        $available = !$existsInUsers && !$existsInUserEmails;
+        $available = ! $existsInUsers && ! $existsInUserEmails;
+
         return Inertia::render('auth/Register', ['emailAvailable' => $available]);
     }
 }

@@ -10,7 +10,7 @@ Route::group([
     // Redirect top-level /settings to the profile by default
     Route::redirect('', 'settings/profile');
 
-    require __DIR__ . '/settings/profile.php';
-    require __DIR__ . '/settings/security.php';
-    require __DIR__ . '/settings/api-tokens.php';
+    require __DIR__.'/settings/profile.php';
+    require __DIR__.'/settings/security.php';
+    require __DIR__.'/settings/api-tokens.php';
 });

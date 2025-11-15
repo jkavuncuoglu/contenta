@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class MediaFacadeTest extends TestCase
 {
-    
     public function test_it_resolves_to_media_service_contract(): void
     {
         // Arrange

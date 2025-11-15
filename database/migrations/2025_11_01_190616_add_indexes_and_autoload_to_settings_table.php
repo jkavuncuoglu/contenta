@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('settings', function (Blueprint $table) {
             // Add autoload column if it doesn't exist
-            if (!Schema::hasColumn('settings', 'autoload')) {
+            if (! Schema::hasColumn('settings', 'autoload')) {
                 $table->boolean('autoload')->default(true)->after('description');
             }
 

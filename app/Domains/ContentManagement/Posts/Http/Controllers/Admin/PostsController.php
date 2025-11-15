@@ -2,8 +2,8 @@
 
 namespace App\Domains\ContentManagement\Posts\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Domains\ContentManagement\Posts\Models\Post;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -76,17 +76,17 @@ class PostsController extends Controller
                     'id' => $post->author->id,
                     'name' => $post->author->name ?? $post->author->username,
                 ] : null,
-                'categories' => $post->categories->map(fn($c) => [
+                'categories' => $post->categories->map(fn ($c) => [
                     'id' => $c->id,
                     'name' => $c->name,
                 ])->toArray(),
-                'tags' => $post->tags->map(fn($t) => [
+                'tags' => $post->tags->map(fn ($t) => [
                     'id' => $t->id,
                     'name' => $t->name,
                 ])->toArray(),
                 'created_at' => $post->created_at->toDateTimeString(),
                 'updated_at' => $post->updated_at->toDateTimeString(),
-            ]
+            ],
         ]);
     }
 
@@ -148,7 +148,7 @@ class PostsController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:posts,slug,' . $id,
+            'slug' => 'nullable|string|max:255|unique:posts,slug,'.$id,
             'content_markdown' => 'nullable|string',
             'content_html' => 'nullable|string',
             'table_of_contents' => 'nullable|array',

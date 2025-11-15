@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domains\PageBuilder\Http\Controllers\Admin;
 
 use App\Domains\PageBuilder\Actions\PublishPageAction;
-use App\Domains\PageBuilder\Models\Layout;
 use App\Domains\PageBuilder\Models\Page;
 use App\Domains\PageBuilder\Models\PageRevision;
 use App\Domains\PageBuilder\Services\PageRenderService;
@@ -35,7 +34,7 @@ class PageController extends Controller
         if ($request->has('search')) {
             $search = $request->input('search');
             if (is_string($search)) {
-                $query->where('title', 'like', '%' . $search . '%');
+                $query->where('title', 'like', '%'.$search.'%');
             }
         }
 
@@ -66,7 +65,7 @@ class PageController extends Controller
             $baseSlug = $validated['slug'];
             $counter = 1;
             while (Page::where('slug', $validated['slug'])->exists()) {
-                $validated['slug'] = $baseSlug . '-' . $counter;
+                $validated['slug'] = $baseSlug.'-'.$counter;
                 $counter++;
             }
         }
@@ -96,7 +95,7 @@ class PageController extends Controller
                 'sometimes',
                 'string',
                 'max:255',
-                Rule::unique('pagebuilder_pages', 'slug')->ignore($page->id)
+                Rule::unique('pagebuilder_pages', 'slug')->ignore($page->id),
             ],
             'layout_id' => 'sometimes|nullable|exists:pagebuilder_layouts,id',
             'data' => 'sometimes|nullable|array',
@@ -107,14 +106,14 @@ class PageController extends Controller
         ]);
 
         // Generate slug if title changed but slug not provided
-        if (isset($validated['title']) && !isset($validated['slug'])) {
+        if (isset($validated['title']) && ! isset($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['title']);
 
             // Ensure uniqueness
             $baseSlug = $validated['slug'];
             $counter = 1;
             while (Page::where('slug', $validated['slug'])->where('id', '!=', $page->id)->exists()) {
-                $validated['slug'] = $baseSlug . '-' . $counter;
+                $validated['slug'] = $baseSlug.'-'.$counter;
                 $counter++;
             }
         }
@@ -142,12 +141,12 @@ class PageController extends Controller
 
             return response()->json([
                 'message' => 'Page published successfully',
-                'page' => $publishedPage->load(['layout', 'author'])
+                'page' => $publishedPage->load(['layout', 'author']),
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Failed to publish page',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 422);
         }
     }
@@ -158,7 +157,7 @@ class PageController extends Controller
 
         return response()->json([
             'message' => 'Page unpublished successfully',
-            'page' => $unpublishedPage->load(['layout', 'author'])
+            'page' => $unpublishedPage->load(['layout', 'author']),
         ]);
     }
 
@@ -166,8 +165,8 @@ class PageController extends Controller
     {
         $userId = auth()->id();
         $duplicatedPage = $page->replicate();
-        $duplicatedPage->title = $page->title . ' (Copy)';
-        $duplicatedPage->slug = $page->slug . '-copy-' . time();
+        $duplicatedPage->title = $page->title.' (Copy)';
+        $duplicatedPage->slug = $page->slug.'-copy-'.time();
         $duplicatedPage->status = Page::STATUS_DRAFT;
         $duplicatedPage->published_html = null;
         $duplicatedPage->published_at = null;
@@ -184,12 +183,12 @@ class PageController extends Controller
             $previewHtml = app(PageRenderService::class)->renderPage($page);
 
             return response()->json([
-                'html' => $previewHtml
+                'html' => $previewHtml,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Failed to generate preview',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 422);
         }
     }

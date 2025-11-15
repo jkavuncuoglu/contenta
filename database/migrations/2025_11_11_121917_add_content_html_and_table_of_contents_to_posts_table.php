@@ -18,7 +18,7 @@ return new class extends Migration
             }
 
             // Add table_of_contents column if it doesn't exist
-            if (!Schema::hasColumn('posts', 'table_of_contents')) {
+            if (! Schema::hasColumn('posts', 'table_of_contents')) {
                 $table->json('table_of_contents')->nullable()->after('content_html');
             }
         });
@@ -42,4 +42,3 @@ return new class extends Migration
         });
     }
 };
-

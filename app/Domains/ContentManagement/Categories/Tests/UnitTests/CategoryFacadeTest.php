@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class CategoryFacadeTest extends TestCase
 {
-    
     public function test_it_resolves_to_category_service_contract(): void
     {
         // Arrange

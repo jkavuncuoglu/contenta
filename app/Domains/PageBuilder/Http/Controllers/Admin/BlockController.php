@@ -27,7 +27,7 @@ class BlockController extends Controller
         if ($request->has('search')) {
             $search = $request->input('search');
             if (is_string($search)) {
-                $query->where('name', 'like', '%' . $search . '%');
+                $query->where('name', 'like', '%'.$search.'%');
             }
         }
 
@@ -67,7 +67,7 @@ class BlockController extends Controller
                 'sometimes',
                 'string',
                 'max:255',
-                Rule::unique('pagebuilder_blocks', 'type')->ignore($block->id)
+                Rule::unique('pagebuilder_blocks', 'type')->ignore($block->id),
             ],
             'category' => ['sometimes', 'string', Rule::in(array_keys(Block::getCategories()))],
             'config_schema' => 'sometimes|array',
@@ -97,14 +97,14 @@ class BlockController extends Controller
     public function validateConfig(Request $request, Block $block): JsonResponse
     {
         $config = $request->validate([
-            'config' => 'required|array'
+            'config' => 'required|array',
         ])['config'];
 
         $errors = $block->validateConfig($config);
 
         return response()->json([
             'valid' => empty($errors),
-            'errors' => $errors
+            'errors' => $errors,
         ]);
     }
 }

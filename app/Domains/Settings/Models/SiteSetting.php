@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Settings\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -82,6 +82,7 @@ class SiteSetting extends Model
     {
         return Cache::remember("site_setting_{$key}", 3600, function () use ($key, $default) {
             $setting = static::where('key', $key)->first();
+
             return $setting->value ?? $default;
         });
     }

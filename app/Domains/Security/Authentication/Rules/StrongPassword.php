@@ -11,8 +11,9 @@ class StrongPassword implements ValidationRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!is_string($value)) {
+        if (! is_string($value)) {
             $fail('The :attribute must be a string.');
+
             return;
         }
 
@@ -33,8 +34,9 @@ class StrongPassword implements ValidationRule
         $isRandomStrong = $isLongEnough && $hasLower && $hasUpper && $hasDigit && $hasSpecial;
 
         // If neither strategy is satisfied, it's weak
-        if (!($isPassphrase || $isRandomStrong)) {
+        if (! ($isPassphrase || $isRandomStrong)) {
             $fail('The :attribute is too weak. Use a passphrase (12+ chars, 3+ words) or a 12+ character password with upper, lower, number, and symbol.');
+
             return;
         }
     }

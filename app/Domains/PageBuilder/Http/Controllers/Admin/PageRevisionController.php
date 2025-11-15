@@ -8,7 +8,6 @@ use App\Domains\PageBuilder\Models\Page;
 use App\Domains\PageBuilder\Models\PageRevision;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class PageRevisionController extends Controller
 {
@@ -26,7 +25,7 @@ class PageRevisionController extends Controller
             $userName = 'System';
             if ($revision->user) {
                 if ($revision->user->first_name || $revision->user->last_name) {
-                    $userName = trim($revision->user->first_name . ' ' . $revision->user->last_name);
+                    $userName = trim($revision->user->first_name.' '.$revision->user->last_name);
                 } else {
                     $userName = $revision->user->email;
                 }
@@ -69,7 +68,7 @@ class PageRevisionController extends Controller
 
         $userId = auth()->id();
         // Create a new revision for the current state before restoring
-        $this->createRevision($page, is_int($userId) ? $userId : null, 'Before restoring to revision #' . $revision->revision_number);
+        $this->createRevision($page, is_int($userId) ? $userId : null, 'Before restoring to revision #'.$revision->revision_number);
 
         // Restore the page to the revision state
         $page->update([
@@ -86,11 +85,11 @@ class PageRevisionController extends Controller
 
         $userId = auth()->id();
         // Create a new revision for the restored state
-        $this->createRevision($page, is_int($userId) ? $userId : null, 'Restored to revision #' . $revision->revision_number);
+        $this->createRevision($page, is_int($userId) ? $userId : null, 'Restored to revision #'.$revision->revision_number);
 
         return response()->json([
             'success' => true,
-            'message' => 'Page restored to revision #' . $revision->revision_number,
+            'message' => 'Page restored to revision #'.$revision->revision_number,
         ]);
     }
 

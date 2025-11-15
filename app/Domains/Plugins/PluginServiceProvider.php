@@ -2,16 +2,16 @@
 
 namespace App\Domains\Plugins;
 
-use App\Domains\Plugins\Console\Commands\PluginDiscoverCommand;
 use App\Domains\Plugins\Console\Commands\PluginDisableCommand;
+use App\Domains\Plugins\Console\Commands\PluginDiscoverCommand;
 use App\Domains\Plugins\Console\Commands\PluginEnableCommand;
 use App\Domains\Plugins\Console\Commands\PluginInstallCommand;
 use App\Domains\Plugins\Console\Commands\PluginScanCommand;
 use App\Domains\Plugins\Features\PluginFeature;
-use Illuminate\Support\ServiceProvider;
-use Laravel\Pennant\Feature;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Pennant\Feature;
 
 class PluginServiceProvider extends ServiceProvider
 {
@@ -89,6 +89,7 @@ class PluginServiceProvider extends ServiceProvider
                 }
             }
         }
+
         return false;
     }
 
@@ -98,6 +99,7 @@ class PluginServiceProvider extends ServiceProvider
         try {
             // Try a lightweight PDO connection
             DB::connection()->getPdo();
+
             // Check table existence without triggering exception
             return Schema::hasTable('plugins');
         } catch (\Throwable $e) {

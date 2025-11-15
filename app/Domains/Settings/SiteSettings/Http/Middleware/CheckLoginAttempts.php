@@ -4,7 +4,6 @@ namespace App\Domains\Settings\SiteSettings\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,7 +25,7 @@ class CheckLoginAttempts
     public function handle(Request $request, Closure $next): Response
     {
         // Only check login-related routes
-        if (!$this->isLoginRequest($request)) {
+        if (! $this->isLoginRequest($request)) {
             return $next($request);
         }
 

@@ -9,7 +9,6 @@ use App\Domains\ContentManagement\Posts\Events\PostPublished;
 use App\Domains\ContentManagement\Posts\Events\PostUnpublished;
 use App\Domains\ContentManagement\Posts\Events\PostUpdated;
 use App\Domains\ContentManagement\Posts\Exceptions\InvalidPostStatusException;
-use App\Domains\ContentManagement\Posts\Exceptions\PostNotFoundException;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
@@ -21,9 +20,13 @@ class PostAggregate
     private array $events = [];
 
     public const STATUS_DRAFT = 'draft';
+
     public const STATUS_PUBLISHED = 'published';
+
     public const STATUS_SCHEDULED = 'scheduled';
+
     public const STATUS_PRIVATE = 'private';
+
     public const STATUS_TRASH = 'trash';
 
     public const VALID_STATUSES = [
@@ -35,7 +38,7 @@ class PostAggregate
     ];
 
     /**
-     * @param array<string, mixed> $customFields
+     * @param  array<string, mixed>  $customFields
      */
     public function __construct(
         private ?int $id,
@@ -53,7 +56,7 @@ class PostAggregate
     }
 
     /**
-     * @param array<string, mixed> $customFields
+     * @param  array<string, mixed>  $customFields
      */
     public static function create(
         string $title,
@@ -171,7 +174,7 @@ class PostAggregate
     }
 
     /**
-     * @param array<string, mixed> $customFields
+     * @param  array<string, mixed>  $customFields
      */
     public function updateCustomFields(array $customFields): void
     {
@@ -231,7 +234,6 @@ class PostAggregate
     {
         return $this->authorId;
     }
-
 
     public function getPublishedAt(): ?Carbon
     {
@@ -298,7 +300,7 @@ class PostAggregate
     // Private methods
     private function validateStatus(string $status): void
     {
-        if (!in_array($status, self::VALID_STATUSES)) {
+        if (! in_array($status, self::VALID_STATUSES)) {
             throw new InvalidPostStatusException("Invalid post status: {$status}");
         }
     }

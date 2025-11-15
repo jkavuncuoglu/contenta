@@ -20,7 +20,7 @@ class SiteSettingsService implements SiteSettingsContract
         return Cache::remember("setting.{$key}", $this->cacheDuration, function () use ($key, $default) {
             $setting = Setting::where('key', $key)->first();
 
-            if (!$setting) {
+            if (! $setting) {
                 return $default;
             }
 
@@ -61,6 +61,7 @@ class SiteSettingsService implements SiteSettingsContract
             foreach (Setting::all() as $setting) {
                 $settings[$setting->key] = $this->castValue($setting->value, $setting->type);
             }
+
             return $settings;
         });
     }
@@ -77,6 +78,7 @@ class SiteSettingsService implements SiteSettingsContract
             foreach (Setting::where('group', $group)->get() as $setting) {
                 $settings[$setting->key] = $this->castValue($setting->value, $setting->type);
             }
+
             return $settings;
         });
     }

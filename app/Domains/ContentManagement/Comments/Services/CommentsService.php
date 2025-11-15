@@ -14,7 +14,7 @@ class CommentsService implements CommentsServiceContract
     /**
      * Get paginated comments with filters
      *
-     * @param array<string, mixed> $filters
+     * @param  array<string, mixed>  $filters
      * @return LengthAwarePaginator<array-key, mixed>
      */
     public function getPaginatedComments(array $filters = [], int $perPage = 20): LengthAwarePaginator
@@ -22,25 +22,25 @@ class CommentsService implements CommentsServiceContract
         $query = Comment::with(['post:id,title,slug'])
             ->select([
                 'id', 'post_id', 'parent_id', 'author_name', 'author_email',
-                'content', 'status', 'created_at', 'updated_at'
+                'content', 'status', 'created_at', 'updated_at',
             ])
             ->latest();
 
         // Apply filters
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
 
-        if (!empty($filters['search']) && is_string($filters['search'])) {
-            $search = '%' . $filters['search'] . '%';
+        if (! empty($filters['search']) && is_string($filters['search'])) {
+            $search = '%'.$filters['search'].'%';
             $query->where(function ($q) use ($search) {
                 $q->where('content', 'LIKE', $search)
-                  ->orWhere('author_name', 'LIKE', $search)
-                  ->orWhere('author_email', 'LIKE', $search);
+                    ->orWhere('author_name', 'LIKE', $search)
+                    ->orWhere('author_email', 'LIKE', $search);
             });
         }
 
-        if (!empty($filters['post_id'])) {
+        if (! empty($filters['post_id'])) {
             $query->where('post_id', $filters['post_id']);
         }
 
@@ -59,7 +59,7 @@ class CommentsService implements CommentsServiceContract
                     'status' => $comment->status,
                     'created_at' => $comment->created_at?->format('M j, Y H:i'),
                     'updated_at' => $comment->updated_at?->format('M j, Y H:i'),
-                    'is_reply' => !is_null($comment->parent_id),
+                    'is_reply' => ! is_null($comment->parent_id),
                 ];
             });
     }
@@ -79,7 +79,7 @@ class CommentsService implements CommentsServiceContract
     public function updateStatus(int $id, string $status): bool
     {
         $comment = Comment::find($id);
-        if (!$comment) {
+        if (! $comment) {
             return false;
         }
 
@@ -89,7 +89,7 @@ class CommentsService implements CommentsServiceContract
     /**
      * Bulk update comment statuses
      *
-     * @param array<int> $ids
+     * @param  array<int>  $ids
      */
     public function bulkUpdateStatus(array $ids, string $status): int
     {
@@ -102,7 +102,7 @@ class CommentsService implements CommentsServiceContract
     public function deleteComment(int $id): bool
     {
         $comment = Comment::find($id);
-        if (!$comment) {
+        if (! $comment) {
             return false;
         }
 

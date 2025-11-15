@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class PageBuilderFacadeTest extends TestCase
 {
-    
     public function test_it_resolves_to_page_builder_service_contract(): void
     {
         // Arrange

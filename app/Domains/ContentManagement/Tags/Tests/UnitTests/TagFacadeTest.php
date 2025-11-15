@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class TagFacadeTest extends TestCase
 {
-    
     public function test_it_resolves_to_tag_service_contract(): void
     {
         // Arrange

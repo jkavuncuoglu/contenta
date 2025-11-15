@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 interface UserServiceContract
 {
     public function getById(int $id): User;
+
     public function getByUserEmail(string $email): User;
 
     public function getByUsername(string $username): User;

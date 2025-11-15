@@ -7,7 +7,6 @@ namespace App\Domains\Plugins\Services;
 use App\Domains\Plugins\Models\Plugin;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Pennant\Feature;
 use ZipArchive;
 
 class PluginService
@@ -39,12 +38,12 @@ class PluginService
     /**
      * Install plugin from uploaded zip file
      *
-     * @param string $zipPath Path to uploaded zip file
+     * @param  string  $zipPath  Path to uploaded zip file
      * @return array{success: bool, message: string, plugin?: Plugin, scan_results?: array<string, mixed>}
      */
     public function installFromZip(string $zipPath): array
     {
-        $zip = new ZipArchive();
+        $zip = new ZipArchive;
 
         if ($zip->open($zipPath) !== true) {
             return ['success' => false, 'message' => 'Failed to open zip file'];
@@ -52,14 +51,16 @@ class PluginService
 
         // Extract plugin.json to read metadata
         $pluginJson = $zip->getFromName('plugin.json');
-        if (!$pluginJson) {
+        if (! $pluginJson) {
             $zip->close();
+
             return ['success' => false, 'message' => 'Invalid plugin: plugin.json not found'];
         }
 
         $metadata = json_decode($pluginJson, true);
-        if (!$metadata || !isset($metadata['slug'], $metadata['name'], $metadata['version'])) {
+        if (! $metadata || ! isset($metadata['slug'], $metadata['name'], $metadata['version'])) {
             $zip->close();
+
             return ['success' => false, 'message' => 'Invalid plugin.json format'];
         }
 
@@ -69,12 +70,13 @@ class PluginService
         $existingPlugin = Plugin::where('slug', $slug)->first();
         if ($existingPlugin) {
             $zip->close();
+
             return ['success' => false, 'message' => 'Plugin already installed'];
         }
 
         // Create plugin directory
         $pluginDir = storage_path("app/plugins/{$slug}");
-        if (!File::exists($pluginDir)) {
+        if (! File::exists($pluginDir)) {
             File::makeDirectory($pluginDir, 0755, true);
         }
 
@@ -86,8 +88,9 @@ class PluginService
         $scanResults = $this->scanner->scan($pluginDir);
 
         // If threats found, delete plugin and reject installation
-        if (!$scanResults['safe']) {
+        if (! $scanResults['safe']) {
             File::deleteDirectory($pluginDir);
+
             return [
                 'success' => false,
                 'message' => 'Plugin rejected: Security threats detected',
@@ -146,7 +149,7 @@ class PluginService
     {
         $plugin = Plugin::where('slug', $slug)->firstOrFail();
 
-        if (!$plugin->is_verified) {
+        if (! $plugin->is_verified) {
             throw new \Exception('Cannot enable unverified plugin');
         }
 
@@ -216,8 +219,9 @@ class PluginService
         $discovered = [];
         $pluginsDir = storage_path('app/plugins');
 
-        if (!File::exists($pluginsDir)) {
+        if (! File::exists($pluginsDir)) {
             File::makeDirectory($pluginsDir, 0755, true);
+
             return $discovered;
         }
 
@@ -225,14 +229,14 @@ class PluginService
 
         foreach ($directories as $dir) {
             $folderName = basename($dir);
-            $pluginJsonPath = $dir . '/plugin.json';
+            $pluginJsonPath = $dir.'/plugin.json';
 
-            if (!File::exists($pluginJsonPath)) {
+            if (! File::exists($pluginJsonPath)) {
                 continue;
             }
 
             $metadata = json_decode(File::get($pluginJsonPath), true);
-            if (!$metadata || !isset($metadata['name'], $metadata['version'])) {
+            if (! $metadata || ! isset($metadata['name'], $metadata['version'])) {
                 continue;
             }
 
@@ -255,19 +259,21 @@ class PluginService
                     'status' => 'skipped',
                     'reason' => 'Duplicate plugin detected (slug already exists in database)',
                 ];
+
                 continue;
             }
 
             // Scan for security
             $scanResults = $this->scanner->scan($dir);
 
-            if (!$scanResults['safe']) {
+            if (! $scanResults['safe']) {
                 $discovered[] = [
                     'folder_name' => $folderName,
                     'slug' => $pluginSlug,
                     'status' => 'rejected',
                     'reason' => 'Security threats detected',
                 ];
+
                 continue;
             }
 
@@ -309,8 +315,9 @@ class PluginService
         $uninstalled = [];
         $pluginsDir = storage_path('app/plugins');
 
-        if (!File::exists($pluginsDir)) {
+        if (! File::exists($pluginsDir)) {
             File::makeDirectory($pluginsDir, 0755, true);
+
             return $uninstalled;
         }
 
@@ -318,14 +325,14 @@ class PluginService
 
         foreach ($directories as $dir) {
             $folderName = basename($dir);
-            $pluginJsonPath = $dir . '/plugin.json';
+            $pluginJsonPath = $dir.'/plugin.json';
 
-            if (!File::exists($pluginJsonPath)) {
+            if (! File::exists($pluginJsonPath)) {
                 continue;
             }
 
             $metadata = json_decode(File::get($pluginJsonPath), true);
-            if (!$metadata || !isset($metadata['name'], $metadata['version'])) {
+            if (! $metadata || ! isset($metadata['name'], $metadata['version'])) {
                 continue;
             }
 
@@ -369,14 +376,14 @@ class PluginService
     public function installAndEnable(string $slug): array
     {
         $pluginDir = storage_path("app/plugins/{$slug}");
-        $pluginJsonPath = $pluginDir . '/plugin.json';
+        $pluginJsonPath = $pluginDir.'/plugin.json';
 
-        if (!File::exists($pluginJsonPath)) {
+        if (! File::exists($pluginJsonPath)) {
             return ['success' => false, 'message' => 'Plugin not found in storage'];
         }
 
         $metadata = json_decode(File::get($pluginJsonPath), true);
-        if (!$metadata || !isset($metadata['name'], $metadata['version'])) {
+        if (! $metadata || ! isset($metadata['name'], $metadata['version'])) {
             return ['success' => false, 'message' => 'Invalid plugin.json format'];
         }
 
@@ -384,16 +391,17 @@ class PluginService
         $existingPlugin = Plugin::where('slug', $slug)->first();
         if ($existingPlugin) {
             // If already installed, just enable it
-            if (!$existingPlugin->is_enabled) {
+            if (! $existingPlugin->is_enabled) {
                 $this->enable($slug);
             }
+
             return ['success' => true, 'message' => 'Plugin enabled', 'plugin' => $existingPlugin];
         }
 
         // Scan for security issues
         $scanResults = $this->scanner->scan($pluginDir);
 
-        if (!$scanResults['safe']) {
+        if (! $scanResults['safe']) {
             return [
                 'success' => false,
                 'message' => 'Plugin rejected: Security threats detected',
@@ -435,16 +443,16 @@ class PluginService
         $isAdminContext = $this->isAdminContext();
 
         foreach ($plugins as $plugin) {
-            if (!$this->isPluginActive($plugin->slug)) {
+            if (! $this->isPluginActive($plugin->slug)) {
                 continue;
             }
 
             // Skip plugins that don't match the current context
-            if ($isAdminContext && !$plugin->shouldLoadInAdmin()) {
+            if ($isAdminContext && ! $plugin->shouldLoadInAdmin()) {
                 continue;
             }
 
-            if (!$isAdminContext && !$plugin->shouldLoadInFrontend()) {
+            if (! $isAdminContext && ! $plugin->shouldLoadInFrontend()) {
                 continue;
             }
 
@@ -477,24 +485,23 @@ class PluginService
     {
         $plugin = Plugin::where('slug', $slug)->first();
 
-        if (!$plugin) {
+        if (! $plugin) {
             return false;
         }
 
-        return $plugin->is_enabled && $plugin->is_verified && !$plugin->hasSecurityIssues();
+        return $plugin->is_enabled && $plugin->is_verified && ! $plugin->hasSecurityIssues();
     }
 
     /**
      * Delete an uninstalled plugin folder
      *
-     * @param string $folderName The folder name in storage/app/plugins/
-     * @return bool
+     * @param  string  $folderName  The folder name in storage/app/plugins/
      */
     public function deleteUninstalledPlugin(string $folderName): bool
     {
         $pluginDir = storage_path("app/plugins/{$folderName}");
 
-        if (!File::exists($pluginDir)) {
+        if (! File::exists($pluginDir)) {
             throw new \Exception('Plugin folder not found');
         }
 

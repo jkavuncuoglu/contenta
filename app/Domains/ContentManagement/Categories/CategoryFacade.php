@@ -3,7 +3,6 @@
 namespace App\Domains\ContentManagement\Categories;
 
 use Illuminate\Support\Facades\Facade;
-use App\Domains\ContentManagement\Categories\Services\CategoryServiceContract;
 
 class CategoryFacade extends Facade
 {

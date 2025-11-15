@@ -20,7 +20,7 @@ class UpdateApiTokenRequest extends FormRequest
         return [
             'name' => ['sometimes', 'string', 'max:255'],
             'abilities' => ['sometimes', 'array'],
-            'abilities.*' => ['string', 'in:' . implode(',', TokenAbility::values())],
+            'abilities.*' => ['string', 'in:'.implode(',', TokenAbility::values())],
         ];
     }
 
@@ -35,4 +35,3 @@ class UpdateApiTokenRequest extends FormRequest
         ];
     }
 }
-

@@ -4,12 +4,12 @@ namespace App\Domains\Security\Authentication\Services;
 
 use App\Domains\Security\Authentication\Inputs\AuthenticationChangePasswordInput;
 use App\Domains\Security\Authentication\Inputs\AuthenticationLoginInput;
-use App\Domains\Security\Authentication\Inputs\AuthenticationRegisterUserInput;
 use App\Domains\Security\Authentication\Inputs\AuthenticationRegisterUserEmailInput;
+use App\Domains\Security\Authentication\Inputs\AuthenticationRegisterUserInput;
+use App\Domains\Security\Authentication\Mail\ResetPasswordEmail;
 use App\Domains\Security\UserManagement\Models\User;
 use App\Domains\Security\UserManagement\Models\UserEmail;
 use App\Domains\Security\UserManagement\Resources\UserResource;
-use App\Domains\Security\Authentication\Mail\ResetPasswordEmail;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
@@ -51,15 +51,15 @@ class AuthenticationService implements AuthenticationServiceContract
         $userEmail = UserEmail::where('email', $input->email)->firstOrFail();
         $user = $userEmail->user;
 
-        if (!$user->is_active) {
+        if (! $user->is_active) {
             throw ValidationException::withMessages([
                 'error' => 'Invalid credentials.',
             ]);
         }
 
-        if (!Hash::check($input->password, $user->password)) {
+        if (! Hash::check($input->password, $user->password)) {
             throw ValidationException::withMessages([
-                'error' => 'Invalid credentials.'
+                'error' => 'Invalid credentials.',
             ]);
         }
 
@@ -85,7 +85,7 @@ class AuthenticationService implements AuthenticationServiceContract
         $userEmail = UserEmail::where('email', $input->email)->firstOrFail();
         $user = $userEmail->user;
 
-        if (!Hash::check($input->currentPassword, $user->password)) {
+        if (! Hash::check($input->currentPassword, $user->password)) {
             throw ValidationException::withMessages([
                 'error' => 'Invalid current password.',
             ]);
@@ -129,9 +129,9 @@ class AuthenticationService implements AuthenticationServiceContract
             ]);
         }
 
-        $resetUrl = rtrim((string) $fronendBase, '/') . '/reset-password'
-            . '?token=' . $token
-            . '&email=' . urlencode($user->email);
+        $resetUrl = rtrim((string) $fronendBase, '/').'/reset-password'
+            .'?token='.$token
+            .'&email='.urlencode($user->email);
 
         if (Mail::to($email)->send(
             new ResetPasswordEmail(
@@ -184,7 +184,7 @@ class AuthenticationService implements AuthenticationServiceContract
 
         $user = $userEmail->user;
 
-        if (!$user->is_active) {
+        if (! $user->is_active) {
             throw ValidationException::withMessages([
                 'error' => 'Invalid credentials.',
             ]);
@@ -197,7 +197,7 @@ class AuthenticationService implements AuthenticationServiceContract
     {
         $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         $userEmail->update(['email_verification_code' => $code]);
+
         return $code;
     }
-
 }

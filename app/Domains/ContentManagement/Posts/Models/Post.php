@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Posts\Models;
 
-use App\Domains\ContentManagement\Posts\Aggregates\PostAggregate;
 use App\Domains\ContentManagement\Categories\Models\Category;
-use App\Domains\ContentManagement\Posts\Models\Comment;
-use App\Domains\ContentManagement\Posts\Models\PostRevision;
+use App\Domains\ContentManagement\Posts\Aggregates\PostAggregate;
 use App\Domains\ContentManagement\Tags\Models\Tag;
 use App\Domains\Security\UserManagement\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,9 +23,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Post extends Model implements HasMedia
 {
     use HasFactory;
-    use SoftDeletes;
     use InteractsWithMedia;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -75,6 +73,7 @@ class Post extends Model implements HasMedia
      * @var array<int, string>
      */
     protected static array $logAttributes = ['title', 'status', 'published_at'];
+
     protected static bool $logOnlyDirty = true;
 
     // Relationships
@@ -85,7 +84,6 @@ class Post extends Model implements HasMedia
     {
         return $this->belongsTo(User::class, 'author_id');
     }
-
 
     /**
      * @return BelongsTo<Post, $this>
@@ -181,7 +179,7 @@ class Post extends Model implements HasMedia
 
     // Scopes
     /**
-     * @param Builder<Post> $query
+     * @param  Builder<Post>  $query
      * @return Builder<Post>
      */
     public function scopePublished(Builder $query): Builder
@@ -190,7 +188,7 @@ class Post extends Model implements HasMedia
     }
 
     /**
-     * @param Builder<Post> $query
+     * @param  Builder<Post>  $query
      * @return Builder<Post>
      */
     public function scopeScheduled(Builder $query): Builder
@@ -200,14 +198,13 @@ class Post extends Model implements HasMedia
     }
 
     /**
-     * @param Builder<Post> $query
+     * @param  Builder<Post>  $query
      * @return Builder<Post>
      */
     public function scopeDraft(Builder $query): Builder
     {
         return $query->where('status', 'draft');
     }
-
 
     public function getActivitylogOptions(): LogOptions
     {

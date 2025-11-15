@@ -13,6 +13,6 @@ Route::prefix('v1')->group(function () {
         Route::post('reset-password', [AuthenticationController::class, 'resetPassword']);
 
         // Handle CORS preflight for any auth path
-        Route::options('{any}', fn() => response()->noContent())->where('any', '.*');
+        Route::options('{any}', fn () => response()->noContent())->where('any', '.*');
     });
 });

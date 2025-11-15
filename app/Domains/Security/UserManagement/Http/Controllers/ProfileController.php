@@ -12,7 +12,7 @@ class ProfileController extends Controller
     public function index(): Response
     {
         return Inertia::render('settings/Profile', [
-            'user' => Auth::user()
+            'user' => Auth::user(),
         ]);
     }
 }

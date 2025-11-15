@@ -2,17 +2,16 @@
 
 namespace App\Domains\Security\Authentication\Inputs;
 
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Hash;
-
 class AuthenticationRegisterUserEmailInput
 {
     public int $user_id;
+
     public string $email;
+
     public bool $is_primary;
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function __construct(array $data)
     {

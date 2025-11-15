@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Settings\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -129,7 +129,7 @@ class Setting extends Model
     /**
      * Get multiple settings efficiently
      *
-     * @param array<string, string|array<int, string>> $settings
+     * @param  array<string, string|array<int, string>>  $settings
      * @return array<string, array<string, mixed>>
      */
     public static function getMultiple(array $settings): array
@@ -139,7 +139,7 @@ class Setting extends Model
 
         // Check cache first
         foreach ($settings as $group => $keys) {
-            if (!is_array($keys)) {
+            if (! is_array($keys)) {
                 $keys = [$keys];
             }
 
@@ -156,7 +156,7 @@ class Setting extends Model
         }
 
         // Fetch uncached settings
-        if (!empty($uncached)) {
+        if (! empty($uncached)) {
             $groupKeys = [];
             foreach ($uncached as $item) {
                 $groupKeys[$item['group']][] = $item['key'];

@@ -34,7 +34,7 @@ class PublishScheduledPosts implements ShouldQueue
         if (count($publishedPosts) > 0) {
             Log::info('Published scheduled posts', [
                 'count' => count($publishedPosts),
-                'post_ids' => array_map(fn($post) => $post->id, $publishedPosts),
+                'post_ids' => array_map(fn ($post) => $post->id, $publishedPosts),
             ]);
         }
     }

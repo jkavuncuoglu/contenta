@@ -2,8 +2,8 @@
 
 namespace App\Domains\ContentManagement\Categories\Database\seeders;
 
-use Illuminate\Database\Seeder;
 use App\Domains\ContentManagement\Categories\Models\Category;
+use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {

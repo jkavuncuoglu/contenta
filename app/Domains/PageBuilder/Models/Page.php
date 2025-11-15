@@ -18,7 +18,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class Page extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $table = 'pagebuilder_pages';
 
@@ -49,7 +49,9 @@ class Page extends Model
 
     // Status constants
     const STATUS_DRAFT = 'draft';
+
     const STATUS_PUBLISHED = 'published';
+
     const STATUS_ARCHIVED = 'archived';
 
     /**
@@ -85,7 +87,7 @@ class Page extends Model
     /**
      * Scope for published pages
      *
-     * @param Builder<Page> $query
+     * @param  Builder<Page>  $query
      * @return Builder<Page>
      */
     public function scopePublished(Builder $query): Builder
@@ -96,7 +98,7 @@ class Page extends Model
     /**
      * Scope for draft pages
      *
-     * @param Builder<Page> $query
+     * @param  Builder<Page>  $query
      * @return Builder<Page>
      */
     public function scopeDraft(Builder $query): Builder

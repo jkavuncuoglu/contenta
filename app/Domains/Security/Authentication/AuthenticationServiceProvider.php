@@ -17,11 +17,11 @@ class AuthenticationServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Load web routes with the 'web' middleware stack
-        Route::middleware('web')->group(__DIR__ . '/Http/routes.web.php');
+        Route::middleware('web')->group(__DIR__.'/Http/routes.web.php');
 
         // Load API routes with '/api' prefix and 'api' middleware stack
         Route::prefix('api')
             ->middleware('api')
-            ->group(__DIR__ . '/Http/routes.api.php');
+            ->group(__DIR__.'/Http/routes.api.php');
     }
 }

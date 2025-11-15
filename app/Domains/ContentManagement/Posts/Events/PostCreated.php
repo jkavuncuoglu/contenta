@@ -12,6 +12,6 @@ readonly class PostCreated
         public string $title,
         public string $slug,
         public int $authorId,
-        public Carbon $createdAt = new Carbon()
+        public Carbon $createdAt = new Carbon
     ) {}
 }

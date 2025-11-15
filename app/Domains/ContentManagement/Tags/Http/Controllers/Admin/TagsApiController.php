@@ -2,8 +2,8 @@
 
 namespace App\Domains\ContentManagement\Tags\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Domains\ContentManagement\Tags\Models\Tag;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -20,8 +20,8 @@ class TagsApiController extends Controller
 
         // Search by name
         $search = $request->string('search')->toString();
-        if ($request->has('search') && !empty($search)) {
-            $query->where('name', 'like', '%' . $search . '%');
+        if ($request->has('search') && ! empty($search)) {
+            $query->where('name', 'like', '%'.$search.'%');
         }
 
         $tags = $query->paginate($request->integer('per_page', 50));

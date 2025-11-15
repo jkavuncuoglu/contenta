@@ -17,6 +17,7 @@ class Menu extends Model
 {
     /** @use HasFactory<MenuFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     protected $fillable = [
@@ -65,7 +66,7 @@ class Menu extends Model
         return $this->rootItems()
             ->with('children')
             ->get()
-            ->map(fn(MenuItem $item) => $item->toTree())
+            ->map(fn (MenuItem $item) => $item->toTree())
             ->toArray();
     }
 

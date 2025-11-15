@@ -23,7 +23,7 @@ class VerifyEmailController extends Controller
                 ? response()->json([
                     'status' => 'success',
                     'message' => 'Email already verified.',
-                    'data' => ['email_verified' => true]
+                    'data' => ['email_verified' => true],
                 ])
                 : redirect()->intended(route('dashboard', absolute: false));
         }
@@ -40,7 +40,7 @@ class VerifyEmailController extends Controller
                 ? response()->json([
                     'status' => 'success',
                     'message' => 'Email verified successfully.',
-                    'data' => ['email_verified' => true]
+                    'data' => ['email_verified' => true],
                 ])
                 : redirect()->intended(route('dashboard', absolute: false).'?verified=1');
         }
