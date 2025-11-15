@@ -30,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail, WebAuthnAuthentic
 
     /** @use HasFactory<UserFactory> */
     use HasFactory;
+
     use HasRoles;
     use LogsActivity;
     use Notifiable;

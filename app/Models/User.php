@@ -18,6 +18,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use HasRoles;
     use Notifiable;
     use TwoFactorAuthenticatable;
