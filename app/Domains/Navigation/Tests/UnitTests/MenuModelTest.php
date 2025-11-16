@@ -16,8 +16,10 @@ class MenuModelTest extends TestCase
     public function test_items_relationship_returns_all_menu_items(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        MenuItem::factory()->count(3)->create(['menu_id' => $menu->id]);
+        $menu = Menu::create(['name' => 'Test Menu', 'slug' => 'test-menu']);
+        MenuItem::create(['menu_id' => $menu->id, 'title' => 'Item 1', 'order' => 1]);
+        MenuItem::create(['menu_id' => $menu->id, 'title' => 'Item 2', 'order' => 2]);
+        MenuItem::create(['menu_id' => $menu->id, 'title' => 'Item 3', 'order' => 3]);
 
         // Act
         $items = $menu->items;
@@ -29,10 +31,10 @@ class MenuModelTest extends TestCase
     public function test_items_relationship_orders_by_order_column(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        $item3 = MenuItem::factory()->create(['menu_id' => $menu->id, 'order' => 3, 'title' => 'Third']);
-        $item1 = MenuItem::factory()->create(['menu_id' => $menu->id, 'order' => 1, 'title' => 'First']);
-        $item2 = MenuItem::factory()->create(['menu_id' => $menu->id, 'order' => 2, 'title' => 'Second']);
+        $menu = Menu::create(['name' => 'Test Menu', 'slug' => 'test-menu']);
+        MenuItem::create(['menu_id' => $menu->id, 'order' => 3, 'title' => 'Third']);
+        MenuItem::create(['menu_id' => $menu->id, 'order' => 1, 'title' => 'First']);
+        MenuItem::create(['menu_id' => $menu->id, 'order' => 2, 'title' => 'Second']);
 
         // Act
         $items = $menu->items;
@@ -46,9 +48,9 @@ class MenuModelTest extends TestCase
     public function test_root_items_returns_only_items_without_parent(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        $rootItem = MenuItem::factory()->create(['menu_id' => $menu->id, 'parent_id' => null]);
-        $childItem = MenuItem::factory()->create(['menu_id' => $menu->id, 'parent_id' => $rootItem->id]);
+        $menu = Menu::create(['name' => 'Test Menu', 'slug' => 'test-menu']);
+        $rootItem = MenuItem::create(['menu_id' => $menu->id, 'title' => 'Root', 'parent_id' => null]);
+        MenuItem::create(['menu_id' => $menu->id, 'title' => 'Child', 'parent_id' => $rootItem->id]);
 
         // Act
         $rootItems = $menu->rootItems;
@@ -61,14 +63,14 @@ class MenuModelTest extends TestCase
     public function test_get_structure_returns_nested_array(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        $rootItem = MenuItem::factory()->create([
+        $menu = Menu::create(['name' => 'Test Menu', 'slug' => 'test-menu']);
+        $rootItem = MenuItem::create([
             'menu_id' => $menu->id,
             'parent_id' => null,
             'title' => 'Root Item',
             'order' => 1,
         ]);
-        $childItem = MenuItem::factory()->create([
+        MenuItem::create([
             'menu_id' => $menu->id,
             'parent_id' => $rootItem->id,
             'title' => 'Child Item',
@@ -90,8 +92,9 @@ class MenuModelTest extends TestCase
     public function test_duplicate_creates_new_menu_with_same_attributes(): void
     {
         // Arrange
-        $originalMenu = Menu::factory()->create([
+        $originalMenu = Menu::create([
             'name' => 'Original Menu',
+            'slug' => 'original-menu',
             'description' => 'Test Description',
             'location' => 'header',
             'is_active' => true,
@@ -113,8 +116,10 @@ class MenuModelTest extends TestCase
     public function test_duplicate_copies_all_menu_items(): void
     {
         // Arrange
-        $originalMenu = Menu::factory()->create();
-        MenuItem::factory()->count(3)->create(['menu_id' => $originalMenu->id]);
+        $originalMenu = Menu::create(['name' => 'Original', 'slug' => 'original']);
+        MenuItem::create(['menu_id' => $originalMenu->id, 'title' => 'Item 1']);
+        MenuItem::create(['menu_id' => $originalMenu->id, 'title' => 'Item 2']);
+        MenuItem::create(['menu_id' => $originalMenu->id, 'title' => 'Item 3']);
 
         // Act
         $duplicatedMenu = $originalMenu->duplicate('Duplicated Menu');
@@ -126,13 +131,13 @@ class MenuModelTest extends TestCase
     public function test_duplicate_preserves_parent_child_relationships(): void
     {
         // Arrange
-        $originalMenu = Menu::factory()->create();
-        $parentItem = MenuItem::factory()->create([
+        $originalMenu = Menu::create(['name' => 'Original', 'slug' => 'original']);
+        $parentItem = MenuItem::create([
             'menu_id' => $originalMenu->id,
             'parent_id' => null,
             'title' => 'Parent',
         ]);
-        $childItem = MenuItem::factory()->create([
+        MenuItem::create([
             'menu_id' => $originalMenu->id,
             'parent_id' => $parentItem->id,
             'title' => 'Child',
@@ -155,7 +160,9 @@ class MenuModelTest extends TestCase
     public function test_casts_settings_to_array(): void
     {
         // Arrange & Act
-        $menu = Menu::factory()->create([
+        $menu = Menu::create([
+            'name' => 'Test',
+            'slug' => 'test',
             'settings' => ['color' => 'blue', 'size' => 'large'],
         ]);
 
@@ -168,7 +175,7 @@ class MenuModelTest extends TestCase
     public function test_casts_is_active_to_boolean(): void
     {
         // Arrange & Act
-        $menu = Menu::factory()->create(['is_active' => 1]);
+        $menu = Menu::create(['name' => 'Test', 'slug' => 'test', 'is_active' => 1]);
 
         // Assert
         $this->assertIsBool($menu->is_active);
@@ -178,7 +185,7 @@ class MenuModelTest extends TestCase
     public function test_soft_deletes_menu(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
+        $menu = Menu::create(['name' => 'Test', 'slug' => 'test']);
         $menuId = $menu->id;
 
         // Act

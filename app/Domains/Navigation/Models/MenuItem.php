@@ -114,8 +114,8 @@ class MenuItem extends Model
             'css_classes' => $this->css_classes,
             'icon' => $this->icon,
             'is_visible' => $this->is_visible,
-            'attributes' => $this->attributes,
-            'metadata' => $this->metadata,
+            'attributes' => $this->getAttribute('attributes'),
+            'metadata' => $this->getAttribute('metadata'),
             'children' => $this->children->map(fn (MenuItem $child) => $child->toTree())->toArray(),
         ];
     }

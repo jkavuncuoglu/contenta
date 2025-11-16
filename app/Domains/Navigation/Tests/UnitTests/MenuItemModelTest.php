@@ -16,8 +16,8 @@ class MenuItemModelTest extends TestCase
     public function test_menu_relationship_returns_parent_menu(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        $item = MenuItem::factory()->create(['menu_id' => $menu->id]);
+        $menu = Menu::create(['name' => 'Test', 'slug' => 'test']);
+        $item = MenuItem::create(['menu_id' => $menu->id, 'title' => 'Item']);
 
         // Act
         $relatedMenu = $item->menu;
@@ -30,10 +30,11 @@ class MenuItemModelTest extends TestCase
     public function test_parent_relationship_returns_parent_item(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        $parentItem = MenuItem::factory()->create(['menu_id' => $menu->id]);
-        $childItem = MenuItem::factory()->create([
+        $menu = Menu::create(['name' => 'Test', 'slug' => 'test']);
+        $parentItem = MenuItem::create(['menu_id' => $menu->id, 'title' => 'Parent']);
+        $childItem = MenuItem::create([
             'menu_id' => $menu->id,
+            'title' => 'Child',
             'parent_id' => $parentItem->id,
         ]);
 
@@ -48,15 +49,17 @@ class MenuItemModelTest extends TestCase
     public function test_children_relationship_returns_child_items(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        $parentItem = MenuItem::factory()->create(['menu_id' => $menu->id]);
-        $child1 = MenuItem::factory()->create([
+        $menu = Menu::create(['name' => 'Test', 'slug' => 'test']);
+        $parentItem = MenuItem::create(['menu_id' => $menu->id, 'title' => 'Parent']);
+        $child1 = MenuItem::create([
             'menu_id' => $menu->id,
+            'title' => 'Child 1',
             'parent_id' => $parentItem->id,
             'order' => 2,
         ]);
-        $child2 = MenuItem::factory()->create([
+        $child2 = MenuItem::create([
             'menu_id' => $menu->id,
+            'title' => 'Child 2',
             'parent_id' => $parentItem->id,
             'order' => 1,
         ]);
@@ -73,7 +76,11 @@ class MenuItemModelTest extends TestCase
     public function test_get_resolved_url_returns_direct_url_when_set(): void
     {
         // Arrange
-        $item = MenuItem::factory()->create(['url' => 'https://example.com']);
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
+            'url' => 'https://example.com',
+        ]);
 
         // Act
         $url = $item->getResolvedUrl();
@@ -85,7 +92,9 @@ class MenuItemModelTest extends TestCase
     public function test_get_resolved_url_resolves_page_type(): void
     {
         // Arrange
-        $item = MenuItem::factory()->create([
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
             'url' => null,
             'object_type' => 'page',
             'object_id' => '123',
@@ -101,7 +110,9 @@ class MenuItemModelTest extends TestCase
     public function test_get_resolved_url_resolves_post_type(): void
     {
         // Arrange
-        $item = MenuItem::factory()->create([
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
             'url' => null,
             'object_type' => 'post',
             'object_id' => '456',
@@ -117,7 +128,9 @@ class MenuItemModelTest extends TestCase
     public function test_get_resolved_url_resolves_category_type(): void
     {
         // Arrange
-        $item = MenuItem::factory()->create([
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
             'url' => null,
             'object_type' => 'category',
             'object_id' => '789',
@@ -133,7 +146,9 @@ class MenuItemModelTest extends TestCase
     public function test_get_resolved_url_resolves_tag_type(): void
     {
         // Arrange
-        $item = MenuItem::factory()->create([
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
             'url' => null,
             'object_type' => 'tag',
             'object_id' => '111',
@@ -149,7 +164,9 @@ class MenuItemModelTest extends TestCase
     public function test_get_resolved_url_returns_null_for_unknown_type(): void
     {
         // Arrange
-        $item = MenuItem::factory()->create([
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
             'url' => null,
             'object_type' => 'unknown',
             'object_id' => '222',
@@ -165,7 +182,9 @@ class MenuItemModelTest extends TestCase
     public function test_get_resolved_url_returns_null_when_no_url_or_object(): void
     {
         // Arrange
-        $item = MenuItem::factory()->create([
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
             'url' => null,
             'object_type' => null,
             'object_id' => null,
@@ -181,8 +200,8 @@ class MenuItemModelTest extends TestCase
     public function test_to_tree_returns_array_with_correct_structure(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        $item = MenuItem::factory()->create([
+        $menu = Menu::create(['name' => 'Test', 'slug' => 'test']);
+        $item = MenuItem::create([
             'menu_id' => $menu->id,
             'title' => 'Test Item',
             'url' => '/test',
@@ -216,12 +235,12 @@ class MenuItemModelTest extends TestCase
     public function test_to_tree_includes_children(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        $parentItem = MenuItem::factory()->create([
+        $menu = Menu::create(['name' => 'Test', 'slug' => 'test']);
+        $parentItem = MenuItem::create([
             'menu_id' => $menu->id,
             'title' => 'Parent',
         ]);
-        $childItem = MenuItem::factory()->create([
+        MenuItem::create([
             'menu_id' => $menu->id,
             'parent_id' => $parentItem->id,
             'title' => 'Child',
@@ -238,10 +257,10 @@ class MenuItemModelTest extends TestCase
     public function test_reorder_updates_order_and_parent(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        $item1 = MenuItem::factory()->create(['menu_id' => $menu->id, 'order' => 0]);
-        $item2 = MenuItem::factory()->create(['menu_id' => $menu->id, 'order' => 1]);
-        $item3 = MenuItem::factory()->create(['menu_id' => $menu->id, 'order' => 2]);
+        $menu = Menu::create(['name' => 'Test', 'slug' => 'test']);
+        $item1 = MenuItem::create(['menu_id' => $menu->id, 'title' => 'Item 1', 'order' => 0]);
+        $item2 = MenuItem::create(['menu_id' => $menu->id, 'title' => 'Item 2', 'order' => 1]);
+        $item3 = MenuItem::create(['menu_id' => $menu->id, 'title' => 'Item 3', 'order' => 2]);
 
         $items = [
             ['id' => $item3->id, 'children' => []],
@@ -265,9 +284,9 @@ class MenuItemModelTest extends TestCase
     public function test_reorder_handles_nested_children(): void
     {
         // Arrange
-        $menu = Menu::factory()->create();
-        $parent = MenuItem::factory()->create(['menu_id' => $menu->id]);
-        $child = MenuItem::factory()->create(['menu_id' => $menu->id, 'parent_id' => null]);
+        $menu = Menu::create(['name' => 'Test', 'slug' => 'test']);
+        $parent = MenuItem::create(['menu_id' => $menu->id, 'title' => 'Parent']);
+        $child = MenuItem::create(['menu_id' => $menu->id, 'title' => 'Child', 'parent_id' => null]);
 
         $items = [
             [
@@ -294,7 +313,9 @@ class MenuItemModelTest extends TestCase
     public function test_casts_attributes_to_array(): void
     {
         // Arrange & Act
-        $item = MenuItem::factory()->create([
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
             'attributes' => ['class' => 'test', 'data-id' => '123'],
         ]);
 
@@ -306,7 +327,9 @@ class MenuItemModelTest extends TestCase
     public function test_casts_metadata_to_array(): void
     {
         // Arrange & Act
-        $item = MenuItem::factory()->create([
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
             'metadata' => ['author' => 'John', 'category' => 'main'],
         ]);
 
@@ -318,7 +341,11 @@ class MenuItemModelTest extends TestCase
     public function test_casts_is_visible_to_boolean(): void
     {
         // Arrange & Act
-        $item = MenuItem::factory()->create(['is_visible' => 1]);
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
+            'is_visible' => 1,
+        ]);
 
         // Assert
         $this->assertIsBool($item->is_visible);
@@ -328,7 +355,11 @@ class MenuItemModelTest extends TestCase
     public function test_casts_order_to_integer(): void
     {
         // Arrange & Act
-        $item = MenuItem::factory()->create(['order' => '5']);
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
+            'order' => '5',
+        ]);
 
         // Assert
         $this->assertIsInt($item->order);
@@ -338,7 +369,10 @@ class MenuItemModelTest extends TestCase
     public function test_soft_deletes_menu_item(): void
     {
         // Arrange
-        $item = MenuItem::factory()->create();
+        $item = MenuItem::create([
+            'menu_id' => Menu::create(['name' => 'Test', 'slug' => 'test'])->id,
+            'title' => 'Item',
+        ]);
         $itemId = $item->id;
 
         // Act
