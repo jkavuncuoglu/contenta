@@ -10,9 +10,6 @@ jobs:
   php-tests:
     runs-on: ubuntu-latest
     name: PHP Tests (Pest)
-    defaults:
-      run:
-        working-directory: contenta
     env:
       DB_CONNECTION: sqlite
       DB_DATABASE: database/database.sqlite
