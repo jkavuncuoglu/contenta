@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domains\PageBuilder\Http\Controllers\Admin;
 
 use App\Domains\PageBuilder\Actions\PublishPageAction;
-use App\Domains\PageBuilder\Models\Layout;
 use App\Domains\PageBuilder\Models\Page;
 use App\Domains\PageBuilder\Models\PageRevision;
 use App\Domains\PageBuilder\Services\PageRenderService;
@@ -33,10 +32,14 @@ class PageController extends Controller
 
         // Search by title
         if ($request->has('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+            $search = $request->input('search');
+            if (is_string($search)) {
+                $query->where('title', 'like', '%'.$search.'%');
+            }
         }
 
-        $pages = $query->paginate($request->get('per_page', 15));
+        $perPage = $request->input('per_page', 15);
+        $pages = $query->paginate(is_numeric($perPage) ? (int) $perPage : 15);
 
         return response()->json($pages);
     }
@@ -62,18 +65,19 @@ class PageController extends Controller
             $baseSlug = $validated['slug'];
             $counter = 1;
             while (Page::where('slug', $validated['slug'])->exists()) {
-                $validated['slug'] = $baseSlug . '-' . $counter;
+                $validated['slug'] = $baseSlug.'-'.$counter;
                 $counter++;
             }
         }
 
-        $validated['author_id'] = auth()->id();
+        $userId = auth()->id();
+        $validated['author_id'] = $userId;
         $validated['status'] = Page::STATUS_DRAFT;
 
         $page = Page::create($validated);
 
         // Create initial revision
-        $this->createRevision($page, auth()->id(), 'Initial version');
+        $this->createRevision($page, is_int($userId) ? $userId : null, 'Initial version');
 
         return response()->json($page->load(['layout', 'author']), 201);
     }
@@ -91,7 +95,7 @@ class PageController extends Controller
                 'sometimes',
                 'string',
                 'max:255',
-                Rule::unique('pagebuilder_pages', 'slug')->ignore($page->id)
+                Rule::unique('pagebuilder_pages', 'slug')->ignore($page->id),
             ],
             'layout_id' => 'sometimes|nullable|exists:pagebuilder_layouts,id',
             'data' => 'sometimes|nullable|array',
@@ -102,14 +106,14 @@ class PageController extends Controller
         ]);
 
         // Generate slug if title changed but slug not provided
-        if (isset($validated['title']) && !isset($validated['slug'])) {
+        if (isset($validated['title']) && ! isset($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['title']);
 
             // Ensure uniqueness
             $baseSlug = $validated['slug'];
             $counter = 1;
             while (Page::where('slug', $validated['slug'])->where('id', '!=', $page->id)->exists()) {
-                $validated['slug'] = $baseSlug . '-' . $counter;
+                $validated['slug'] = $baseSlug.'-'.$counter;
                 $counter++;
             }
         }
@@ -117,7 +121,8 @@ class PageController extends Controller
         $page->update($validated);
 
         // Create revision for this update
-        $this->createRevision($page, auth()->id(), 'Updated page');
+        $userId = auth()->id();
+        $this->createRevision($page, is_int($userId) ? $userId : null, 'Updated page');
 
         return response()->json($page->fresh(['layout', 'author']));
     }
@@ -136,12 +141,12 @@ class PageController extends Controller
 
             return response()->json([
                 'message' => 'Page published successfully',
-                'page' => $publishedPage->load(['layout', 'author'])
+                'page' => $publishedPage->load(['layout', 'author']),
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Failed to publish page',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 422);
         }
     }
@@ -152,19 +157,21 @@ class PageController extends Controller
 
         return response()->json([
             'message' => 'Page unpublished successfully',
-            'page' => $unpublishedPage->load(['layout', 'author'])
+            'page' => $unpublishedPage->load(['layout', 'author']),
         ]);
     }
 
     public function duplicate(Page $page): JsonResponse
     {
+        $userId = auth()->id();
         $duplicatedPage = $page->replicate();
-        $duplicatedPage->title = $page->title . ' (Copy)';
-        $duplicatedPage->slug = $page->slug . '-copy-' . time();
+        $duplicatedPage->title = $page->title.' (Copy)';
+        $duplicatedPage->slug = $page->slug.'-copy-'.time();
         $duplicatedPage->status = Page::STATUS_DRAFT;
         $duplicatedPage->published_html = null;
         $duplicatedPage->published_at = null;
-        $duplicatedPage->author_id = auth()->id();
+        // Cast auth()->id() to int|null for type safety
+        $duplicatedPage->author_id = $userId !== null ? (int) $userId : null;
         $duplicatedPage->save();
 
         return response()->json($duplicatedPage->load(['layout', 'author']), 201);
@@ -176,12 +183,12 @@ class PageController extends Controller
             $previewHtml = app(PageRenderService::class)->renderPage($page);
 
             return response()->json([
-                'html' => $previewHtml
+                'html' => $previewHtml,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Failed to generate preview',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 422);
         }
     }
@@ -191,6 +198,7 @@ class PageController extends Controller
      */
     private function createRevision(Page $page, ?int $userId, ?string $reason = null): PageRevision
     {
+        /** @var PageRevision|null $latestRevision */
         $latestRevision = $page->revisions()->orderBy('revision_number', 'desc')->first();
         $revisionNumber = $latestRevision ? $latestRevision->revision_number + 1 : 1;
 

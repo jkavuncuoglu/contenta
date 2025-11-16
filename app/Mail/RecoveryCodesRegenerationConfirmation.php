@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Domains\Security\UserManagement\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -28,7 +27,7 @@ class RecoveryCodesRegenerationConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Recovery Codes Regeneration Confirmation - ' . config('app.name'),
+            subject: 'Recovery Codes Regeneration Confirmation - '.config('app.name'),
         );
     }
 
@@ -37,7 +36,7 @@ class RecoveryCodesRegenerationConfirmation extends Mailable
      */
     public function content(): Content
     {
-        $confirmationUrl = route('two-factor.recovery-codes.confirm', ['token' => $this->token]);
+        $confirmationUrl = route('user.settings.security.two-factor.recovery-codes.confirm', ['token' => $this->token]);
 
         return new Content(
             view: 'emails.recovery-codes-regeneration-confirmation',

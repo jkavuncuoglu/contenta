@@ -12,15 +12,21 @@ class UpdateApiTokenRequest extends FormRequest
         return true;
     }
 
+    /**
+     * @return array<string, array<int, string>|string>
+     */
     public function rules(): array
     {
         return [
             'name' => ['sometimes', 'string', 'max:255'],
             'abilities' => ['sometimes', 'array'],
-            'abilities.*' => ['string', 'in:' . implode(',', TokenAbility::values())],
+            'abilities.*' => ['string', 'in:'.implode(',', TokenAbility::values())],
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [
@@ -29,4 +35,3 @@ class UpdateApiTokenRequest extends FormRequest
         ];
     }
 }
-

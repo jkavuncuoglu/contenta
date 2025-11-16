@@ -2,17 +2,15 @@
 
 namespace App\Domains\Settings\SiteSettings\Http\Controllers\Auth;
 
-use App\Domains\Settings\Http\Controllers\Auth\LoginRequest;
-use App\Domains\Settings\Http\Requests\Auth;
+use App\Domains\Settings\SiteSettings\Http\Requests\Auth\LoginRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Fortify\Features;
-
-$1;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -43,7 +41,7 @@ class AuthenticatedSessionController extends Controller
             return to_route('two-factor.login');
         }
 
-        \App\Domains\Settings\Http\Controllers\Auth\Auth::login($user, $request->boolean('remember'));
+        Auth::login($user, $request->boolean('remember'));
 
         $request->session()->regenerate();
 
@@ -55,7 +53,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        \App\Domains\Settings\Http\Controllers\Auth\Auth::guard('web')->logout();
+        Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

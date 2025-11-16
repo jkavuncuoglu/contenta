@@ -12,6 +12,8 @@ class MenuService implements MenuServiceContract
 {
     /**
      * Create a new menu
+     *
+     * @param  array<string, mixed>  $data
      */
     public function createMenu(array $data): Menu
     {
@@ -24,6 +26,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Update a menu
+     *
+     * @param  array<string, mixed>  $data
      */
     public function updateMenu(Menu $menu, array $data): Menu
     {
@@ -32,6 +36,7 @@ class MenuService implements MenuServiceContract
         }
 
         $menu->update($data);
+
         return $menu->fresh();
     }
 
@@ -53,13 +58,15 @@ class MenuService implements MenuServiceContract
 
     /**
      * Create a menu item
+     *
+     * @param  array<string, mixed>  $data
      */
     public function createMenuItem(Menu $menu, array $data): MenuItem
     {
         $data['menu_id'] = $menu->id;
 
         // Auto-generate order if not provided
-        if (!isset($data['order'])) {
+        if (! isset($data['order'])) {
             $maxOrder = MenuItem::where('menu_id', $menu->id)
                 ->where('parent_id', $data['parent_id'] ?? null)
                 ->max('order');
@@ -71,10 +78,13 @@ class MenuService implements MenuServiceContract
 
     /**
      * Update a menu item
+     *
+     * @param  array<string, mixed>  $data
      */
     public function updateMenuItem(MenuItem $item, array $data): MenuItem
     {
         $item->update($data);
+
         return $item->fresh();
     }
 
@@ -88,6 +98,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Reorder menu items
+     *
+     * @param  array<int, array<string, mixed>>  $items
      */
     public function reorderItems(Menu $menu, array $items): void
     {
@@ -96,6 +108,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Export menu to JSON
+     *
+     * @return array<string, mixed>
      */
     public function exportMenu(Menu $menu): array
     {
@@ -110,6 +124,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Import menu from JSON
+     *
+     * @param  array<string, mixed>  $data
      */
     public function importMenu(array $data): Menu
     {
@@ -122,7 +138,7 @@ class MenuService implements MenuServiceContract
 
         $menu = $this->createMenu($menuData);
 
-        if (!empty($data['items'])) {
+        if (! empty($data['items'])) {
             $this->importMenuItems($menu, $data['items']);
         }
 
@@ -131,6 +147,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Import menu items recursively
+     *
+     * @param  array<int, array<string, mixed>>  $items
      */
     private function importMenuItems(Menu $menu, array $items, ?int $parentId = null, int $order = 0): void
     {
@@ -144,7 +162,7 @@ class MenuService implements MenuServiceContract
 
             $item = MenuItem::create($itemData);
 
-            if (!empty($children)) {
+            if (! empty($children)) {
                 $this->importMenuItems($menu, $children, $item->id);
             }
         }
@@ -152,6 +170,8 @@ class MenuService implements MenuServiceContract
 
     /**
      * Get available menu locations
+     *
+     * @return array<string, string>
      */
     public function getAvailableLocations(): array
     {

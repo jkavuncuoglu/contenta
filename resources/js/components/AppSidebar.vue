@@ -33,19 +33,41 @@ const mainNavItems: NavItem[] = [
         icon: 'material-symbols-light:view-quilt',
     },
     {
-        title: 'Posts',
-        href: posts.index().url,
+        title: 'Blog',
+        href: posts.calendar().url,
         icon: 'material-symbols-light:insert-text',
-    },
-    {
-        title: 'Categories',
-        href: categories.index().url,
-        icon: 'material-symbols-light:category',
-    },
-    {
-        title: 'Tags',
-        href: tags.index().url,
-        icon: 'material-symbols-light:tag',
+        children: [
+            {
+                title: 'Calendar',
+                href: posts.calendar().url,
+                icon: 'material-symbols-light:add-circle',
+            },
+            {
+                title: 'Manage Posts',
+                href: posts.index().url,
+                icon: 'material-symbols-light:insert-text',
+            },
+            {
+                title: 'Add New Post',
+                href: posts.create().url,
+                icon: 'material-symbols-light:add-circle',
+            },
+            {
+                title: 'Categories',
+                href: categories.index().url,
+                icon: 'material-symbols-light:category',
+            },
+            {
+                title: 'Tags',
+                href: tags.index().url,
+                icon: 'material-symbols-light:tag',
+            },
+            {
+                title: 'Comments',
+                href: '/admin/comments',
+                icon: 'material-symbols-light:comment',
+            },
+        ],
     },
     {
         title: 'Menus',
@@ -58,9 +80,9 @@ const mainNavItems: NavItem[] = [
         icon: 'material-symbols-light:perm-media',
     },
     {
-        title: 'Comments',
-        href: '/admin/comments',
-        icon: 'material-symbols-light:comment',
+        title: 'Plugins',
+        href: '/admin/plugins',
+        icon: 'typcn:puzzle',
     },
     {
         title: 'Settings',
@@ -71,6 +93,11 @@ const mainNavItems: NavItem[] = [
                 title: 'Site Settings',
                 href: '/admin/settings/site',
                 icon: 'material-symbols-light:web',
+            },
+            {
+                title: 'Appearance',
+                href: '/admin/settings/theme',
+                icon: 'material-symbols-light:palette',
             },
             {
                 title: 'Security',

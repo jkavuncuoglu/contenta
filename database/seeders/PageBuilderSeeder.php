@@ -19,8 +19,8 @@ class PageBuilderSeeder extends Seeder
                     'areas' => ['main'],
                     'settings' => [
                         'container_width' => 'full',
-                        'spacing' => 'normal'
-                    ]
+                        'spacing' => 'normal',
+                    ],
                 ],
                 'description' => 'A simple single-area layout for basic pages',
                 'is_active' => true,
@@ -35,8 +35,8 @@ class PageBuilderSeeder extends Seeder
                     'areas' => ['hero', 'main', 'footer'],
                     'settings' => [
                         'container_width' => 'full',
-                        'spacing' => 'tight'
-                    ]
+                        'spacing' => 'tight',
+                    ],
                 ],
                 'description' => 'Layout optimized for landing pages with hero section',
                 'is_active' => true,
@@ -55,36 +55,36 @@ class PageBuilderSeeder extends Seeder
                         'required' => true,
                         'default' => 'Welcome to Our Site',
                         'label' => 'Title',
-                        'description' => 'Main hero title'
+                        'description' => 'Main hero title',
                     ],
                     'subtitle' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Subtitle',
-                        'description' => 'Optional subtitle text'
+                        'description' => 'Optional subtitle text',
                     ],
                     'button_text' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Button Text',
-                        'description' => 'Call-to-action button text'
+                        'description' => 'Call-to-action button text',
                     ],
                     'button_url' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '#',
                         'label' => 'Button URL',
-                        'description' => 'Call-to-action button link'
+                        'description' => 'Call-to-action button link',
                     ],
                     'background_image' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Background Image',
-                        'description' => 'Hero background image URL'
-                    ]
+                        'description' => 'Hero background image URL',
+                    ],
                 ],
                 'component_path' => 'hero-block',
                 'description' => 'A large hero section perfect for landing pages',
@@ -103,14 +103,14 @@ class PageBuilderSeeder extends Seeder
                         'required' => true,
                         'default' => 'Left column content',
                         'label' => 'Left Column',
-                        'description' => 'Content for left column'
+                        'description' => 'Content for left column',
                     ],
                     'right_content' => [
                         'type' => 'string',
                         'required' => true,
                         'default' => 'Right column content',
                         'label' => 'Right Column',
-                        'description' => 'Content for right column'
+                        'description' => 'Content for right column',
                     ],
                     'column_ratio' => [
                         'type' => 'string',
@@ -118,7 +118,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => '50-50',
                         'label' => 'Column Ratio',
                         'description' => 'Width ratio of columns',
-                        'options' => ['50-50', '60-40', '40-60', '70-30', '30-70']
+                        'options' => ['50-50', '60-40', '40-60', '70-30', '30-70'],
                     ],
                     'gap' => [
                         'type' => 'string',
@@ -126,8 +126,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'normal',
                         'label' => 'Gap Size',
                         'description' => 'Space between columns',
-                        'options' => ['tight', 'normal', 'loose']
-                    ]
+                        'options' => ['tight', 'normal', 'loose'],
+                    ],
                 ],
                 'component_path' => 'two-column-block',
                 'description' => 'Two column layout for side-by-side content',
@@ -146,7 +146,7 @@ class PageBuilderSeeder extends Seeder
                         'required' => true,
                         'default' => 'Container content',
                         'label' => 'Content',
-                        'description' => 'Content within the container'
+                        'description' => 'Content within the container',
                     ],
                     'width' => [
                         'type' => 'string',
@@ -154,7 +154,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'container',
                         'label' => 'Width',
                         'description' => 'Container width',
-                        'options' => ['narrow', 'container', 'wide', 'full']
+                        'options' => ['narrow', 'container', 'wide', 'full'],
                     ],
                     'background' => [
                         'type' => 'string',
@@ -162,7 +162,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'transparent',
                         'label' => 'Background',
                         'description' => 'Background color',
-                        'options' => ['transparent', 'white', 'gray', 'primary']
+                        'options' => ['transparent', 'white', 'gray', 'primary'],
                     ],
                     'padding' => [
                         'type' => 'string',
@@ -170,8 +170,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'normal',
                         'label' => 'Padding',
                         'description' => 'Internal padding',
-                        'options' => ['none', 'tight', 'normal', 'loose']
-                    ]
+                        'options' => ['none', 'tight', 'normal', 'loose'],
+                    ],
                 ],
                 'component_path' => 'container-block',
                 'description' => 'Container block with customizable width and styling',
@@ -191,14 +191,14 @@ class PageBuilderSeeder extends Seeder
                         'required' => false,
                         'default' => '',
                         'label' => 'Title',
-                        'description' => 'Optional section title'
+                        'description' => 'Optional section title',
                     ],
                     'content' => [
                         'type' => 'string',
                         'required' => true,
                         'default' => 'Your content goes here...',
                         'label' => 'Content',
-                        'description' => 'Rich text content (HTML supported)'
+                        'description' => 'Rich text content (HTML supported)',
                     ],
                     'alignment' => [
                         'type' => 'string',
@@ -206,7 +206,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'left',
                         'label' => 'Text Alignment',
                         'description' => 'Text alignment (left, center, right)',
-                        'options' => ['left', 'center', 'right']
+                        'options' => ['left', 'center', 'right'],
                     ],
                     'font_size' => [
                         'type' => 'string',
@@ -214,7 +214,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'base',
                         'label' => 'Font Size',
                         'description' => 'Text size',
-                        'options' => ['sm', 'base', 'lg', 'xl', '2xl']
+                        'options' => ['sm', 'base', 'lg', 'xl', '2xl'],
                     ],
                     'max_width' => [
                         'type' => 'string',
@@ -222,8 +222,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => '4xl',
                         'label' => 'Max Width',
                         'description' => 'Maximum content width',
-                        'options' => ['sm', 'md', 'lg', 'xl', '2xl', '4xl', '6xl']
-                    ]
+                        'options' => ['sm', 'md', 'lg', 'xl', '2xl', '4xl', '6xl'],
+                    ],
                 ],
                 'component_path' => 'text-block',
                 'description' => 'Rich text content block with formatting options',
@@ -242,7 +242,7 @@ class PageBuilderSeeder extends Seeder
                         'required' => true,
                         'default' => 'Heading Text',
                         'label' => 'Heading Text',
-                        'description' => 'The heading text'
+                        'description' => 'The heading text',
                     ],
                     'level' => [
                         'type' => 'string',
@@ -250,7 +250,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'h2',
                         'label' => 'Heading Level',
                         'description' => 'Semantic heading level',
-                        'options' => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+                        'options' => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
                     ],
                     'size' => [
                         'type' => 'string',
@@ -258,7 +258,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => '2xl',
                         'label' => 'Size',
                         'description' => 'Visual size',
-                        'options' => ['lg', 'xl', '2xl', '3xl', '4xl', '5xl']
+                        'options' => ['lg', 'xl', '2xl', '3xl', '4xl', '5xl'],
                     ],
                     'alignment' => [
                         'type' => 'string',
@@ -266,7 +266,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'left',
                         'label' => 'Alignment',
                         'description' => 'Text alignment',
-                        'options' => ['left', 'center', 'right']
+                        'options' => ['left', 'center', 'right'],
                     ],
                     'color' => [
                         'type' => 'string',
@@ -274,8 +274,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'default',
                         'label' => 'Color',
                         'description' => 'Text color',
-                        'options' => ['default', 'primary', 'secondary', 'muted']
-                    ]
+                        'options' => ['default', 'primary', 'secondary', 'muted'],
+                    ],
                 ],
                 'component_path' => 'heading-block',
                 'description' => 'Customizable heading/title block',
@@ -294,21 +294,21 @@ class PageBuilderSeeder extends Seeder
                         'required' => true,
                         'default' => 'Your quote goes here...',
                         'label' => 'Quote Text',
-                        'description' => 'The quotation text'
+                        'description' => 'The quotation text',
                     ],
                     'author' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Author',
-                        'description' => 'Quote attribution'
+                        'description' => 'Quote attribution',
                     ],
                     'cite' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Citation',
-                        'description' => 'Source or citation'
+                        'description' => 'Source or citation',
                     ],
                     'style' => [
                         'type' => 'string',
@@ -316,8 +316,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'bordered',
                         'label' => 'Style',
                         'description' => 'Quote styling',
-                        'options' => ['simple', 'bordered', 'highlighted', 'large']
-                    ]
+                        'options' => ['simple', 'bordered', 'highlighted', 'large'],
+                    ],
                 ],
                 'component_path' => 'quote-block',
                 'description' => 'Blockquote for testimonials and quotes',
@@ -336,14 +336,14 @@ class PageBuilderSeeder extends Seeder
                         'required' => false,
                         'default' => '',
                         'label' => 'Title',
-                        'description' => 'Optional list title'
+                        'description' => 'Optional list title',
                     ],
                     'items' => [
                         'type' => 'array',
                         'required' => true,
                         'default' => 'Item 1, Item 2, Item 3',
                         'label' => 'List Items',
-                        'description' => 'Comma-separated list items'
+                        'description' => 'Comma-separated list items',
                     ],
                     'style' => [
                         'type' => 'string',
@@ -351,7 +351,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'bulleted',
                         'label' => 'List Style',
                         'description' => 'Type of list',
-                        'options' => ['bulleted', 'numbered', 'checkmarks', 'none']
+                        'options' => ['bulleted', 'numbered', 'checkmarks', 'none'],
                     ],
                     'icon' => [
                         'type' => 'string',
@@ -359,8 +359,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'default',
                         'label' => 'Icon Style',
                         'description' => 'Icon for list items',
-                        'options' => ['default', 'check', 'arrow', 'star', 'none']
-                    ]
+                        'options' => ['default', 'check', 'arrow', 'star', 'none'],
+                    ],
                 ],
                 'component_path' => 'list-block',
                 'description' => 'Bullet points or numbered list',
@@ -380,21 +380,21 @@ class PageBuilderSeeder extends Seeder
                         'required' => true,
                         'default' => '',
                         'label' => 'Image URL',
-                        'description' => 'Image source URL'
+                        'description' => 'Image source URL',
                     ],
                     'alt' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Alt Text',
-                        'description' => 'Alternative text for accessibility'
+                        'description' => 'Alternative text for accessibility',
                     ],
                     'caption' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Caption',
-                        'description' => 'Image caption text'
+                        'description' => 'Image caption text',
                     ],
                     'alignment' => [
                         'type' => 'string',
@@ -402,7 +402,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'center',
                         'label' => 'Alignment',
                         'description' => 'Image alignment',
-                        'options' => ['left', 'center', 'right']
+                        'options' => ['left', 'center', 'right'],
                     ],
                     'max_width' => [
                         'type' => 'string',
@@ -410,7 +410,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => '4xl',
                         'label' => 'Max Width',
                         'description' => 'Maximum image width',
-                        'options' => ['sm', 'md', 'lg', 'xl', '2xl', '4xl', '6xl', 'full']
+                        'options' => ['sm', 'md', 'lg', 'xl', '2xl', '4xl', '6xl', 'full'],
                     ],
                     'border_radius' => [
                         'type' => 'string',
@@ -418,7 +418,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'lg',
                         'label' => 'Border Radius',
                         'description' => 'Image border radius',
-                        'options' => ['none', 'sm', 'md', 'lg', 'xl', 'full']
+                        'options' => ['none', 'sm', 'md', 'lg', 'xl', 'full'],
                     ],
                     'shadow' => [
                         'type' => 'string',
@@ -426,8 +426,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'lg',
                         'label' => 'Shadow',
                         'description' => 'Image shadow effect',
-                        'options' => ['none', 'sm', 'md', 'lg', 'xl', '2xl']
-                    ]
+                        'options' => ['none', 'sm', 'md', 'lg', 'xl', '2xl'],
+                    ],
                 ],
                 'component_path' => 'image-block',
                 'description' => 'Display images with various styling options',
@@ -446,21 +446,21 @@ class PageBuilderSeeder extends Seeder
                         'required' => true,
                         'default' => '',
                         'label' => 'Video URL',
-                        'description' => 'YouTube, Vimeo, or direct video URL'
+                        'description' => 'YouTube, Vimeo, or direct video URL',
                     ],
                     'title' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Title',
-                        'description' => 'Optional video title'
+                        'description' => 'Optional video title',
                     ],
                     'description' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Description',
-                        'description' => 'Video description or caption'
+                        'description' => 'Video description or caption',
                     ],
                     'aspect_ratio' => [
                         'type' => 'string',
@@ -468,15 +468,15 @@ class PageBuilderSeeder extends Seeder
                         'default' => '16/9',
                         'label' => 'Aspect Ratio',
                         'description' => 'Video aspect ratio',
-                        'options' => ['16/9', '4/3', '1/1', '21/9']
+                        'options' => ['16/9', '4/3', '1/1', '21/9'],
                     ],
                     'autoplay' => [
                         'type' => 'boolean',
                         'required' => false,
                         'default' => false,
                         'label' => 'Autoplay',
-                        'description' => 'Auto-play video on load'
-                    ]
+                        'description' => 'Auto-play video on load',
+                    ],
                 ],
                 'component_path' => 'video-block',
                 'description' => 'Embed videos from YouTube, Vimeo, or direct links',
@@ -495,21 +495,21 @@ class PageBuilderSeeder extends Seeder
                         'required' => false,
                         'default' => '',
                         'label' => 'Gallery Title',
-                        'description' => 'Optional gallery title'
+                        'description' => 'Optional gallery title',
                     ],
                     'images' => [
                         'type' => 'array',
                         'required' => true,
                         'default' => '',
                         'label' => 'Image URLs',
-                        'description' => 'Comma-separated image URLs'
+                        'description' => 'Comma-separated image URLs',
                     ],
                     'columns' => [
                         'type' => 'number',
                         'required' => false,
                         'default' => 3,
                         'label' => 'Columns',
-                        'description' => 'Number of columns'
+                        'description' => 'Number of columns',
                     ],
                     'gap' => [
                         'type' => 'string',
@@ -517,15 +517,15 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'normal',
                         'label' => 'Gap Size',
                         'description' => 'Space between images',
-                        'options' => ['tight', 'normal', 'loose']
+                        'options' => ['tight', 'normal', 'loose'],
                     ],
                     'lightbox' => [
                         'type' => 'boolean',
                         'required' => false,
                         'default' => true,
                         'label' => 'Enable Lightbox',
-                        'description' => 'Click to enlarge images'
-                    ]
+                        'description' => 'Click to enlarge images',
+                    ],
                 ],
                 'component_path' => 'gallery-block',
                 'description' => 'Image gallery with grid layout',
@@ -545,43 +545,43 @@ class PageBuilderSeeder extends Seeder
                         'required' => false,
                         'default' => 'Contact Us',
                         'label' => 'Form Title',
-                        'description' => 'Form heading'
+                        'description' => 'Form heading',
                     ],
                     'description' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Description',
-                        'description' => 'Form description text'
+                        'description' => 'Form description text',
                     ],
                     'recipient_email' => [
                         'type' => 'string',
                         'required' => true,
                         'default' => '',
                         'label' => 'Recipient Email',
-                        'description' => 'Where to send form submissions'
+                        'description' => 'Where to send form submissions',
                     ],
                     'show_phone' => [
                         'type' => 'boolean',
                         'required' => false,
                         'default' => false,
                         'label' => 'Include Phone Field',
-                        'description' => 'Show phone number field'
+                        'description' => 'Show phone number field',
                     ],
                     'show_subject' => [
                         'type' => 'boolean',
                         'required' => false,
                         'default' => true,
                         'label' => 'Include Subject Field',
-                        'description' => 'Show subject field'
+                        'description' => 'Show subject field',
                     ],
                     'submit_text' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => 'Send Message',
                         'label' => 'Submit Button Text',
-                        'description' => 'Text for submit button'
-                    ]
+                        'description' => 'Text for submit button',
+                    ],
                 ],
                 'component_path' => 'contact-form-block',
                 'description' => 'Customizable contact form',
@@ -600,28 +600,28 @@ class PageBuilderSeeder extends Seeder
                         'required' => false,
                         'default' => 'Subscribe to Our Newsletter',
                         'label' => 'Title',
-                        'description' => 'Form heading'
+                        'description' => 'Form heading',
                     ],
                     'description' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => 'Get the latest updates delivered to your inbox',
                         'label' => 'Description',
-                        'description' => 'Subscription pitch'
+                        'description' => 'Subscription pitch',
                     ],
                     'button_text' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => 'Subscribe',
                         'label' => 'Button Text',
-                        'description' => 'Submit button text'
+                        'description' => 'Submit button text',
                     ],
                     'show_name' => [
                         'type' => 'boolean',
                         'required' => false,
                         'default' => false,
                         'label' => 'Ask for Name',
-                        'description' => 'Include name field'
+                        'description' => 'Include name field',
                     ],
                     'style' => [
                         'type' => 'string',
@@ -629,8 +629,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'inline',
                         'label' => 'Form Style',
                         'description' => 'Layout style',
-                        'options' => ['inline', 'stacked']
-                    ]
+                        'options' => ['inline', 'stacked'],
+                    ],
                 ],
                 'component_path' => 'newsletter-block',
                 'description' => 'Email newsletter subscription form',
@@ -650,14 +650,14 @@ class PageBuilderSeeder extends Seeder
                         'required' => true,
                         'default' => 'Click Here',
                         'label' => 'Button Text',
-                        'description' => 'Text displayed on button'
+                        'description' => 'Text displayed on button',
                     ],
                     'url' => [
                         'type' => 'string',
                         'required' => true,
                         'default' => '#',
                         'label' => 'Link URL',
-                        'description' => 'Button destination'
+                        'description' => 'Button destination',
                     ],
                     'style' => [
                         'type' => 'string',
@@ -665,7 +665,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'primary',
                         'label' => 'Button Style',
                         'description' => 'Visual style',
-                        'options' => ['primary', 'secondary', 'outline', 'ghost']
+                        'options' => ['primary', 'secondary', 'outline', 'ghost'],
                     ],
                     'size' => [
                         'type' => 'string',
@@ -673,7 +673,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'medium',
                         'label' => 'Button Size',
                         'description' => 'Button size',
-                        'options' => ['small', 'medium', 'large']
+                        'options' => ['small', 'medium', 'large'],
                     ],
                     'alignment' => [
                         'type' => 'string',
@@ -681,15 +681,15 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'left',
                         'label' => 'Alignment',
                         'description' => 'Button alignment',
-                        'options' => ['left', 'center', 'right']
+                        'options' => ['left', 'center', 'right'],
                     ],
                     'new_tab' => [
                         'type' => 'boolean',
                         'required' => false,
                         'default' => false,
                         'label' => 'Open in New Tab',
-                        'description' => 'Open link in new tab'
-                    ]
+                        'description' => 'Open link in new tab',
+                    ],
                 ],
                 'component_path' => 'button-block',
                 'description' => 'Call-to-action button with link',
@@ -708,42 +708,42 @@ class PageBuilderSeeder extends Seeder
                         'required' => true,
                         'default' => 'Ready to Get Started?',
                         'label' => 'Title',
-                        'description' => 'CTA heading'
+                        'description' => 'CTA heading',
                     ],
                     'description' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Description',
-                        'description' => 'Supporting text'
+                        'description' => 'Supporting text',
                     ],
                     'button_text' => [
                         'type' => 'string',
                         'required' => true,
                         'default' => 'Get Started',
                         'label' => 'Button Text',
-                        'description' => 'Primary button text'
+                        'description' => 'Primary button text',
                     ],
                     'button_url' => [
                         'type' => 'string',
                         'required' => true,
                         'default' => '#',
                         'label' => 'Button URL',
-                        'description' => 'Primary button link'
+                        'description' => 'Primary button link',
                     ],
                     'secondary_button_text' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Secondary Button Text',
-                        'description' => 'Optional second button'
+                        'description' => 'Optional second button',
                     ],
                     'secondary_button_url' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
                         'label' => 'Secondary Button URL',
-                        'description' => 'Second button link'
+                        'description' => 'Second button link',
                     ],
                     'background' => [
                         'type' => 'string',
@@ -751,8 +751,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'primary',
                         'label' => 'Background',
                         'description' => 'Background color/style',
-                        'options' => ['primary', 'secondary', 'gradient', 'white', 'gray']
-                    ]
+                        'options' => ['primary', 'secondary', 'gradient', 'white', 'gray'],
+                    ],
                 ],
                 'component_path' => 'cta-block',
                 'description' => 'Call-to-action section with buttons',
@@ -772,14 +772,14 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'slash',
                         'label' => 'Separator Style',
                         'description' => 'Breadcrumb separator',
-                        'options' => ['slash', 'arrow', 'chevron', 'dot']
+                        'options' => ['slash', 'arrow', 'chevron', 'dot'],
                     ],
                     'show_home' => [
                         'type' => 'boolean',
                         'required' => false,
                         'default' => true,
                         'label' => 'Show Home',
-                        'description' => 'Include home link'
+                        'description' => 'Include home link',
                     ],
                     'style' => [
                         'type' => 'string',
@@ -787,8 +787,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'default',
                         'label' => 'Style',
                         'description' => 'Visual style',
-                        'options' => ['default', 'bold', 'minimal']
-                    ]
+                        'options' => ['default', 'bold', 'minimal'],
+                    ],
                 ],
                 'component_path' => 'breadcrumb-block',
                 'description' => 'Navigation breadcrumbs',
@@ -807,7 +807,7 @@ class PageBuilderSeeder extends Seeder
                         'required' => true,
                         'default' => null,
                         'label' => 'Select Menu',
-                        'description' => 'Choose which menu to display'
+                        'description' => 'Choose which menu to display',
                     ],
                     'display_style' => [
                         'type' => 'string',
@@ -815,7 +815,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'horizontal',
                         'label' => 'Display Style',
                         'description' => 'How to display the menu',
-                        'options' => ['horizontal', 'vertical', 'dropdown', 'mega']
+                        'options' => ['horizontal', 'vertical', 'dropdown', 'mega'],
                     ],
                     'alignment' => [
                         'type' => 'string',
@@ -823,21 +823,21 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'left',
                         'label' => 'Alignment',
                         'description' => 'Menu alignment',
-                        'options' => ['left', 'center', 'right', 'justify']
+                        'options' => ['left', 'center', 'right', 'justify'],
                     ],
                     'show_icons' => [
                         'type' => 'boolean',
                         'required' => false,
                         'default' => true,
                         'label' => 'Show Icons',
-                        'description' => 'Display menu item icons'
+                        'description' => 'Display menu item icons',
                     ],
                     'max_depth' => [
                         'type' => 'number',
                         'required' => false,
                         'default' => 3,
                         'label' => 'Maximum Depth',
-                        'description' => 'Maximum nesting level to display'
+                        'description' => 'Maximum nesting level to display',
                     ],
                     'mobile_breakpoint' => [
                         'type' => 'string',
@@ -845,7 +845,7 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'md',
                         'label' => 'Mobile Breakpoint',
                         'description' => 'When to switch to mobile menu',
-                        'options' => ['sm', 'md', 'lg', 'xl']
+                        'options' => ['sm', 'md', 'lg', 'xl'],
                     ],
                     'theme' => [
                         'type' => 'string',
@@ -853,8 +853,8 @@ class PageBuilderSeeder extends Seeder
                         'default' => 'default',
                         'label' => 'Theme',
                         'description' => 'Visual theme for the menu',
-                        'options' => ['default', 'minimal', 'modern', 'classic']
-                    ]
+                        'options' => ['default', 'minimal', 'modern', 'classic'],
+                    ],
                 ],
                 'component_path' => 'navigation-menu-block',
                 'description' => 'Display a custom navigation menu with various styles',

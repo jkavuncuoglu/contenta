@@ -8,7 +8,6 @@ use App\Domains\PageBuilder\Models\Page;
 use App\Domains\PageBuilder\Models\PageRevision;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class PageRevisionController extends Controller
 {
@@ -17,31 +16,33 @@ class PageRevisionController extends Controller
      */
     public function index(Page $page): JsonResponse
     {
+        /** @var \Illuminate\Database\Eloquent\Collection<int, PageRevision> $revisions */
         $revisions = $page->revisions()
             ->with('user:id,first_name,last_name,email')
-            ->get()
-            ->map(function ($revision) {
-                $userName = 'System';
-                if ($revision->user) {
-                    if ($revision->user->first_name || $revision->user->last_name) {
-                        $userName = trim($revision->user->first_name . ' ' . $revision->user->last_name);
-                    } else {
-                        $userName = $revision->user->email;
-                    }
+            ->get();
+
+        $mappedRevisions = $revisions->map(function (PageRevision $revision) {
+            $userName = 'System';
+            if ($revision->user) {
+                if ($revision->user->first_name || $revision->user->last_name) {
+                    $userName = trim($revision->user->first_name.' '.$revision->user->last_name);
+                } else {
+                    $userName = $revision->user->email;
                 }
+            }
 
-                return [
-                    'id' => $revision->id,
-                    'revision_number' => $revision->revision_number,
-                    'title' => $revision->title,
-                    'user' => $userName,
-                    'reason' => $revision->reason,
-                    'created_at' => $revision->created_at->toISOString(),
-                    'created_at_human' => $revision->created_at->diffForHumans(),
-                ];
-            });
+            return [
+                'id' => $revision->id,
+                'revision_number' => $revision->revision_number,
+                'title' => $revision->title,
+                'user' => $userName,
+                'reason' => $revision->reason,
+                'created_at' => $revision->created_at?->toISOString(),
+                'created_at_human' => $revision->created_at?->diffForHumans(),
+            ];
+        });
 
-        return response()->json($revisions);
+        return response()->json($mappedRevisions);
     }
 
     /**
@@ -65,8 +66,9 @@ class PageRevisionController extends Controller
             return response()->json(['error' => 'Revision does not belong to this page'], 404);
         }
 
+        $userId = auth()->id();
         // Create a new revision for the current state before restoring
-        $this->createRevision($page, auth()->id(), 'Before restoring to revision #' . $revision->revision_number);
+        $this->createRevision($page, is_int($userId) ? $userId : null, 'Before restoring to revision #'.$revision->revision_number);
 
         // Restore the page to the revision state
         $page->update([
@@ -81,12 +83,13 @@ class PageRevisionController extends Controller
             'schema_data' => $revision->schema_data,
         ]);
 
+        $userId = auth()->id();
         // Create a new revision for the restored state
-        $this->createRevision($page, auth()->id(), 'Restored to revision #' . $revision->revision_number);
+        $this->createRevision($page, is_int($userId) ? $userId : null, 'Restored to revision #'.$revision->revision_number);
 
         return response()->json([
             'success' => true,
-            'message' => 'Page restored to revision #' . $revision->revision_number,
+            'message' => 'Page restored to revision #'.$revision->revision_number,
         ]);
     }
 
@@ -95,6 +98,7 @@ class PageRevisionController extends Controller
      */
     protected function createRevision(Page $page, ?int $userId, ?string $reason = null): PageRevision
     {
+        /** @var PageRevision|null $latestRevision */
         $latestRevision = $page->revisions()->orderBy('revision_number', 'desc')->first();
         $revisionNumber = $latestRevision ? $latestRevision->revision_number + 1 : 1;
 

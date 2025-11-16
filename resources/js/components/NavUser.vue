@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Icon from '@/components/Icon.vue';
 import UserInfo from '@/components/UserInfo.vue';
 import {
     DropdownMenu,
@@ -13,7 +14,6 @@ import {
 } from '@/components/ui/sidebar';
 import { usePage } from '@inertiajs/vue3';
 import UserMenuContent from './UserMenuContent.vue';
-import Icon from '@/components/Icon.vue';
 
 const page = usePage();
 const user = page.props.auth.user;
@@ -31,7 +31,10 @@ const { isMobile, state } = useSidebar();
                         data-test="sidebar-menu-button"
                     >
                         <UserInfo :user="user" />
-                        <Icon name="material-symbols-light:expand_less" class="ml-auto size-4" />
+                        <Icon
+                            name="material-symbols-light:expand_less"
+                            class="ml-auto size-4"
+                        />
                     </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent

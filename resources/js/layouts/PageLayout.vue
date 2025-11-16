@@ -1,19 +1,40 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
-    <!-- Header -->
-    <Header />
+    <div class="flex min-h-screen flex-col bg-white dark:bg-gray-900">
+        <!-- Header -->
+        <SiteHeader
+            :navigation="navigation.primary"
+            :site-name="siteName"
+            :logo="`images/contenta-logo-icon-light.svg`"
+        />
 
-    <!-- Main Content -->
-    <main>
-      <slot />
-    </main>
+        <!-- Main Content -->
+        <main class="flex-1">
+            <slot />
+        </main>
 
-    <!-- Footer -->
-    <Footer />
-  </div>
+        <!-- Footer -->
+        <SiteFooter
+            :footer-sections="navigation.footer"
+            :site-name="siteName"
+            :tagline="tagline"
+            :logo="`images/contenta-logo-icon-light.svg`"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
+import SiteFooter from '@/components/SiteFooter.vue';
+import SiteHeader from '@/components/SiteHeader.vue';
+import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+
+const page = usePage();
+
+const navigation = computed(
+    () => page.props.navigation || { primary: [], footer: [] },
+);
+
+const siteName = computed(() => page.props.name || 'Contenta');
+
+const tagline = computed(() => 'Professional content management made simple');
 </script>

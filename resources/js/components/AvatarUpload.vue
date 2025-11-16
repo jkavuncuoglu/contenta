@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import InputError from '@/components/InputError.vue';
+import { ref } from 'vue';
 
 interface Props {
     modelValue: string | null;
@@ -32,7 +32,8 @@ const handleFileSelect = (event: Event) => {
             return;
         }
 
-        if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        if (file.size > 5 * 1024 * 1024) {
+            // 5MB limit
             alert('File size must be less than 5MB');
             return;
         }
@@ -94,7 +95,9 @@ const setAvatarType = (type: 'upload' | 'url') => {
         <!-- Avatar Preview -->
         <div class="flex items-center gap-4">
             <div class="relative">
-                <div class="h-24 w-24 rounded-full overflow-hidden bg-muted flex items-center justify-center">
+                <div
+                    class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-muted"
+                >
                     <img
                         v-if="previewUrl"
                         :src="previewUrl"
@@ -106,7 +109,10 @@ const setAvatarType = (type: 'upload' | 'url') => {
                         class="h-12 w-12 text-muted-foreground"
                         viewBox="0 0 24 24"
                     >
-                        <path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        <path
+                            fill="currentColor"
+                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                        />
                     </svg>
                 </div>
             </div>
@@ -129,10 +135,10 @@ const setAvatarType = (type: 'upload' | 'url') => {
             <button
                 type="button"
                 :class="[
-                    'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
+                    'border-b-2 px-4 py-2 text-sm font-medium transition-colors',
                     avatarType === 'upload'
                         ? 'border-primary text-foreground'
-                        : 'border-transparent text-muted-foreground hover:text-foreground'
+                        : 'border-transparent text-muted-foreground hover:text-foreground',
                 ]"
                 @click="setAvatarType('upload')"
             >
@@ -141,10 +147,10 @@ const setAvatarType = (type: 'upload' | 'url') => {
             <button
                 type="button"
                 :class="[
-                    'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
+                    'border-b-2 px-4 py-2 text-sm font-medium transition-colors',
                     avatarType === 'url'
                         ? 'border-primary text-foreground'
-                        : 'border-transparent text-muted-foreground hover:text-foreground'
+                        : 'border-transparent text-muted-foreground hover:text-foreground',
                 ]"
                 @click="setAvatarType('url')"
             >
@@ -164,11 +170,21 @@ const setAvatarType = (type: 'upload' | 'url') => {
             <p class="text-xs text-muted-foreground">
                 Use Gravatar, UI Avatars, or any other avatar service URL
             </p>
-            <div class="text-xs text-muted-foreground space-y-1">
+            <div class="space-y-1 text-xs text-muted-foreground">
                 <p class="font-medium">Examples:</p>
-                <ul class="list-disc list-inside space-y-1 ml-2">
-                    <li>Gravatar: <code class="text-xs bg-muted px-1 py-0.5 rounded">https://www.gravatar.com/avatar/HASH</code></li>
-                    <li>UI Avatars: <code class="text-xs bg-muted px-1 py-0.5 rounded">https://ui-avatars.com/api/?name=John+Doe</code></li>
+                <ul class="ml-2 list-inside list-disc space-y-1">
+                    <li>
+                        Gravatar:
+                        <code class="rounded bg-muted px-1 py-0.5 text-xs"
+                            >https://www.gravatar.com/avatar/HASH</code
+                        >
+                    </li>
+                    <li>
+                        UI Avatars:
+                        <code class="rounded bg-muted px-1 py-0.5 text-xs"
+                            >https://ui-avatars.com/api/?name=John+Doe</code
+                        >
+                    </li>
                     <li>Any public image URL</li>
                 </ul>
             </div>
@@ -176,7 +192,7 @@ const setAvatarType = (type: 'upload' | 'url') => {
 
         <!-- Upload Info -->
         <div v-else class="text-xs text-muted-foreground">
-            <div class="flex flex-col gap-2 mb-4">
+            <div class="mb-4 flex flex-col gap-2">
                 <div class="flex gap-2">
                     <Button
                         type="button"

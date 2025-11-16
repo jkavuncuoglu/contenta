@@ -2,25 +2,31 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\ContentManagement\Aggregates;
+namespace App\Domains\ContentManagement\Posts\Aggregates;
 
-use app\Domains\ContentManagement\Events\PostCreated;
-use app\Domains\ContentManagement\Events\PostPublished;
-use app\Domains\ContentManagement\Events\PostUnpublished;
-use app\Domains\ContentManagement\Events\PostUpdated;
-use app\Domains\ContentManagement\Exceptions\InvalidPostStatusException;
-use app\Domains\ContentManagement\Exceptions\PostNotFoundException;
+use App\Domains\ContentManagement\Posts\Events\PostCreated;
+use App\Domains\ContentManagement\Posts\Events\PostPublished;
+use App\Domains\ContentManagement\Posts\Events\PostUnpublished;
+use App\Domains\ContentManagement\Posts\Events\PostUpdated;
+use App\Domains\ContentManagement\Posts\Exceptions\InvalidPostStatusException;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class PostAggregate
 {
+    /**
+     * @var array<int, object>
+     */
     private array $events = [];
 
     public const STATUS_DRAFT = 'draft';
+
     public const STATUS_PUBLISHED = 'published';
+
     public const STATUS_SCHEDULED = 'scheduled';
+
     public const STATUS_PRIVATE = 'private';
+
     public const STATUS_TRASH = 'trash';
 
     public const VALID_STATUSES = [
@@ -31,6 +37,9 @@ class PostAggregate
         self::STATUS_TRASH,
     ];
 
+    /**
+     * @param  array<string, mixed>  $customFields
+     */
     public function __construct(
         private ?int $id,
         private string $title,
@@ -39,7 +48,6 @@ class PostAggregate
         private string $contentHtml,
         private string $status,
         private int $authorId,
-        private int $postTypeId,
         private ?Carbon $publishedAt = null,
         private array $customFields = [],
         private int $version = 1
@@ -47,11 +55,13 @@ class PostAggregate
         $this->validateStatus($status);
     }
 
+    /**
+     * @param  array<string, mixed>  $customFields
+     */
     public static function create(
         string $title,
         string $contentMarkdown,
         int $authorId,
-        int $postTypeId,
         array $customFields = []
     ): self {
         $slug = Str::slug($title);
@@ -65,7 +75,6 @@ class PostAggregate
             contentHtml: $contentHtml,
             status: self::STATUS_DRAFT,
             authorId: $authorId,
-            postTypeId: $postTypeId,
             customFields: $customFields
         );
 
@@ -73,7 +82,6 @@ class PostAggregate
             title: $title,
             slug: $slug,
             authorId: $authorId,
-            postTypeId: $postTypeId
         ));
 
         return $aggregate;
@@ -165,6 +173,9 @@ class PostAggregate
         $this->status = self::STATUS_TRASH;
     }
 
+    /**
+     * @param  array<string, mixed>  $customFields
+     */
     public function updateCustomFields(array $customFields): void
     {
         $this->customFields = array_merge($this->customFields, $customFields);
@@ -224,16 +235,14 @@ class PostAggregate
         return $this->authorId;
     }
 
-    public function getPostTypeId(): int
-    {
-        return $this->postTypeId;
-    }
-
     public function getPublishedAt(): ?Carbon
     {
         return $this->publishedAt;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getCustomFields(): array
     {
         return $this->customFields;
@@ -244,6 +253,9 @@ class PostAggregate
         return $this->version;
     }
 
+    /**
+     * @return array<int, object>
+     */
     public function getEvents(): array
     {
         return $this->events;
@@ -288,7 +300,7 @@ class PostAggregate
     // Private methods
     private function validateStatus(string $status): void
     {
-        if (!in_array($status, self::VALID_STATUSES)) {
+        if (! in_array($status, self::VALID_STATUSES)) {
             throw new InvalidPostStatusException("Invalid post status: {$status}");
         }
     }

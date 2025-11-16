@@ -14,6 +14,8 @@ class PageBuilderService implements PageBuilderServiceContract
 {
     /**
      * Get paginated pages
+     *
+     * @return LengthAwarePaginator<Page>
      */
     public function getPaginatedPages(int $perPage = 20): LengthAwarePaginator
     {
@@ -25,11 +27,15 @@ class PageBuilderService implements PageBuilderServiceContract
 
     /**
      * Create a new page
+     *
+     * @param  array<string, mixed>  $data
      */
     public function createPage(array $data): Page
     {
         if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
+            $title = $data['title'] ?? '';
+            $baseSlug = Str::slug(is_string($title) ? $title : '');
+            $data['slug'] = $this->generateUniqueSlug($baseSlug);
         }
 
         return Page::create($data);
@@ -37,15 +43,23 @@ class PageBuilderService implements PageBuilderServiceContract
 
     /**
      * Update a page
+     *
+     * @param  array<string, mixed>  $data
      */
     public function updatePage(Page $page, array $data): Page
     {
         if (isset($data['title']) && empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
+            $title = $data['title'];
+            $data['slug'] = Str::slug(is_string($title) ? $title : '');
         }
 
         $page->update($data);
-        return $page->fresh();
+        $freshPage = $page->fresh();
+        if (! $freshPage) {
+            throw new \Exception('Failed to refresh page after update');
+        }
+
+        return $freshPage;
     }
 
     /**
@@ -53,7 +67,7 @@ class PageBuilderService implements PageBuilderServiceContract
      */
     public function deletePage(Page $page): bool
     {
-        return $page->delete();
+        return (bool) $page->delete();
     }
 
     /**
@@ -62,11 +76,16 @@ class PageBuilderService implements PageBuilderServiceContract
     public function publishPage(Page $page): Page
     {
         $page->update([
-            'is_published' => true,
+            'status' => Page::STATUS_PUBLISHED,
             'published_at' => now(),
         ]);
 
-        return $page->fresh();
+        $freshPage = $page->fresh();
+        if (! $freshPage) {
+            throw new \Exception('Failed to refresh page after publishing');
+        }
+
+        return $freshPage;
     }
 
     /**
@@ -75,10 +94,16 @@ class PageBuilderService implements PageBuilderServiceContract
     public function unpublishPage(Page $page): Page
     {
         $page->update([
-            'is_published' => false,
+            'status' => Page::STATUS_DRAFT,
+            'published_at' => null,
         ]);
 
-        return $page->fresh();
+        $freshPage = $page->fresh();
+        if (! $freshPage) {
+            throw new \Exception('Failed to refresh page after unpublishing');
+        }
+
+        return $freshPage;
     }
 
     /**
@@ -89,7 +114,7 @@ class PageBuilderService implements PageBuilderServiceContract
         $newPage = $page->replicate();
         $newPage->title = $newTitle;
         $newPage->slug = Str::slug($newTitle);
-        $newPage->is_published = false;
+        $newPage->status = Page::STATUS_DRAFT;
         $newPage->published_at = null;
         $newPage->save();
 
@@ -102,12 +127,14 @@ class PageBuilderService implements PageBuilderServiceContract
     public function getPageBySlug(string $slug): ?Page
     {
         return Page::where('slug', $slug)
-            ->where('is_published', true)
+            ->where('status', Page::STATUS_PUBLISHED)
             ->first();
     }
 
     /**
      * Get all layouts
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, Layout>
      */
     public function getAllLayouts(): \Illuminate\Database\Eloquent\Collection
     {
@@ -116,6 +143,8 @@ class PageBuilderService implements PageBuilderServiceContract
 
     /**
      * Get all blocks
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, Block>
      */
     public function getAllBlocks(): \Illuminate\Database\Eloquent\Collection
     {
@@ -124,9 +153,27 @@ class PageBuilderService implements PageBuilderServiceContract
 
     /**
      * Get active blocks
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, Block>
      */
     public function getActiveBlocks(): \Illuminate\Database\Eloquent\Collection
     {
         return Block::where('is_active', true)->get();
+    }
+
+    /**
+     * Generate a unique slug
+     */
+    private function generateUniqueSlug(string $baseSlug): string
+    {
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (Page::where('slug', $slug)->exists()) {
+            $slug = $baseSlug.'-'.$counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }

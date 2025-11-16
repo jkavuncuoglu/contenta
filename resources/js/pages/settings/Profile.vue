@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useAppearance } from '@/composables/useAppearance';
-import settings from '@/routes/user/settings';
 import { send } from '@/routes/verification';
 import { Form, Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { watch } from 'vue';
@@ -16,7 +15,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { type BreadcrumbItem } from '@/types';
 
 interface Props {
     mustVerifyEmail: boolean;
@@ -24,13 +22,6 @@ interface Props {
 }
 
 defineProps<Props>();
-
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: 'Profile settings',
-        href: settings.profile.edit().url,
-    },
-];
 
 const page = usePage();
 const user = page.props.auth.user;

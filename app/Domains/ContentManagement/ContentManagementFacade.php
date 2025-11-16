@@ -2,8 +2,8 @@
 
 namespace App\Domains\ContentManagement;
 
-use Illuminate\Support\Facades\Facade;
 use App\Domains\ContentManagement\Services\ContentManagementServiceContract;
+use Illuminate\Support\Facades\Facade;
 
 class ContentManagementFacade extends Facade
 {
@@ -32,4 +32,3 @@ class ContentManagementFacade extends Facade
         return app(ContentManagementServiceContract::class)->categories();
     }
 }
-

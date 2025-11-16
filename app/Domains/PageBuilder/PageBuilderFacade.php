@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static \Illuminate\Pagination\LengthAwarePaginator getPaginatedPages(int $perPage = 20)
- * @method static \App\Domains\PageBuilder\Models\Page createPage(array $data)
- * @method static \App\Domains\PageBuilder\Models\Page updatePage(\App\Domains\PageBuilder\Models\Page $page, array $data)
+ * @method static \App\Domains\PageBuilder\Models\Page createPage(array<string, mixed> $data)
+ * @method static \App\Domains\PageBuilder\Models\Page updatePage(\App\Domains\PageBuilder\Models\Page $page, array<string, mixed> $data)
  * @method static bool deletePage(\App\Domains\PageBuilder\Models\Page $page)
  * @method static \App\Domains\PageBuilder\Models\Page publishPage(\App\Domains\PageBuilder\Models\Page $page)
  * @method static \App\Domains\PageBuilder\Models\Page unpublishPage(\App\Domains\PageBuilder\Models\Page $page)

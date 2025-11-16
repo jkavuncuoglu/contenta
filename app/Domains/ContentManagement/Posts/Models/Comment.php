@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Posts\Models;
 
-use App\Domains\ContentManagement\Posts\Models\Post;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,8 +16,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Comment extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $fillable = [
         'post_id',
@@ -35,38 +35,63 @@ class Comment extends Model
     ];
 
     // Relationships
+    /**
+     * @return BelongsTo<Post, $this>
+     */
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
     }
 
+    /**
+     * @return BelongsTo<Comment, $this>
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Comment::class, 'parent_id');
     }
 
+    /**
+     * @return HasMany<Comment, $this>
+     */
     public function replies(): HasMany
     {
         return $this->hasMany(Comment::class, 'parent_id')->orderBy('created_at');
     }
 
     // Scopes
-    public function scopeApproved($query)
+    /**
+     * @param  Builder<Comment>  $query
+     * @return Builder<Comment>
+     */
+    public function scopeApproved(Builder $query): Builder
     {
         return $query->where('status', 'approved');
     }
 
-    public function scopePending($query)
+    /**
+     * @param  Builder<Comment>  $query
+     * @return Builder<Comment>
+     */
+    public function scopePending(Builder $query): Builder
     {
         return $query->where('status', 'pending');
     }
 
-    public function scopeSpam($query)
+    /**
+     * @param  Builder<Comment>  $query
+     * @return Builder<Comment>
+     */
+    public function scopeSpam(Builder $query): Builder
     {
         return $query->where('status', 'spam');
     }
 
-    public function scopeParent($query)
+    /**
+     * @param  Builder<Comment>  $query
+     * @return Builder<Comment>
+     */
+    public function scopeParent(Builder $query): Builder
     {
         return $query->whereNull('parent_id');
     }
@@ -77,5 +102,13 @@ class Comment extends Model
         return LogOptions::defaults()
             ->logOnly(['content', 'status'])
             ->logOnlyDirty();
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): \Database\Factories\CommentFactory
+    {
+        return \Database\Factories\CommentFactory::new();
     }
 }

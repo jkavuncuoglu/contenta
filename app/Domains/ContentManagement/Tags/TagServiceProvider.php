@@ -1,16 +1,17 @@
 <?php
+
 namespace App\Domains\ContentManagement\Tags;
 
-use Illuminate\Support\ServiceProvider;
-use App\Domains\ContentManagement\Tags\Services\TagServiceContract;
 use App\Domains\ContentManagement\Tags\Services\TagService;
+use App\Domains\ContentManagement\Tags\Services\TagServiceContract;
+use Illuminate\Support\ServiceProvider;
 
 class TagServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->app->singleton(TagServiceContract::class, function ($app) {
-            return new TagService();
+            return new TagService;
         });
     }
 

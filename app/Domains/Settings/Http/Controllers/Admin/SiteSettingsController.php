@@ -41,7 +41,7 @@ class SiteSettingsController extends Controller
     /**
      * Update the site settings
      */
-    public function update(Request $request)
+    public function update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'site_title' => 'required|string|max:255',
@@ -77,7 +77,7 @@ class SiteSettingsController extends Controller
             'cookie_consent_enabled',
         ]));
 
-        if (!$updated) {
+        if (! $updated) {
             return redirect()->route('admin.settings.site.index')
                 ->with('error', 'Failed to update site settings');
         }

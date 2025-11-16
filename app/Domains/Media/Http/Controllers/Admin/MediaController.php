@@ -41,7 +41,7 @@ class MediaController extends Controller
     /**
      * Store a newly uploaded media file
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'file' => 'required|file|max:10240', // 10MB max
@@ -58,18 +58,18 @@ class MediaController extends Controller
                 ->with('success', 'Media uploaded successfully');
         } catch (\Exception $e) {
             return redirect()->route('admin.media.index')
-                ->with('error', 'Failed to upload media: ' . $e->getMessage());
+                ->with('error', 'Failed to upload media: '.$e->getMessage());
         }
     }
 
     /**
      * Display the specified media file
      */
-    public function show(int $id)
+    public function show(int $id): \Illuminate\Http\JsonResponse
     {
         $media = $this->mediaService->getMediaById($id);
 
-        if (!$media) {
+        if (! $media) {
             return response()->json([
                 'success' => false,
                 'message' => 'Media not found',
@@ -96,11 +96,11 @@ class MediaController extends Controller
     /**
      * Remove the specified media file
      */
-    public function destroy(int $id)
+    public function destroy(int $id): \Illuminate\Http\RedirectResponse
     {
         $deleted = $this->mediaService->deleteMedia($id);
 
-        if (!$deleted) {
+        if (! $deleted) {
             return redirect()->route('admin.media.index')
                 ->with('error', 'Media not found or could not be deleted');
         }
@@ -112,7 +112,7 @@ class MediaController extends Controller
     /**
      * Get media by collection
      */
-    public function collection(string $collection)
+    public function collection(string $collection): \Illuminate\Http\JsonResponse
     {
         $media = $this->mediaService->getMediaByCollection($collection);
 

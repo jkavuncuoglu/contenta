@@ -43,7 +43,10 @@ const isRequestingRegeneration = ref(false);
 const isConfirmingRegeneration = ref(false);
 const errors = ref<string[]>([]);
 
-const fetchJson = async <T>(input: RequestInfo, init: RequestInit = {}): Promise<T> => {
+const fetchJson = async <T>(
+    input: RequestInfo,
+    init: RequestInit = {},
+): Promise<T> => {
     const resp = await fetch(input, {
         headers: {
             Accept: 'application/json',
@@ -55,7 +58,11 @@ const fetchJson = async <T>(input: RequestInfo, init: RequestInit = {}): Promise
     });
     if (!resp.ok) {
         let body: any = null;
-        try { body = await resp.json(); } catch {}
+        try {
+            body = await resp.json();
+        } catch {
+            // Ignore JSON parse errors
+        }
         throw new Error(body?.message || `HTTP ${resp.status}`);
     }
     return resp.json();
@@ -63,7 +70,9 @@ const fetchJson = async <T>(input: RequestInfo, init: RequestInit = {}): Promise
 const hasSetupData = computed(() => !!setupData.value);
 
 export const useTwoFactorAuth = () => {
-    const clearErrors = () => { errors.value = []; };
+    const clearErrors = () => {
+        errors.value = [];
+    };
 
     const fetchSetupData = async () => {
         try {
@@ -80,7 +89,9 @@ export const useTwoFactorAuth = () => {
         }
     };
 
-    const validateTwoFactorCode = async (code: string): Promise<EnableResponse | null> => {
+    const validateTwoFactorCode = async (
+        code: string,
+    ): Promise<EnableResponse | null> => {
         if (!code || code.length !== 6) {
             errors.value.push('Enter a valid 6-digit code');
             return null;
@@ -88,7 +99,10 @@ export const useTwoFactorAuth = () => {
         try {
             clearErrors();
             isEnabling.value = true;
-            const resp = await fetchJson<EnableResponse>(`${BASE}/two-factor/enable`, { method: 'POST', body: JSON.stringify({ code }) });
+            const resp = await fetchJson<EnableResponse>(
+                `${BASE}/two-factor/enable`,
+                { method: 'POST', body: JSON.stringify({ code }) },
+            );
             if (resp.success && resp.recovery_codes) {
                 recoveryCodesList.value = resp.recovery_codes;
                 hasViewedCodes.value = false;
@@ -107,7 +121,9 @@ export const useTwoFactorAuth = () => {
     const fetchRecoveryCodes = async () => {
         try {
             clearErrors();
-            const resp = await fetchJson<RecoveryCodesResponse>(`${BASE}/two-factor/recovery-codes`);
+            const resp = await fetchJson<RecoveryCodesResponse>(
+                `${BASE}/two-factor/recovery-codes`,
+            );
             recoveryCodesList.value = resp.recovery_codes || [];
             hasViewedCodes.value = resp.has_viewed;
             recoveryCodesWarning.value = resp.show_warning;
@@ -120,7 +136,9 @@ export const useTwoFactorAuth = () => {
         try {
             clearErrors();
             if (hasViewedCodes.value) {
-                errors.value.push('Codes already viewed. Regenerate to download again.');
+                errors.value.push(
+                    'Codes already viewed. Regenerate to download again.',
+                );
                 return;
             }
             const link = document.createElement('a');
@@ -136,7 +154,10 @@ export const useTwoFactorAuth = () => {
         }
     };
 
-    const regenerateCodes = async (password: string, code: string): Promise<RegenerationResponse | null> => {
+    const regenerateCodes = async (
+        password: string,
+        code: string,
+    ): Promise<RegenerationResponse | null> => {
         if (!password || password.length < 8) {
             errors.value.push('Password required (min 8 chars)');
             return null;
@@ -148,7 +169,10 @@ export const useTwoFactorAuth = () => {
         try {
             clearErrors();
             isRequestingRegeneration.value = true;
-            const resp = await fetchJson<RegenerationResponse>(`${BASE}/two-factor/recovery-codes/regenerate`, { method: 'POST', body: JSON.stringify({ password, code }) });
+            const resp = await fetchJson<RegenerationResponse>(
+                `${BASE}/two-factor/recovery-codes/regenerate`,
+                { method: 'POST', body: JSON.stringify({ password, code }) },
+            );
             if (!resp.success && resp.errors) {
                 errors.value.push(...resp.errors);
             }
@@ -165,7 +189,9 @@ export const useTwoFactorAuth = () => {
         try {
             clearErrors();
             isConfirmingRegeneration.value = true;
-            const url = token ? `${BASE}/two-factor/recovery-codes/confirm?token=${encodeURIComponent(token)}` : `${BASE}/two-factor/recovery-codes/confirm`;
+            const url = token
+                ? `${BASE}/two-factor/recovery-codes/confirm?token=${encodeURIComponent(token)}`
+                : `${BASE}/two-factor/recovery-codes/confirm`;
             const resp = await fetchJson<RegenerationResponse>(url);
             if (resp.success && resp.recovery_codes) {
                 recoveryCodesList.value = resp.recovery_codes;
@@ -182,7 +208,9 @@ export const useTwoFactorAuth = () => {
         }
     };
 
-    const clearSetupData = () => { setupData.value = null; };
+    const clearSetupData = () => {
+        setupData.value = null;
+    };
     const clearTwoFactorAuthData = () => {
         clearSetupData();
         recoveryCodesList.value = [];

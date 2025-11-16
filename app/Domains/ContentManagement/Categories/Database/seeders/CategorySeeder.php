@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Domains\ContentManagement\Categories\Database\seeders;
 
-use Illuminate\Database\Seeder;
 use App\Domains\ContentManagement\Categories\Models\Category;
+use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         Category::factory()->count(10)->create();
     }

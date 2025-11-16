@@ -2,18 +2,19 @@
 
 use App\Domains\Security\Http\Controllers\Admin\RolesController;
 use App\Domains\Security\UserManagement\Http\Controllers\UserManagementController;
+use App\Domains\Settings\Http\Controllers\Admin\SecuritySettingsController;
+use App\Domains\Settings\Http\Controllers\Admin\SiteSettingsController;
+use App\Domains\Settings\Http\Controllers\Admin\ThemeSettingsController;
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\PasswordController;
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\ProfileController;
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\TwoFactorAuthenticationController;
-use App\Domains\Settings\Http\Controllers\Admin\SiteSettingsController;
-use App\Domains\Settings\Http\Controllers\Admin\SecuritySettingsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::group([
     'prefix' => 'settings',
     'as' => 'settings.',
-    'middleware' => ['auth']
+    'middleware' => ['auth'],
 ], function () {
     Route::redirect('', 'settings/site');
 
@@ -43,7 +44,6 @@ Route::group([
                 Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
                 Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
             });
-
 
             Route::group([
                 'prefix' => 'password',
@@ -110,5 +110,14 @@ Route::group([
         Route::post('roles', [RolesController::class, 'store'])->name('roles.store');
         Route::put('roles/{role}', [RolesController::class, 'update'])->name('roles.update');
         Route::delete('roles/{role}', [RolesController::class, 'destroy'])->name('roles.destroy');
+    });
+
+    Route::group([
+        'prefix' => 'theme',
+        'as' => 'theme.',
+    ], function () {
+        Route::get('', [ThemeSettingsController::class, 'index'])->name('index');
+        Route::get('colors', [ThemeSettingsController::class, 'show'])->name('show');
+        Route::put('', [ThemeSettingsController::class, 'update'])->name('update');
     });
 });

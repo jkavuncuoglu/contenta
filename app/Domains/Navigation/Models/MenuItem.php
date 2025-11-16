@@ -4,15 +4,22 @@ declare(strict_types=1);
 
 namespace App\Domains\Navigation\Models;
 
+use Database\Factories\MenuItemFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @use HasFactory<MenuItemFactory>
+ */
 class MenuItem extends Model
 {
-    use HasFactory, SoftDeletes;
+    /** @use HasFactory<MenuItemFactory> */
+    use HasFactory;
+
+    use SoftDeletes;
 
     protected $fillable = [
         'menu_id',
@@ -40,6 +47,8 @@ class MenuItem extends Model
 
     /**
      * Get the menu this item belongs to
+     *
+     * @return BelongsTo<Menu, $this>
      */
     public function menu(): BelongsTo
     {
@@ -48,6 +57,8 @@ class MenuItem extends Model
 
     /**
      * Get the parent menu item
+     *
+     * @return BelongsTo<MenuItem, $this>
      */
     public function parent(): BelongsTo
     {
@@ -56,6 +67,8 @@ class MenuItem extends Model
 
     /**
      * Get all children menu items
+     *
+     * @return HasMany<MenuItem, $this>
      */
     public function children(): HasMany
     {
@@ -74,10 +87,10 @@ class MenuItem extends Model
         // Resolve URL based on object type
         if ($this->object_type && $this->object_id) {
             return match ($this->object_type) {
-                'page' => '/page/' . $this->object_id,
-                'post' => '/post/' . $this->object_id,
-                'category' => '/category/' . $this->object_id,
-                'tag' => '/tag/' . $this->object_id,
+                'page' => '/page/'.$this->object_id,
+                'post' => '/post/'.$this->object_id,
+                'category' => '/category/'.$this->object_id,
+                'tag' => '/tag/'.$this->object_id,
                 default => null,
             };
         }
@@ -87,6 +100,8 @@ class MenuItem extends Model
 
     /**
      * Convert this item and its children to a tree structure
+     *
+     * @return array<string, mixed>
      */
     public function toTree(): array
     {
@@ -99,14 +114,16 @@ class MenuItem extends Model
             'css_classes' => $this->css_classes,
             'icon' => $this->icon,
             'is_visible' => $this->is_visible,
-            'attributes' => $this->attributes,
-            'metadata' => $this->metadata,
-            'children' => $this->children->map(fn($child) => $child->toTree())->toArray(),
+            'attributes' => $this->getAttribute('attributes'),
+            'metadata' => $this->getAttribute('metadata'),
+            'children' => $this->children->map(fn (MenuItem $child) => $child->toTree())->toArray(),
         ];
     }
 
     /**
      * Reorder items
+     *
+     * @param  array<int, array<string, mixed>>  $items
      */
     public static function reorder(array $items, ?int $parentId = null): void
     {
@@ -116,7 +133,7 @@ class MenuItem extends Model
                 'parent_id' => $parentId,
             ]);
 
-            if (!empty($item['children'])) {
+            if (! empty($item['children'])) {
                 self::reorder($item['children'], $item['id']);
             }
         }

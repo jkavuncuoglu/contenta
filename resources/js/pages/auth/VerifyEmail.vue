@@ -3,8 +3,8 @@ import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { logout } from '@/routes';
-import { useForm, Head } from '@inertiajs/vue3';
 import { Icon } from '@iconify/vue';
+import { Head, useForm } from '@inertiajs/vue3';
 
 defineProps<{
     status?: string;
@@ -13,9 +13,9 @@ defineProps<{
 // Use Inertia useForm for resending verification email
 const form = useForm({});
 const resendVerification = () => {
-  form.post('/email/verification-notification', {
-    preserveScroll: true,
-  });
+    form.post('/email/verification-notification', {
+        preserveScroll: true,
+    });
 };
 </script>
 
@@ -34,7 +34,10 @@ const resendVerification = () => {
             provided during registration.
         </div>
 
-        <form @submit.prevent="resendVerification" class="space-y-6 text-center">
+        <form
+            @submit.prevent="resendVerification"
+            class="space-y-6 text-center"
+        >
             <Button :disabled="form.processing" variant="secondary">
                 <Icon
                     v-if="form.processing"
@@ -45,11 +48,7 @@ const resendVerification = () => {
             </Button>
         </form>
 
-        <TextLink
-            :href="logout()"
-            as="button"
-            class="mx-auto block text-sm"
-        >
+        <TextLink :href="logout()" as="button" class="mx-auto block text-sm">
             Log out
         </TextLink>
     </AuthLayout>

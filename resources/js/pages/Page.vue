@@ -1,54 +1,101 @@
 <script setup lang="ts">
+import PageLayout from '@/layouts/PageLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import type { Component } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
-interface Page {
-  id: number;
-  title: string;
-  slug: string;
-  content_html: string;
-  meta_title?: string;
-  meta_description?: string;
-  published_at: string;
+interface BlockConfig {
+    id: string;
+    type: string;
+    config: Record<string, any>;
+}
+
+interface PageData {
+    id: number;
+    title: string;
+    slug: string;
+    data: {
+        layout: string;
+        sections: BlockConfig[];
+    };
+    meta_title?: string;
+    meta_description?: string;
+    meta_keywords?: string;
 }
 
 interface Props {
-  page: Page;
-  siteTitle: string;
+    page: PageData;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
-const pageTitle = props.page.meta_title || props.page.title;
-const fullTitle = `${pageTitle} - ${props.siteTitle}`;
+// Map block types to their Vue components
+const blockComponents: Record<string, Component> = {
+    hero: defineAsyncComponent(
+        () => import('@/components/pagebuilder/blocks/HeroBlock.vue'),
+    ),
+    features: defineAsyncComponent(
+        () => import('@/components/pagebuilder/blocks/FeaturesBlock.vue'),
+    ),
+    'contact-form': defineAsyncComponent(
+        () => import('@/components/pagebuilder/blocks/ContactFormBlock.vue'),
+    ),
+    cta: defineAsyncComponent(
+        () => import('@/components/pagebuilder/blocks/CTABlock.vue'),
+    ),
+    faq: defineAsyncComponent(
+        () => import('@/components/pagebuilder/blocks/FAQBlock.vue'),
+    ),
+    stats: defineAsyncComponent(
+        () => import('@/components/pagebuilder/blocks/StatsBlock.vue'),
+    ),
+    'legal-text': defineAsyncComponent(
+        () => import('@/components/pagebuilder/blocks/LegalTextBlock.vue'),
+    ),
+    team: defineAsyncComponent(
+        () => import('@/components/pagebuilder/blocks/TeamBlock.vue'),
+    ),
+};
+
+// Get component for a block type
+const getBlockComponent = (type: string): Component | null => {
+    return blockComponents[type] || null;
+};
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
-    <Head :title="fullTitle">
-      <meta v-if="page.meta_description" name="description" :content="page.meta_description" />
-    </Head>
+    <PageLayout>
+        <Head :title="page.meta_title || page.title">
+            <meta
+                v-if="page.meta_description"
+                name="description"
+                :content="page.meta_description"
+            />
+            <meta
+                v-if="page.meta_keywords"
+                name="keywords"
+                :content="page.meta_keywords"
+            />
+        </Head>
 
-    <!-- Header -->
-    <header class="bg-white dark:bg-gray-800 shadow">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="text-center">
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-            {{ page.title }}
-          </h1>
+        <div class="min-h-screen">
+            <!-- Render each section/block -->
+            <template v-for="section in page.data.sections" :key="section.id">
+                <component
+                    :is="getBlockComponent(section.type)"
+                    v-if="getBlockComponent(section.type)"
+                    :config="section.config"
+                />
+                <!-- Fallback for unknown block types -->
+                <div
+                    v-else
+                    class="border-l-4 border-yellow-400 bg-yellow-50 px-4 py-8 dark:bg-yellow-900/20"
+                >
+                    <p class="text-yellow-800 dark:text-yellow-200">
+                        Unknown block type: <strong>{{ section.type }}</strong>
+                    </p>
+                </div>
+            </template>
         </div>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <article class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
-        <div class="p-8">
-          <div
-            v-html="page.content_html"
-            class="prose prose-lg max-w-none dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300"
-          ></div>
-        </div>
-      </article>
-    </main>
-  </div>
+    </PageLayout>
 </template>

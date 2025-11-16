@@ -1,0 +1,56 @@
+name: Tests
+
+on:
+  push:
+    branches: ['main', 'dev']
+  pull_request:
+    branches: ['main', 'dev']
+
+jobs:
+  php-tests:
+    runs-on: ubuntu-latest
+    name: PHP Tests (Pest)
+    env:
+      DB_CONNECTION: sqlite
+      DB_DATABASE: database/database.sqlite
+      APP_ENV: testing
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
+          coverage: pcov
+
+      - name: Ensure Composer cache dir exists
+        run: mkdir -p ~/.cache/composer
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: ${{ runner.os }}-composer-${{ hashFiles('contenta/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Create SQLite database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Prepare Laravel application
+        run: |
+          cp -n .env.example .env || true
+          php artisan key:generate --force
+
+      - name: Run migrations (SQLite)
+        run: php artisan migrate --force --no-interaction
+
+      - name: Run tests
+        run: ./vendor/bin/pest --colors=always

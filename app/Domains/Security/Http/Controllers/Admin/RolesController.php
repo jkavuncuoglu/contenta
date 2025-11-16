@@ -2,21 +2,21 @@
 
 namespace App\Domains\Security\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Domains\Security\Http\Requests\Admin\StoreRoleRequest;
 use App\Domains\Security\Http\Requests\Admin\UpdateRoleRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Http\RedirectResponse;
+use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
     public function index(): Response
     {
         $roles = Role::with(['permissions:id,name'])->withCount('users')->orderBy('name')->get();
-        $permissions = Permission::orderBy('name')->get(['id','name']);
+        $permissions = Permission::orderBy('name')->get(['id', 'name']);
 
         return Inertia::render('admin/settings/permissions/Index', [
             'roles' => $roles,
@@ -32,7 +32,7 @@ class RolesController extends Controller
             'guard_name' => 'web',
         ]);
 
-        if (!empty($data['permissions'])) {
+        if (! empty($data['permissions'])) {
             $role->syncPermissions($data['permissions']);
         }
 
@@ -68,4 +68,3 @@ class RolesController extends Controller
             ->with('success', 'Role deleted successfully.');
     }
 }
-

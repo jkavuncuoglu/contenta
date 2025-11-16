@@ -1,16 +1,14 @@
 <?php
+
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use App\Domains\Security\Contracts\TwoFactorAuthenticationServiceInterface;
-use App\Domains\Security\Services\TwoFactorAuthenticationService;
-use PragmaRX\Google2FA\Google2FA;
-use App\Domains\Media\Services\MediaServiceContract;
-use App\Domains\Media\Services\MediaService;
-use App\Domains\ContentManagement\Comments\Services\CommentsServiceContract;
 use App\Domains\ContentManagement\Comments\Services\CommentsService;
-use App\Domains\Settings\Services\SiteSettingsServiceContract;
+use App\Domains\ContentManagement\Comments\Services\CommentsServiceContract;
+use App\Domains\Media\Services\MediaService;
+use App\Domains\Media\Services\MediaServiceContract;
 use App\Domains\Settings\Services\SiteSettingsService;
+use App\Domains\Settings\Services\SiteSettingsServiceContract;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,20 +17,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(TwoFactorAuthenticationServiceInterface::class, function ($app) {
-            return new TwoFactorAuthenticationService(new Google2FA());
-        });
+        // TwoFactorAuthentication is handled by Laravel Fortify
 
         $this->app->singleton(MediaServiceContract::class, function ($app) {
-            return new MediaService();
+            return new MediaService;
         });
 
         $this->app->singleton(CommentsServiceContract::class, function ($app) {
-            return new CommentsService();
+            return new CommentsService;
         });
 
         $this->app->singleton(SiteSettingsServiceContract::class, function ($app) {
-            return new SiteSettingsService();
+            return new SiteSettingsService;
         });
     }
 

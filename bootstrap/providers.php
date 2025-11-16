@@ -17,4 +17,10 @@ return [
 
     // PageBuilder Domain
     App\Domains\PageBuilder\PageBuilderServiceProvider::class,
+
+    // Settings Domain
+    App\Domains\Settings\SettingsServiceProvider::class,
+
+    // Plugins Domain
+    App\Domains\Plugins\PluginServiceProvider::class,
 ];

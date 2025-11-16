@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class CategoryServiceProviderTest extends TestCase
 {
-    
     public function test_it_registers_category_service_contract(): void
     {
         // Act
@@ -20,10 +19,9 @@ class CategoryServiceProviderTest extends TestCase
         $this->assertInstanceOf(CategoryService::class, $service);
     }
 
-    
     public function test_it_loads_migrations(): void
     {
         // This test verifies that the service provider boot method runs without errors
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 }

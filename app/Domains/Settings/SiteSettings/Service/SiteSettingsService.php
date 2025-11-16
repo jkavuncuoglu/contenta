@@ -10,17 +10,17 @@ class SiteSettingsService implements SiteSettingsContract
     /**
      * Cache duration in minutes
      */
-    protected $cacheDuration = 60;
+    protected int $cacheDuration = 60;
 
     /**
      * Get a setting value by key
      */
-    public function get(string $key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         return Cache::remember("setting.{$key}", $this->cacheDuration, function () use ($key, $default) {
             $setting = Setting::where('key', $key)->first();
 
-            if (!$setting) {
+            if (! $setting) {
                 return $default;
             }
 
@@ -31,7 +31,7 @@ class SiteSettingsService implements SiteSettingsContract
     /**
      * Set a setting value
      */
-    public function set(string $key, $value, string $type = 'string', string $group = 'general', ?string $description = null)
+    public function set(string $key, mixed $value, string $type = 'string', string $group = 'general', ?string $description = null): Setting
     {
         $setting = Setting::updateOrCreate(
             ['key' => $key],
@@ -51,6 +51,8 @@ class SiteSettingsService implements SiteSettingsContract
 
     /**
      * Get all settings
+     *
+     * @return array<string, mixed>
      */
     public function all(): array
     {
@@ -59,12 +61,15 @@ class SiteSettingsService implements SiteSettingsContract
             foreach (Setting::all() as $setting) {
                 $settings[$setting->key] = $this->castValue($setting->value, $setting->type);
             }
+
             return $settings;
         });
     }
 
     /**
      * Get settings by group
+     *
+     * @return array<string, mixed>
      */
     public function getByGroup(string $group): array
     {
@@ -73,6 +78,7 @@ class SiteSettingsService implements SiteSettingsContract
             foreach (Setting::where('group', $group)->get() as $setting) {
                 $settings[$setting->key] = $this->castValue($setting->value, $setting->type);
             }
+
             return $settings;
         });
     }
@@ -100,7 +106,7 @@ class SiteSettingsService implements SiteSettingsContract
     /**
      * Cast value to the specified type
      */
-    protected function castValue($value, string $type)
+    protected function castValue(mixed $value, string $type): mixed
     {
         if (is_null($value)) {
             return null;

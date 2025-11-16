@@ -12,6 +12,8 @@ class PostService implements PostServiceContract
 {
     /**
      * Get paginated posts
+     *
+     * @return LengthAwarePaginator<int, Post>
      */
     public function getPaginatedPosts(int $perPage = 20, ?string $status = null): LengthAwarePaginator
     {
@@ -27,11 +29,14 @@ class PostService implements PostServiceContract
 
     /**
      * Create a new post
+     *
+     * @param  array<string, mixed>  $data
      */
     public function createPost(array $data): Post
     {
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
+        if (empty($data['slug']) && isset($data['title']) && is_string($data['title'])) {
+            $baseSlug = Str::slug($data['title']);
+            $data['slug'] = $this->generateUniqueSlug($baseSlug);
         }
 
         if (empty($data['status'])) {
@@ -43,15 +48,20 @@ class PostService implements PostServiceContract
 
     /**
      * Update a post
+     *
+     * @param  array<string, mixed>  $data
      */
     public function updatePost(Post $post, array $data): Post
     {
-        if (isset($data['title']) && empty($data['slug'])) {
+        if (isset($data['title']) && is_string($data['title']) && empty($data['slug'])) {
             $data['slug'] = Str::slug($data['title']);
         }
 
         $post->update($data);
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+
+        return $freshPost;
     }
 
     /**
@@ -59,7 +69,7 @@ class PostService implements PostServiceContract
      */
     public function deletePost(Post $post): bool
     {
-        return $post->delete();
+        return (bool) $post->delete();
     }
 
     /**
@@ -72,7 +82,10 @@ class PostService implements PostServiceContract
             'published_at' => now(),
         ]);
 
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+
+        return $freshPost;
     }
 
     /**
@@ -82,9 +95,13 @@ class PostService implements PostServiceContract
     {
         $post->update([
             'status' => 'draft',
+            'published_at' => null,
         ]);
 
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+
+        return $freshPost;
     }
 
     /**
@@ -97,7 +114,10 @@ class PostService implements PostServiceContract
             'published_at' => $publishAt,
         ]);
 
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+
+        return $freshPost;
     }
 
     /**
@@ -136,6 +156,8 @@ class PostService implements PostServiceContract
 
     /**
      * Get published posts
+     *
+     * @return LengthAwarePaginator<int, Post>
      */
     public function getPublishedPosts(int $perPage = 20): LengthAwarePaginator
     {
@@ -150,6 +172,8 @@ class PostService implements PostServiceContract
 
     /**
      * Get draft posts
+     *
+     * @return LengthAwarePaginator<int, Post>
      */
     public function getDraftPosts(int $perPage = 20): LengthAwarePaginator
     {
@@ -162,19 +186,165 @@ class PostService implements PostServiceContract
 
     /**
      * Attach categories to post
+     *
+     * @param  array<int, int>  $categoryIds
      */
     public function attachCategories(Post $post, array $categoryIds): Post
     {
         $post->categories()->sync($categoryIds);
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+
+        return $freshPost;
     }
 
     /**
      * Attach tags to post
+     *
+     * @param  array<int, int>  $tagIds
      */
     public function attachTags(Post $post, array $tagIds): Post
     {
         $post->tags()->sync($tagIds);
-        return $post->fresh();
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+
+        return $freshPost;
+    }
+
+    /**
+     * Get posts for calendar view (by date range)
+     *
+     * @return array<int, Post>
+     */
+    public function getCalendarPosts(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
+    {
+        return Post::query()
+            ->with(['categories', 'tags', 'author'])
+            ->whereBetween('published_at', [$startDate, $endDate])
+            ->whereIn('status', ['published', 'scheduled'])
+            ->orderBy('published_at')
+            ->get()
+            ->all();
+    }
+
+    /**
+     * Get scheduled posts
+     *
+     * @return LengthAwarePaginator<int, Post>
+     */
+    public function getScheduledPosts(int $perPage = 20): LengthAwarePaginator
+    {
+        return Post::query()
+            ->with(['categories', 'tags', 'author'])
+            ->where('status', 'scheduled')
+            ->whereNotNull('published_at')
+            ->orderBy('published_at')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Publish posts that are due to be published
+     *
+     * @return array<int, Post>
+     */
+    public function publishDuePosts(): array
+    {
+        $duePosts = Post::query()
+            ->where('status', 'scheduled')
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now())
+            ->get();
+
+        $published = [];
+
+        foreach ($duePosts as $post) {
+            $post->update([
+                'status' => 'published',
+            ]);
+            $published[] = $post;
+        }
+
+        return $published;
+    }
+
+    /**
+     * Get posts by status
+     *
+     * @return LengthAwarePaginator<int, Post>
+     */
+    public function getPostsByStatus(string $status, int $perPage = 20): LengthAwarePaginator
+    {
+        return Post::query()
+            ->with(['categories', 'tags', 'author'])
+            ->where('status', $status)
+            ->latest()
+            ->paginate($perPage);
+    }
+
+    /**
+     * Get archived posts
+     *
+     * @return LengthAwarePaginator<int, Post>
+     */
+    public function getArchivedPosts(int $perPage = 20): LengthAwarePaginator
+    {
+        return Post::onlyTrashed()
+            ->with(['categories', 'tags', 'author'])
+            ->latest('deleted_at')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Restore archived post
+     */
+    public function restorePost(int $postId): Post
+    {
+        $post = Post::onlyTrashed()->findOrFail($postId);
+        $post->restore();
+
+        // Set status to draft when restoring
+        $post->update(['status' => 'draft']);
+
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+
+        return $freshPost;
+    }
+
+    /**
+     * Change post status
+     */
+    public function changeStatus(Post $post, string $status): Post
+    {
+        $updateData = ['status' => $status];
+
+        // If publishing, set published_at if not already set
+        if ($status === 'published' && ! $post->published_at) {
+            $updateData['published_at'] = now();
+        }
+
+        $post->update($updateData);
+
+        $freshPost = $post->fresh();
+        assert($freshPost instanceof Post);
+
+        return $freshPost;
+    }
+
+    /**
+     * Generate a unique slug
+     */
+    private function generateUniqueSlug(string $baseSlug): string
+    {
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $baseSlug.'-'.$counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }

@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domains\PageBuilder\Models;
 
+use Database\Factories\BlockFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @use HasFactory<\Database\Factories\PageBuilder\BlockFactory>
+ */
 class Block extends Model
 {
     use HasFactory;
@@ -35,32 +40,53 @@ class Block extends Model
         'config_schema' => '{}',
     ];
 
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): BlockFactory
+    {
+        return BlockFactory::new();
+    }
+
     // Block categories
     const CATEGORY_GENERAL = 'general';
+
     const CATEGORY_LAYOUT = 'layout';
+
     const CATEGORY_CONTENT = 'content';
+
     const CATEGORY_MEDIA = 'media';
+
     const CATEGORY_FORMS = 'forms';
+
     const CATEGORY_NAVIGATION = 'navigation';
 
     /**
      * Scope for active blocks
+     *
+     * @param  Builder<Block>  $query
+     * @return Builder<Block>
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
     }
 
     /**
      * Scope by category
+     *
+     * @param  Builder<Block>  $query
+     * @return Builder<Block>
      */
-    public function scopeByCategory($query, string $category)
+    public function scopeByCategory(Builder $query, string $category): Builder
     {
         return $query->where('category', $category);
     }
 
     /**
      * Get available categories
+     *
+     * @return array<string, string>
      */
     public static function getCategories(): array
     {
@@ -76,6 +102,8 @@ class Block extends Model
 
     /**
      * Get default configuration
+     *
+     * @return array<string, mixed>
      */
     public function getDefaultConfigAttribute(): array
     {
@@ -91,6 +119,9 @@ class Block extends Model
 
     /**
      * Validate configuration against schema
+     *
+     * @param  array<string, mixed>  $config
+     * @return array<string, string>
      */
     public function validateConfig(array $config): array
     {
@@ -101,8 +132,9 @@ class Block extends Model
             $required = $fieldSchema['required'] ?? false;
             $type = $fieldSchema['type'] ?? 'string';
 
-            if ($required && !isset($config[$field])) {
+            if ($required && ! isset($config[$field])) {
                 $errors[$field] = "Field {$field} is required";
+
                 continue;
             }
 
@@ -111,22 +143,22 @@ class Block extends Model
 
                 switch ($type) {
                     case 'string':
-                        if (!is_string($value)) {
+                        if (! is_string($value)) {
                             $errors[$field] = "Field {$field} must be a string";
                         }
                         break;
                     case 'number':
-                        if (!is_numeric($value)) {
+                        if (! is_numeric($value)) {
                             $errors[$field] = "Field {$field} must be a number";
                         }
                         break;
                     case 'boolean':
-                        if (!is_bool($value)) {
+                        if (! is_bool($value)) {
                             $errors[$field] = "Field {$field} must be a boolean";
                         }
                         break;
                     case 'array':
-                        if (!is_array($value)) {
+                        if (! is_array($value)) {
                             $errors[$field] = "Field {$field} must be an array";
                         }
                         break;

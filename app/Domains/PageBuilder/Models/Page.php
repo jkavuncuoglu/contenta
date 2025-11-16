@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\PageBuilder\Models;
 
+use Database\Factories\PageFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,9 +14,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * @use HasFactory<\Database\Factories\PageBuilder\PageFactory>
+ */
 class Page extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $table = 'pagebuilder_pages';
 
@@ -25,6 +30,7 @@ class Page extends Model
         'data',
         'published_html',
         'status',
+        'published_at',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -36,6 +42,7 @@ class Page extends Model
         'data' => 'array',
         'published_html' => 'string',
         'schema_data' => 'array',
+        'published_at' => 'datetime',
     ];
 
     protected $attributes = [
@@ -43,13 +50,25 @@ class Page extends Model
         'data' => '{"layout": "default", "sections": []}',
     ];
 
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): PageFactory
+    {
+        return PageFactory::new();
+    }
+
     // Status constants
     const STATUS_DRAFT = 'draft';
+
     const STATUS_PUBLISHED = 'published';
+
     const STATUS_ARCHIVED = 'archived';
 
     /**
      * Get the layout that the page belongs to
+     *
+     * @return BelongsTo<Layout, $this>
      */
     public function layout(): BelongsTo
     {
@@ -58,6 +77,8 @@ class Page extends Model
 
     /**
      * Get the author of the page
+     *
+     * @return BelongsTo<\App\Domains\Security\UserManagement\Models\User, $this>
      */
     public function author(): BelongsTo
     {
@@ -66,6 +87,8 @@ class Page extends Model
 
     /**
      * Get the revisions for the page
+     *
+     * @return HasMany<PageRevision, $this>
      */
     public function revisions(): HasMany
     {
@@ -74,16 +97,22 @@ class Page extends Model
 
     /**
      * Scope for published pages
+     *
+     * @param  Builder<Page>  $query
+     * @return Builder<Page>
      */
-    public function scopePublished($query)
+    public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', self::STATUS_PUBLISHED);
     }
 
     /**
      * Scope for draft pages
+     *
+     * @param  Builder<Page>  $query
+     * @return Builder<Page>
      */
-    public function scopeDraft($query)
+    public function scopeDraft(Builder $query): Builder
     {
         return $query->where('status', self::STATUS_DRAFT);
     }
@@ -114,6 +143,8 @@ class Page extends Model
 
     /**
      * Get available statuses
+     *
+     * @return array<string, string>
      */
     public static function getStatuses(): array
     {

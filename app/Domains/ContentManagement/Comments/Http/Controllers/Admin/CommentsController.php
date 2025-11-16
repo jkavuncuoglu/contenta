@@ -6,6 +6,8 @@ namespace App\Domains\ContentManagement\Comments\Http\Controllers\Admin;
 
 use App\Domains\ContentManagement\Comments\Services\CommentsServiceContract;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -23,7 +25,7 @@ class CommentsController extends Controller
     public function index(Request $request): Response
     {
         $filters = $request->only(['status', 'search', 'post_id']);
-        $perPage = (int) $request->get('per_page', 20);
+        $perPage = (int) ($request->get('per_page') ?? 20);
 
         $comments = $this->commentsService->getPaginatedComments($filters, $perPage);
         $statistics = $this->commentsService->getStatistics();
@@ -46,11 +48,11 @@ class CommentsController extends Controller
     /**
      * Display the specified comment
      */
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
         $comment = $this->commentsService->getCommentById($id);
 
-        if (!$comment) {
+        if (! $comment) {
             return response()->json([
                 'success' => false,
                 'message' => 'Comment not found',
@@ -70,8 +72,8 @@ class CommentsController extends Controller
                 'author_ip' => $comment->author_ip,
                 'content' => $comment->content,
                 'status' => $comment->status,
-                'created_at' => $comment->created_at->format('M j, Y H:i'),
-                'updated_at' => $comment->updated_at->format('M j, Y H:i'),
+                'created_at' => $comment->created_at?->format('M j, Y H:i'),
+                'updated_at' => $comment->updated_at?->format('M j, Y H:i'),
                 'replies_count' => $comment->replies->count(),
                 'parent' => $comment->parent ? [
                     'id' => $comment->parent->id,
@@ -85,15 +87,15 @@ class CommentsController extends Controller
     /**
      * Update comment status
      */
-    public function updateStatus(Request $request, int $id)
+    public function updateStatus(Request $request, int $id): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'status' => 'required|in:pending,approved,spam,trash',
         ]);
 
-        $updated = $this->commentsService->updateStatus($id, $request->status);
+        $updated = $this->commentsService->updateStatus($id, $validated['status']);
 
-        if (!$updated) {
+        if (! $updated) {
             return redirect()->route('admin.comments.index')
                 ->with('error', 'Comment not found');
         }
@@ -105,15 +107,17 @@ class CommentsController extends Controller
     /**
      * Bulk update comment statuses
      */
-    public function bulkUpdateStatus(Request $request)
+    public function bulkUpdateStatus(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'ids' => 'required|array',
             'ids.*' => 'integer|exists:comments,id',
             'status' => 'required|in:pending,approved,spam,trash',
         ]);
 
-        $updated = $this->commentsService->bulkUpdateStatus($request->ids, $request->status);
+        /** @var array<int> $ids */
+        $ids = $validated['ids'];
+        $updated = $this->commentsService->bulkUpdateStatus($ids, $validated['status']);
 
         return redirect()->route('admin.comments.index')
             ->with('success', "Updated {$updated} comments successfully");
@@ -122,11 +126,11 @@ class CommentsController extends Controller
     /**
      * Remove the specified comment
      */
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         $deleted = $this->commentsService->deleteComment($id);
 
-        if (!$deleted) {
+        if (! $deleted) {
             return redirect()->route('admin.comments.index')
                 ->with('error', 'Comment not found');
         }
