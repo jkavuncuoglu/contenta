@@ -24,7 +24,7 @@ class MediaHolderTest extends TestCase
     public function test_media_holder_implements_has_media_interface(): void
     {
         // Arrange & Act
-        $mediaHolder = new MediaHolder();
+        $mediaHolder = new MediaHolder;
 
         // Assert
         $this->assertInstanceOf(HasMedia::class, $mediaHolder);
@@ -117,7 +117,7 @@ class MediaHolderTest extends TestCase
     public function test_media_holder_uses_correct_table_name(): void
     {
         // Arrange & Act
-        $mediaHolder = new MediaHolder();
+        $mediaHolder = new MediaHolder;
 
         // Assert
         $this->assertEquals('media_holders', $mediaHolder->getTable());

@@ -338,7 +338,6 @@ class UserModelTest extends TestCase
         $this->assertFalse($this->user->shouldShowRecoveryCodesWarning());
     }
 
-
     public function test_has_viewed_recovery_codes_returns_true_when_viewed(): void
     {
         // Arrange

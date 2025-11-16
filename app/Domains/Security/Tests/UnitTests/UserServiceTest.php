@@ -8,7 +8,6 @@ use App\Domains\Security\UserManagement\Inputs\UserUpdateInput;
 use App\Domains\Security\UserManagement\Models\User;
 use App\Domains\Security\UserManagement\Models\UserEmail;
 use App\Domains\Security\UserManagement\Services\UserService;
-use App\Domains\Security\UserManagement\Services\UserServiceContract;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;

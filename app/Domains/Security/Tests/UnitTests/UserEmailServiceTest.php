@@ -7,7 +7,6 @@ namespace App\Domains\Security\Tests\UnitTests;
 use App\Domains\Security\UserManagement\Models\User;
 use App\Domains\Security\UserManagement\Models\UserEmail;
 use App\Domains\Security\UserManagement\Services\UserEmailService;
-use App\Domains\Security\UserManagement\Services\UserEmailServiceContract;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
