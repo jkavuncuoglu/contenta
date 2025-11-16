@@ -64,7 +64,7 @@ class MenuServiceTest extends TestCase
 
         // Assert
         $this->assertTrue($result);
-        $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
+        $this->assertSoftDeleted('menus', ['id' => $menu->id]);
     }
 
     public function test_it_can_create_menu_item(): void

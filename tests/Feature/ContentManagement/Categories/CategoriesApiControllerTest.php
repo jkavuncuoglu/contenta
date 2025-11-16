@@ -14,7 +14,7 @@ test('api index returns paginated categories', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.categories.index'));
+        ->getJson(route('admin.api.categories.index'));
 
     $response->assertOk();
     $response->assertJsonStructure([
@@ -31,7 +31,7 @@ test('api index respects per_page parameter', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.categories.index', ['per_page' => 10]));
+        ->getJson(route('admin.api.categories.index', ['per_page' => 10]));
 
     $response->assertOk();
     $response->assertJson([
@@ -49,7 +49,7 @@ test('api index orders categories by name', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.categories.index'));
+        ->getJson(route('admin.api.categories.index'));
 
     $response->assertOk();
     $json = $response->json();
@@ -65,7 +65,7 @@ test('api index can search categories by name', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.categories.index', ['search' => 'Technology']));
+        ->getJson(route('admin.api.categories.index', ['search' => 'Technology']));
 
     $response->assertOk();
     $json = $response->json();
@@ -77,7 +77,7 @@ test('api index search is case insensitive', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.categories.index', ['search' => 'tech']));
+        ->getJson(route('admin.api.categories.index', ['search' => 'tech']));
 
     $response->assertOk();
     $json = $response->json();
@@ -93,7 +93,7 @@ test('api index returns only id name and slug', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.categories.index'));
+        ->getJson(route('admin.api.categories.index'));
 
     $response->assertOk();
     $json = $response->json();
@@ -104,7 +104,7 @@ test('api index returns only id name and slug', function () {
 test('api index returns empty data when no categories exist', function () {
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.categories.index'));
+        ->getJson(route('admin.api.categories.index'));
 
     $response->assertOk();
     $response->assertJson([
@@ -118,7 +118,7 @@ test('api index search returns empty when no matches', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.categories.index', ['search' => 'NonExistent']));
+        ->getJson(route('admin.api.categories.index', ['search' => 'NonExistent']));
 
     $response->assertOk();
     $response->assertJson([
@@ -128,7 +128,7 @@ test('api index search returns empty when no matches', function () {
 });
 
 test('unauthorized user cannot access categories api', function () {
-    $response = $this->getJson(route('api.admin.categories.index'));
+    $response = $this->getJson(route('admin.api.categories.index'));
 
     $response->assertUnauthorized();
 });
@@ -138,7 +138,7 @@ test('api index uses default per_page of 50 when not specified', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.categories.index'));
+        ->getJson(route('admin.api.categories.index'));
 
     $response->assertOk();
     $response->assertJson([

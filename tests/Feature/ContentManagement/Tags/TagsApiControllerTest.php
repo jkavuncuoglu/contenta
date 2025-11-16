@@ -14,7 +14,7 @@ test('api index returns paginated tags', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.tags.index'));
+        ->getJson(route('admin.api.tags.index'));
 
     $response->assertOk();
     $response->assertJsonStructure([
@@ -31,7 +31,7 @@ test('api index respects per_page parameter', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.tags.index', ['per_page' => 10]));
+        ->getJson(route('admin.api.tags.index', ['per_page' => 10]));
 
     $response->assertOk();
     $response->assertJson([
@@ -49,7 +49,7 @@ test('api index orders tags by name', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.tags.index'));
+        ->getJson(route('admin.api.tags.index'));
 
     $response->assertOk();
     $json = $response->json();
@@ -65,7 +65,7 @@ test('api index can search tags by name', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.tags.index', ['search' => 'Laravel']));
+        ->getJson(route('admin.api.tags.index', ['search' => 'Laravel']));
 
     $response->assertOk();
     $json = $response->json();
@@ -77,7 +77,7 @@ test('api index search is case insensitive', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.tags.index', ['search' => 'laravel']));
+        ->getJson(route('admin.api.tags.index', ['search' => 'laravel']));
 
     $response->assertOk();
     $json = $response->json();
@@ -93,7 +93,7 @@ test('api index returns only id name and slug', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.tags.index'));
+        ->getJson(route('admin.api.tags.index'));
 
     $response->assertOk();
     $json = $response->json();
@@ -104,7 +104,7 @@ test('api index returns only id name and slug', function () {
 test('api index returns empty data when no tags exist', function () {
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.tags.index'));
+        ->getJson(route('admin.api.tags.index'));
 
     $response->assertOk();
     $response->assertJson([
@@ -118,7 +118,7 @@ test('api index search returns empty when no matches', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.tags.index', ['search' => 'NonExistent']));
+        ->getJson(route('admin.api.tags.index', ['search' => 'NonExistent']));
 
     $response->assertOk();
     $response->assertJson([
@@ -128,7 +128,7 @@ test('api index search returns empty when no matches', function () {
 });
 
 test('unauthorized user cannot access tags api', function () {
-    $response = $this->getJson(route('api.admin.tags.index'));
+    $response = $this->getJson(route('admin.api.tags.index'));
 
     $response->assertUnauthorized();
 });
@@ -138,7 +138,7 @@ test('api index uses default per_page of 50 when not specified', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.tags.index'));
+        ->getJson(route('admin.api.tags.index'));
 
     $response->assertOk();
     $response->assertJson([
@@ -153,7 +153,7 @@ test('api index handles empty search parameter', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.tags.index', ['search' => '']));
+        ->getJson(route('admin.api.tags.index', ['search' => '']));
 
     $response->assertOk();
     $response->assertJson([

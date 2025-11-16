@@ -15,7 +15,7 @@ test('api index returns paginated posts', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.posts.index'));
+        ->getJson(route('admin.api.posts.index'));
 
     $response->assertOk();
     $response->assertJsonStructure([
@@ -30,7 +30,7 @@ test('api index respects per_page parameter', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.posts.index', ['per_page' => 10]));
+        ->getJson(route('admin.api.posts.index', ['per_page' => 10]));
 
     $response->assertOk();
     $response->assertJson(['meta' => ['per_page' => 10, 'total' => 30]]);
@@ -43,7 +43,7 @@ test('api index can search posts by title', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.posts.index', ['search' => 'Laravel']));
+        ->getJson(route('admin.api.posts.index', ['search' => 'Laravel']));
 
     $response->assertOk();
     $json = $response->json();
@@ -56,7 +56,7 @@ test('api index can filter by status', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.posts.index', ['status' => 'published']));
+        ->getJson(route('admin.api.posts.index', ['status' => 'published']));
 
     $response->assertOk();
     $json = $response->json();
@@ -66,7 +66,7 @@ test('api index can filter by status', function () {
 test('calendar requires start_date and end_date', function () {
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.posts.calendar'));
+        ->getJson(route('admin.api.posts.calendar'));
 
     $response->assertStatus(422);
     $response->assertJson(['message' => 'start_date and end_date are required']);
@@ -75,7 +75,7 @@ test('calendar requires start_date and end_date', function () {
 test('calendar validates date format', function () {
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.posts.calendar', [
+        ->getJson(route('admin.api.posts.calendar', [
             'start_date' => 'invalid',
             'end_date' => 'invalid',
         ]));
@@ -99,7 +99,7 @@ test('calendar returns posts in date range', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.posts.calendar', [
+        ->getJson(route('admin.api.posts.calendar', [
             'start_date' => now()->subDays(7)->toDateString(),
             'end_date' => now()->toDateString(),
         ]));
@@ -119,7 +119,7 @@ test('scheduled returns paginated scheduled posts', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.posts.scheduled'));
+        ->getJson(route('admin.api.posts.scheduled'));
 
     $response->assertOk();
     $response->assertJson(['meta' => ['total' => 3]]);
@@ -130,7 +130,7 @@ test('reschedule validates published_at is required', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->postJson(route('api.admin.posts.reschedule', $post->id), []);
+        ->postJson(route('admin.api.posts.reschedule', $post->id), []);
 
     $response->assertStatus(422);
 });
@@ -140,7 +140,7 @@ test('reschedule validates published_at is in future', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->postJson(route('api.admin.posts.reschedule', $post->id), [
+        ->postJson(route('admin.api.posts.reschedule', $post->id), [
             'published_at' => now()->subDay()->toDateTimeString(),
         ]);
 
@@ -157,7 +157,7 @@ test('reschedule updates post schedule', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->postJson(route('api.admin.posts.reschedule', $post->id), [
+        ->postJson(route('admin.api.posts.reschedule', $post->id), [
             'published_at' => $newDate,
         ]);
 
@@ -174,7 +174,7 @@ test('archived returns paginated archived posts', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->getJson(route('api.admin.posts.archived'));
+        ->getJson(route('admin.api.posts.archived'));
 
     $response->assertOk();
     $response->assertJson(['meta' => ['total' => 2]]);
@@ -186,7 +186,7 @@ test('restore restores archived post', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->postJson(route('api.admin.posts.restore', $post->id));
+        ->postJson(route('admin.api.posts.restore', $post->id));
 
     $response->assertOk();
     $response->assertJson([
@@ -202,7 +202,7 @@ test('change status validates status field', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->postJson(route('api.admin.posts.change-status', $post->id), [
+        ->patchJson(route('admin.api.posts.change-status', $post->id), [
             'status' => 'invalid',
         ]);
 
@@ -214,7 +214,7 @@ test('change status updates post status', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->postJson(route('api.admin.posts.change-status', $post->id), [
+        ->patchJson(route('admin.api.posts.change-status', $post->id), [
             'status' => 'published',
         ]);
 
@@ -233,7 +233,7 @@ test('change status sets published_at when publishing', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->postJson(route('api.admin.posts.change-status', $post->id), [
+        ->patchJson(route('admin.api.posts.change-status', $post->id), [
             'status' => 'published',
         ]);
 
@@ -243,6 +243,6 @@ test('change status sets published_at when publishing', function () {
 });
 
 test('unauthorized user cannot access posts api', function () {
-    $response = $this->getJson(route('api.admin.posts.index'));
+    $response = $this->getJson(route('admin.api.posts.index'));
     $response->assertUnauthorized();
 });

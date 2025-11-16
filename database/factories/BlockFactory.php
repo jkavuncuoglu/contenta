@@ -16,7 +16,7 @@ class BlockFactory extends Factory
     {
         return [
             'name' => fake()->words(2, true),
-            'type' => fake()->randomElement(['text', 'image', 'video', 'button', 'hero']),
+            'type' => fake()->unique()->word(),
             'category' => 'general',
             'config_schema' => [],
             'component_path' => 'components/blocks/TextBlock.vue',

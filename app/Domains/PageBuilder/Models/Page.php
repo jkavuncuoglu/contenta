@@ -30,6 +30,7 @@ class Page extends Model
         'data',
         'published_html',
         'status',
+        'published_at',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -41,6 +42,7 @@ class Page extends Model
         'data' => 'array',
         'published_html' => 'string',
         'schema_data' => 'array',
+        'published_at' => 'datetime',
     ];
 
     protected $attributes = [

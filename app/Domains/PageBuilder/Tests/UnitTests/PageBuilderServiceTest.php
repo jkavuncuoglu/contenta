@@ -76,7 +76,7 @@ class PageBuilderServiceTest extends TestCase
 
         // Assert
         $this->assertTrue($result);
-        $this->assertDatabaseMissing('pages', ['id' => $page->id]);
+        $this->assertSoftDeleted('pagebuilder_pages', ['id' => $page->id]);
     }
 
     public function test_it_can_publish_page(): void

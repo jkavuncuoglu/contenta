@@ -65,6 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail, WebAuthnAuthentic
      */
     protected $fillable = [
         'name',
+        'email',
         'password',
         'first_name',
         'last_name',

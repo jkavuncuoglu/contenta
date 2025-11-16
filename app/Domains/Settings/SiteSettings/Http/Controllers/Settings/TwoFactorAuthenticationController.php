@@ -11,15 +11,30 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Fortify\Features;
 use OTPHP\TOTP;
+use PragmaRX\Google2FA\Google2FA;
 
 class TwoFactorAuthenticationController extends Controller
 {
     /**
      * Show the user's two-factor authentication settings page.
      */
-    public function show(Request $request): Response
+    public function show(Request $request): Response|\Illuminate\Http\RedirectResponse
     {
+        if (! Features::canManageTwoFactorAuthentication()) {
+            abort(403, 'Two-factor authentication is not enabled.');
+        }
+
+        // Check if password confirmation is required
+        if (Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')) {
+            $confirmedAt = $request->session()->get('auth.password_confirmed_at');
+
+            if (! $confirmedAt || time() - $confirmedAt > config('auth.password_timeout', 10800)) {
+                return redirect()->route('password.confirm');
+            }
+        }
+
         $user = $request->user();
 
         return Inertia::render('settings/Security', [
@@ -41,8 +56,9 @@ class TwoFactorAuthenticationController extends Controller
                 ], 409);
             }
 
-            // Generate a new secret
-            $secret = bin2hex(random_bytes(32));
+            // Generate a new Base32-encoded secret compatible with Google Authenticator
+            $google2fa = new Google2FA;
+            $secret = $google2fa->generateSecretKey();
 
             // Store temporarily (will be saved permanently on enable)
             $user->forceFill([
@@ -50,8 +66,8 @@ class TwoFactorAuthenticationController extends Controller
                 'two_factor_confirmed_at' => null,
             ])->save();
 
-            // Generate TOTP
-            $totp = TOTP::create($secret);
+            // Generate TOTP for QR code
+            $totp = TOTP::createFromSecret($secret);
             $totp->setLabel($user->email);
             $totp->setIssuer(config('app.name'));
 
@@ -189,6 +205,12 @@ class TwoFactorAuthenticationController extends Controller
                 $codes = $user->two_factor_recovery_codes
                     ? json_decode(decrypt($user->two_factor_recovery_codes), true) ?? []
                     : [];
+
+                // Mark codes as viewed after retrieving them
+                if (! empty($codes)) {
+                    $user->markRecoveryCodesAsViewed();
+                    $hasViewed = true; // Update the flag to reflect that codes were just viewed
+                }
             }
 
             $availableCount = $user->getAvailableRecoveryCodesCount();

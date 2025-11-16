@@ -27,7 +27,7 @@ class CategoriesController extends Controller
             ];
         });
 
-        return Inertia::render('admin/categories/Index', [
+        return Inertia::render('admin/content/categories/Index', [
             'categories' => $categories,
             'meta' => [
                 'current_page' => $paginator->currentPage(),
@@ -40,12 +40,12 @@ class CategoriesController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('admin/categories/Create');
+        return Inertia::render('admin/content/categories/Create');
     }
 
     public function edit(int $id): Response
     {
-        return Inertia::render('admin/categories/Edit', ['id' => $id]);
+        return Inertia::render('admin/content/categories/Edit', ['id' => $id]);
     }
 
     /**

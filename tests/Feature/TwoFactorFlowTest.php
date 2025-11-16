@@ -19,7 +19,7 @@ it('enables two-factor authentication and returns recovery codes only once', fun
     actingAs($user);
 
     // Step 1: get setup data
-    $setupResp = getJson('/two-factor/setup')->assertOk()->json();
+    $setupResp = getJson(route('user.settings.security.two-factor.setup'))->assertOk()->json();
     expect($setupResp)->toHaveKeys(['qrCode', 'manualEntry']);
 
     // Use the stored encrypted secret to generate valid TOTP
@@ -28,7 +28,7 @@ it('enables two-factor authentication and returns recovery codes only once', fun
     $validCode = $g2fa->getCurrentOtp($secret);
 
     // Step 2: enable with valid code
-    $enableResp = postJson('/two-factor/enable', ['code' => $validCode])
+    $enableResp = postJson(route('user.settings.security.two-factor.enable'), ['code' => $validCode])
         ->assertOk()
         ->json();
 
@@ -39,11 +39,11 @@ it('enables two-factor authentication and returns recovery codes only once', fun
     expect($user->two_factor_confirmed_at)->not()->toBeNull();
 
     // First fetch of recovery codes (should be returned and then marked viewed)
-    $codesFirst = getJson('/two-factor/recovery-codes')->assertOk()->json();
+    $codesFirst = getJson(route('user.settings.security.two-factor.recovery-codes'))->assertOk()->json();
     expect($codesFirst['recovery_codes'])->toBeArray();
 
     // Second fetch should return empty array because already viewed
-    $codesSecond = getJson('/two-factor/recovery-codes')->assertOk()->json();
+    $codesSecond = getJson(route('user.settings.security.two-factor.recovery-codes'))->assertOk()->json();
     expect($codesSecond['recovery_codes'])->toBeArray()->toHaveCount(0);
 });
 
@@ -57,17 +57,17 @@ it('regenerates recovery codes after password + 2fa verification and email confi
     actingAs($user);
 
     // Setup and enable 2FA first
-    getJson('/two-factor/setup')->assertOk();
+    getJson(route('user.settings.security.two-factor.setup'))->assertOk();
     $secret = decrypt($user->fresh()->two_factor_secret);
     $g2fa = new Google2FA;
     $code = $g2fa->getCurrentOtp($secret);
-    postJson('/two-factor/enable', ['code' => $code])->assertOk();
+    postJson(route('user.settings.security.two-factor.enable'), ['code' => $code])->assertOk();
 
     $user = $user->fresh();
 
     // Request regeneration
     $code2 = $g2fa->getCurrentOtp($secret); // new code (still valid window)
-    postJson('/two-factor/recovery-codes/regenerate', [
+    postJson(route('user.settings.security.two-factor.recovery-codes.regenerate'), [
         'password' => 'Password123!',
         'code' => $code2,
     ])->assertOk();
@@ -81,7 +81,7 @@ it('regenerates recovery codes after password + 2fa verification and email confi
     $token = $user->recovery_codes_regeneration_token;
 
     // Confirm regeneration
-    $confirmResp = getJson('/two-factor/recovery-codes/confirm?token='.$token)
+    $confirmResp = getJson(route('user.settings.security.two-factor.recovery-codes.confirm', ['token' => $token]))
         ->assertOk()
         ->json();
 
@@ -99,13 +99,13 @@ it('disables two-factor authentication successfully', function () {
     actingAs($user);
 
     // Setup + enable 2FA
-    getJson('/two-factor/setup')->assertOk();
+    getJson(route('user.settings.security.two-factor.setup'))->assertOk();
     $secret = decrypt($user->fresh()->two_factor_secret);
     $g2fa = new Google2FA;
     $code = $g2fa->getCurrentOtp($secret);
-    postJson('/two-factor/enable', ['code' => $code])->assertOk();
+    postJson(route('user.settings.security.two-factor.enable'), ['code' => $code])->assertOk();
 
-    deleteJson('/two-factor/disable')->assertOk();
+    deleteJson(route('user.settings.security.two-factor.disable'))->assertOk();
 
     $user = $user->fresh();
     expect($user->two_factor_secret)->toBeNull();

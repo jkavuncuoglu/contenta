@@ -52,7 +52,7 @@ test('index orders posts by latest first', function () {
 
     $response->assertOk();
     $posts = $response->viewData('page')['props']['posts'];
-    expect($posts[0]['id'])->toBe($newPost->id);
+    expect($posts['data'][0]['id'])->toBe($newPost->id);
 });
 
 test('index includes author information', function () {
@@ -65,8 +65,8 @@ test('index includes author information', function () {
 
     $response->assertOk();
     $response->assertInertia(fn ($page) => $page
-        ->has('posts.0.author')
-        ->where('posts.0.author.name', 'John Doe')
+        ->has('posts.data.0.author')
+        ->where('posts.data.0.author.name', 'John Doe')
     );
 });
 
@@ -158,6 +158,7 @@ test('store creates post with valid data', function () {
 test('store generates slug if not provided', function () {
     $data = [
         'title' => 'Auto Generated Slug',
+        'content_markdown' => 'Test content',
         'status' => 'draft',
     ];
 
@@ -176,6 +177,7 @@ test('store generates slug if not provided', function () {
 test('store sets author_id from authenticated user', function () {
     $data = [
         'title' => 'Test Post',
+        'content_markdown' => 'Test content',
         'status' => 'draft',
     ];
 
@@ -240,6 +242,7 @@ test('store accepts valid status values', function ($status) {
         ->actingAs($this->user)
         ->post(route('admin.posts.store'), [
             'title' => 'Test Post',
+            'content_markdown' => 'Test content',
             'status' => $status,
         ]);
 
@@ -255,6 +258,7 @@ test('store can attach categories', function () {
         ->actingAs($this->user)
         ->post(route('admin.posts.store'), [
             'title' => 'Test Post',
+            'content_markdown' => 'Test content',
             'status' => 'draft',
             'category_ids' => [$category1->id, $category2->id],
         ]);
@@ -273,6 +277,7 @@ test('store can attach tags', function () {
         ->actingAs($this->user)
         ->post(route('admin.posts.store'), [
             'title' => 'Test Post',
+            'content_markdown' => 'Test content',
             'status' => 'draft',
             'tag_ids' => [$tag1->id, $tag2->id],
         ]);
@@ -288,6 +293,7 @@ test('store redirects to edit page', function () {
         ->actingAs($this->user)
         ->post(route('admin.posts.store'), [
             'title' => 'Test Post',
+            'content_markdown' => 'Test content',
             'status' => 'draft',
         ]);
 
@@ -500,6 +506,7 @@ test('store can save custom fields', function () {
         ->actingAs($this->user)
         ->post(route('admin.posts.store'), [
             'title' => 'Test Post',
+            'content_markdown' => 'Test content',
             'status' => 'draft',
             'custom_fields' => [
                 'custom_key' => 'custom_value',
@@ -517,6 +524,7 @@ test('store can save meta fields', function () {
         ->actingAs($this->user)
         ->post(route('admin.posts.store'), [
             'title' => 'Test Post',
+            'content_markdown' => 'Test content',
             'status' => 'draft',
             'meta_title' => 'SEO Title',
             'meta_description' => 'SEO Description',
@@ -548,6 +556,7 @@ test('store can save scheduled post with published_at', function () {
         ->actingAs($this->user)
         ->post(route('admin.posts.store'), [
             'title' => 'Scheduled Post',
+            'content_markdown' => 'Test content',
             'status' => 'scheduled',
             'published_at' => $futureDate,
         ]);

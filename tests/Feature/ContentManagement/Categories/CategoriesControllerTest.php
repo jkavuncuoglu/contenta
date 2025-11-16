@@ -18,7 +18,7 @@ test('index displays paginated categories', function () {
 
     $response->assertOk();
     $response->assertInertia(fn ($page) => $page
-        ->component('admin/categories/Index')
+        ->component('admin/content/categories/Index')
         ->has('categories')
         ->has('meta')
         ->where('meta.total', 20)
@@ -46,7 +46,7 @@ test('create renders create form', function () {
 
     $response->assertOk();
     $response->assertInertia(fn ($page) => $page
-        ->component('admin/categories/Create')
+        ->component('admin/content/categories/Create')
     );
 });
 
@@ -59,7 +59,7 @@ test('edit renders edit form with category id', function () {
 
     $response->assertOk();
     $response->assertInertia(fn ($page) => $page
-        ->component('admin/categories/Edit')
+        ->component('admin/content/categories/Edit')
         ->where('id', $category->id)
     );
 });

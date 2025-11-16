@@ -60,7 +60,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return to_route('settings.profile.edit');
+        return to_route('user.settings.profile.edit');
     }
 
     /**

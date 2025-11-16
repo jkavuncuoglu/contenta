@@ -78,7 +78,7 @@ test('index filters by post_id', function () {
     $response->assertOk();
     $response->assertInertia(fn ($page) => $page
         ->where('pagination.total', 5)
-        ->where('filters.post_id', $targetPost->id)
+        ->where('filters.post_id', (string) $targetPost->id)
     );
 });
 
@@ -121,7 +121,7 @@ test('update_status changes comment status', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->put(route('admin.comments.update-status', $comment->id), [
+        ->patch(route('admin.comments.update-status', $comment->id), [
             'status' => 'approved',
         ]);
 
@@ -137,7 +137,7 @@ test('update_status validates status values', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->put(route('admin.comments.update-status', $comment->id), [
+        ->patch(route('admin.comments.update-status', $comment->id), [
             'status' => 'invalid-status',
         ]);
 
@@ -150,7 +150,7 @@ test('bulk_update_status updates multiple comments', function () {
 
     $response = $this
         ->actingAs($this->user)
-        ->post(route('admin.comments.bulk-update-status'), [
+        ->patch(route('admin.comments.bulk-update-status'), [
             'ids' => $ids,
             'status' => 'approved',
         ]);
