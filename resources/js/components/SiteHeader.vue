@@ -2,6 +2,8 @@
 import { Icon } from '@iconify/vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+import { home, login, register } from '@/routes';
+import adminDashboard from '@/routes/admin/dashboard';
 
 interface MenuItem {
     id: number;
@@ -63,7 +65,7 @@ initDarkMode();
                 <!-- Logo and Site Name -->
                 <div class="flex items-center">
                     <Link
-                        :href="route('home')"
+                        :href="home.url()"
                         class="group flex items-center space-x-3"
                     >
                         <div v-if="logo" class="flex-shrink-0">
@@ -154,7 +156,7 @@ initDarkMode();
                     <!-- User Menu / Auth Buttons -->
                     <template v-if="user">
                         <Link
-                            :href="route('admin.dashboard.index')"
+                            :href="adminDashboard.index.url()"
                             class="hidden items-center rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700 md:inline-flex"
                         >
                             <Icon icon="ph:gauge" class="mr-2 h-5 w-5" />
@@ -163,13 +165,13 @@ initDarkMode();
                     </template>
                     <template v-else>
                         <Link
-                            :href="route('login')"
+                            :href="login.url()"
                             class="hidden px-4 py-2 font-medium text-gray-700 transition-colors hover:text-blue-600 md:inline-flex dark:text-gray-300 dark:hover:text-blue-400"
                         >
                             Sign In
                         </Link>
                         <Link
-                            :href="route('register')"
+                            :href="register.url()"
                             class="hidden items-center rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700 md:inline-flex"
                         >
                             Get Started
@@ -245,7 +247,7 @@ initDarkMode();
 
                         <template v-if="user">
                             <Link
-                                :href="route('admin.dashboard.index')"
+                                :href="adminDashboard.index.url()"
                                 class="rounded-lg px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-blue-400"
                                 @click="mobileMenuOpen = false"
                             >
@@ -258,14 +260,14 @@ initDarkMode();
                         </template>
                         <template v-else>
                             <Link
-                                :href="route('login')"
+                                :href="login.url()"
                                 class="rounded-lg px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-blue-400"
                                 @click="mobileMenuOpen = false"
                             >
                                 Sign In
                             </Link>
                             <Link
-                                :href="route('register')"
+                                :href="register.url()"
                                 class="rounded-lg bg-blue-600 px-4 py-3 text-center font-medium text-white transition-colors hover:bg-blue-700"
                                 @click="mobileMenuOpen = false"
                             >

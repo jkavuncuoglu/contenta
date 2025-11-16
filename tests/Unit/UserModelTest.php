@@ -17,7 +17,7 @@ class UserModelTest extends TestCase
     public function test_user_can_be_instantiated(): void
     {
         // Arrange & Act
-        $user = new User();
+        $user = new User;
 
         // Assert
         $this->assertInstanceOf(User::class, $user);

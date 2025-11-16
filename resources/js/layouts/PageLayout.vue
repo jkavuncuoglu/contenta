@@ -1,7 +1,11 @@
 <template>
     <div class="flex min-h-screen flex-col bg-white dark:bg-gray-900">
         <!-- Header -->
-        <SiteHeader :navigation="navigation.primary" :site-name="siteName" />
+        <SiteHeader
+            :navigation="navigation.primary"
+            :site-name="siteName"
+            :logo="`images/contenta-logo-icon-light.svg`"
+        />
 
         <!-- Main Content -->
         <main class="flex-1">
@@ -13,6 +17,7 @@
             :footer-sections="navigation.footer"
             :site-name="siteName"
             :tagline="tagline"
+            :logo="`images/contenta-logo-icon-light.svg`"
         />
     </div>
 </template>
@@ -28,6 +33,10 @@ const page = usePage();
 const navigation = computed(
     () => page.props.navigation || { primary: [], footer: [] },
 );
+
 const siteName = computed(() => page.props.name || 'Contenta');
+
 const tagline = computed(() => 'Professional content management made simple');
+
+const appearance = computed(() => localStorage.getItem('appearance') || 'light');
 </script>

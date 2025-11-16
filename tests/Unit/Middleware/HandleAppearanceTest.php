@@ -13,7 +13,7 @@ class HandleAppearanceTest extends TestCase
     public function test_shares_appearance_cookie_with_views(): void
     {
         // Arrange
-        $middleware = new HandleAppearance();
+        $middleware = new HandleAppearance;
         $request = Request::create('/test');
         $request->cookies->set('appearance', 'dark');
         $called = false;
@@ -36,7 +36,7 @@ class HandleAppearanceTest extends TestCase
     public function test_defaults_to_system_when_no_cookie(): void
     {
         // Arrange
-        $middleware = new HandleAppearance();
+        $middleware = new HandleAppearance;
         $request = Request::create('/test');
         $called = false;
 
@@ -57,7 +57,7 @@ class HandleAppearanceTest extends TestCase
     public function test_handles_light_appearance(): void
     {
         // Arrange
-        $middleware = new HandleAppearance();
+        $middleware = new HandleAppearance;
         $request = Request::create('/test');
         $request->cookies->set('appearance', 'light');
 
@@ -75,7 +75,7 @@ class HandleAppearanceTest extends TestCase
     public function test_passes_request_to_next_middleware(): void
     {
         // Arrange
-        $middleware = new HandleAppearance();
+        $middleware = new HandleAppearance;
         $request = Request::create('/test');
         $passedRequest = null;
 
@@ -95,7 +95,7 @@ class HandleAppearanceTest extends TestCase
     public function test_returns_response_from_next_middleware(): void
     {
         // Arrange
-        $middleware = new HandleAppearance();
+        $middleware = new HandleAppearance;
         $request = Request::create('/test');
         $expectedResponse = new Response('expected content', 201);
 
