@@ -10,6 +10,13 @@ jobs:
   php-tests:
     runs-on: ubuntu-latest
     name: PHP Tests (Pest)
+    defaults:
+      run:
+        working-directory: .
+    env:
+      DB_CONNECTION: sqlite
+      DB_DATABASE: database/database.sqlite
+      APP_ENV: testing
 
     steps:
       - name: Checkout code
@@ -22,15 +29,14 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
           coverage: pcov
 
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Ensure Composer cache dir exists
+        run: mkdir -p ~/.cache/composer
 
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          path: ~/.cache/composer
+          key: ${{ runner.os }}-composer-${{ hashFiles('contenta/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
@@ -43,11 +49,11 @@ jobs:
 
       - name: Prepare Laravel application
         run: |
-          cp .env.example .env
-          php artisan key:generate
+          cp -n .env.example .env || true
+          php artisan key:generate --force
 
-      - name: Run migrations
-        run: php artisan migrate --force
+      - name: Run migrations (SQLite)
+        run: php artisan migrate --force --no-interaction
 
-      - name: Run tests with coverage
-        run: ./vendor/bin/pest
+      - name: Run tests
+        run: ./vendor/bin/pest --colors=always
