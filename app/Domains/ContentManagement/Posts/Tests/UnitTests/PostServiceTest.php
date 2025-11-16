@@ -403,4 +403,239 @@ class PostServiceTest extends TestCase
         $this->assertEquals('published', $updated->status);
         $this->assertEquals($originalPublishedAt->timestamp, $updated->published_at->timestamp);
     }
+
+    // Sad Path Tests
+
+    public function test_get_paginated_posts_returns_empty_when_no_posts_exist(): void
+    {
+        // Act
+        $result = $this->service->getPaginatedPosts(10);
+
+        // Assert
+        $this->assertEquals(0, $result->total());
+        $this->assertCount(0, $result->items());
+    }
+
+    public function test_get_post_by_slug_returns_null_when_slug_not_found(): void
+    {
+        // Act
+        $post = $this->service->getPostBySlug('non-existent-slug');
+
+        // Assert
+        $this->assertNull($post);
+    }
+
+    public function test_get_published_posts_returns_empty_when_no_published_posts_exist(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Post::factory()->count(3)->create(['status' => 'draft', 'author_id' => $user->id]);
+
+        // Act
+        $posts = $this->service->getPublishedPosts(10);
+
+        // Assert
+        $this->assertEquals(0, $posts->total());
+    }
+
+    public function test_get_draft_posts_returns_empty_when_no_draft_posts_exist(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Post::factory()->count(2)->create(['status' => 'published', 'author_id' => $user->id]);
+
+        // Act
+        $posts = $this->service->getDraftPosts(10);
+
+        // Assert
+        $this->assertEquals(0, $posts->total());
+    }
+
+    public function test_attach_categories_with_empty_array_removes_all_categories(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['author_id' => $user->id]);
+        $categories = \App\Domains\ContentManagement\Categories\Models\Category::factory()->count(3)->create();
+        $post->categories()->attach($categories->pluck('id')->toArray());
+
+        // Act
+        $result = $this->service->attachCategories($post, []);
+
+        // Assert
+        $this->assertCount(0, $result->categories);
+    }
+
+    public function test_attach_tags_with_empty_array_removes_all_tags(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['author_id' => $user->id]);
+        $tags = \App\Domains\ContentManagement\Tags\Models\Tag::factory()->count(3)->create();
+        $post->tags()->attach($tags->pluck('id')->toArray());
+
+        // Act
+        $result = $this->service->attachTags($post, []);
+
+        // Assert
+        $this->assertCount(0, $result->tags);
+    }
+
+    public function test_get_calendar_posts_returns_empty_when_no_posts_in_date_range(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $startDate = now()->addMonths(2)->startOfMonth();
+        $endDate = now()->addMonths(2)->endOfMonth();
+
+        Post::factory()->create([
+            'author_id' => $user->id,
+            'status' => 'published',
+            'published_at' => now()->subMonths(1),
+        ]);
+
+        // Act
+        $posts = $this->service->getCalendarPosts($startDate, $endDate);
+
+        // Assert
+        $this->assertCount(0, $posts);
+    }
+
+    public function test_get_scheduled_posts_returns_empty_when_no_scheduled_posts_exist(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Post::factory()->count(3)->create([
+            'author_id' => $user->id,
+            'status' => 'published',
+        ]);
+
+        // Act
+        $posts = $this->service->getScheduledPosts(10);
+
+        // Assert
+        $this->assertEquals(0, $posts->total());
+    }
+
+    public function test_publish_due_posts_returns_empty_when_no_due_posts_exist(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Post::factory()->count(2)->create([
+            'author_id' => $user->id,
+            'status' => 'scheduled',
+            'published_at' => now()->addDay(),
+        ]);
+
+        // Act
+        $published = $this->service->publishDuePosts();
+
+        // Assert
+        $this->assertCount(0, $published);
+    }
+
+    public function test_get_posts_by_status_returns_empty_when_no_posts_with_status(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Post::factory()->count(3)->create([
+            'author_id' => $user->id,
+            'status' => 'published',
+        ]);
+
+        // Act
+        $posts = $this->service->getPostsByStatus('archived', 10);
+
+        // Assert
+        $this->assertEquals(0, $posts->total());
+    }
+
+    public function test_get_archived_posts_returns_empty_when_no_archived_posts_exist(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Post::factory()->count(3)->create(['author_id' => $user->id]);
+
+        // Act
+        $posts = $this->service->getArchivedPosts(10);
+
+        // Assert
+        $this->assertEquals(0, $posts->total());
+    }
+
+    public function test_update_post_preserves_slug_when_title_not_changed(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $post = Post::factory()->create([
+            'title' => 'Original',
+            'slug' => 'custom-slug',
+            'author_id' => $user->id,
+        ]);
+
+        // Act
+        $updated = $this->service->updatePost($post, ['status' => 'published']);
+
+        // Assert
+        $this->assertEquals('custom-slug', $updated->slug);
+    }
+
+    public function test_duplicate_post_creates_draft_regardless_of_original_status(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $original = Post::factory()->create([
+            'title' => 'Published Post',
+            'status' => 'published',
+            'published_at' => now(),
+            'author_id' => $user->id,
+        ]);
+
+        // Act
+        $duplicate = $this->service->duplicatePost($original, 'Duplicate');
+
+        // Assert
+        $this->assertEquals('draft', $duplicate->status);
+        $this->assertNull($duplicate->published_at);
+    }
+
+    public function test_unpublish_post_clears_published_at_timestamp(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $post = Post::factory()->create([
+            'status' => 'published',
+            'published_at' => now(),
+            'author_id' => $user->id,
+        ]);
+
+        // Act
+        $unpublished = $this->service->unpublishPost($post);
+
+        // Assert
+        $this->assertEquals('draft', $unpublished->status);
+        $this->assertNull($unpublished->published_at);
+    }
+
+    public function test_create_post_generates_unique_slug_when_duplicate_title_exists(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Post::factory()->create([
+            'title' => 'Test Post',
+            'slug' => 'test-post',
+            'author_id' => $user->id,
+        ]);
+
+        // Act
+        $post = $this->service->createPost([
+            'title' => 'Test Post',
+            'content_markdown' => 'Test content',
+            'author_id' => $user->id,
+        ]);
+
+        // Assert
+        $this->assertNotEquals('test-post', $post->slug);
+        $this->assertStringStartsWith('test-post', $post->slug);
+    }
 }

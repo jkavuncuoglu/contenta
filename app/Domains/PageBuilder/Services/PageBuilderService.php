@@ -34,7 +34,8 @@ class PageBuilderService implements PageBuilderServiceContract
     {
         if (empty($data['slug'])) {
             $title = $data['title'] ?? '';
-            $data['slug'] = Str::slug(is_string($title) ? $title : '');
+            $baseSlug = Str::slug(is_string($title) ? $title : '');
+            $data['slug'] = $this->generateUniqueSlug($baseSlug);
         }
 
         return Page::create($data);
@@ -94,6 +95,7 @@ class PageBuilderService implements PageBuilderServiceContract
     {
         $page->update([
             'status' => Page::STATUS_DRAFT,
+            'published_at' => null,
         ]);
 
         $freshPage = $page->fresh();
@@ -157,5 +159,21 @@ class PageBuilderService implements PageBuilderServiceContract
     public function getActiveBlocks(): \Illuminate\Database\Eloquent\Collection
     {
         return Block::where('is_active', true)->get();
+    }
+
+    /**
+     * Generate a unique slug
+     */
+    private function generateUniqueSlug(string $baseSlug): string
+    {
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (Page::where('slug', $slug)->exists()) {
+            $slug = $baseSlug.'-'.$counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }

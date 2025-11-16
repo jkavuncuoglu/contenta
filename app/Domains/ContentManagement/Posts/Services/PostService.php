@@ -35,7 +35,8 @@ class PostService implements PostServiceContract
     public function createPost(array $data): Post
     {
         if (empty($data['slug']) && isset($data['title']) && is_string($data['title'])) {
-            $data['slug'] = Str::slug($data['title']);
+            $baseSlug = Str::slug($data['title']);
+            $data['slug'] = $this->generateUniqueSlug($baseSlug);
         }
 
         if (empty($data['status'])) {
@@ -94,6 +95,7 @@ class PostService implements PostServiceContract
     {
         $post->update([
             'status' => 'draft',
+            'published_at' => null,
         ]);
 
         $freshPost = $post->fresh();
@@ -328,5 +330,21 @@ class PostService implements PostServiceContract
         assert($freshPost instanceof Post);
 
         return $freshPost;
+    }
+
+    /**
+     * Generate a unique slug
+     */
+    private function generateUniqueSlug(string $baseSlug): string
+    {
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $baseSlug.'-'.$counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }

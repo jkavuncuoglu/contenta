@@ -155,4 +155,107 @@ class PageBuilderServiceTest extends TestCase
         // Assert
         $this->assertCount(2, $blocks);
     }
+
+    // Sad Path Tests
+
+    public function test_it_returns_empty_paginated_pages_when_none_exist(): void
+    {
+        // Act
+        $result = $this->service->getPaginatedPages(10);
+
+        // Assert
+        $this->assertEquals(0, $result->total());
+        $this->assertCount(0, $result->items());
+    }
+
+    public function test_it_returns_null_when_page_slug_not_found(): void
+    {
+        // Act
+        $page = $this->service->getPageBySlug('non-existent-slug');
+
+        // Assert
+        $this->assertNull($page);
+    }
+
+    public function test_it_returns_empty_collection_when_no_layouts_exist(): void
+    {
+        // Act
+        $layouts = $this->service->getAllLayouts();
+
+        // Assert
+        $this->assertCount(0, $layouts);
+    }
+
+    public function test_it_returns_empty_collection_when_no_active_blocks_exist(): void
+    {
+        // Arrange
+        Block::factory()->count(3)->create(['is_active' => false]);
+
+        // Act
+        $blocks = $this->service->getActiveBlocks();
+
+        // Assert
+        $this->assertCount(0, $blocks);
+    }
+
+    public function test_it_generates_unique_slug_when_creating_page_with_duplicate_title(): void
+    {
+        // Arrange
+        Page::factory()->create(['title' => 'Test Page', 'slug' => 'test-page']);
+        $layout = Layout::factory()->create();
+
+        // Act
+        $page = $this->service->createPage([
+            'title' => 'Test Page',
+            'layout_id' => $layout->id,
+        ]);
+
+        // Assert
+        $this->assertNotEquals('test-page', $page->slug);
+        $this->assertStringStartsWith('test-page', $page->slug);
+    }
+
+    public function test_it_preserves_existing_slug_when_updating_page_without_title_change(): void
+    {
+        // Arrange
+        $page = Page::factory()->create(['title' => 'Original', 'slug' => 'custom-slug']);
+
+        // Act
+        $updated = $this->service->updatePage($page, ['status' => Page::STATUS_PUBLISHED]);
+
+        // Assert
+        $this->assertEquals('custom-slug', $updated->slug);
+    }
+
+    public function test_duplicate_page_creates_draft_regardless_of_original_status(): void
+    {
+        // Arrange
+        $original = Page::factory()->create([
+            'title' => 'Published Page',
+            'status' => Page::STATUS_PUBLISHED,
+            'published_at' => now(),
+        ]);
+
+        // Act
+        $duplicate = $this->service->duplicatePage($original, 'Duplicate');
+
+        // Assert
+        $this->assertEquals(Page::STATUS_DRAFT, $duplicate->status);
+        $this->assertNull($duplicate->published_at);
+    }
+
+    public function test_unpublish_page_clears_published_at_timestamp(): void
+    {
+        // Arrange
+        $page = Page::factory()->create([
+            'status' => Page::STATUS_PUBLISHED,
+            'published_at' => now(),
+        ]);
+
+        // Act
+        $unpublished = $this->service->unpublishPage($page);
+
+        // Assert
+        $this->assertNull($unpublished->published_at);
+    }
 }

@@ -245,4 +245,94 @@ class CommentsServiceTest extends TestCase
         // Assert
         $this->assertCount(1, $comments);
     }
+
+    // Sad Path Tests
+
+    public function test_get_paginated_comments_returns_empty_when_no_comments_exist(): void
+    {
+        // Act
+        $result = $this->service->getPaginatedComments([], 20);
+
+        // Assert
+        $this->assertEquals(0, $result->total());
+        $this->assertCount(0, $result->items());
+    }
+
+    public function test_get_paginated_comments_returns_empty_when_filter_has_no_matches(): void
+    {
+        // Arrange
+        \App\Domains\ContentManagement\Posts\Models\Comment::factory()->create([
+            'content' => 'Vue.js rocks',
+        ]);
+
+        // Act
+        $result = $this->service->getPaginatedComments(['search' => 'NonExistentTerm'], 20);
+
+        // Assert
+        $this->assertEquals(0, $result->total());
+    }
+
+    public function test_bulk_update_status_returns_zero_for_empty_ids_array(): void
+    {
+        // Act
+        $count = $this->service->bulkUpdateStatus([], 'approved');
+
+        // Assert
+        $this->assertEquals(0, $count);
+    }
+
+    public function test_bulk_update_status_only_updates_existing_comments(): void
+    {
+        // Arrange
+        $comment = \App\Domains\ContentManagement\Posts\Models\Comment::factory()->pending()->create();
+        $ids = [$comment->id, 99998, 99999]; // Mix of existing and non-existing IDs
+
+        // Act
+        $count = $this->service->bulkUpdateStatus($ids, 'approved');
+
+        // Assert
+        $this->assertEquals(1, $count); // Only 1 updated
+        $this->assertDatabaseHas('comments', [
+            'id' => $comment->id,
+            'status' => 'approved',
+        ]);
+    }
+
+    public function test_get_statistics_returns_zero_counts_when_no_comments_exist(): void
+    {
+        // Act
+        $stats = $this->service->getStatistics();
+
+        // Assert
+        $this->assertEquals(0, $stats['total']);
+        $this->assertEquals(0, $stats['pending']);
+        $this->assertEquals(0, $stats['approved']);
+        $this->assertEquals(0, $stats['spam']);
+        $this->assertEquals(0, $stats['trash']);
+    }
+
+    public function test_get_post_comments_returns_empty_when_post_has_no_comments(): void
+    {
+        // Arrange
+        $post = \App\Domains\ContentManagement\Posts\Models\Post::factory()->create();
+
+        // Act
+        $comments = $this->service->getPostComments($post->id, 'approved');
+
+        // Assert
+        $this->assertCount(0, $comments);
+    }
+
+    public function test_get_post_comments_returns_empty_when_post_has_no_comments_with_requested_status(): void
+    {
+        // Arrange
+        $post = \App\Domains\ContentManagement\Posts\Models\Post::factory()->create();
+        \App\Domains\ContentManagement\Posts\Models\Comment::factory()->pending()->count(3)->create(['post_id' => $post->id]);
+
+        // Act
+        $comments = $this->service->getPostComments($post->id, 'approved');
+
+        // Assert
+        $this->assertCount(0, $comments);
+    }
 }
