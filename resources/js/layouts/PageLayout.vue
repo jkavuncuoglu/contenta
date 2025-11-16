@@ -37,6 +37,4 @@ const navigation = computed(
 const siteName = computed(() => page.props.name || 'Contenta');
 
 const tagline = computed(() => 'Professional content management made simple');
-
-const appearance = computed(() => localStorage.getItem('appearance') || 'light');
 </script>

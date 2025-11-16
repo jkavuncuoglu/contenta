@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import PageLayout from '@/layouts/PageLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { defineAsyncComponent } from 'vue';
 import type { Component } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
 interface BlockConfig {
     id: string;

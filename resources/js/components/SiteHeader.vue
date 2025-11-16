@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { home, login, register } from '@/routes';
+import adminDashboard from '@/routes/admin/dashboard';
 import { Icon } from '@iconify/vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
-import { home, login, register } from '@/routes';
-import adminDashboard from '@/routes/admin/dashboard';
 
 interface MenuItem {
     id: number;
