@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\WebAuthnController;
+use App\Domains\Security\Http\Controllers\WebAuthnController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
