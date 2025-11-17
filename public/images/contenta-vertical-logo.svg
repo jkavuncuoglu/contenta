@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="793.10773"
+   zoomAndPan="magnify"
+   viewBox="0 0 594.8308 137.05505"
+   height="182.74007"
+   preserveAspectRatio="xMidYMid"
+   version="1.0"
+   id="svg1504"
+   sodipodi:docname="Untitled design(2).svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1506"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false" />
+  <defs
+     id="defs1486">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1603">
+      <path
+         id="path1605"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.75"
+         d="m 361.83591,270.90972 c 1.60699,1.43263 3.35146,2.71698 5.07715,3.99756 9.09416,6.74848 4.2814,3.28846 14.55029,10.38427 13.21562,9.1428 26.89337,17.55744 40.76221,25.65235 4.74396,0.80967 9.49868,1.55976 14.22803,2.44043 13.12255,2.51236 26.20504,5.3734 39.45117,7.15722 6.06415,0.47489 12.15505,0.97921 18.23437,0.46143 6.45499,-0.45223 12.86663,-1.31527 19.28467,-2.12402 12.48381,-1.42132 24.97488,-2.8589 37.55274,-3.11866 15.0405,-0.23378 30.07718,-0.0622 45.11865,-0.0103 12.0255,-0.0608 24.06308,-0.30262 36.0249,-1.66552 5.18438,-0.62157 11.30198,-1.66856 16.45463,-1.63916 2.44747,0.014 4.97722,-0.25954 7.40917,-0.0352 v -41.50048 z" />
+    </clipPath>
+  </defs>
+  <path
+     fill="#265bfd"
+     d="M 6.3059766e-4,137.05504 C -0.0099694,104.74178 0.1172106,80.926774 0.0822306,62.445794 4.3349906,58.657064 21.446921,42.974168 24.848271,39.631418 c 0.91225,0.0119 93.183939,-0.0311 95.053179,-0.0571 0.0287,1.72458 -0.0534,72.723642 -0.0534,72.723642 -0.56192,0.005 -24.382477,0.24794 -24.382477,0.24794 0.0196,3.12537 0.0148,21.28198 0.0267,24.37849"
+     fill-opacity="1"
+     fill-rule="nonzero"
+     id="path1494"
+     sodipodi:nodetypes="ccccssc"
+     inkscape:export-filename="contenta-icon-logo.svg"
+     inkscape:export-xdpi="300"
+     inkscape:export-ydpi="300" />
+  <path
+     fill="#3a256f"
+     d="m 145.93922,0.01118836 c 0.0116,33.38033964 0.0925,79.04013564 0.0815,112.27974164 l -26.18561,0.0188 0.0531,-72.733112 -95.076069,0.0425 0.0465,-13.22253 C 34.497743,16.883198 43.280473,8.4620884 51.771313,-1.6425566e-6"
+     fill-opacity="1"
+     fill-rule="nonzero"
+     id="path1496"
+     sodipodi:nodetypes="ccccccc" />
+  <path
+     fill="#0090f4"
+     d="m 72.891033,64.181314 -0.0223,22.43776 c 7.89516,0.0274 15.41691,-0.0213 22.39327,-0.0747 0.0634,9.07087 0.0441,18.599996 6e-4,25.771506 -23.8965,-0.0339 -47.7504,0.14102 -70.568468,0.0712 0.007,-11.04566 0.0071,-41.066446 0.0061,-48.224616 17.043408,0.003 32.565488,-0.009 48.192978,0.0271 z"
+     fill-opacity="1"
+     fill-rule="nonzero"
+     id="path1498"
+     sodipodi:nodetypes="cccccccc" />
+  <path
+     fill="#3a256f"
+     d="m 538.89365,270.84598 c -0.0299,8.73568 -0.0235,14.8801 -0.0448,21.67462 -0.41693,0.40494 -1.76755,2.03925 -3.08504,3.11096 -7.40833,0.01 -15.17726,-0.10476 -21.39575,-0.12325 0.0441,-7.90769 -0.0514,-16.41481 -0.0514,-24.58407 0.67222,0.0108 21.84623,-0.0238 24.57719,-0.0786 z"
+     fill-opacity="1"
+     fill-rule="nonzero"
+     id="path1500"
+     sodipodi:nodetypes="ccccccc"
+     clip-path="url(#clipPath1603)"
+     transform="translate(-419.05679,-158.60943)" />
+  <path
+     fill="#0090f4"
+     d="m 0.1234706,39.576838 c 1.65625,-0.0508 5.05198,-0.0199 6.70432,-0.0121 l 1.50391,0.004 c 1.59375,0 3.1835904,0.008 4.7734304,0.0156 1.07813,0.004 2.15625,0.004 3.23047,0.008 2.64453,0.004 5.84831,0.0303 8.49285,0.042 -10.97733,10.371066 -17.7806204,16.834866 -24.5834704,22.741116 -0.0402,-4.34347 -0.14558,-20.577796 -0.1215,-22.798376 z"
+     fill-opacity="1"
+     fill-rule="nonzero"
+     id="path1502"
+     sodipodi:nodetypes="ccccccccc" />
+  <text
+     xml:space="preserve"
+     style="font-size:92.8162px;fill:#39266e;stroke-width:7.73468"
+     x="183.19112"
+     y="99.476433"
+     id="text1701"><tspan
+       sodipodi:role="line"
+       id="tspan1699"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';stroke-width:7.73468"
+       x="183.19112"
+       y="99.476433">contenta</tspan></text>
+</svg>

@@ -25,8 +25,8 @@ import {
 import { toUrl, urlIsActive } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import type { BreadcrumbItem, NavItem } from '@/types';
-import { InertiaLinkProps, Link, usePage } from '@inertiajs/vue3';
 import { Icon } from '@iconify/vue';
+import { InertiaLinkProps, Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 interface Props {
@@ -87,7 +87,10 @@ const rightNavItems: NavItem[] = [
                                 size="icon"
                                 class="mr-2 h-9 w-9"
                             >
-                                <Icon icon="material-symbols-light:menu" class="h-5 w-5" />
+                                <Icon
+                                    icon="material-symbols-light:menu"
+                                    class="h-5 w-5"
+                                />
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="left" class="w-[300px] p-6">

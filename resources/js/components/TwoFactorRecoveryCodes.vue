@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/card';
 import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
 import { regenerateRecoveryCodes } from '@/routes/two-factor';
-import { Form } from '@inertiajs/vue3';
 import { Icon } from '@iconify/vue';
+import { Form } from '@inertiajs/vue3';
 import { nextTick, onMounted, ref } from 'vue';
 
 const { recoveryCodesList, fetchRecoveryCodes, errors } = useTwoFactorAuth();
@@ -56,7 +56,11 @@ onMounted(async () => {
             >
                 <Button @click="toggleRecoveryCodesVisibility" class="w-fit">
                     <component
-                        :is="isRecoveryCodesVisible ? 'material-symbols-light:visibility_off' : 'material-symbols-light:visibility'"
+                        :is="
+                            isRecoveryCodesVisible
+                                ? 'material-symbols-light:visibility_off'
+                                : 'material-symbols-light:visibility'
+                        "
                         class="size-4"
                     />
                     {{ isRecoveryCodesVisible ? 'Hide' : 'View' }} Recovery
@@ -76,8 +80,8 @@ onMounted(async () => {
                         type="submit"
                         :disabled="processing"
                     >
-                        <Icon icon="material-symbols-light:refresh" /> Regenerate
-                        Codes
+                        <Icon icon="material-symbols-light:refresh" />
+                        Regenerate Codes
                     </Button>
                 </Form>
             </div>

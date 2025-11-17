@@ -21,6 +21,9 @@ return [
     // Settings Domain
     App\Domains\Settings\SettingsServiceProvider::class,
 
+    // Themes Domain
+    App\Domains\Themes\ThemeServiceProvider::class,
+
     // Plugins Domain
     App\Domains\Plugins\PluginServiceProvider::class,
 ];
