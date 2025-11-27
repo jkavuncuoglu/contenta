@@ -1,18 +1,25 @@
 <template>
-  <div>
-    <!-- Simple textarea-based editor as a stub for the real component -->
-    <MdEditor
-      v-model="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-      class="w-full min-h-[200px] p-2 border rounded dark:bg-gray-800 dark:text-white"
-    />
-  </div>
+    <div>
+        <MdEditor
+            v-model="content"
+            @change="emit('update:modelValue', content)"
+            class="min-h-[200px] w-full rounded border p-2 dark:bg-gray-800 dark:text-white"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import { MdEditor } from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
+import { defineProps, defineEmits, ref, watch } from 'vue';
 
-defineProps<{ modelValue?: string }>();
+const props = defineProps<{ modelValue?: string }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
+const content = ref(props.modelValue ?? '');
+watch(
+    () => props.modelValue,
+    (val) => {
+        if (val !== content.value) content.value = val ?? '';
+    },
+);
 </script>

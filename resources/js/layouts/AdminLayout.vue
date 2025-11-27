@@ -1,54 +1,46 @@
+<script setup lang="ts">
+import AppSidebar from '@/components/AppSidebar.vue';
+import {
+    SidebarInset,
+    SidebarProvider,
+    SidebarTrigger,
+} from '@/components/ui/sidebar';
+import { Icon } from '@iconify/vue';
+import { router, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+
+const page = usePage();
+const _user = page.props.auth?.user;
+const _logout = () => {};
+
+</script>
+
 <template>
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <!-- Sidebar -->
-        <AdminSidebar :is-open="sidebarOpen"/>
+    <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+            <!-- Header -->
+            <header class="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+                <SidebarTrigger class="-ml-1" />
+                <div class="flex-1"></div>
 
-        <!-- Main content -->
-        <div class="transition-all duration-300 ease-in-out" :class="{ 'ml-64': sidebarOpen, 'ml-0': !sidebarOpen }">
-            <!-- Top bar -->
-            <header class="bg-white dark:bg-gray-800 shadow-sm">
-                <div class="flex items-center justify-between px-6 py-4">
-                    <div class="flex items-center">
-                        <button @click="sidebarOpen = !sidebarOpen"
-                                class="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
-                            <Bars3Icon class="w-6 h-6"/>
-                        </button>
-                    </div>
-
-                    <div class="flex items-center space-x-4">
-                        <!-- Notifications -->
-                        <button
-                            class="p-2 text-gray-400 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-200">
-                            <BellIcon class="w-6 h-6"/>
-                        </button>
-
-                        <!-- User menu -->
-                        <UserMenu v-if="user"/>
-                    </div>
+                <!-- Right side actions -->
+                <div class="flex items-center gap-2">
+                    <button
+                        class="rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+                    >
+                        <Icon
+                            icon="material-symbols-light:notifications"
+                            class="h-5 w-5"
+                        />
+                    </button>
                 </div>
             </header>
 
-            <!-- Page content -->
-            <main class="p-6">
-                <RouterView/>
+            <!-- Main Content -->
+            <main class="flex-1 overflow-auto">
+                <slot />
             </main>
-        </div>
-    </div>
+        </SidebarInset>
+    </SidebarProvider>
 </template>
-
-<script setup lang="ts">
-import {ref, computed} from 'vue';
-import {useAuthStore} from '@/stores/auth';
-import {
-    Bars3Icon,
-    BellIcon
-} from '@heroicons/vue/24/outline';
-import AdminSidebar from '@/components/admin/AdminSidebar.vue';
-import UserMenu from "@/components/UserMenu.vue";
-
-const authStore = useAuthStore();
-
-const sidebarOpen = ref(true);
-
-const user = computed(() => authStore.user);
-</script>

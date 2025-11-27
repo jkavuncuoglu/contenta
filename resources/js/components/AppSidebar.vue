@@ -37,7 +37,6 @@ const mainNavItems: NavItem[] = [
         href: posts.calendar().url,
         icon: 'material-symbols-light:insert-text',
         children: [
-
             {
                 title: 'Calendar',
                 href: posts.calendar().url,
@@ -81,6 +80,23 @@ const mainNavItems: NavItem[] = [
         icon: 'material-symbols-light:perm-media',
     },
     {
+        title: 'Appearance',
+        href: '/admin/themes',
+        icon: 'material-symbols-light:palette',
+        children: [
+            {
+                title: 'Themes',
+                href: '/admin/themes',
+                icon: 'material-symbols-light:palette',
+            },
+            {
+                title: 'Theme Settings',
+                href: '/admin/settings/theme',
+                icon: 'material-symbols-light:tune',
+            },
+        ],
+    },
+    {
         title: 'Plugins',
         href: '/admin/plugins',
         icon: 'typcn:puzzle',
@@ -94,11 +110,6 @@ const mainNavItems: NavItem[] = [
                 title: 'Site Settings',
                 href: '/admin/settings/site',
                 icon: 'material-symbols-light:web',
-            },
-            {
-                title: 'Appearance',
-                href: '/admin/settings/theme',
-                icon: 'material-symbols-light:palette',
             },
             {
                 title: 'Security',

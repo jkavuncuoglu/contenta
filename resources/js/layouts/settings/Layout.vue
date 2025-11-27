@@ -31,14 +31,17 @@ const page = usePage();
 const isAdmin = (() => {
     const user = page.props.auth?.user as any;
     if (!user) return false;
-    console.log(user)
+    console.log(user);
     // Common boolean attribute
     if (typeof user.is_admin === 'boolean') return user.is_admin;
     // camelCase / method-like flag
     if (typeof user.isAdmin === 'boolean') return user.isAdmin;
     // Roles array (spatie) - check for admin role
     if (Array.isArray(user.roles)) {
-        return user.roles.some((r: any) => (r?.name || r) === 'admin' || (r?.name || r) === 'super-admin');
+        return user.roles.some(
+            (r: any) =>
+                (r?.name || r) === 'admin' || (r?.name || r) === 'super-admin',
+        );
     }
     // As a fallback, check for a simple role string
     if (typeof user.role === 'string') {
@@ -60,7 +63,7 @@ const canUseApiTokens = (() => {
     return isAdmin;
 })();
 
-const filteredSidebarNavItems = sidebarNavItems.filter(item => {
+const filteredSidebarNavItems = sidebarNavItems.filter((item) => {
     // Filter out API Tokens if user doesn't have permission
     if (item.title === 'API Tokens') {
         return canUseApiTokens;
@@ -68,21 +71,27 @@ const filteredSidebarNavItems = sidebarNavItems.filter(item => {
     return true;
 });
 
-const currentPath = typeof window !== undefined ? window.location.pathname : '';
+const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
 </script>
 
 <template>
     <div class="px-4 py-6">
-        <Heading title="Settings" description="Manage your profile and account settings" />
+        <Heading
+            title="Settings"
+            description="Manage your profile and account settings"
+        />
 
-        <div class="flex flex-col lg:flex-row lg:space-x-12 mt-8">
-            <aside class="w-full max-w-xl lg:w-48 bg-neutral-900/30">
-                <nav class="flex flex-col space-y-1 space-x-0  ">
+        <div class="mt-8 flex flex-col lg:flex-row lg:space-x-12">
+            <aside class="w-full max-w-xl bg-neutral-900/30 lg:w-48">
+                <nav class="flex flex-col space-y-1 space-x-0">
                     <Button
                         v-for="item in filteredSidebarNavItems"
                         :key="toUrl(item.href)"
                         variant="ghost"
-                        :class="['w-full justify-start', { 'bg-muted': urlIsActive(item.href, currentPath) }]"
+                        :class="[
+                            'w-full justify-start',
+                            { 'bg-muted': urlIsActive(item.href, currentPath) },
+                        ]"
                         as-child
                     >
                         <Link :href="item.href">
@@ -92,7 +101,9 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
                 </nav>
 
                 <!-- Footer links: Website and Admin (admin shown conditionally) -->
-                <div class="mt-6 border-t pt-4 w-full max-w-xl lg:w-48 absolute bottom-6">
+                <div
+                    class="absolute bottom-6 mt-6 w-full max-w-xl border-t pt-4 lg:w-48"
+                >
                     <nav class="flex flex-col space-y-2 px-1">
                         <a
                             href="/"

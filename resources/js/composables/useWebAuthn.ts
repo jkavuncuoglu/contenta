@@ -1,5 +1,5 @@
-import { ref } from 'vue';
 import { startRegistration } from '@simplewebauthn/browser';
+import { ref } from 'vue';
 
 interface WebAuthnCredential {
     id: string;
@@ -105,7 +105,9 @@ export function useWebAuthn() {
             } else if (error.name === 'NotSupportedError') {
                 errors.value.push('WebAuthn is not supported by your browser');
             } else {
-                errors.value.push(error.message || 'Failed to register credential');
+                errors.value.push(
+                    error.message || 'Failed to register credential',
+                );
             }
             return { success: false };
         } finally {
