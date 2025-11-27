@@ -1,5 +1,5 @@
-import { InertiaLinkProps } from '@inertiajs/vue3';
 import type { IconifyIcon } from '@iconify/vue';
+import { InertiaLinkProps } from '@inertiajs/vue3';
 
 export interface Auth {
     user: User;
@@ -94,4 +94,3 @@ export interface Post {
     created_at: string;
     updated_at: string;
 }
-

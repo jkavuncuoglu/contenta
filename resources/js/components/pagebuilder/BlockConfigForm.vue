@@ -50,6 +50,7 @@
                     v-for="(fieldConfig, fieldName) in block.config_schema"
                     :key="fieldName"
                     class="field-group"
+                    v-show="!shouldHideField(fieldName)"
                 >
                     <!-- String Fields -->
                     <div v-if="fieldConfig.type === 'string'">
@@ -344,6 +345,14 @@ const getInputType = (fieldName: string) => {
     if (fieldName.includes('color')) return 'color';
     if (fieldName.includes('date')) return 'date';
     return 'text';
+};
+
+const shouldHideField = (fieldName: string) => {
+    // Hide columns field for features block - it's inline-editable only
+    if (props.block?.type === 'features' && fieldName === 'columns') {
+        return true;
+    }
+    return false;
 };
 
 // Watch for prop changes

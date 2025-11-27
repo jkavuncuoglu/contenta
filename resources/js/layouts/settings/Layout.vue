@@ -71,7 +71,7 @@ const filteredSidebarNavItems = sidebarNavItems.filter((item) => {
     return true;
 });
 
-const currentPath = typeof window !== undefined ? window.location.pathname : '';
+const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
 </script>
 
 <template>

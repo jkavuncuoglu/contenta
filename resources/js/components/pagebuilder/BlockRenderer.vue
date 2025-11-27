@@ -1,34 +1,60 @@
 <template>
     <div class="block-renderer">
         <!-- Hero Block -->
-        <div v-if="section.type === 'hero-block'" class="hero-block">
-            <div
-                class="relative bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-16 text-center text-white"
-            >
-                <div v-if="config.background_image" class="absolute inset-0">
-                    <img
-                        :src="config.background_image"
-                        alt=""
-                        class="h-full w-full object-cover opacity-80"
-                    />
-                    <div class="bg-opacity-40 absolute inset-0 bg-black"></div>
-                </div>
-                <div class="relative z-10 mx-auto max-w-4xl">
-                    <h1 class="mb-4 text-4xl font-bold md:text-6xl">
-                        {{ config.title || 'Hero Title' }}
-                    </h1>
-                    <p v-if="config.subtitle" class="mb-8 text-xl opacity-90">
-                        {{ config.subtitle }}
-                    </p>
-                    <button
-                        v-if="config.button_text"
-                        class="inline-block rounded-lg bg-white px-8 py-3 font-bold text-blue-600 transition-colors hover:bg-gray-100"
-                    >
-                        {{ config.button_text }}
-                    </button>
-                </div>
-            </div>
-        </div>
+        <HeroBlock
+            v-if="section.type === 'hero'"
+            :config="config"
+        />
+
+        <!-- Features Block -->
+        <FeaturesBlock
+            v-else-if="section.type === 'features'"
+            :config="config"
+            :edit-mode="editMode"
+            @update:config="emit('update:config', $event)"
+        />
+
+        <!-- Contact Form Block -->
+        <ContactFormBlock
+            v-else-if="section.type === 'contact-form'"
+            :config="config"
+        />
+
+        <!-- CTA Block -->
+        <CTABlock
+            v-else-if="section.type === 'cta'"
+            :config="config"
+        />
+
+        <!-- FAQ Block -->
+        <FAQBlock
+            v-else-if="section.type === 'faq'"
+            :config="config"
+        />
+
+        <!-- Stats Block -->
+        <StatsBlock
+            v-else-if="section.type === 'stats'"
+            :config="config"
+        />
+
+        <!-- Legal Text Block -->
+        <LegalTextBlock
+            v-else-if="section.type === 'legal-text'"
+            :config="config"
+        />
+
+        <!-- Team Block -->
+        <TeamBlock
+            v-else-if="section.type === 'team'"
+            :config="config"
+        />
+
+        <!-- Pricing Block -->
+        <PricingBlock
+            v-else-if="section.type === 'pricing'"
+            :config="config"
+        />
 
         <!-- Text Block -->
         <div v-else-if="section.type === 'text-block'" class="text-block">
@@ -512,6 +538,15 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import HeroBlock from './blocks/HeroBlock.vue';
+import FeaturesBlock from './blocks/FeaturesBlock.vue';
+import ContactFormBlock from './blocks/ContactFormBlock.vue';
+import CTABlock from './blocks/CTABlock.vue';
+import FAQBlock from './blocks/FAQBlock.vue';
+import StatsBlock from './blocks/StatsBlock.vue';
+import LegalTextBlock from './blocks/LegalTextBlock.vue';
+import TeamBlock from './blocks/TeamBlock.vue';
+import PricingBlock from './blocks/PricingBlock.vue';
 
 interface Block {
     id: number;
@@ -529,9 +564,17 @@ interface Props {
     section: Section;
     availableBlocks: Block[];
     previewMode: boolean;
+    editMode?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+    previewMode: false,
+    editMode: false,
+});
+
+const emit = defineEmits<{
+    (e: 'update:config', config: Record<string, any>): void;
+}>();
 
 const config = computed(() => props.section.config || {});
 

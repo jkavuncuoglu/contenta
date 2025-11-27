@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 interface Stat {
     value: string;
     label: string;
@@ -8,7 +10,7 @@ interface Stat {
 interface Props {
     config: {
         title?: string;
-        stats?: Stat[];
+        stats?: Stat[] | string;
         backgroundColor?: string;
     };
 }
@@ -25,6 +27,38 @@ const props = withDefaults(defineProps<Props>(), {
         backgroundColor: 'bg-gray-50 dark:bg-gray-800',
     }),
 });
+
+// Handle stats being either an array or comma-separated string
+const normalizedStats = computed(() => {
+    if (!props.config.stats) return [];
+
+    // If it's already an array, return it
+    if (Array.isArray(props.config.stats)) {
+        return props.config.stats;
+    }
+
+    // If it's a string, try to parse it
+    if (typeof props.config.stats === 'string') {
+        try {
+            // Try parsing as JSON first
+            const parsed = JSON.parse(props.config.stats);
+            if (Array.isArray(parsed)) return parsed;
+        } catch {
+            // If not JSON, treat as comma-separated values
+            // Format: "value:label, value:label"
+            return props.config.stats.split(',').map(stat => {
+                const [value, label, description] = stat.trim().split(':');
+                return {
+                    value: value?.trim() || '',
+                    label: label?.trim() || '',
+                    description: description?.trim()
+                };
+            }).filter(stat => stat.value && stat.label);
+        }
+    }
+
+    return [];
+});
 </script>
 
 <template>
@@ -40,7 +74,7 @@ const props = withDefaults(defineProps<Props>(), {
                 class="mx-auto grid max-w-5xl grid-cols-2 gap-8 md:grid-cols-4"
             >
                 <div
-                    v-for="(stat, index) in config.stats"
+                    v-for="(stat, index) in normalizedStats"
                     :key="index"
                     class="text-center"
                 >

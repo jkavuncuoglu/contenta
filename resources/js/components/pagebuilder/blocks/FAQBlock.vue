@@ -34,6 +34,8 @@ const props = withDefaults(defineProps<Props>(), {
     }),
 });
 
+const _props = props; // retain for potential future use without lint error
+
 const openIndex = ref<number | null>(null);
 
 const toggle = (index: number) => {

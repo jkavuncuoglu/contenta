@@ -354,7 +354,7 @@ const duplicateMenu = async (menu: Menu) => {
         } else {
             alert('Failed to duplicate menu');
         }
-    } catch (error) {
+    } catch (_error) {
         alert('Failed to duplicate menu');
     }
 };
@@ -384,7 +384,7 @@ const confirmDelete = async (menu: Menu) => {
         } else {
             alert('Failed to delete menu');
         }
-    } catch (error) {
+    } catch (_error) {
         alert('Failed to delete menu');
     }
 };

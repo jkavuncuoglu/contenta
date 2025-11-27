@@ -20,7 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { admin } from '@/routes';
+import admin from '@/routes/admin';
 import { router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -40,7 +40,7 @@ interface Props {
     themes: Theme[];
 }
 
-const props = defineProps<Props>();
+const { themes } = defineProps<Props>();
 
 const uploadDialogOpen = ref(false);
 const uploadForm = useForm({
@@ -131,7 +131,7 @@ const scanThemes = () => {
                                 class="flex h-[225px] w-full items-center justify-center rounded-l-lg bg-muted"
                             >
                                 <span class="text-muted-foreground"
-                                    >No preview available</span
+                                >No preview available</span
                                 >
                             </div>
                             <Badge class="absolute top-3 right-3 bg-primary">
@@ -152,7 +152,7 @@ const scanThemes = () => {
                                         >
                                             Version {{ theme.version }}
                                             <span v-if="theme.author"
-                                                >by {{ theme.author }}</span
+                                            >by {{ theme.author }}</span
                                             >
                                         </p>
                                     </div>
@@ -205,7 +205,7 @@ const scanThemes = () => {
                                 class="flex h-48 w-full items-center justify-center bg-muted"
                             >
                                 <span class="text-muted-foreground"
-                                    >No preview</span
+                                >No preview</span
                                 >
                             </div>
                         </div>
@@ -215,7 +215,7 @@ const scanThemes = () => {
                             <CardDescription>
                                 Version {{ theme.version }}
                                 <span v-if="theme.author"
-                                    >by {{ theme.author }}</span
+                                >by {{ theme.author }}</span
                                 >
                             </CardDescription>
                         </CardHeader>

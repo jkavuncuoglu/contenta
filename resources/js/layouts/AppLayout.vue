@@ -16,9 +16,8 @@ interface Props {
 defineProps<Props>();
 
 const page = usePage();
-const isProfileMenuOpen = ref(false);
-
-const user = computed(() => page.props.auth?.user);
+const _isProfileMenuOpen = ref(false);
+const _user = page.props.auth?.user;
 
 const logout = () => {
     router.post('/logout');

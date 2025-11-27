@@ -580,7 +580,7 @@ const filters = ref<TagFilters>({
 });
 
 // Computed properties
-const { tags, isLoading, hasError, error, hasTags, totalTags, pagination } =
+const { isLoading, hasError, error: tagError, hasTags, totalTags, pagination } =
     tagsStore;
 
 const visiblePages = computed(() => {

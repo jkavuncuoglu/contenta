@@ -180,6 +180,8 @@
                                     :section="section"
                                     :available-blocks="availableBlocks"
                                     :preview-mode="previewMode"
+                                    :edit-mode="!previewMode"
+                                    @update:config="updateBlockConfig(index, $event)"
                                 />
                             </div>
 
@@ -370,13 +372,16 @@ const selectBlock = (section: Section, index: number) => {
     if (previewMode.value) return;
 
     selectedBlockId.value = section.id;
-    const block = props.availableBlocks.find((b) => b.type === section.type);
 
-    if (block) {
-        emit('block-selected', { block, section, index });
-    } else {
-        console.warn('Block not found for type:', section.type);
+    // For features block, open the section settings modal
+    // Column clicks have @click.stop, so they won't trigger this
+    if (section.type === 'features') {
+        const block = props.availableBlocks.find((b) => b.type === section.type);
+        if (block) {
+            emit('block-selected', { block, section, index });
+        }
     }
+    // For other blocks, just selecting doesn't open modal
 };
 
 const editBlock = (section: Section, index: number) => {
@@ -386,6 +391,7 @@ const editBlock = (section: Section, index: number) => {
     const block = props.availableBlocks.find((b) => b.type === section.type);
 
     if (block) {
+        // Open section settings modal for all blocks including features
         emit('block-selected', { block, section, index });
     } else {
         console.error(
@@ -450,6 +456,14 @@ const handleAddBlockFromLibrary = (block: Block) => {
     addBlock(block.type);
     // Close the modal
     showBlockLibrary.value = false;
+};
+
+const updateBlockConfig = (index: number, config: Record<string, any>) => {
+    const newSections = [...sections.value];
+    if (newSections[index]) {
+        newSections[index].config = { ...config };
+        sections.value = newSections;
+    }
 };
 
 // Watch for external selection changes

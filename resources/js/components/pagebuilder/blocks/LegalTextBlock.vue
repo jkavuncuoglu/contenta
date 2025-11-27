@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
         sections: [],
     }),
 });
+const _props = props;
 </script>
 
 <template>

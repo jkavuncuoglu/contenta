@@ -199,7 +199,7 @@ const showRegenerationForm = ref(false);
 const regenerationEmailSent = ref(false);
 const code = ref<number[]>([]);
 const codeValue = computed<string>(() => code.value.join(''));
-const pinInputContainerRef = ref<HTMLElement | null>(null);
+const _pinInputContainerRef = ref<HTMLElement | null>(null);
 const emit = defineEmits<{ (e: 'enabled'): void }>();
 
 const modalConfig = computed<{

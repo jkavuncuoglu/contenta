@@ -178,10 +178,22 @@ class PageController extends Controller
         return response()->json($duplicatedPage->load(['layout', 'author']), 201);
     }
 
-    public function preview(Page $page): JsonResponse
+    public function preview(Request $request, Page $page): JsonResponse
     {
         try {
-            $previewHtml = app(PageRenderService::class)->renderPage($page);
+            // If POST request with data, use that for preview (unsaved changes)
+            if ($request->isMethod('post') && $request->has('data')) {
+                // Create a temporary page instance with the new data
+                $tempPage = $page->replicate();
+                $tempPage->data = $request->input('data');
+                $tempPage->title = $request->input('title', $page->title);
+                $tempPage->layout_id = $request->input('layout_id', $page->layout_id);
+
+                $previewHtml = app(PageRenderService::class)->renderPage($tempPage);
+            } else {
+                // Use existing saved page data
+                $previewHtml = app(PageRenderService::class)->renderPage($page);
+            }
 
             return response()->json([
                 'html' => $previewHtml
