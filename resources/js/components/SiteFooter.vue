@@ -32,7 +32,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     footerSections: () => [],
     socialLinks: () => [],
-    siteName: 'Contenta',
+    siteName: 'Contenta CMS',
     tagline: 'Professional content management made simple',
     copyrightText: undefined,
 });
@@ -86,9 +86,7 @@ const socialLinksToDisplay =
                             {{ siteName }}
                         </span>
                     </div>
-                    <p class="mb-6 max-w-md text-neutral-600 dark:text-neutral-400">
-                        {{ tagline }}
-                    </p>
+                    <p class="mb-6 max-w-md text-neutral-600 dark:text-neutral-400" v-html="tagline" />
 
                     <!-- Social Links -->
                     <div class="flex space-x-4">
