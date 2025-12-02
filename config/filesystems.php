@@ -47,6 +47,14 @@ return [
             'report' => false,
         ],
 
+        'content' => [
+            'driver' => 'local',
+            'root' => storage_path('content'),
+            'visibility' => 'private',
+            'throw' => true,
+            'report' => true,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

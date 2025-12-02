@@ -5,7 +5,7 @@
         <span class="mb-0.5 truncate leading-tight font-semibold"
             >Contenta</span
         >
-        <span class="text-xs text-neutral-300">
+        <span class="text-xs text-neutral-500">
             Content Creation Simplified
         </span>
     </div>

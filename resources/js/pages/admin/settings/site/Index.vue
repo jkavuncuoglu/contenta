@@ -8,6 +8,7 @@ import Input from '@/components/ui/input/Input.vue';
 import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/layouts/AppLayout.vue';
+import { ucwords } from '@/app';
 
 interface Settings {
     [key: string]: {
@@ -301,7 +302,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         :key="value"
                                         :value="value"
                                     >
-                                        {{ label }}
+                                        {{ ucwords(label) }}
                                     </option>
                                 </select>
                             </div>

@@ -29,6 +29,14 @@ class Post extends Model implements HasMedia
     use InteractsWithMedia;
     use LogsActivity;
 
+    /**
+     * Create a new factory instance for the model
+     */
+    protected static function newFactory(): \Database\Factories\PostFactory
+    {
+        return \Database\Factories\PostFactory::new();
+    }
+
     protected $fillable = [
         'title',
         'slug',

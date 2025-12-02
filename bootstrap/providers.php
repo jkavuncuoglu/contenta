@@ -22,6 +22,9 @@ return [
     // Settings Domain
     App\Domains\Settings\SettingsServiceProvider::class,
 
+    // Content Storage Domain
+    App\Domains\ContentStorage\ContentStorageServiceProvider::class,
+
     // Themes Domain
     App\Domains\Themes\ThemeServiceProvider::class,
 

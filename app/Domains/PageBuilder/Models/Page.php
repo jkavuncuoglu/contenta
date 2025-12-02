@@ -14,13 +14,21 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
- * @use HasFactory<\Database\Factories\PageBuilder\PageFactory>
+ * @use HasFactory<\Database\Factories\PageFactory>
  */
 class Page extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
     protected $table = 'pages';
+
+    /**
+     * Create a new factory instance for the model
+     */
+    protected static function newFactory(): \Database\Factories\PageFactory
+    {
+        return \Database\Factories\PageFactory::new();
+    }
 
     protected $fillable = [
         'title',
