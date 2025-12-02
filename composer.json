@@ -10,8 +10,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
+        "aws/aws-sdk-php": "*",
         "endroid/qr-code": "^6.0",
+        "google/cloud-storage": "^1.48",
         "inertiajs/inertia-laravel": "^2.0",
+        "knplabs/github-api": "^3.16",
         "laragear/webauthn": "^4.0",
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",
@@ -21,11 +24,13 @@
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
         "league/commonmark": "*",
+        "microsoft/azure-storage-blob": "^1.5",
         "pragmarx/google2fa-laravel": "^2.3",
         "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-medialibrary": "^11.15",
         "spatie/laravel-permission": "^6.21",
-        "spomky-labs/otphp": "^11.3"
+        "spomky-labs/otphp": "^11.3",
+        "symfony/http-client": "^7.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",

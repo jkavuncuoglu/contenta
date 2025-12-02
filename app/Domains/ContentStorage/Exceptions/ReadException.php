@@ -66,4 +66,16 @@ class ReadException extends StorageException
     {
         return new static("Content corrupted at {$path}: {$reason}");
     }
+
+    /**
+     * Create exception for general read failure
+     *
+     * @param string $path Content path
+     * @param string $reason Failure reason
+     * @return static
+     */
+    public static function failed(string $path, string $reason): static
+    {
+        return new static("Failed to read {$path}: {$reason}");
+    }
 }

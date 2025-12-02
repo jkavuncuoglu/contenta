@@ -114,13 +114,21 @@ class ContentStorageManager extends Manager
      *
      * @param array<string, mixed> $config
      * @return ContentRepositoryContract
-     * @throws StorageException If driver not yet implemented
      */
     protected function createS3Driver(array $config = []): ContentRepositoryContract
     {
-        throw StorageException::invalidDriver('s3 - not yet implemented');
-        // Will be implemented in Phase 4
-        // return new S3Repository($config);
+        // Merge with default settings if not provided
+        if (empty($config['key']) || empty($config['secret']) || empty($config['bucket'])) {
+            $settingsConfig = $this->getConfig('s3');
+            $config = array_merge($settingsConfig, $config);
+        }
+
+        // Set default prefix based on content type if provided
+        if (isset($config['content_type']) && ! isset($config['prefix'])) {
+            $config['prefix'] = $config['content_type'];
+        }
+
+        return new \App\Domains\ContentStorage\Repositories\S3Repository($config);
     }
 
     /**
@@ -128,13 +136,21 @@ class ContentStorageManager extends Manager
      *
      * @param array<string, mixed> $config
      * @return ContentRepositoryContract
-     * @throws StorageException If driver not yet implemented
      */
     protected function createGithubDriver(array $config = []): ContentRepositoryContract
     {
-        throw StorageException::invalidDriver('github - not yet implemented');
-        // Will be implemented in Phase 4
-        // return new GitHubRepository($config);
+        // Merge with default settings if not provided
+        if (empty($config['token']) || empty($config['owner']) || empty($config['repo'])) {
+            $settingsConfig = $this->getConfig('github');
+            $config = array_merge($settingsConfig, $config);
+        }
+
+        // Set default base path based on content type if provided
+        if (isset($config['content_type']) && ! isset($config['base_path'])) {
+            $config['base_path'] = $config['content_type'];
+        }
+
+        return new \App\Domains\ContentStorage\Repositories\GitHubRepository($config);
     }
 
     /**
@@ -146,9 +162,18 @@ class ContentStorageManager extends Manager
      */
     protected function createAzureDriver(array $config = []): ContentRepositoryContract
     {
-        throw StorageException::invalidDriver('azure - not yet implemented');
-        // Will be implemented in Phase 4
-        // return new AzureRepository($config);
+        // Merge with default settings if not provided
+        if (empty($config['account_name']) || empty($config['account_key']) || empty($config['container'])) {
+            $settingsConfig = $this->getConfig('azure');
+            $config = array_merge($settingsConfig, $config);
+        }
+
+        // Set default prefix based on content type if provided
+        if (isset($config['content_type']) && ! isset($config['prefix'])) {
+            $config['prefix'] = $config['content_type'];
+        }
+
+        return new \App\Domains\ContentStorage\Repositories\AzureRepository($config);
     }
 
     /**
@@ -160,9 +185,18 @@ class ContentStorageManager extends Manager
      */
     protected function createGcsDriver(array $config = []): ContentRepositoryContract
     {
-        throw StorageException::invalidDriver('gcs - not yet implemented');
-        // Will be implemented in Phase 4
-        // return new GcsRepository($config);
+        // Merge with default settings if not provided
+        if (empty($config['project_id']) || empty($config['bucket'])) {
+            $settingsConfig = $this->getConfig('gcs');
+            $config = array_merge($settingsConfig, $config);
+        }
+
+        // Set default prefix based on content type if provided
+        if (isset($config['content_type']) && ! isset($config['prefix'])) {
+            $config['prefix'] = $config['content_type'];
+        }
+
+        return new \App\Domains\ContentStorage\Repositories\GcsRepository($config);
     }
 
     /**
@@ -196,6 +230,7 @@ class ContentStorageManager extends Manager
                     'secret' => Setting::getDecrypted('content_storage', 's3_secret'),
                     'region' => Setting::get('content_storage', 's3_region', 'us-east-1'),
                     'bucket' => Setting::get('content_storage', 's3_bucket'),
+                    'prefix' => Setting::get('content_storage', 's3_prefix', ''),
                 ];
                 break;
 
@@ -205,6 +240,7 @@ class ContentStorageManager extends Manager
                     'owner' => Setting::get('content_storage', 'github_owner'),
                     'repo' => Setting::get('content_storage', 'github_repo'),
                     'branch' => Setting::get('content_storage', 'github_branch', 'main'),
+                    'base_path' => Setting::get('content_storage', 'github_base_path', ''),
                 ];
                 break;
 

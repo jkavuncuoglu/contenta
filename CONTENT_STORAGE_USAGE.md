@@ -174,6 +174,47 @@ storage/content/
             └── tips-and-tricks.md
 ```
 
+### AWS S3 Driver ✅
+
+**When to use:**
+- Global content distribution via CDN
+- Scalable cloud storage
+- Multi-region redundancy
+- Need S3 ecosystem integration
+
+**Path Format:** Configurable with prefix
+
+**Configuration:**
+```php
+// Settings required
+'s3_key'      => 'your-aws-access-key'
+'s3_secret'   => 'your-aws-secret-key'  // Encrypted
+'s3_region'   => 'us-east-1'            // Default: us-east-1
+'s3_bucket'   => 'your-bucket-name'
+'s3_prefix'   => 'content'              // Optional prefix
+```
+
+**Example S3 Structure:**
+```
+s3://your-bucket/
+└── content/               (prefix)
+    ├── pages/
+    │   ├── about-us.md
+    │   └── contact.md
+    └── posts/
+        └── 2025/
+            └── 12/
+                └── hello-world.md
+```
+
+**Features:**
+- ✅ Direct uploads/downloads
+- ✅ Metadata storage (content hash)
+- ✅ Connection testing
+- ✅ Prefix support for organization
+- ✅ Automatic markdown content-type
+- ✅ Full migration support
+
 ## File Format
 
 When using filesystem storage, content is stored as markdown with YAML frontmatter:
@@ -316,6 +357,60 @@ git commit -m "Initial content migration"
     echo 'Progress: ' . \$migration->getProgress() . '%' . PHP_EOL;
     echo 'Migrated: ' . \$migration->migrated_items . '/' . \$migration->total_items . PHP_EOL;
 "
+```
+
+### Scenario 5: Migrate to AWS S3 ✅
+
+**Goal:** Move content to S3 for global CDN distribution
+
+```bash
+# 1. Configure S3 credentials (in admin panel or tinker)
+./vendor/bin/sail artisan tinker --execute="
+    use App\Domains\Settings\Models\Setting;
+    Setting::set('content_storage', 's3_key', 'AKIAIOSFODNN7EXAMPLE');
+    Setting::setEncrypted('content_storage', 's3_secret', 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY');
+    Setting::set('content_storage', 's3_region', 'us-east-1');
+    Setting::set('content_storage', 's3_bucket', 'my-contenta-bucket');
+    Setting::set('content_storage', 's3_prefix', 'content');
+"
+
+# 2. Test S3 connection
+./vendor/bin/sail artisan tinker --execute="
+    use App\Domains\ContentStorage\Services\ContentStorageManager;
+    \$storage = app(ContentStorageManager::class);
+    \$canConnect = \$storage->testDriver('s3');
+    echo \$canConnect ? 'S3 connection successful!' : 'S3 connection failed!';
+"
+
+# 3. Preview migration
+./vendor/bin/sail artisan content:migrate pages database s3 --dry-run
+
+# 4. Migrate to S3 (async for large content)
+./vendor/bin/sail artisan content:migrate pages database s3 --async
+
+# 5. Verify content in S3
+# Check AWS S3 console at: s3://my-contenta-bucket/content/pages/
+
+# 6. Update driver setting to use S3 by default
+./vendor/bin/sail artisan tinker --execute="
+    use App\Domains\Settings\Models\Setting;
+    Setting::set('content_storage', 'pages_storage_driver', 's3');
+"
+```
+
+### Scenario 6: S3 to Database (Rollback)
+
+**Goal:** Roll back from S3 to database if needed
+
+```bash
+# 1. Migrate back to database
+./vendor/bin/sail artisan content:migrate pages s3 database --verify
+
+# 2. Verify all content migrated
+# Check migration status
+
+# 3. Delete from S3 after verification (optional)
+./vendor/bin/sail artisan content:migrate pages s3 database --delete-source --force
 ```
 
 ## Programmatic Usage
@@ -465,19 +560,41 @@ $rollback = $migrationService->rollbackMigration($originalMigration);
    --verify  # Default: 10 random items
    ```
 
-## Cloud Storage (Coming Soon)
+## Cloud Storage
 
-Future support for:
+### AWS S3 ✅ Available Now!
 
-- **AWS S3** - Global CDN, high availability
-- **GitHub** - Git-based workflow, version control
-- **Azure Blob** - Microsoft Azure integration
-- **Google Cloud Storage** - Google Cloud integration
+**Features:**
+- Global CDN distribution
+- High availability and durability (99.999999999%)
+- Scalable storage
+- Regional deployment options
+- Metadata support for content hashing
 
-Example (Phase 4):
+**Setup:**
 ```bash
-./vendor/bin/sail artisan content:migrate pages database s3 --async
+# Configure in Settings model or Admin UI
+'s3_key'      => 'AKIAIOSFODNN7EXAMPLE'
+'s3_secret'   => 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
+'s3_region'   => 'us-east-1'
+'s3_bucket'   => 'my-contenta-bucket'
+'s3_prefix'   => 'content'  # Optional
 ```
+
+**Migration:**
+```bash
+# Migrate to S3
+./vendor/bin/sail artisan content:migrate pages database s3 --async --verify
+
+# Migrate from S3
+./vendor/bin/sail artisan content:migrate pages s3 database
+```
+
+### Coming Soon
+
+- **GitHub** - Git-based workflow, version control (Phase 4)
+- **Azure Blob** - Microsoft Azure integration (Phase 4)
+- **Google Cloud Storage** - Google Cloud integration (Phase 4)
 
 ## Support
 

@@ -16,7 +16,8 @@ export function useShortcodeValidation(content: Ref<string>, debounceMs = 500) {
     const validating = ref(false);
     const validationErrors = ref<ValidationError[]>([]);
     const isValid = ref(true);
-    let debounceTimeout: NodeJS.Timeout | null = null;
+    // Use ReturnType<typeof setTimeout> which is compatible with both browser and Node
+    let debounceTimeout: ReturnType<typeof setTimeout> | null = null;
 
     const validateContent = async (markdown: string): Promise<ValidationResult> => {
         if (!markdown || markdown.trim() === '') {

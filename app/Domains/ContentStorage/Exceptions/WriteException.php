@@ -77,4 +77,16 @@ class WriteException extends StorageException
     {
         return new static("Network error writing to {$driver}: {$reason}");
     }
+
+    /**
+     * Create exception for general write failure
+     *
+     * @param string $path Content path
+     * @param string $reason Failure reason
+     * @return static
+     */
+    public static function failed(string $path, string $reason): static
+    {
+        return new static("Failed to write {$path}: {$reason}");
+    }
 }
