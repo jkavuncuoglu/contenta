@@ -6,11 +6,11 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1
-                        class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                        class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white"
                     >
                         Comments
                     </h1>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
                         Manage and moderate comments on your posts
                     </p>
                 </div>
@@ -18,19 +18,19 @@
 
             <!-- Statistics Cards -->
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-                <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800">
+                <div class="rounded-lg bg-white p-4 shadow dark:bg-neutral-800">
                     <h3
-                        class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        class="text-sm font-medium text-neutral-500 dark:text-neutral-400"
                     >
                         Total
                     </h3>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white">
+                    <p class="text-2xl font-bold text-neutral-900 dark:text-white">
                         {{ statistics.total }}
                     </p>
                 </div>
-                <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800">
+                <div class="rounded-lg bg-white p-4 shadow dark:bg-neutral-800">
                     <h3
-                        class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        class="text-sm font-medium text-neutral-500 dark:text-neutral-400"
                     >
                         Pending
                     </h3>
@@ -38,9 +38,9 @@
                         {{ statistics.pending }}
                     </p>
                 </div>
-                <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800">
+                <div class="rounded-lg bg-white p-4 shadow dark:bg-neutral-800">
                     <h3
-                        class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        class="text-sm font-medium text-neutral-500 dark:text-neutral-400"
                     >
                         Approved
                     </h3>
@@ -48,9 +48,9 @@
                         {{ statistics.approved }}
                     </p>
                 </div>
-                <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800">
+                <div class="rounded-lg bg-white p-4 shadow dark:bg-neutral-800">
                     <h3
-                        class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        class="text-sm font-medium text-neutral-500 dark:text-neutral-400"
                     >
                         Spam
                     </h3>
@@ -58,13 +58,13 @@
                         {{ statistics.spam }}
                     </p>
                 </div>
-                <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800">
+                <div class="rounded-lg bg-white p-4 shadow dark:bg-neutral-800">
                     <h3
-                        class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        class="text-sm font-medium text-neutral-500 dark:text-neutral-400"
                     >
                         Trash
                     </h3>
-                    <p class="text-2xl font-bold text-gray-600">
+                    <p class="text-2xl font-bold text-neutral-600">
                         {{ statistics.trash }}
                     </p>
                 </div>
@@ -106,21 +106,21 @@
             </div>
 
             <!-- Filters -->
-            <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800">
+            <div class="rounded-lg bg-white p-4 shadow dark:bg-neutral-800">
                 <div class="flex flex-col gap-4 sm:flex-row">
                     <div class="flex-1">
                         <input
                             v-model="searchTerm"
                             type="text"
                             placeholder="Search comments..."
-                            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                            class="w-full rounded-md border border-neutral-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                             @input="debouncedSearch"
                         />
                     </div>
                     <div>
                         <select
                             v-model="selectedStatus"
-                            class="rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                            class="rounded-md border border-neutral-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                             @change="filterComments"
                         >
                             <option value="">All Status</option>
@@ -160,7 +160,7 @@
                         </button>
                         <button
                             @click="bulkUpdateStatus('trash')"
-                            class="rounded bg-gray-600 px-3 py-1 text-sm text-white hover:bg-gray-700"
+                            class="rounded bg-neutral-600 px-3 py-1 text-sm text-white hover:bg-neutral-700"
                         >
                             Trash
                         </button>
@@ -169,37 +169,37 @@
             </div>
 
             <!-- Comments List -->
-            <div class="rounded-lg bg-white shadow dark:bg-gray-800">
+            <div class="rounded-lg bg-white shadow dark:bg-neutral-800">
                 <div v-if="!comments.length" class="p-12 text-center">
                     <Icon
                         icon="material-symbols-light:chat-bubble-outline"
-                        class="mx-auto h-12 w-12 text-gray-400"
+                        class="mx-auto h-12 w-12 text-neutral-400"
                     />
                     <h3
-                        class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
+                        class="mt-2 text-sm font-medium text-neutral-900 dark:text-white"
                     >
                         No comments
                     </h3>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                         No comments match your current filters.
                     </p>
                 </div>
 
                 <div
                     v-else
-                    class="divide-y divide-gray-200 dark:divide-gray-700"
+                    class="divide-y divide-neutral-200 dark:divide-neutral-700"
                 >
                     <div
                         v-for="comment in comments"
                         :key="comment.id"
-                        class="p-6 hover:bg-gray-50 dark:hover:bg-gray-700"
+                        class="p-6 hover:bg-neutral-50 dark:hover:bg-neutral-700"
                     >
                         <div class="flex items-start space-x-4">
                             <input
                                 v-model="selectedComments"
                                 :value="comment.id"
                                 type="checkbox"
-                                class="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                class="mt-1 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                             />
 
                             <div class="min-w-0 flex-1">
@@ -207,12 +207,12 @@
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center space-x-2">
                                         <h4
-                                            class="text-sm font-medium text-gray-900 dark:text-white"
+                                            class="text-sm font-medium text-neutral-900 dark:text-white"
                                         >
                                             {{ comment.author_name }}
                                         </h4>
                                         <span
-                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            class="text-xs text-neutral-500 dark:text-neutral-400"
                                         >
                                             {{ comment.author_email }}
                                         </span>
@@ -233,7 +233,7 @@
                                     </div>
                                     <div class="flex items-center space-x-2">
                                         <span
-                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            class="text-xs text-neutral-500 dark:text-neutral-400"
                                         >
                                             {{ comment.created_at }}
                                         </span>
@@ -244,7 +244,7 @@
                                                         comment.id,
                                                     )
                                                 "
-                                                class="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                                                class="p-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
                                             >
                                                 <Icon
                                                     icon="material-symbols-light:more-vert"
@@ -253,7 +253,7 @@
                                             </button>
                                             <div
                                                 v-if="openMenuId === comment.id"
-                                                class="absolute right-0 z-10 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                                                class="absolute right-0 z-10 mt-2 w-48 rounded-md border border-neutral-200 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-800"
                                             >
                                                 <div class="py-1">
                                                     <button
@@ -267,7 +267,7 @@
                                                                 'approved',
                                                             )
                                                         "
-                                                        class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                                                        class="block w-full px-4 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-700"
                                                     >
                                                         Approve
                                                     </button>
@@ -282,7 +282,7 @@
                                                                 'pending',
                                                             )
                                                         "
-                                                        class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                                                        class="block w-full px-4 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-700"
                                                     >
                                                         Mark as Pending
                                                     </button>
@@ -297,7 +297,7 @@
                                                                 'spam',
                                                             )
                                                         "
-                                                        class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                                                        class="block w-full px-4 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-700"
                                                     >
                                                         Mark as Spam
                                                     </button>
@@ -307,7 +307,7 @@
                                                                 comment.id,
                                                             )
                                                         "
-                                                        class="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                                        class="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-neutral-100 dark:hover:bg-neutral-700"
                                                     >
                                                         Delete
                                                     </button>
@@ -320,7 +320,7 @@
                                 <!-- Post Info -->
                                 <div class="mt-1">
                                     <span
-                                        class="text-xs text-gray-500 dark:text-gray-400"
+                                        class="text-xs text-neutral-500 dark:text-neutral-400"
                                     >
                                         On:
                                         <a
@@ -335,7 +335,7 @@
                                 <!-- Comment Content -->
                                 <div class="mt-2">
                                     <p
-                                        class="text-sm text-gray-900 dark:text-white"
+                                        class="text-sm text-neutral-900 dark:text-white"
                                     >
                                         {{ comment.content }}
                                     </p>
@@ -349,10 +349,10 @@
             <!-- Pagination -->
             <div
                 v-if="pagination.last_page > 1"
-                class="rounded-lg bg-white px-4 py-3 shadow dark:bg-gray-800"
+                class="rounded-lg bg-white px-4 py-3 shadow dark:bg-neutral-800"
             >
                 <div class="flex items-center justify-between">
-                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                    <div class="text-sm text-neutral-500 dark:text-neutral-400">
                         Showing {{ pagination.from }} to {{ pagination.to }} of
                         {{ pagination.total }} comments
                     </div>
@@ -364,7 +364,7 @@
                             :class="{
                                 'bg-blue-600 text-white':
                                     page === pagination.current_page,
-                                'bg-gray-200 text-gray-700 hover:bg-gray-300':
+                                'bg-neutral-200 text-neutral-700 hover:bg-neutral-300':
                                     page !== pagination.current_page,
                             }"
                             class="rounded px-3 py-1 text-sm"
@@ -543,9 +543,9 @@ const getStatusClass = (status: string) => {
         case 'spam':
             return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300';
         case 'trash':
-            return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300';
+            return 'bg-neutral-100 text-neutral-800 dark:bg-neutral-900/20 dark:text-neutral-300';
         default:
-            return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300';
+            return 'bg-neutral-100 text-neutral-800 dark:bg-neutral-900/20 dark:text-neutral-300';
     }
 };
 

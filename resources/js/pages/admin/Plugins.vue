@@ -7,11 +7,11 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1
-                        class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                        class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white"
                     >
                         Plugins
                     </h1>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
                         Manage and configure plugins for your site
                     </p>
                 </div>
@@ -19,7 +19,7 @@
                     <button
                         @click="discoverPlugins"
                         :disabled="discovering"
-                        class="inline-flex items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase hover:bg-gray-700 disabled:opacity-50"
+                        class="inline-flex items-center rounded-md border border-transparent bg-neutral-600 px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase hover:bg-neutral-700 disabled:opacity-50"
                     >
                         <Icon
                             icon="material-symbols-light:refresh"
@@ -89,25 +89,25 @@
             </div>
 
             <!-- Plugins List -->
-            <div class="rounded-lg bg-white shadow dark:bg-gray-800">
+            <div class="rounded-lg bg-white shadow dark:bg-neutral-800">
                 <div v-if="!hasAnyPlugins" class="p-12 text-center">
                     <Icon
                         icon="material-symbols-light:extension"
-                        class="mx-auto h-12 w-12 text-gray-400"
+                        class="mx-auto h-12 w-12 text-neutral-400"
                     />
                     <h3
-                        class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
+                        class="mt-2 text-sm font-medium text-neutral-900 dark:text-white"
                     >
                         No plugins found
                     </h3>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                         Get started by uploading your first plugin.
                     </p>
                 </div>
 
                 <div
                     v-else
-                    class="divide-y divide-gray-200 dark:divide-gray-700"
+                    class="divide-y divide-neutral-200 dark:divide-neutral-700"
                 >
                     <!-- Uninstalled Plugins Section -->
                     <div
@@ -123,7 +123,7 @@
                             <div
                                 v-for="plugin in uninstalledPlugins"
                                 :key="plugin.slug"
-                                class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+                                class="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-800"
                             >
                                 <div class="flex items-start justify-between">
                                     <div class="min-w-0 flex-1">
@@ -131,12 +131,12 @@
                                             class="mb-2 flex items-center gap-3"
                                         >
                                             <h4
-                                                class="text-base font-semibold text-gray-900 dark:text-white"
+                                                class="text-base font-semibold text-neutral-900 dark:text-white"
                                             >
                                                 {{ plugin.name }}
                                             </h4>
                                             <span
-                                                class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                                                class="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-800 dark:bg-neutral-700 dark:text-neutral-300"
                                             >
                                                 v{{ plugin.version }}
                                             </span>
@@ -198,13 +198,13 @@
 
                                         <p
                                             v-if="plugin.description"
-                                            class="mb-2 text-sm text-gray-600 dark:text-gray-400"
+                                            class="mb-2 text-sm text-neutral-600 dark:text-neutral-400"
                                         >
                                             {{ plugin.description }}
                                         </p>
 
                                         <div
-                                            class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400"
+                                            class="flex items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400"
                                         >
                                             <span v-if="plugin.author">
                                                 <Icon
@@ -324,18 +324,18 @@
                     <div
                         v-for="plugin in installedPlugins"
                         :key="plugin.id"
-                        class="p-6 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                        class="p-6 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-700/50"
                     >
                         <div class="flex items-start justify-between">
                             <div class="min-w-0 flex-1">
                                 <div class="mb-2 flex items-center gap-3">
                                     <h3
-                                        class="text-lg font-semibold text-gray-900 dark:text-white"
+                                        class="text-lg font-semibold text-neutral-900 dark:text-white"
                                     >
                                         {{ plugin.name }}
                                     </h3>
                                     <span
-                                        class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                                        class="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-800 dark:bg-neutral-700 dark:text-neutral-300"
                                     >
                                         v{{ plugin.version }}
                                     </span>
@@ -408,13 +408,13 @@
 
                                 <p
                                     v-if="plugin.description"
-                                    class="mb-2 text-sm text-gray-600 dark:text-gray-400"
+                                    class="mb-2 text-sm text-neutral-600 dark:text-neutral-400"
                                 >
                                     {{ plugin.description }}
                                 </p>
 
                                 <div
-                                    class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400"
+                                    class="flex items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     <span v-if="plugin.author">
                                         <Icon
@@ -465,7 +465,7 @@
 
                                     <div
                                         v-if="showScanResults[plugin.slug]"
-                                        class="mt-2 rounded-md bg-gray-50 p-4 text-xs dark:bg-gray-900"
+                                        class="mt-2 rounded-md bg-neutral-50 p-4 text-xs dark:bg-neutral-900"
                                     >
                                         <div
                                             v-if="
@@ -493,14 +493,14 @@
                                                 class="mb-2"
                                             >
                                                 <p
-                                                    class="font-mono text-gray-700 dark:text-gray-300"
+                                                    class="font-mono text-neutral-700 dark:text-neutral-300"
                                                 >
                                                     {{ threat.file }}:{{
                                                         threat.line
                                                     }}
                                                 </p>
                                                 <p
-                                                    class="text-gray-600 dark:text-gray-400"
+                                                    class="text-neutral-600 dark:text-neutral-400"
                                                 >
                                                     {{ threat.issue }}
                                                 </p>
@@ -531,14 +531,14 @@
                                                 class="mb-2"
                                             >
                                                 <p
-                                                    class="font-mono text-gray-700 dark:text-gray-300"
+                                                    class="font-mono text-neutral-700 dark:text-neutral-300"
                                                 >
                                                     {{ warning.file }}:{{
                                                         warning.line
                                                     }}
                                                 </p>
                                                 <p
-                                                    class="text-gray-600 dark:text-gray-400"
+                                                    class="text-neutral-600 dark:text-neutral-400"
                                                 >
                                                     {{ warning.issue }}
                                                 </p>
@@ -562,7 +562,7 @@
                                     :class="
                                         plugin.is_enabled
                                             ? 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900 dark:text-green-300'
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300'
+                                            : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-300'
                                     "
                                 >
                                     {{
@@ -574,7 +574,7 @@
                                 <button
                                     @click="scanPlugin(plugin)"
                                     :disabled="processing[plugin.slug]"
-                                    class="p-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 dark:text-gray-400 dark:hover:text-white"
+                                    class="p-2 text-neutral-600 hover:text-neutral-900 disabled:opacity-50 dark:text-neutral-400 dark:hover:text-white"
                                     title="Scan for security issues"
                                 >
                                     <Icon
@@ -967,7 +967,7 @@ function getPluginTypeBadge(pluginType: 'frontend' | 'admin' | 'universal') {
         universal: {
             label: 'Universal',
             icon: 'material-symbols-light:language',
-            class: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+            class: 'bg-neutral-100 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-300',
         },
     };
     return badges[pluginType] || badges.universal;

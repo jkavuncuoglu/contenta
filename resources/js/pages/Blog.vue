@@ -59,21 +59,21 @@ const formatDate = (date: string) => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen bg-neutral-50 dark:bg-neutral-900">
         <Head :title="`${siteTitle} - Blog`" />
 
         <!-- Header -->
-        <header class="bg-white shadow dark:bg-gray-800">
+        <header class="bg-white shadow dark:bg-neutral-800">
             <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 <div class="text-center">
                     <h1
-                        class="text-3xl font-bold text-gray-900 dark:text-white"
+                        class="text-3xl font-bold text-neutral-900 dark:text-white"
                     >
                         {{ siteTitle }}
                     </h1>
                     <p
                         v-if="siteTagline"
-                        class="mt-2 text-lg text-gray-600 dark:text-gray-400"
+                        class="mt-2 text-lg text-neutral-600 dark:text-neutral-400"
                     >
                         {{ siteTagline }}
                     </p>
@@ -92,14 +92,14 @@ const formatDate = (date: string) => {
                     >
                         <Icon
                             icon="material-symbols-light:article-outline"
-                            class="mx-auto h-12 w-12 text-gray-400"
+                            class="mx-auto h-12 w-12 text-neutral-400"
                         />
                         <h3
-                            class="mt-4 text-lg font-medium text-gray-900 dark:text-white"
+                            class="mt-4 text-lg font-medium text-neutral-900 dark:text-white"
                         >
                             No posts yet
                         </h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400">
+                        <p class="mt-2 text-neutral-600 dark:text-neutral-400">
                             Check back later for new content!
                         </p>
                     </div>
@@ -108,11 +108,11 @@ const formatDate = (date: string) => {
                         <article
                             v-for="post in posts.data"
                             :key="post.id"
-                            class="overflow-hidden rounded-lg bg-white shadow-sm dark:bg-gray-800"
+                            class="overflow-hidden rounded-lg bg-white shadow-sm dark:bg-neutral-800"
                         >
                             <div class="p-6">
                                 <div
-                                    class="mb-4 flex items-center text-sm text-gray-500 dark:text-gray-400"
+                                    class="mb-4 flex items-center text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     <time :datetime="post.published_at">
                                         {{ formatDate(post.published_at) }}
@@ -130,7 +130,7 @@ const formatDate = (date: string) => {
                                 </div>
 
                                 <h2
-                                    class="mb-3 text-xl font-bold text-gray-900 dark:text-white"
+                                    class="mb-3 text-xl font-bold text-neutral-900 dark:text-white"
                                 >
                                     <a
                                         :href="`/blog/${post.slug}`"
@@ -142,14 +142,14 @@ const formatDate = (date: string) => {
 
                                 <p
                                     v-if="post.excerpt"
-                                    class="mb-4 text-gray-600 dark:text-gray-300"
+                                    class="mb-4 text-neutral-600 dark:text-neutral-300"
                                 >
                                     {{ post.excerpt }}
                                 </p>
 
                                 <div
                                     v-else-if="post.content_html"
-                                    class="mb-4 text-gray-600 dark:text-gray-300"
+                                    class="mb-4 text-neutral-600 dark:text-neutral-300"
                                 >
                                     <div
                                         v-html="
@@ -192,8 +192,8 @@ const formatDate = (date: string) => {
                                         link.active
                                             ? 'bg-blue-600 text-white'
                                             : link.url
-                                              ? 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
-                                              : 'cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-gray-800',
+                                              ? 'bg-white text-neutral-700 hover:bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
+                                              : 'cursor-not-allowed bg-neutral-100 text-neutral-400 dark:bg-neutral-800',
                                     ]"
                                     :disabled="!link.url"
                                     v-html="link.label"
@@ -206,14 +206,14 @@ const formatDate = (date: string) => {
                 <!-- Sidebar -->
                 <div class="lg:col-span-1">
                     <div
-                        class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800"
+                        class="rounded-lg bg-white p-6 shadow-sm dark:bg-neutral-800"
                     >
                         <h3
-                            class="mb-4 text-lg font-semibold text-gray-900 dark:text-white"
+                            class="mb-4 text-lg font-semibold text-neutral-900 dark:text-white"
                         >
                             About
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <p class="text-neutral-600 dark:text-neutral-400">
                             Welcome to our blog! Here you'll find the latest
                             posts and updates.
                         </p>
@@ -222,10 +222,10 @@ const formatDate = (date: string) => {
                     <!-- Recent Posts Widget -->
                     <div
                         v-if="posts.data.length > 0"
-                        class="mt-6 rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800"
+                        class="mt-6 rounded-lg bg-white p-6 shadow-sm dark:bg-neutral-800"
                     >
                         <h3
-                            class="mb-4 text-lg font-semibold text-gray-900 dark:text-white"
+                            class="mb-4 text-lg font-semibold text-neutral-900 dark:text-white"
                         >
                             Recent Posts
                         </h3>
@@ -233,16 +233,16 @@ const formatDate = (date: string) => {
                             <div
                                 v-for="post in posts.data.slice(0, 5)"
                                 :key="post.id"
-                                class="border-b border-gray-200 pb-3 last:border-b-0 last:pb-0 dark:border-gray-700"
+                                class="border-b border-neutral-200 pb-3 last:border-b-0 last:pb-0 dark:border-neutral-700"
                             >
                                 <a
                                     :href="`/blog/${post.slug}`"
-                                    class="block text-sm font-medium text-gray-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
+                                    class="block text-sm font-medium text-neutral-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
                                 >
                                     {{ post.title }}
                                 </a>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     {{ formatDate(post.published_at) }}
                                 </p>

@@ -6,11 +6,11 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h2
-                        class="text-2xl font-bold text-gray-900 dark:text-white"
+                        class="text-2xl font-bold text-neutral-900 dark:text-white"
                     >
                         Menus
                     </h2>
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
                         Manage your site's navigation menus
                     </p>
                 </div>
@@ -45,7 +45,7 @@
                             class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
                         >
                             <svg
-                                class="h-5 w-5 text-gray-400"
+                                class="h-5 w-5 text-neutral-400"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -62,13 +62,13 @@
                             v-model="search"
                             type="text"
                             placeholder="Search menus..."
-                            class="block w-full rounded-lg border border-gray-300 bg-white py-2 pr-3 pl-10 text-gray-900 placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                            class="block py-2 px-3 w-full rounded-lg border border-neutral-300 bg-white py-2 pr-3 pl-10 text-neutral-900 placeholder-neutral-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white"
                         />
                     </div>
                 </div>
                 <select
                     v-model="filterLocation"
-                    class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                    class="rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white"
                 >
                     <option value="">All Locations</option>
                     <option
@@ -89,19 +89,19 @@
                 <div
                     v-for="menu in filteredMenus"
                     :key="menu.id"
-                    class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+                    class="overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-md dark:border-neutral-700 dark:bg-neutral-800"
                 >
                     <div class="p-6">
                         <div class="mb-4 flex items-start justify-between">
                             <div class="flex-1">
                                 <h3
-                                    class="mb-1 text-lg font-semibold text-gray-900 dark:text-white"
+                                    class="mb-1 text-lg font-semibold text-neutral-900 dark:text-white"
                                 >
                                     {{ menu.name }}
                                 </h3>
                                 <p
                                     v-if="menu.description"
-                                    class="text-sm text-gray-600 dark:text-gray-400"
+                                    class="text-sm text-neutral-600 dark:text-neutral-400"
                                 >
                                     {{ menu.description }}
                                 </p>
@@ -117,7 +117,7 @@
                         <div class="mb-4 space-y-2">
                             <div class="flex items-center text-sm">
                                 <svg
-                                    class="mr-2 h-4 w-4 text-gray-400"
+                                    class="mr-2 h-4 w-4 text-neutral-400"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -129,7 +129,7 @@
                                         d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
                                     />
                                 </svg>
-                                <span class="text-gray-600 dark:text-gray-400">
+                                <span class="text-neutral-600 dark:text-neutral-400">
                                     {{
                                         menu.location
                                             ? locations[menu.location]
@@ -139,7 +139,7 @@
                             </div>
                             <div class="flex items-center text-sm">
                                 <svg
-                                    class="mr-2 h-4 w-4 text-gray-400"
+                                    class="mr-2 h-4 w-4 text-neutral-400"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -151,7 +151,7 @@
                                         d="M4 6h16M4 12h16M4 18h16"
                                     />
                                 </svg>
-                                <span class="text-gray-600 dark:text-gray-400">
+                                <span class="text-neutral-600 dark:text-neutral-400">
                                     {{ menu.items_count }}
                                     {{
                                         menu.items_count === 1
@@ -184,7 +184,7 @@
                             </Link>
                             <button
                                 @click="duplicateMenu(menu)"
-                                class="rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                                class="rounded-lg bg-neutral-100 px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-600"
                                 title="Duplicate"
                             >
                                 <svg
@@ -228,7 +228,7 @@
             <!-- Empty State -->
             <div v-else class="py-12 text-center">
                 <svg
-                    class="mx-auto h-12 w-12 text-gray-400"
+                    class="mx-auto h-12 w-12 text-neutral-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -241,11 +241,11 @@
                     />
                 </svg>
                 <h3
-                    class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="mt-2 text-sm font-medium text-neutral-900 dark:text-white"
                 >
                     No menus found
                 </h3>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                     {{
                         search || filterLocation
                             ? 'Try adjusting your filters'

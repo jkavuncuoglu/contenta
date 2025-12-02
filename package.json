@@ -7,7 +7,7 @@
         "dev": "vite",
         "format": "prettier --write resources/",
         "format:check": "prettier --check resources/",
-        "lint": "eslint . --fix" ,
+        "lint": "eslint . --fix",
         "test:e2e": "playwright test",
         "prepare": "husky install"
     },
@@ -41,6 +41,16 @@
         "vue-tsc": "^2.2.4"
     },
     "dependencies": {
+        "@editorjs/code": "^2.9.3",
+        "@editorjs/delimiter": "^1.4.2",
+        "@editorjs/editorjs": "^2.31.0",
+        "@editorjs/header": "^2.8.8",
+        "@editorjs/inline-code": "^1.5.2",
+        "@editorjs/link": "^2.6.2",
+        "@editorjs/list": "^2.0.9",
+        "@editorjs/marker": "^1.4.0",
+        "@editorjs/paragraph": "^2.11.7",
+        "@editorjs/raw": "^2.5.1",
         "@faker-js/faker": "^10.0.0",
         "@formkit/drag-and-drop": "^0.5.3",
         "@inertiajs/vue3": "^2.1.0",

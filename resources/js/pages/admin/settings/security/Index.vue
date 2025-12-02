@@ -123,13 +123,13 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 </div>
             </div>
 
-            <div class="rounded-lg bg-white shadow dark:bg-gray-800">
+            <div class="rounded-lg bg-white shadow dark:bg-neutral-800">
                 <form @submit.prevent="submit">
                     <div class="space-y-8 px-6 py-6">
                         <!-- General Security -->
                         <div>
                             <h3
-                                class="mb-4 text-lg font-medium text-gray-900 dark:text-white"
+                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
                             >
                                 General Security
                             </h3>
@@ -140,11 +140,11 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         id="security_enabled"
                                         v-model="form.security_enabled"
                                         type="checkbox"
-                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                     />
                                     <label
                                         for="security_enabled"
-                                        class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                        class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                     >
                                         Enable security features
                                     </label>
@@ -155,11 +155,11 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         id="security_rate_limiting"
                                         v-model="form.security_rate_limiting"
                                         type="checkbox"
-                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                     />
                                     <label
                                         for="security_rate_limiting"
-                                        class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                        class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                     >
                                         Enable rate limiting
                                     </label>
@@ -170,11 +170,11 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         id="security_csrf_protection"
                                         v-model="form.security_csrf_protection"
                                         type="checkbox"
-                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                     />
                                     <label
                                         for="security_csrf_protection"
-                                        class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                        class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                     >
                                         Enable CSRF protection
                                     </label>
@@ -185,11 +185,11 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         id="security_ip_blocking"
                                         v-model="form.security_ip_blocking"
                                         type="checkbox"
-                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                     />
                                     <label
                                         for="security_ip_blocking"
-                                        class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                        class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                     >
                                         Enable IP blocking for suspicious
                                         activity
@@ -200,10 +200,10 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
                         <!-- Honeypot Protection -->
                         <div
-                            class="border-t border-gray-200 pt-8 dark:border-gray-600"
+                            class="border-t border-neutral-200 pt-8 dark:border-neutral-600"
                         >
                             <h3
-                                class="mb-4 text-lg font-medium text-gray-900 dark:text-white"
+                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
                             >
                                 Honeypot Protection
                             </h3>
@@ -214,17 +214,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         id="honeypot_enabled"
                                         v-model="form.honeypot_enabled"
                                         type="checkbox"
-                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                     />
                                     <label
                                         for="honeypot_enabled"
-                                        class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                        class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                     >
                                         Enable honeypot protection
                                     </label>
                                 </div>
                                 <p
-                                    class="text-sm text-gray-500 dark:text-gray-400"
+                                    class="text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Honeypot protection adds invisible fields to
                                     forms to catch spam bots.
@@ -238,7 +238,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <div>
                                         <label
                                             for="honeypot_field_name"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                         >
                                             Honeypot Field Name
                                         </label>
@@ -248,7 +248,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                                 v-model="
                                                     form.honeypot_field_name
                                                 "
-                                                class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                                class="block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                                 :class="{
                                                     'border-red-300':
                                                         form.errors
@@ -267,7 +267,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                             </select>
                                         </div>
                                         <p
-                                            class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                            class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                         >
                                             The name attribute for the honeypot
                                             field.
@@ -288,7 +288,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <div>
                                         <label
                                             for="honeypot_input_field"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                         >
                                             Hidden Input Field Name
                                         </label>
@@ -308,7 +308,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                             />
                                         </div>
                                         <p
-                                            class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                            class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                         >
                                             The name for the hidden input field
                                             that bots shouldn't fill.
@@ -333,11 +333,11 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                                 form.honeypot_timer_enabled
                                             "
                                             type="checkbox"
-                                            class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                            class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                         />
                                         <label
                                             for="honeypot_timer_enabled"
-                                            class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                            class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                         >
                                             Enable minimum time validation
                                         </label>
@@ -346,7 +346,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <div v-if="form.honeypot_timer_enabled">
                                         <label
                                             for="honeypot_minimum_time"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                         >
                                             Minimum Time Before Submission
                                         </label>
@@ -356,7 +356,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                                 v-model="
                                                     form.honeypot_minimum_time
                                                 "
-                                                class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                                class="block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                                 :class="{
                                                     'border-red-300':
                                                         form.errors
@@ -375,7 +375,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                             </select>
                                         </div>
                                         <p
-                                            class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                            class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                         >
                                             Minimum time users must wait before
                                             submitting forms.
@@ -399,10 +399,10 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
                         <!-- reCAPTCHA Protection -->
                         <div
-                            class="border-t border-gray-200 pt-8 dark:border-gray-600"
+                            class="border-t border-neutral-200 pt-8 dark:border-neutral-600"
                         >
                             <h3
-                                class="mb-4 text-lg font-medium text-gray-900 dark:text-white"
+                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
                             >
                                 reCAPTCHA Protection
                             </h3>
@@ -413,17 +413,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         id="recaptcha_enabled"
                                         v-model="form.recaptcha_enabled"
                                         type="checkbox"
-                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                     />
                                     <label
                                         for="recaptcha_enabled"
-                                        class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                        class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                     >
                                         Enable reCAPTCHA protection
                                     </label>
                                 </div>
                                 <p
-                                    class="text-sm text-gray-500 dark:text-gray-400"
+                                    class="text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     reCAPTCHA helps protect your forms from
                                     automated spam and abuse.
@@ -437,7 +437,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <div>
                                         <label
                                             for="recaptcha_version"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                         >
                                             reCAPTCHA Version
                                         </label>
@@ -445,7 +445,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                             <select
                                                 id="recaptcha_version"
                                                 v-model="form.recaptcha_version"
-                                                class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                                class="block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                                 :class="{
                                                     'border-red-300':
                                                         form.errors
@@ -475,7 +475,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <div>
                                         <label
                                             for="recaptcha_site_key"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                         >
                                             Site Key
                                         </label>
@@ -496,7 +496,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                             />
                                         </div>
                                         <p
-                                            class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                            class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                         >
                                             Your reCAPTCHA site key from Google
                                             reCAPTCHA console.
@@ -515,7 +515,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <div>
                                         <label
                                             for="recaptcha_secret_key"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                         >
                                             Secret Key
                                         </label>
@@ -536,7 +536,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                             />
                                         </div>
                                         <p
-                                            class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                            class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                         >
                                             Your reCAPTCHA secret key from
                                             Google reCAPTCHA console.
@@ -557,7 +557,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <div v-if="form.recaptcha_version === 'v3'">
                                         <label
                                             for="recaptcha_threshold"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                         >
                                             Score Threshold (v3 only)
                                         </label>
@@ -580,7 +580,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                             />
                                         </div>
                                         <p
-                                            class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                            class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                         >
                                             Minimum score required (0.0 - 1.0).
                                             Higher values are more restrictive.
@@ -603,7 +603,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
                     <!-- Form Actions -->
                     <div
-                        class="border-t border-gray-200 bg-gray-50 px-6 py-3 text-right dark:border-gray-600 dark:bg-gray-700"
+                        class="border-t border-neutral-200 bg-neutral-50 px-6 py-3 text-right dark:border-neutral-600 dark:bg-neutral-700"
                     >
                         <button
                             type="submit"

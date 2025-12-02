@@ -8,6 +8,7 @@ return [
     App\Domains\ContentManagement\Tags\TagServiceProvider::class,
     App\Domains\ContentManagement\Categories\CategoryServiceProvider::class,
     App\Domains\ContentManagement\ContentManagementServiceProvider::class,
+    App\Domains\ContentManagement\Services\ShortcodeParser\ShortcodeParserServiceProvider::class,
 
     // Media Domain
     App\Domains\Media\MediaServiceProvider::class,

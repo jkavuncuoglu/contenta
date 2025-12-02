@@ -88,6 +88,31 @@
             'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
             'Noto Color Emoji';
     }
+
+    /* Typography utility class for content areas */
+    .prose {
+        max-width: 65ch;
+    }
+
+    .prose-sm {
+        max-width: 50ch;
+        font-size: 0.875rem;
+    }
+
+    .prose-lg {
+        max-width: 75ch;
+        font-size: 1.125rem;
+    }
+
+    .prose-xl {
+        max-width: 85ch;
+        font-size: 1.25rem;
+    }
+
+    /* Full width prose */
+    .prose-full {
+        max-width: 100%;
+    }
 }
 
 :root {
@@ -169,5 +194,317 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+
+    /* Typography Styles - Scoped to markdown content only */
+    .markdown-content h1 {
+        font-size: 2.25rem; /* 36px */
+        line-height: 2.5rem; /* 40px */
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        color: var(--foreground);
+        margin-bottom: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .markdown-content h2 {
+        font-size: 1.875rem; /* 30px */
+        line-height: 2.25rem; /* 36px */
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        color: var(--foreground);
+        margin-bottom: 1.25rem;
+        margin-top: 1.75rem;
+    }
+
+    .markdown-content h3 {
+        font-size: 1.5rem; /* 24px */
+        line-height: 2rem; /* 32px */
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        color: var(--foreground);
+        margin-bottom: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .markdown-content h4 {
+        font-size: 1.25rem; /* 20px */
+        line-height: 1.75rem; /* 28px */
+        font-weight: 600;
+        color: var(--foreground);
+        margin-bottom: 0.875rem;
+        margin-top: 1.25rem;
+    }
+
+    .markdown-content h5 {
+        font-size: 1.125rem; /* 18px */
+        line-height: 1.75rem; /* 28px */
+        font-weight: 600;
+        color: var(--foreground);
+        margin-bottom: 0.75rem;
+        margin-top: 1rem;
+    }
+
+    .markdown-content h6 {
+        font-size: 1rem; /* 16px */
+        line-height: 1.5rem; /* 24px */
+        font-weight: 600;
+        color: var(--foreground);
+        margin-bottom: 0.5rem;
+        margin-top: 0.875rem;
+    }
+
+    .markdown-content p {
+        font-size: 1rem; /* 16px */
+        line-height: 1.75rem; /* 28px */
+        color: var(--foreground);
+        margin-bottom: 1rem;
+    }
+
+    .markdown-content a {
+        color: hsl(217.2 91.2% 59.8%); /* Blue */
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        transition: color 0.2s ease;
+    }
+
+    .markdown-content a:hover {
+        color: hsl(217.2 91.2% 50%); /* Darker blue on hover */
+    }
+
+    .dark .markdown-content a {
+        color: hsl(217.2 91.2% 69.8%); /* Lighter blue for dark mode */
+    }
+
+    .dark .markdown-content a:hover {
+        color: hsl(217.2 91.2% 79.8%); /* Even lighter on hover */
+    }
+
+    .markdown-content strong,
+    .markdown-content b {
+        font-weight: 700;
+        color: var(--foreground);
+    }
+
+    .markdown-content em,
+    .markdown-content i {
+        font-style: italic;
+    }
+
+    .markdown-content code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+        font-size: 0.875em;
+        background-color: var(--muted);
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.25rem;
+        color: var(--foreground);
+    }
+
+    .markdown-content pre {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        background-color: var(--muted);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+
+    .markdown-content pre code {
+        background-color: transparent;
+        padding: 0;
+        border-radius: 0;
+        font-size: inherit;
+    }
+
+    .markdown-content blockquote {
+        border-left: 4px solid var(--border);
+        padding-left: 1rem;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        font-style: italic;
+        color: var(--muted-foreground);
+    }
+
+    .markdown-content ul,
+    .markdown-content ol {
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        padding-left: 1.5rem;
+    }
+
+    .markdown-content ul {
+        list-style-type: disc;
+    }
+
+    .markdown-content ol {
+        list-style-type: decimal;
+    }
+
+    .markdown-content li {
+        margin-bottom: 0.5rem;
+        line-height: 1.75rem;
+    }
+
+    .markdown-content li > ul,
+    .markdown-content li > ol {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Nested lists */
+    .markdown-content ul ul {
+        list-style-type: circle;
+    }
+
+    .markdown-content ul ul ul {
+        list-style-type: square;
+    }
+
+    .markdown-content hr {
+        border: 0;
+        border-top: 1px solid var(--border);
+        margin: 2rem 0;
+    }
+
+    /* Tables */
+    .markdown-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+
+    .markdown-content th {
+        background-color: var(--muted);
+        font-weight: 600;
+        text-align: left;
+        padding: 0.75rem 1rem;
+        border-bottom: 2px solid var(--border);
+    }
+
+    .markdown-content td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .markdown-content tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Images */
+    .markdown-content img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 1.5rem 0;
+        border-radius: 0.5rem;
+    }
+
+    /* Keyboard shortcuts */
+    .markdown-content kbd {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+        font-size: 0.875em;
+        background-color: var(--muted);
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.25rem;
+        border: 1px solid var(--border);
+        box-shadow: 0 1px 0 var(--border);
+        color: var(--foreground);
+    }
+
+    /* Subscript and Superscript */
+    .markdown-content sub,
+    .markdown-content sup {
+        font-size: 0.75em;
+        line-height: 0;
+        position: relative;
+        vertical-align: baseline;
+    }
+
+    .markdown-content sub {
+        bottom: -0.25em;
+    }
+
+    .markdown-content sup {
+        top: -0.5em;
+    }
+
+    /* Mark/Highlight */
+    .markdown-content mark {
+        background-color: hsl(43 74% 66%);
+        color: hsl(0 0% 3.9%);
+        padding: 0.125rem 0.25rem;
+        border-radius: 0.125rem;
+    }
+
+    .dark .markdown-content mark {
+        background-color: hsl(43 74% 56%);
+        color: hsl(0 0% 98%);
+    }
+
+    /* Abbreviations */
+    .markdown-content abbr[title] {
+        text-decoration: underline dotted;
+        cursor: help;
+    }
+
+    /* Small text */
+    .markdown-content small {
+        font-size: 0.875em;
+        color: var(--muted-foreground);
+    }
+
+    /* Deleted and Inserted text */
+    .markdown-content del {
+        text-decoration: line-through;
+        color: var(--destructive);
+    }
+
+    .markdown-content ins {
+        text-decoration: none;
+        border-bottom: 1px solid var(--foreground);
+    }
+
+    /* Definition lists */
+    .markdown-content dl {
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+
+    .markdown-content dt {
+        font-weight: 600;
+        color: var(--foreground);
+        margin-bottom: 0.25rem;
+    }
+
+    .markdown-content dd {
+        margin-left: 1.5rem;
+        margin-bottom: 0.75rem;
+        color: var(--muted-foreground);
+    }
+
+    /* Figures and captions */
+    .markdown-content figure {
+        margin: 1.5rem 0;
+    }
+
+    .markdown-content figcaption {
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+        margin-top: 0.5rem;
+        text-align: center;
+        font-style: italic;
+    }
+
+    /* Address */
+    .markdown-content address {
+        font-style: normal;
+        margin-bottom: 1rem;
+        line-height: 1.75rem;
     }
 }

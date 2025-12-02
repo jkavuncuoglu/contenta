@@ -3,7 +3,7 @@
         <MdEditor
             v-model="content"
             @change="emit('update:modelValue', content)"
-            class="min-h-[200px] w-full rounded border p-2 dark:bg-gray-800 dark:text-white"
+            class="min-h-[200px] w-full rounded border p-2 dark:bg-neutral-800 dark:text-white"
         />
     </div>
 </template>

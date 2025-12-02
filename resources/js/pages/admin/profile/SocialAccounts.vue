@@ -6,7 +6,7 @@
             <div class="rounded border p-4">
                 <p class="mb-2 font-medium">Google</p>
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-500">
+                    <span class="text-sm text-neutral-500">
                         {{ linked.google ? 'Connected' : 'Not connected' }}
                     </span>
                     <button
@@ -29,7 +29,7 @@
             <div class="rounded border p-4">
                 <p class="mb-2 font-medium">GitHub</p>
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-500">
+                    <span class="text-sm text-neutral-500">
                         {{ linked.github ? 'Connected' : 'Not connected' }}
                     </span>
                     <button

@@ -117,14 +117,14 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 </div>
             </div>
 
-            <div class="rounded-lg bg-white shadow dark:bg-gray-800">
+            <div class="rounded-lg bg-white shadow dark:bg-neutral-800">
                 <form @submit.prevent="submit">
                     <div class="space-y-6 px-6 py-6">
                         <!-- Site Title -->
                         <div>
                             <label
                                 for="site_title"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Site Title
                             </label>
@@ -141,7 +141,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 />
                             </div>
                             <p
-                                class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 In a few words, explain what this site is about.
                             </p>
@@ -157,7 +157,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <div>
                             <label
                                 for="site_tagline"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Tagline
                             </label>
@@ -174,7 +174,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 />
                             </div>
                             <p
-                                class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 In a few words, explain what this site is about.
                             </p>
@@ -190,7 +190,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <div>
                             <label
                                 for="site_url"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Site Address (URL)
                             </label>
@@ -206,7 +206,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 />
                             </div>
                             <p
-                                class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 The address of your site.
                             </p>
@@ -222,7 +222,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <div>
                             <label
                                 for="admin_email"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Administration Email Address
                             </label>
@@ -239,7 +239,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 />
                             </div>
                             <p
-                                class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 This address is used for admin purposes, like
                                 new user notification.
@@ -259,11 +259,11 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     id="users_can_register"
                                     v-model="form.users_can_register"
                                     type="checkbox"
-                                    class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                 />
                                 <label
                                     for="users_can_register"
-                                    class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                    class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                 >
                                     Anyone can register
                                 </label>
@@ -280,7 +280,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <div>
                             <label
                                 for="default_user_role"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 New User Default Role
                             </label>
@@ -288,7 +288,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 <select
                                     id="default_user_role"
                                     v-model="form.default_user_role"
-                                    class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    class="block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                     :class="{
                                         'border-red-300':
                                             form.errors.default_user_role,
@@ -317,7 +317,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <div>
                             <label
                                 for="site_language"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Site Language
                             </label>
@@ -325,7 +325,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 <select
                                     id="site_language"
                                     v-model="form.site_language"
-                                    class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    class="block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                     :class="{
                                         'border-red-300':
                                             form.errors.site_language,
@@ -354,7 +354,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <div>
                             <label
                                 for="timezone"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Timezone
                             </label>
@@ -362,7 +362,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 <select
                                     id="timezone"
                                     v-model="form.timezone"
-                                    class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    class="block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                     :class="{
                                         'border-red-300': form.errors.timezone,
                                     }"
@@ -379,7 +379,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 </select>
                             </div>
                             <p
-                                class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 Choose either a city in the same timezone as you
                                 or a UTC timezone offset.
@@ -396,7 +396,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         <div>
                             <label
                                 for="landing_page"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Landing Page
                             </label>
@@ -404,7 +404,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 <select
                                     id="landing_page"
                                     v-model="form.landing_page"
-                                    class="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    class="block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                     :class="{
                                         'border-red-300':
                                             form.errors.landing_page,
@@ -420,7 +420,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 </select>
                             </div>
                             <p
-                                class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 Choose what content visitors see when they visit
                                 your site's homepage.
@@ -435,10 +435,10 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
                         <!-- Analytics Section -->
                         <div
-                            class="border-t border-gray-200 pt-6 dark:border-gray-600"
+                            class="border-t border-neutral-200 pt-6 dark:border-neutral-600"
                         >
                             <h3
-                                class="mb-4 text-lg font-medium text-gray-900 dark:text-white"
+                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
                             >
                                 Analytics & Tracking
                             </h3>
@@ -450,17 +450,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         id="analytics_enabled"
                                         v-model="form.analytics_enabled"
                                         type="checkbox"
-                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                     />
                                     <label
                                         for="analytics_enabled"
-                                        class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                        class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                     >
                                         Enable analytics tracking
                                     </label>
                                 </div>
                                 <p
-                                    class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                    class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Master switch to enable/disable all
                                     analytics tracking on your site.
@@ -477,7 +477,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <div class="mb-6">
                                 <label
                                     for="google_analytics_id"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Google Analytics Measurement ID
                                 </label>
@@ -495,7 +495,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     />
                                 </div>
                                 <p
-                                    class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                    class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Your Google Analytics 4 Measurement ID
                                     (starts with G-).
@@ -512,7 +512,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <div class="mb-6">
                                 <label
                                     for="google_tag_manager_id"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Google Tag Manager Container ID
                                 </label>
@@ -531,7 +531,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     />
                                 </div>
                                 <p
-                                    class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                    class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Your Google Tag Manager Container ID (starts
                                     with GTM-).
@@ -548,7 +548,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <div class="mb-6">
                                 <label
                                     for="facebook_pixel_id"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Facebook Pixel ID
                                 </label>
@@ -566,7 +566,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     />
                                 </div>
                                 <p
-                                    class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                    class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Your Facebook Pixel ID (numeric ID).
                                 </p>
@@ -585,17 +585,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         id="cookie_consent_enabled"
                                         v-model="form.cookie_consent_enabled"
                                         type="checkbox"
-                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                     />
                                     <label
                                         for="cookie_consent_enabled"
-                                        class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                        class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                     >
                                         Require cookie consent for analytics
                                     </label>
                                 </div>
                                 <p
-                                    class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                    class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Show cookie consent banner before loading
                                     analytics scripts (GDPR compliance).
@@ -612,7 +612,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
                     <!-- Form Actions -->
                     <div
-                        class="border-t border-gray-200 bg-gray-50 px-6 py-3 text-right dark:border-gray-600 dark:bg-gray-700"
+                        class="border-t border-neutral-200 bg-neutral-50 px-6 py-3 text-right dark:border-neutral-600 dark:bg-neutral-700"
                     >
                         <button
                             type="submit"

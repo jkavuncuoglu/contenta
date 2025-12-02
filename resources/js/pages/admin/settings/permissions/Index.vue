@@ -155,7 +155,7 @@ const confirmDelete = (role: Role) => {
             />
 
             <div class="flex items-center justify-between">
-                <div class="text-sm text-gray-600 dark:text-gray-400">
+                <div class="text-sm text-neutral-600 dark:text-neutral-400">
                     {{ roles.length }} role(s) •
                     {{ allPermissions.length }} permission(s)
                 </div>
@@ -170,13 +170,13 @@ const confirmDelete = (role: Role) => {
 
             <div
                 v-if="!roles.length"
-                class="rounded-lg border border-dashed border-gray-300 p-10 text-center dark:border-gray-600"
+                class="rounded-lg border border-dashed border-neutral-300 p-10 text-center dark:border-neutral-600"
             >
                 <Icon
                     icon="lucide:shield"
-                    class="mx-auto mb-4 h-10 w-10 text-gray-400"
+                    class="mx-auto mb-4 h-10 w-10 text-neutral-400"
                 />
-                <p class="mb-4 text-sm text-gray-500 dark:text-gray-400">
+                <p class="mb-4 text-sm text-neutral-500 dark:text-neutral-400">
                     No roles have been created yet.
                 </p>
                 <button
@@ -193,13 +193,13 @@ const confirmDelete = (role: Role) => {
                 <div
                     v-for="role in roles"
                     :key="role.id"
-                    class="flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                    class="flex flex-col justify-between rounded-lg border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-700 dark:bg-neutral-800"
                 >
                     <div>
                         <div class="mb-3 flex items-start justify-between">
                             <div>
                                 <h3
-                                    class="flex items-center gap-2 text-base font-semibold text-gray-900 dark:text-white"
+                                    class="flex items-center gap-2 text-base font-semibold text-neutral-900 dark:text-white"
                                 >
                                     <Icon
                                         icon="lucide:shield"
@@ -208,7 +208,7 @@ const confirmDelete = (role: Role) => {
                                     {{ role.name }}
                                 </h3>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     {{ role.users_count || 0 }} user<span
                                         v-if="(role.users_count || 0) !== 1"
@@ -219,7 +219,7 @@ const confirmDelete = (role: Role) => {
                             <div class="flex items-center gap-1">
                                 <button
                                     @click="openEdit(role)"
-                                    class="rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+                                    class="rounded p-2 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
                                     title="Edit role"
                                 >
                                     <Icon
@@ -230,7 +230,7 @@ const confirmDelete = (role: Role) => {
                                 <button
                                     @click="confirmDelete(role)"
                                     :disabled="role.name === 'super-admin'"
-                                    class="rounded p-2 text-gray-500 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40 dark:hover:bg-red-900/30"
+                                    class="rounded p-2 text-neutral-500 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40 dark:hover:bg-red-900/30"
                                     title="Delete role"
                                 >
                                     <Icon icon="lucide:trash" class="h-4 w-4" />
@@ -255,7 +255,7 @@ const confirmDelete = (role: Role) => {
                                     role.permissions &&
                                     role.permissions.length > 8
                                 "
-                                class="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+                                class="rounded-full bg-neutral-200 px-2 py-0.5 text-xs font-medium text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300"
                                 >+{{ role.permissions.length - 8 }} more</span
                             >
                             <span
@@ -263,7 +263,7 @@ const confirmDelete = (role: Role) => {
                                     !role.permissions ||
                                     !role.permissions.length
                                 "
-                                class="text-xs text-gray-400 italic"
+                                class="text-xs text-neutral-400 italic"
                                 >No permissions</span
                             >
                         </div>
@@ -271,7 +271,7 @@ const confirmDelete = (role: Role) => {
                     <div class="mt-4">
                         <button
                             @click="openEdit(role)"
-                            class="inline-flex w-full items-center justify-center gap-1 rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                            class="inline-flex w-full items-center justify-center gap-1 rounded-md border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-700"
                         >
                             <Icon icon="lucide:wand" class="h-4 w-4" /> Manage
                             Permissions
@@ -289,12 +289,12 @@ const confirmDelete = (role: Role) => {
                     @click="closeModal"
                 />
                 <div
-                    class="relative z-10 w-full max-w-3xl rounded-lg bg-white p-6 shadow-xl md:p-8 dark:bg-gray-800"
+                    class="relative z-10 w-full max-w-3xl rounded-lg bg-white p-6 shadow-xl md:p-8 dark:bg-neutral-800"
                 >
                     <div class="mb-6 flex items-start justify-between">
                         <div>
                             <h2
-                                class="text-lg font-semibold text-gray-900 dark:text-white"
+                                class="text-lg font-semibold text-neutral-900 dark:text-white"
                             >
                                 {{ isEditing ? 'Edit Role' : 'Create Role' }}
                             </h2>
@@ -302,14 +302,14 @@ const confirmDelete = (role: Role) => {
                                 v-if="
                                     isEditing && roleForm.name === 'super-admin'
                                 "
-                                class="mt-1 text-xs text-gray-500"
+                                class="mt-1 text-xs text-neutral-500"
                             >
                                 The super-admin role name cannot be changed.
                             </p>
                         </div>
                         <button
                             @click="closeModal"
-                            class="rounded p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            class="rounded p-2 text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-700"
                         >
                             <Icon icon="lucide:x" class="h-4 w-4" />
                         </button>
@@ -318,7 +318,7 @@ const confirmDelete = (role: Role) => {
                         <div>
                             <label
                                 for="role-name"
-                                class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >Role Name</label
                             >
                             <input
@@ -328,7 +328,7 @@ const confirmDelete = (role: Role) => {
                                 :disabled="
                                     roleForm.name === 'super-admin' && isEditing
                                 "
-                                class="w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                class="w-full rounded-md border-neutral-300 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                 placeholder="e.g. editor"
                                 required
                             />
@@ -342,7 +342,7 @@ const confirmDelete = (role: Role) => {
                         <div>
                             <div class="mb-4 flex items-center justify-between">
                                 <h3
-                                    class="text-sm font-medium text-gray-900 dark:text-gray-100"
+                                    class="text-sm font-medium text-neutral-900 dark:text-neutral-100"
                                 >
                                     Assign Permissions
                                 </h3>
@@ -379,18 +379,18 @@ const confirmDelete = (role: Role) => {
                                 <div
                                     v-for="group in permissionGroups"
                                     :key="group.key"
-                                    class="rounded-md border border-gray-200 dark:border-gray-700"
+                                    class="rounded-md border border-neutral-200 dark:border-neutral-700"
                                 >
                                     <div
-                                        class="flex items-center justify-between bg-gray-50 px-3 py-2 dark:bg-gray-700/50"
+                                        class="flex items-center justify-between bg-neutral-50 px-3 py-2 dark:bg-neutral-700/50"
                                     >
                                         <div class="flex items-center gap-2">
                                             <Icon
                                                 icon="lucide:folder"
-                                                class="h-4 w-4 text-gray-500"
+                                                class="h-4 w-4 text-neutral-500"
                                             />
                                             <span
-                                                class="text-xs font-semibold tracking-wide text-gray-700 uppercase dark:text-gray-300"
+                                                class="text-xs font-semibold tracking-wide text-neutral-700 uppercase dark:text-neutral-300"
                                                 >{{ group.label }}</span
                                             >
                                         </div>
@@ -420,11 +420,11 @@ const confirmDelete = (role: Role) => {
                                         <label
                                             v-for="perm in group.permissions"
                                             :key="perm.id"
-                                            class="inline-flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300"
+                                            class="inline-flex items-center gap-2 text-xs text-neutral-700 dark:text-neutral-300"
                                         >
                                             <input
                                                 type="checkbox"
-                                                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600"
+                                                class="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 dark:border-neutral-600"
                                                 :value="perm.id"
                                                 :checked="
                                                     roleForm.permissions.includes(
@@ -456,7 +456,7 @@ const confirmDelete = (role: Role) => {
                             <button
                                 type="button"
                                 @click="closeModal"
-                                class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                                class="rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
                                 :disabled="saving"
                             >
                                 Cancel

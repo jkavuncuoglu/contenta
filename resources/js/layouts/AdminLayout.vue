@@ -27,7 +27,7 @@ const _logout = () => {};
                 <!-- Right side actions -->
                 <div class="flex items-center gap-2">
                     <button
-                        class="rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+                        class="rounded-md p-2 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-500"
                     >
                         <Icon
                             icon="material-symbols-light:notifications"

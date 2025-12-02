@@ -7,18 +7,18 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1
-                        class="text-2xl font-semibold text-gray-900 dark:text-white"
+                        class="text-2xl font-semibold text-neutral-900 dark:text-white"
                     >
                         Posts
                     </h1>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                         Manage your blog posts and articles
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
                     <Link
                         href="/admin/posts/calendar"
-                        class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                        class="inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
                     >
                         <Icon name="calendar" class="mr-2 h-4 w-4" />
                         Calendar
@@ -34,14 +34,14 @@
             </div>
 
             <!-- Tabs -->
-            <div class="border-b border-gray-200 dark:border-gray-700">
+            <div class="border-b border-neutral-200 dark:border-neutral-700">
                 <nav class="-mb-px flex space-x-8">
                     <button
                         @click="activeTab = 'all'"
                         :class="[
                             activeTab === 'all'
                                 ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300',
+                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
                             'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
                         ]"
                     >
@@ -52,14 +52,14 @@
                         :class="[
                             activeTab === 'archived'
                                 ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300',
+                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
                             'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
                         ]"
                     >
                         Archived
                         <span
                             v-if="archivedCount > 0"
-                            class="ml-2 rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+                            class="ml-2 rounded-full bg-neutral-200 px-2 py-0.5 text-xs text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300"
                         >
                             {{ archivedCount }}
                         </span>
@@ -71,19 +71,19 @@
             <div v-if="activeTab === 'all'" class="space-y-4">
                 <!-- View controls and filters -->
                 <div
-                    class="flex items-center justify-between rounded-lg bg-white p-4 shadow dark:bg-gray-800"
+                    class="flex items-center justify-between rounded-lg bg-white p-4 shadow dark:bg-neutral-800"
                 >
                     <div class="flex items-center gap-4">
                         <!-- View Toggle -->
                         <div
-                            class="flex items-center gap-2 rounded-md border border-gray-300 p-1 dark:border-gray-600"
+                            class="flex items-center gap-2 rounded-md border border-neutral-300 p-1 dark:border-neutral-600"
                         >
                             <button
                                 @click="viewMode = 'list'"
                                 :class="[
                                     viewMode === 'list'
-                                        ? 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white'
-                                        : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300',
+                                        ? 'bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-white'
+                                        : 'text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
                                     'rounded px-3 py-1.5 text-sm font-medium transition-colors',
                                 ]"
                                 title="List view"
@@ -94,8 +94,8 @@
                                 @click="viewMode = 'kanban'"
                                 :class="[
                                     viewMode === 'kanban'
-                                        ? 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white'
-                                        : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300',
+                                        ? 'bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-white'
+                                        : 'text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
                                     'rounded px-3 py-1.5 text-sm font-medium transition-colors',
                                 ]"
                                 title="Kanban view"
@@ -109,7 +109,7 @@
                             v-if="viewMode === 'list'"
                             v-model="statusFilter"
                             @change="loadPosts"
-                            class="block rounded-md border-gray-300 text-sm shadow-sm dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                            class="block rounded-md border-neutral-300 text-sm shadow-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-300"
                         >
                             <option value="">All Statuses</option>
                             <option value="draft">Draft</option>
@@ -118,7 +118,7 @@
                         </select>
                     </div>
 
-                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                    <div class="text-sm text-neutral-500 dark:text-neutral-400">
                         {{ filteredPosts.length }} post{{
                             filteredPosts.length !== 1 ? 's' : ''
                         }}
@@ -128,7 +128,7 @@
                 <!-- List View -->
                 <div
                     v-if="viewMode === 'list'"
-                    class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800"
+                    class="overflow-hidden rounded-lg bg-white shadow dark:bg-neutral-800"
                 >
                     <div v-if="loading" class="p-8 text-center">
                         <div
@@ -141,42 +141,42 @@
                     >
                         <Icon
                             name="document-text"
-                            class="mx-auto h-12 w-12 text-gray-400"
+                            class="mx-auto h-12 w-12 text-neutral-400"
                         />
                         <h3
-                            class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
+                            class="mt-2 text-sm font-medium text-neutral-900 dark:text-white"
                         >
                             No posts
                         </h3>
                         <p
-                            class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                            class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                         >
                             Get started by creating your first post.
                         </p>
                     </div>
                     <table
                         v-else
-                        class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+                        class="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700"
                     >
-                        <thead class="bg-gray-50 dark:bg-gray-900">
+                        <thead class="bg-neutral-50 dark:bg-neutral-900">
                             <tr>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                                    class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase dark:text-neutral-400"
                                 >
                                     Title
                                 </th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                                    class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase dark:text-neutral-400"
                                 >
                                     Author
                                 </th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                                    class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase dark:text-neutral-400"
                                 >
                                     Status
                                 </th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                                    class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase dark:text-neutral-400"
                                 >
                                     Date
                                 </th>
@@ -186,27 +186,27 @@
                             </tr>
                         </thead>
                         <tbody
-                            class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800"
+                            class="divide-y divide-neutral-200 bg-white dark:divide-neutral-700 dark:bg-neutral-800"
                         >
                             <tr
                                 v-for="post in filteredPosts"
                                 :key="post.id"
-                                class="hover:bg-gray-50 dark:hover:bg-gray-700"
+                                class="hover:bg-neutral-50 dark:hover:bg-neutral-700"
                             >
                                 <td class="px-6 py-4">
                                     <p
-                                        class="truncate text-sm font-medium text-gray-900 dark:text-white"
+                                        class="truncate text-sm font-medium text-neutral-900 dark:text-white"
                                     >
                                         {{ post.title }}
                                     </p>
                                     <p
-                                        class="truncate text-sm text-gray-500 dark:text-gray-400"
+                                        class="truncate text-sm text-neutral-500 dark:text-neutral-400"
                                     >
                                         {{ post.excerpt || 'No excerpt' }}
                                     </p>
                                 </td>
                                 <td
-                                    class="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white"
+                                    class="px-6 py-4 text-sm whitespace-nowrap text-neutral-900 dark:text-white"
                                 >
                                     {{ post.author?.name }}
                                 </td>
@@ -219,7 +219,7 @@
                                     </span>
                                 </td>
                                 <td
-                                    class="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
+                                    class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500 dark:text-neutral-400"
                                 >
                                     {{ formatDate(post.created_at) }}
                                 </td>
@@ -244,10 +244,10 @@
                     class="grid grid-cols-3 gap-6"
                 >
                     <!-- Draft Column -->
-                    <div class="rounded-lg bg-gray-50 p-4 dark:bg-gray-900">
+                    <div class="rounded-lg bg-neutral-50 p-4 dark:bg-neutral-900">
                         <div class="mb-4 flex items-center justify-between">
                             <h3
-                                class="flex items-center font-semibold text-gray-900 dark:text-white"
+                                class="flex items-center font-semibold text-neutral-900 dark:text-white"
                             >
                                 <span
                                     class="mr-2 inline-block h-3 w-3 rounded-full bg-yellow-500"
@@ -255,7 +255,7 @@
                                 Draft
                             </h3>
                             <span
-                                class="text-sm text-gray-500 dark:text-gray-400"
+                                class="text-sm text-neutral-500 dark:text-neutral-400"
                                 >{{ draftPosts.length }}</span
                             >
                         </div>
@@ -268,20 +268,20 @@
                                 @dragend="handleDragEnd"
                                 @drop="handleDrop($event, 'draft')"
                                 @dragover.prevent
-                                class="cursor-move rounded-lg border-l-4 border-yellow-500 bg-white p-4 shadow transition-shadow hover:shadow-md dark:bg-gray-800"
+                                class="cursor-move rounded-lg border-l-4 border-yellow-500 bg-white p-4 shadow transition-shadow hover:shadow-md dark:bg-neutral-800"
                             >
                                 <h4
-                                    class="mb-1 font-medium text-gray-900 dark:text-white"
+                                    class="mb-1 font-medium text-neutral-900 dark:text-white"
                                 >
                                     {{ post.title }}
                                 </h4>
                                 <p
-                                    class="mb-2 line-clamp-2 text-sm text-gray-500 dark:text-gray-400"
+                                    class="mb-2 line-clamp-2 text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     {{ post.excerpt }}
                                 </p>
                                 <div
-                                    class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400"
+                                    class="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     <span>{{ post.author?.name }}</span>
                                     <Link
@@ -296,10 +296,10 @@
                     </div>
 
                     <!-- Scheduled Column -->
-                    <div class="rounded-lg bg-gray-50 p-4 dark:bg-gray-900">
+                    <div class="rounded-lg bg-neutral-50 p-4 dark:bg-neutral-900">
                         <div class="mb-4 flex items-center justify-between">
                             <h3
-                                class="flex items-center font-semibold text-gray-900 dark:text-white"
+                                class="flex items-center font-semibold text-neutral-900 dark:text-white"
                             >
                                 <span
                                     class="mr-2 inline-block h-3 w-3 rounded-full bg-blue-500"
@@ -307,7 +307,7 @@
                                 Scheduled
                             </h3>
                             <span
-                                class="text-sm text-gray-500 dark:text-gray-400"
+                                class="text-sm text-neutral-500 dark:text-neutral-400"
                                 >{{ scheduledPosts.length }}</span
                             >
                         </div>
@@ -320,20 +320,20 @@
                                 @dragend="handleDragEnd"
                                 @drop="handleDrop($event, 'scheduled')"
                                 @dragover.prevent
-                                class="cursor-move rounded-lg border-l-4 border-blue-500 bg-white p-4 shadow transition-shadow hover:shadow-md dark:bg-gray-800"
+                                class="cursor-move rounded-lg border-l-4 border-blue-500 bg-white p-4 shadow transition-shadow hover:shadow-md dark:bg-neutral-800"
                             >
                                 <h4
-                                    class="mb-1 font-medium text-gray-900 dark:text-white"
+                                    class="mb-1 font-medium text-neutral-900 dark:text-white"
                                 >
                                     {{ post.title }}
                                 </h4>
                                 <p
-                                    class="mb-2 line-clamp-2 text-sm text-gray-500 dark:text-gray-400"
+                                    class="mb-2 line-clamp-2 text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     {{ post.excerpt }}
                                 </p>
                                 <div
-                                    class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400"
+                                    class="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     <span>{{
                                         formatDate(post.published_at)
@@ -350,10 +350,10 @@
                     </div>
 
                     <!-- Published Column -->
-                    <div class="rounded-lg bg-gray-50 p-4 dark:bg-gray-900">
+                    <div class="rounded-lg bg-neutral-50 p-4 dark:bg-neutral-900">
                         <div class="mb-4 flex items-center justify-between">
                             <h3
-                                class="flex items-center font-semibold text-gray-900 dark:text-white"
+                                class="flex items-center font-semibold text-neutral-900 dark:text-white"
                             >
                                 <span
                                     class="mr-2 inline-block h-3 w-3 rounded-full bg-green-500"
@@ -361,7 +361,7 @@
                                 Published
                             </h3>
                             <span
-                                class="text-sm text-gray-500 dark:text-gray-400"
+                                class="text-sm text-neutral-500 dark:text-neutral-400"
                                 >{{ publishedPosts.length }}</span
                             >
                         </div>
@@ -374,20 +374,20 @@
                                 @dragend="handleDragEnd"
                                 @drop="handleDrop($event, 'published')"
                                 @dragover.prevent
-                                class="cursor-move rounded-lg border-l-4 border-green-500 bg-white p-4 shadow transition-shadow hover:shadow-md dark:bg-gray-800"
+                                class="cursor-move rounded-lg border-l-4 border-green-500 bg-white p-4 shadow transition-shadow hover:shadow-md dark:bg-neutral-800"
                             >
                                 <h4
-                                    class="mb-1 font-medium text-gray-900 dark:text-white"
+                                    class="mb-1 font-medium text-neutral-900 dark:text-white"
                                 >
                                     {{ post.title }}
                                 </h4>
                                 <p
-                                    class="mb-2 line-clamp-2 text-sm text-gray-500 dark:text-gray-400"
+                                    class="mb-2 line-clamp-2 text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     {{ post.excerpt }}
                                 </p>
                                 <div
-                                    class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400"
+                                    class="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     <span>{{
                                         formatDate(post.published_at)
@@ -408,7 +408,7 @@
             <!-- Archived Tab -->
             <div
                 v-else-if="activeTab === 'archived'"
-                class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800"
+                class="overflow-hidden rounded-lg bg-white shadow dark:bg-neutral-800"
             >
                 <div v-if="loadingArchived" class="p-8 text-center">
                     <div
@@ -421,35 +421,35 @@
                 >
                     <Icon
                         name="archive-box"
-                        class="mx-auto h-12 w-12 text-gray-400"
+                        class="mx-auto h-12 w-12 text-neutral-400"
                     />
                     <h3
-                        class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
+                        class="mt-2 text-sm font-medium text-neutral-900 dark:text-white"
                     >
                         No archived posts
                     </h3>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                         Deleted posts will appear here.
                     </p>
                 </div>
                 <table
                     v-else
-                    class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+                    class="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700"
                 >
-                    <thead class="bg-gray-50 dark:bg-gray-900">
+                    <thead class="bg-neutral-50 dark:bg-neutral-900">
                         <tr>
                             <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                                class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase dark:text-neutral-400"
                             >
                                 Title
                             </th>
                             <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                                class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase dark:text-neutral-400"
                             >
                                 Author
                             </th>
                             <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                                class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase dark:text-neutral-400"
                             >
                                 Deleted
                             </th>
@@ -459,32 +459,32 @@
                         </tr>
                     </thead>
                     <tbody
-                        class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800"
+                        class="divide-y divide-neutral-200 bg-white dark:divide-neutral-700 dark:bg-neutral-800"
                     >
                         <tr
                             v-for="post in archivedPosts"
                             :key="post.id"
-                            class="hover:bg-gray-50 dark:hover:bg-gray-700"
+                            class="hover:bg-neutral-50 dark:hover:bg-neutral-700"
                         >
                             <td class="px-6 py-4">
                                 <p
-                                    class="text-sm font-medium text-gray-900 dark:text-white"
+                                    class="text-sm font-medium text-neutral-900 dark:text-white"
                                 >
                                     {{ post.title }}
                                 </p>
                                 <p
-                                    class="text-sm text-gray-500 dark:text-gray-400"
+                                    class="text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     {{ post.excerpt || 'No excerpt' }}
                                 </p>
                             </td>
                             <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white"
+                                class="px-6 py-4 text-sm whitespace-nowrap text-neutral-900 dark:text-white"
                             >
                                 {{ post.author?.name }}
                             </td>
                             <td
-                                class="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
+                                class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500 dark:text-neutral-400"
                             >
                                 {{ formatDate(post.deleted_at) }}
                             </td>
@@ -667,7 +667,7 @@ function getStatusClass(status: string) {
     };
     return (
         classes[status] ||
-        'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+        'bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200'
     );
 }
 

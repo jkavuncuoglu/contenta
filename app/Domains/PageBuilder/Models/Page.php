@@ -20,13 +20,16 @@ class Page extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
-    protected $table = 'pagebuilder_pages';
+    protected $table = 'pages';
 
     protected $fillable = [
         'title',
         'slug',
         'layout_id',
+        'layout_template',
         'data',
+        'markdown_content',
+        'content_type',
         'published_html',
         'status',
         'meta_title',
@@ -38,19 +41,33 @@ class Page extends Model
 
     protected $casts = [
         'data' => 'array',
+        'markdown_content' => 'string',
         'published_html' => 'string',
         'schema_data' => 'array',
     ];
 
     protected $attributes = [
         'status' => 'draft',
-        'data' => '{"layout": "default", "sections": []}',
+        'content_type' => 'markdown',  // Changed default from 'legacy' to 'markdown'
+        'data' => '[]',  // Empty array for markdown pages (legacy pages will override this)
     ];
+
+    /**
+     * Boot the model
+     */
+    protected static function booted(): void
+    {
+        static::observe(\App\Domains\PageBuilder\Observers\PageObserver::class);
+    }
 
     // Status constants
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
     const STATUS_ARCHIVED = 'archived';
+
+    // Content type constants
+    const CONTENT_TYPE_LEGACY = 'legacy';
+    const CONTENT_TYPE_MARKDOWN = 'markdown';
 
     /**
      * Get the layout that the page belongs to
@@ -143,12 +160,57 @@ class Page extends Model
     }
 
     /**
+     * Check if page uses markdown content
+     */
+    public function isMarkdown(): bool
+    {
+        return $this->content_type === self::CONTENT_TYPE_MARKDOWN;
+    }
+
+    /**
+     * Check if page uses legacy builder content
+     */
+    public function isLegacy(): bool
+    {
+        return $this->content_type === self::CONTENT_TYPE_LEGACY;
+    }
+
+    /**
+     * Get the content based on content type
+     */
+    public function getContent(): ?string
+    {
+        return $this->isMarkdown() ? $this->markdown_content : json_encode($this->data);
+    }
+
+    /**
+     * Get the layout template name for markdown pages
+     */
+    public function getLayoutTemplateName(): string
+    {
+        return $this->layout_template ?? 'default';
+    }
+
+    /**
+     * Get available content types
+     *
+     * @return array<string, string>
+     */
+    public static function getContentTypes(): array
+    {
+        return [
+            self::CONTENT_TYPE_LEGACY => 'Page Builder (Legacy)',
+            self::CONTENT_TYPE_MARKDOWN => 'Markdown + Shortcodes',
+        ];
+    }
+
+    /**
      * Activity log options
      */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['title', 'slug', 'status'])
+            ->logOnly(['title', 'slug', 'status', 'content_type'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }

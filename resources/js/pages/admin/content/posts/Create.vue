@@ -1,23 +1,23 @@
 <template>
     <Head title="Create Post" />
     <AppLayout>
-        <div class="mx-auto max-w-7xl space-y-6 p-4">
+        <div class="mx-auto space-y-6 p-4">
             <!-- Page header -->
             <div class="flex items-center justify-between">
                 <div>
                     <h1
-                        class="text-2xl font-semibold text-gray-900 dark:text-white"
+                        class="text-2xl font-semibold text-neutral-900 dark:text-white"
                     >
                         Create New Post
                     </h1>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                         Write and publish your new blog post or article
                     </p>
                 </div>
                 <div class="flex items-center space-x-3">
                     <Link
                         href="/admin/posts"
-                        class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                        class="rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
                     >
                         Cancel
                     </Link>
@@ -30,12 +30,12 @@
                     <div class="space-y-6 lg:col-span-2">
                         <!-- Title -->
                         <div
-                            class="rounded-lg bg-white p-6 shadow dark:bg-gray-800"
+                            class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
                         >
                             <div>
                                 <label
                                     for="title"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Title *
                                 </label>
@@ -44,7 +44,7 @@
                                     v-model="form.title"
                                     type="text"
                                     required
-                                    class="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    class="mt-1 block w-full rounded-md border-neutral-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                     placeholder="Enter your post title..."
                                     @input="generateSlug"
                                 />
@@ -60,13 +60,13 @@
                             <div class="mt-4">
                                 <label
                                     for="slug"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Slug
                                 </label>
                                 <div class="mt-1 flex rounded-md shadow-sm">
                                     <span
-                                        class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400"
+                                        class="inline-flex items-center rounded-l-md border border-r-0 border-neutral-300 bg-neutral-50 px-3 text-sm text-neutral-500 dark:border-neutral-600 dark:bg-neutral-600 dark:text-neutral-400"
                                     >
                                         posts/
                                     </span>
@@ -74,7 +74,7 @@
                                         id="slug"
                                         v-model="form.slug"
                                         type="text"
-                                        class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border border-gray-300 p-2 px-3 py-2 focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border border-neutral-300 p-2 px-3 py-2 focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="post-slug"
                                     />
                                 </div>
@@ -87,26 +87,33 @@
                             </div>
                         </div>
 
-                        <MdEditor
-                            v-model="form.content_markdown"
-                            language="en-US"
-                            :theme="theme"
-                        />
-
+                        <!-- Markdown Editor with Shortcode Support -->
                         <div
-                            v-if="errors.content_markdown"
-                            class="mt-1 text-sm text-red-600 dark:text-red-400"
+                            class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
                         >
-                            {{ errors.content_markdown[0] }}
+                            <label
+                                class="mb-4 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                            >
+                                Content *
+                            </label>
+                            <MarkdownPageEditor
+                                v-model="form.content_markdown"
+                            />
+                            <div
+                                v-if="errors.content_markdown"
+                                class="mt-2 text-sm text-red-600 dark:text-red-400"
+                            >
+                                {{ errors.content_markdown[0] }}
+                            </div>
                         </div>
 
                         <!-- Excerpt -->
                         <div
-                            class="rounded-lg bg-white p-6 shadow dark:bg-gray-800"
+                            class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
                         >
                             <label
                                 for="excerpt"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Excerpt
                             </label>
@@ -114,11 +121,11 @@
                                 id="excerpt"
                                 v-model="form.excerpt"
                                 rows="3"
-                                class="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                class="mt-1 block w-full rounded-md border-neutral-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                 placeholder="Optional excerpt for post previews..."
                             ></textarea>
                             <p
-                                class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 Brief description of your post. If left empty,
                                 it will be generated automatically.
@@ -136,10 +143,10 @@
                     <div class="space-y-6">
                         <!-- Publish -->
                         <div
-                            class="rounded-lg bg-white p-6 shadow dark:bg-gray-800"
+                            class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
                         >
                             <h3
-                                class="mb-4 text-lg font-medium text-gray-900 dark:text-white"
+                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
                             >
                                 Publish
                             </h3>
@@ -148,14 +155,14 @@
                                 <div>
                                     <label
                                         for="status"
-                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                     >
                                         Status
                                     </label>
                                     <select
                                         id="status"
                                         v-model="form.status"
-                                        class="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="mt-1 block w-full rounded-md border-neutral-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                     >
                                         <option value="draft">Draft</option>
                                         <option value="published">
@@ -176,43 +183,40 @@
                                     <div>
                                         <label
                                             for="published_date"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                                            >Publish Date</label
                                         >
-                                            Publish Date
-                                        </label>
                                         <input
                                             id="published_date"
                                             v-model="publishDate"
                                             type="date"
-                                            class="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                            class="mt-1 block w-full rounded-md border-neutral-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         />
                                     </div>
                                     <div>
                                         <label
                                             for="published_time"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                                            >Publish Time</label
                                         >
-                                            Publish Time
-                                        </label>
                                         <input
                                             id="published_time"
                                             v-model="publishTime"
                                             type="time"
                                             step="60"
-                                            class="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                            class="mt-1 block w-full rounded-md border-neutral-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         />
                                     </div>
                                     <div>
                                         <label
                                             for="timezone"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                                            >Timezone</label
                                         >
-                                            Timezone
-                                        </label>
                                         <select
                                             id="timezone"
                                             v-model="selectedTimezone"
-                                            class="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                            class="mt-1 block w-full rounded-md border-neutral-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-300"
                                         >
                                             <option value="UTC">UTC</option>
                                             <option value="America/New_York">
@@ -250,7 +254,7 @@
                                             </option>
                                         </select>
                                         <p
-                                            class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                            class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                         >
                                             Time will be converted to UTC for
                                             storage
@@ -266,26 +270,21 @@
                                     :disabled="loading"
                                     class="flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                 >
-                                    <span
-                                        v-if="loading"
-                                        class="flex items-center"
-                                    >
-                                        <div
+                                    <span v-if="loading">
+                                        <span
                                             class="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-white"
-                                        ></div>
+                                        ></span>
                                         {{
                                             form.status === 'published'
                                                 ? 'Publishing...'
                                                 : 'Saving...'
                                         }}
                                     </span>
-                                    <span v-else>
-                                        {{
-                                            form.status === 'published'
-                                                ? 'Publish'
-                                                : 'Save Draft'
-                                        }}
-                                    </span>
+                                    <span v-else>{{
+                                        form.status === 'published'
+                                            ? 'Publish'
+                                            : 'Save Draft'
+                                    }}</span>
                                 </button>
 
                                 <button
@@ -293,7 +292,7 @@
                                     @click="publishNow"
                                     type="button"
                                     :disabled="loading"
-                                    class="flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                                    class="flex w-full justify-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-600"
                                 >
                                     Save & Publish
                                 </button>
@@ -302,29 +301,27 @@
 
                         <!-- Categories -->
                         <div
-                            class="rounded-lg bg-white p-6 shadow dark:bg-gray-800"
+                            class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
                         >
                             <h3
-                                class="mb-4 text-lg font-medium text-gray-900 dark:text-white"
+                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
                             >
                                 Categories
                             </h3>
                             <div class="space-y-2">
-                                <!-- TODO: Load categories dynamically -->
                                 <div class="flex items-center">
                                     <input
                                         id="category-1"
                                         type="checkbox"
                                         value="1"
                                         v-model="form.categories"
-                                        class="h-4 w-4 rounded border-gray-300 p-2 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+                                        class="h-4 w-4 rounded border-neutral-300 p-2 text-blue-600 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700"
                                     />
                                     <label
                                         for="category-1"
-                                        class="ml-2 block text-sm text-gray-900 dark:text-white"
+                                        class="ml-2 block text-sm text-neutral-900 dark:text-white"
+                                        >Technology</label
                                     >
-                                        Technology
-                                    </label>
                                 </div>
                                 <div class="flex items-center">
                                     <input
@@ -332,24 +329,23 @@
                                         type="checkbox"
                                         value="2"
                                         v-model="form.categories"
-                                        class="h-4 w-4 rounded border-gray-300 p-2 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+                                        class="h-4 w-4 rounded border-neutral-300 p-2 text-blue-600 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700"
                                     />
                                     <label
                                         for="category-2"
-                                        class="ml-2 block text-sm text-gray-900 dark:text-white"
+                                        class="ml-2 block text-sm text-neutral-900 dark:text-white"
+                                        >Programming</label
                                     >
-                                        Programming
-                                    </label>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Tags -->
                         <div
-                            class="rounded-lg bg-white p-6 shadow dark:bg-gray-800"
+                            class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
                         >
                             <h3
-                                class="mb-4 text-lg font-medium text-gray-900 dark:text-white"
+                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
                             >
                                 Tags
                             </h3>
@@ -360,10 +356,10 @@
                                     @keydown.enter.prevent="addTag"
                                     @keydown="handleTagKeydown"
                                     placeholder="Add tags separated by commas or press Enter"
-                                    class="block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    class="block w-full rounded-md border-neutral-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                 />
                                 <p
-                                    class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Press Enter or comma to add tags
                                 </p>
@@ -399,67 +395,14 @@
 
 <script setup lang="ts">
 import Icon from '@/components/Icon.vue';
+import MarkdownPageEditor from '@/components/PageBuilder/MarkdownPageEditor.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { usePostsStore } from '@/stores/posts';
 import type { PostForm } from '@/types';
 import { Head, Link, router } from '@inertiajs/vue3';
-import { MdEditor, config } from 'md-editor-v3';
-import 'md-editor-v3/lib/style.css';
+import { marked } from 'marked';
 import { reactive, ref } from 'vue';
 
-// Import required libraries for MdEditor features
-import Cropper from 'cropperjs';
-import 'cropperjs/dist/cropper.css';
-import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css';
-import katex from 'katex';
-import 'katex/dist/katex.min.css';
-import { marked } from 'marked';
-import mermaid from 'mermaid';
-import prettier from 'prettier';
-import parserBabel from 'prettier/plugins/babel';
-import parserEstree from 'prettier/plugins/estree';
-import parserMarkdown from 'prettier/plugins/markdown';
-import screenfull from 'screenfull';
-
-// Configure MdEditor globally with extensions
-config({
-    editorExtensions: {
-        screenfull: {
-            instance: screenfull,
-        },
-        katex: {
-            instance: katex,
-        },
-        cropper: {
-            instance: Cropper,
-        },
-        highlight: {
-            instance: hljs,
-        },
-        mermaid: {
-            instance: mermaid,
-        },
-        prettier: {
-            prettierInstance: prettier,
-            parserMarkdownInstance: parserMarkdown,
-            parserBabelInstance: parserBabel,
-            parserEstreeInstance: parserEstree,
-        },
-    },
-    editorConfig: {
-        languageUserDefined: {
-            'en-US': {
-                // English language configuration
-            },
-        },
-    },
-});
-
-const postsStore = usePostsStore();
-
 const errors = ref<Record<string, string[]>>({});
-
 const loading = ref(false);
 const tagInput = ref('');
 
@@ -467,17 +410,6 @@ const tagInput = ref('');
 const publishDate = ref('');
 const publishTime = ref('');
 const selectedTimezone = ref(Intl.DateTimeFormat().resolvedOptions().timeZone);
-
-const form = reactive<PostForm>({
-    title: '',
-    slug: '',
-    content_markdown: '',
-    excerpt: '',
-    status: 'draft',
-    categories: [],
-    tags: [],
-    custom_fields: {},
-});
 
 // Helper function to convert local datetime to UTC
 const convertToUTC = (date: string, time: string, timezone: string): string => {
@@ -489,7 +421,7 @@ const convertToUTC = (date: string, time: string, timezone: string): string => {
     // Parse the date in the selected timezone
     const localDate = new Date(dateTimeStr);
 
-    // Get timezone offset in minutes
+    // Use Intl formatter to get parts in the chosen timezone
     const formatter = new Intl.DateTimeFormat('en-US', {
         timeZone: timezone,
         year: 'numeric',
@@ -524,6 +456,17 @@ const convertToUTC = (date: string, time: string, timezone: string): string => {
     return finalDate.toISOString();
 };
 
+const form = reactive<PostForm>({
+    title: '',
+    slug: '',
+    content_markdown: '',
+    excerpt: '',
+    status: 'draft',
+    categories: [],
+    tags: [],
+    custom_fields: {},
+});
+
 const generateSlug = () => {
     if (!form.slug && form.title) {
         form.slug = form.title
@@ -540,12 +483,6 @@ const addTag = () => {
     }
     tagInput.value = '';
 };
-
-console.log(localStorage.getItem('appearance'));
-
-const theme = ref<'light' | 'dark'>(
-    localStorage.getItem('appearance') === 'dark' ? 'dark' : 'light',
-);
 
 const handleTagKeydown = (e: KeyboardEvent) => {
     if (e.key === ',') {
@@ -598,24 +535,29 @@ const handleSubmit = async () => {
         );
     }
 
-    const result = await postsStore.createPost({
-        ...form,
-        content_html: htmlContent,
-        table_of_contents: tableOfContents,
-        published_at: publishedAtUTC,
-    });
-
-    if (result.success) {
-        // navigate with Inertia router
-        router.visit('/admin/posts');
-    } else {
-        if (result.error) {
-            // Handle validation errors or general errors
-            errors.value = { general: [result.error] };
-        }
-    }
-
-    loading.value = false;
+    router.post(
+        '/admin/posts',
+        {
+            ...form,
+            content_html: htmlContent,
+            table_of_contents: tableOfContents,
+            published_at: publishedAtUTC,
+        },
+        {
+            onSuccess: () => {
+                router.visit('/admin/posts');
+            },
+            onError: (err) => {
+                if (err && typeof err === 'object') {
+                    errors.value = err as unknown as Record<string, string[]>;
+                }
+                loading.value = false;
+            },
+            onFinish: () => {
+                loading.value = false;
+            },
+        },
+    );
 };
 
 const publishNow = async () => {

@@ -11,39 +11,39 @@
             </button>
         </div>
 
-        <div v-if="loading" class="text-gray-500">Loading backups...</div>
+        <div v-if="loading" class="text-neutral-500">Loading backups...</div>
         <div v-else-if="error" class="text-red-600">{{ error }}</div>
 
         <div v-else>
             <table
-                class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+                class="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700"
             >
-                <thead class="bg-gray-50 dark:bg-gray-800">
+                <thead class="bg-neutral-50 dark:bg-neutral-800">
                     <tr>
                         <th
-                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
                         >
                             Name
                         </th>
                         <th
-                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
                         >
                             Created
                         </th>
                     </tr>
                 </thead>
                 <tbody
-                    class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900"
+                    class="divide-y divide-neutral-200 bg-white dark:divide-neutral-700 dark:bg-neutral-900"
                 >
                     <tr v-for="b in backups" :key="b.name">
                         <td class="px-4 py-2">{{ b.name }}</td>
-                        <td class="px-4 py-2 text-gray-500">
+                        <td class="px-4 py-2 text-neutral-500">
                             {{ b.created_at }}
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <p v-if="!backups.length" class="mt-3 text-gray-500">
+            <p v-if="!backups.length" class="mt-3 text-neutral-500">
                 No backups found.
             </p>
         </div>

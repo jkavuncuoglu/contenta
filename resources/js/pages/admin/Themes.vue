@@ -1,14 +1,14 @@
 <template>
     <div class="p-6">
         <h1 class="mb-4 text-2xl font-bold">Themes</h1>
-        <p class="mb-4 text-gray-600">Manage installed themes.</p>
+        <p class="mb-4 text-neutral-600">Manage installed themes.</p>
 
-        <div v-if="loading" class="text-gray-500">Loading themes...</div>
+        <div v-if="loading" class="text-neutral-500">Loading themes...</div>
         <div v-else-if="error" class="text-red-600">{{ error }}</div>
         <ul v-else class="ml-6 list-disc">
             <li v-for="theme in themes" :key="theme.name">
                 {{ theme.name }}
-                <span class="text-gray-500">v{{ theme.version }}</span>
+                <span class="text-neutral-500">v{{ theme.version }}</span>
             </li>
         </ul>
     </div>

@@ -13,39 +13,39 @@
                 />
             </div>
             <table
-                class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+                class="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700"
             >
-                <thead class="bg-gray-50 dark:bg-gray-800">
+                <thead class="bg-neutral-50 dark:bg-neutral-800">
                     <tr>
                         <th
-                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
                         >
                             Name
                         </th>
                         <th
-                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
                         >
                             Email
                         </th>
                         <th
-                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
                         >
                             Roles
                         </th>
                         <th
-                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                            class="px-4 py-2 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
                         >
                             Actions
                         </th>
                     </tr>
                 </thead>
                 <tbody
-                    class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900"
+                    class="divide-y divide-neutral-200 bg-white dark:divide-neutral-700 dark:bg-neutral-900"
                 >
                     <tr v-for="user in filteredUsers" :key="user.id">
                         <td class="px-4 py-2">{{ user.name }}</td>
                         <td class="px-4 py-2">{{ user.email }}</td>
-                        <td class="px-4 py-2 text-gray-500">
+                        <td class="px-4 py-2 text-neutral-500">
                             {{ (user.roles || []).join(', ') }}
                         </td>
                         <td class="flex gap-2 px-4 py-2">

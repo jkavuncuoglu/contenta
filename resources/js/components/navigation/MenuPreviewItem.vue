@@ -5,7 +5,7 @@
             :href="item.url || '#'"
             :target="item.target"
             :class="item.css_classes"
-            class="flex items-center gap-2 rounded-md px-4 py-2 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+            class="flex items-center gap-2 rounded-md px-4 py-2 text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
         >
             <!-- Icon -->
             <span
@@ -37,7 +37,7 @@
         <!-- Desktop Dropdown for Children -->
         <ul
             v-if="hasVisibleChildren"
-            class="invisible absolute top-full left-0 z-10 mt-1 min-w-[200px] rounded-lg border border-gray-200 bg-white opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 dark:border-gray-700 dark:bg-gray-800"
+            class="invisible absolute top-full left-0 z-10 mt-1 min-w-[200px] rounded-lg border border-neutral-200 bg-white opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 dark:border-neutral-700 dark:bg-neutral-800"
         >
             <MenuPreviewItem
                 v-for="child in visibleChildren"
@@ -55,7 +55,7 @@
             :href="item.url || '#'"
             :target="item.target"
             :class="item.css_classes"
-            class="flex items-center justify-between gap-2 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+            class="flex items-center justify-between gap-2 px-4 py-2 text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
         >
             <span class="flex items-center gap-2">
                 <span
@@ -85,7 +85,7 @@
         <!-- Nested Dropdown -->
         <ul
             v-if="hasVisibleChildren"
-            class="invisible absolute top-0 left-full ml-1 min-w-[200px] rounded-lg border border-gray-200 bg-white opacity-0 shadow-lg transition-all group-hover/submenu:visible group-hover/submenu:opacity-100 dark:border-gray-700 dark:bg-gray-800"
+            class="invisible absolute top-0 left-full ml-1 min-w-[200px] rounded-lg border border-neutral-200 bg-white opacity-0 shadow-lg transition-all group-hover/submenu:visible group-hover/submenu:opacity-100 dark:border-neutral-700 dark:bg-neutral-800"
         >
             <MenuPreviewItem
                 v-for="child in visibleChildren"
@@ -102,7 +102,7 @@
         <button
             v-if="hasVisibleChildren"
             @click="mobileExpanded = !mobileExpanded"
-            class="flex w-full items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+            class="flex w-full items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
             :style="{ paddingLeft: `${level * 16 + 12}px` }"
         >
             <span class="flex items-center gap-2">
@@ -135,7 +135,7 @@
             :href="item.url || '#'"
             :target="item.target"
             :class="item.css_classes"
-            class="flex items-center gap-2 rounded-md px-3 py-2 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+            class="flex items-center gap-2 rounded-md px-3 py-2 text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
             :style="{ paddingLeft: `${level * 16 + 12}px` }"
         >
             <span

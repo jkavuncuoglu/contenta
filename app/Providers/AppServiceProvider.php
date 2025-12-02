@@ -36,6 +36,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register console commands after all service bindings are in place
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \App\Console\Commands\MigrateToMarkdownCommand::class,
+            ]);
+        }
     }
 }

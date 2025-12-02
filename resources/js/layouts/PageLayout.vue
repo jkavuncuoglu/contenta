@@ -1,5 +1,5 @@
 <template>
-    <div class="flex min-h-screen flex-col bg-white dark:bg-gray-900">
+    <div class="flex min-h-screen flex-col bg-white dark:bg-neutral-900">
         <!-- Header -->
         <SiteHeader
             :navigation="navigation.primary"

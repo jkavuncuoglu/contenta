@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\PageBuilder;
 
-use App\Domains\PageBuilder\Services\PageBuilderService;
-use App\Domains\PageBuilder\Services\PageBuilderServiceContract;
 use App\Domains\PageBuilder\Services\PageRenderService;
 use App\Domains\PageBuilder\Services\PageRenderServiceContract;
+use App\Domains\PageBuilder\Services\MarkdownRenderService;
+use App\Domains\PageBuilder\Services\MarkdownRenderServiceContract;
 use Illuminate\Support\ServiceProvider;
 
 class PageBuilderServiceProvider extends ServiceProvider
@@ -17,12 +17,14 @@ class PageBuilderServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(PageBuilderServiceContract::class, function ($app) {
-            return new PageBuilderService();
-        });
-
         $this->app->singleton(PageRenderServiceContract::class, function ($app) {
             return new PageRenderService();
+        });
+
+        $this->app->singleton(MarkdownRenderServiceContract::class, function ($app) {
+            return new MarkdownRenderService(
+                $app->make(\App\Domains\ContentManagement\Services\ShortcodeParser\ShortcodeParserServiceContract::class)
+            );
         });
     }
 

@@ -58,7 +58,7 @@ initDarkMode();
 
 <template>
     <header
-        class="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-colors dark:border-gray-800 dark:bg-gray-900/95"
+        class="sticky top-0 z-50 border-b border-neutral-200 bg-white/95 backdrop-blur-sm transition-colors dark:border-neutral-800 dark:bg-neutral-900/95"
     >
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between md:h-20">
@@ -84,7 +84,7 @@ initDarkMode();
                             }}</span>
                         </div>
                         <span
-                            class="text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600 md:text-2xl dark:text-white dark:group-hover:text-blue-400"
+                            class="text-xl font-bold text-neutral-900 transition-colors group-hover:text-blue-600 md:text-2xl dark:text-white dark:group-hover:text-blue-400"
                         >
                             {{ siteName }}
                         </span>
@@ -99,7 +99,7 @@ initDarkMode();
                             class="group relative"
                         >
                             <button
-                                class="flex items-center rounded-lg px-4 py-2 font-medium text-gray-700 transition-all duration-200 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-blue-400"
+                                class="flex items-center rounded-lg px-4 py-2 font-medium text-neutral-700 transition-all duration-200 hover:bg-neutral-50 hover:text-blue-600 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-blue-400"
                             >
                                 {{ item.title }}
                                 <Icon
@@ -109,14 +109,14 @@ initDarkMode();
                             </button>
                             <!-- Dropdown -->
                             <div
-                                class="invisible absolute left-0 mt-2 w-48 rounded-lg border border-gray-200 bg-white opacity-0 shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100 dark:border-gray-700 dark:bg-gray-800"
+                                class="invisible absolute left-0 mt-2 w-48 rounded-lg border border-neutral-200 bg-white opacity-0 shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100 dark:border-neutral-700 dark:bg-neutral-800"
                             >
                                 <Link
                                     v-for="child in item.children"
                                     :key="child.id"
                                     :href="child.url"
                                     :target="child.target || '_self'"
-                                    class="block px-4 py-2 text-gray-700 transition-colors first:rounded-t-lg last:rounded-b-lg hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-blue-400"
+                                    class="block px-4 py-2 text-neutral-700 transition-colors first:rounded-t-lg last:rounded-b-lg hover:bg-neutral-50 hover:text-blue-600 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-blue-400"
                                 >
                                     {{ child.title }}
                                 </Link>
@@ -126,7 +126,7 @@ initDarkMode();
                             v-else
                             :href="item.url"
                             :target="item.target || '_self'"
-                            class="rounded-lg px-4 py-2 font-medium text-gray-700 transition-all duration-200 hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-blue-400"
+                            class="rounded-lg px-4 py-2 font-medium text-neutral-700 transition-all duration-200 hover:bg-neutral-50 hover:text-blue-600 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-blue-400"
                         >
                             {{ item.title }}
                         </Link>
@@ -138,7 +138,7 @@ initDarkMode();
                     <!-- Dark Mode Toggle -->
                     <button
                         @click="toggleDarkMode"
-                        class="rounded-lg p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                        class="rounded-lg p-2 text-neutral-600 transition-colors hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
                         aria-label="Toggle dark mode"
                     >
                         <Icon
@@ -166,7 +166,7 @@ initDarkMode();
                     <template v-else>
                         <Link
                             :href="login.url()"
-                            class="hidden px-4 py-2 font-medium text-gray-700 transition-colors hover:text-blue-600 md:inline-flex dark:text-gray-300 dark:hover:text-blue-400"
+                            class="hidden px-4 py-2 font-medium text-neutral-700 transition-colors hover:text-blue-600 md:inline-flex dark:text-neutral-300 dark:hover:text-blue-400"
                         >
                             Sign In
                         </Link>
@@ -181,7 +181,7 @@ initDarkMode();
                     <!-- Mobile Menu Button -->
                     <button
                         @click="mobileMenuOpen = !mobileMenuOpen"
-                        class="rounded-lg p-2 text-gray-600 transition-colors hover:bg-gray-100 md:hidden dark:text-gray-400 dark:hover:bg-gray-800"
+                        class="rounded-lg p-2 text-neutral-600 transition-colors hover:bg-neutral-100 md:hidden dark:text-neutral-400 dark:hover:bg-neutral-800"
                         aria-label="Toggle menu"
                     >
                         <Icon
@@ -205,7 +205,7 @@ initDarkMode();
             >
                 <div
                     v-if="mobileMenuOpen"
-                    class="border-t border-gray-200 py-4 md:hidden dark:border-gray-800"
+                    class="border-t border-neutral-200 py-4 md:hidden dark:border-neutral-800"
                 >
                     <nav class="flex flex-col space-y-1">
                         <template v-for="item in navigation" :key="item.id">
@@ -214,7 +214,7 @@ initDarkMode();
                                 v-if="item.children && item.children.length > 0"
                             >
                                 <div
-                                    class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300"
+                                    class="px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300"
                                 >
                                     {{ item.title }}
                                 </div>
@@ -223,7 +223,7 @@ initDarkMode();
                                     :key="child.id"
                                     :href="child.url"
                                     :target="child.target || '_self'"
-                                    class="block rounded-lg px-6 py-2 text-gray-600 transition-colors hover:bg-gray-50 hover:text-blue-600 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-blue-400"
+                                    class="block rounded-lg px-6 py-2 text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-blue-600 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-blue-400"
                                     @click="mobileMenuOpen = false"
                                 >
                                     {{ child.title }}
@@ -234,7 +234,7 @@ initDarkMode();
                                 v-else
                                 :href="item.url"
                                 :target="item.target || '_self'"
-                                class="rounded-lg px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-blue-400"
+                                class="rounded-lg px-4 py-3 font-medium text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-blue-600 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-blue-400"
                                 @click="mobileMenuOpen = false"
                             >
                                 {{ item.title }}
@@ -242,13 +242,13 @@ initDarkMode();
                         </template>
 
                         <div
-                            class="my-2 border-t border-gray-200 dark:border-gray-800"
+                            class="my-2 border-t border-neutral-200 dark:border-neutral-800"
                         ></div>
 
                         <template v-if="user">
                             <Link
                                 :href="adminDashboard.index.url()"
-                                class="rounded-lg px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-blue-400"
+                                class="rounded-lg px-4 py-3 font-medium text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-blue-600 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-blue-400"
                                 @click="mobileMenuOpen = false"
                             >
                                 <Icon
@@ -261,7 +261,7 @@ initDarkMode();
                         <template v-else>
                             <Link
                                 :href="login.url()"
-                                class="rounded-lg px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-blue-400"
+                                class="rounded-lg px-4 py-3 font-medium text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-blue-600 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-blue-400"
                                 @click="mobileMenuOpen = false"
                             >
                                 Sign In

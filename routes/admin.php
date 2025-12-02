@@ -19,7 +19,7 @@ Route::group([
 
     require __DIR__.'/admin/settings.php';
 
-    require __DIR__.'/admin/pagebuilder.php';
+    require __DIR__.'/admin/pages.php';
 
     require __DIR__.'/admin/navigation.php';
 

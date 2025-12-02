@@ -4,11 +4,11 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1
-                    class="text-2xl font-semibold text-gray-900 dark:text-white"
+                    class="text-2xl font-semibold text-neutral-900 dark:text-white"
                 >
                     Roles & Permissions
                 </h1>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                     Manage user roles and their permissions across the system.
                 </p>
             </div>
@@ -26,7 +26,7 @@
             <div
                 v-for="role in roles"
                 :key="role.id"
-                class="rounded-lg bg-white shadow dark:bg-gray-800"
+                class="rounded-lg bg-white shadow dark:bg-neutral-800"
             >
                 <div class="p-6">
                     <div class="mb-4 flex items-center justify-between">
@@ -39,12 +39,12 @@
                             </div>
                             <div class="ml-4">
                                 <h3
-                                    class="text-lg font-medium text-gray-900 dark:text-white"
+                                    class="text-lg font-medium text-neutral-900 dark:text-white"
                                 >
                                     {{ role.name }}
                                 </h3>
                                 <p
-                                    class="text-sm text-gray-500 dark:text-gray-400"
+                                    class="text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     {{ role.users_count || 0 }} users assigned
                                 </p>
@@ -53,7 +53,7 @@
                         <div class="flex items-center space-x-2">
                             <button
                                 @click="editRole(role)"
-                                class="p-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
+                                class="p-2 text-neutral-400 hover:text-neutral-500 dark:text-neutral-500 dark:hover:text-neutral-400"
                             >
                                 <Icon
                                     name="material-symbols-light:edit"
@@ -63,7 +63,7 @@
                             <button
                                 @click="confirmDeleteRole(role)"
                                 :disabled="role.name === 'super-admin'"
-                                class="p-2 text-gray-400 hover:text-red-500 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-500 dark:hover:text-red-400"
+                                class="p-2 text-neutral-400 hover:text-red-500 disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-500 dark:hover:text-red-400"
                             >
                                 <Icon
                                     name="material-symbols-light:delete"
@@ -76,7 +76,7 @@
                     <!-- Permissions Preview -->
                     <div class="space-y-3">
                         <h4
-                            class="text-sm font-medium text-gray-900 dark:text-white"
+                            class="text-sm font-medium text-neutral-900 dark:text-white"
                         >
                             Permissions
                         </h4>
@@ -96,7 +96,7 @@
                                     role.permissions &&
                                     role.permissions.length > 6
                                 "
-                                class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+                                class="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200"
                             >
                                 +{{ role.permissions.length - 6 }} more
                             </span>
@@ -107,7 +107,7 @@
                     <div class="mt-4 flex space-x-3">
                         <button
                             @click="viewRoleDetails(role)"
-                            class="flex-1 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                            class="flex-1 rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-600"
                         >
                             View Details
                         </button>
@@ -131,16 +131,16 @@
                 class="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0"
             >
                 <div
-                    class="bg-opacity-75 fixed inset-0 bg-gray-500 transition-opacity"
+                    class="bg-opacity-75 fixed inset-0 bg-neutral-500 transition-opacity"
                     @click="closeModal"
                 ></div>
 
                 <div
-                    class="inline-block transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6 sm:align-middle dark:bg-gray-800"
+                    class="inline-block transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6 sm:align-middle dark:bg-neutral-800"
                 >
                     <div class="mb-4">
                         <h3
-                            class="text-lg font-medium text-gray-900 dark:text-white"
+                            class="text-lg font-medium text-neutral-900 dark:text-white"
                         >
                             {{ selectedRole ? 'Edit Role' : 'Create New Role' }}
                         </h3>
@@ -151,7 +151,7 @@
                         <div>
                             <label
                                 for="role-name"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Role Name
                             </label>
@@ -160,7 +160,7 @@
                                 v-model="roleForm.name"
                                 type="text"
                                 required
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                 placeholder="Enter role name"
                             />
                         </div>
@@ -168,7 +168,7 @@
                         <!-- Permissions -->
                         <div>
                             <label
-                                class="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="mb-3 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Permissions
                             </label>
@@ -176,13 +176,13 @@
                                 <div
                                     v-for="group in permissionGroups"
                                     :key="group.name"
-                                    class="rounded-lg border p-4 dark:border-gray-600"
+                                    class="rounded-lg border p-4 dark:border-neutral-600"
                                 >
                                     <div
                                         class="mb-3 flex items-center justify-between"
                                     >
                                         <h4
-                                            class="text-sm font-medium text-gray-900 dark:text-white"
+                                            class="text-sm font-medium text-neutral-900 dark:text-white"
                                         >
                                             {{ group.name }}
                                         </h4>
@@ -210,10 +210,10 @@
                                                 v-model="roleForm.permissions"
                                                 :value="permission.id"
                                                 type="checkbox"
-                                                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+                                                class="rounded border-neutral-300 text-blue-600 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700"
                                             />
                                             <span
-                                                class="ml-2 text-sm text-gray-700 dark:text-gray-300"
+                                                class="ml-2 text-sm text-neutral-700 dark:text-neutral-300"
                                                 >{{
                                                     permission.display_name
                                                 }}</span
@@ -229,7 +229,7 @@
                             <button
                                 type="button"
                                 @click="closeModal"
-                                class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                                class="rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-600"
                             >
                                 Cancel
                             </button>

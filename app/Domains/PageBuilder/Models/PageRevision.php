@@ -15,7 +15,7 @@ class PageRevision extends Model
 {
     use HasFactory;
 
-    protected $table = 'pagebuilder_page_revisions';
+    protected $table = 'page_revisions';
 
     protected $fillable = [
         'page_id',
@@ -23,7 +23,10 @@ class PageRevision extends Model
         'title',
         'slug',
         'layout_id',
+        'layout_template',
         'data',
+        'markdown_content',
+        'content_type',
         'status',
         'meta_title',
         'meta_description',
@@ -35,6 +38,7 @@ class PageRevision extends Model
 
     protected $casts = [
         'data' => 'array',
+        'markdown_content' => 'string',
         'schema_data' => 'array',
     ];
 

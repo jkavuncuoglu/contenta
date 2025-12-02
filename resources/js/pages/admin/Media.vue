@@ -7,11 +7,11 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1
-                        class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                        class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white"
                     >
                         Media
                     </h1>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
                         Manage your media files and uploads
                     </p>
                 </div>
@@ -63,18 +63,18 @@
             </div>
 
             <!-- Media Grid -->
-            <div class="rounded-lg bg-white shadow dark:bg-gray-800">
+            <div class="rounded-lg bg-white shadow dark:bg-neutral-800">
                 <div v-if="!props.media.length" class="p-12 text-center">
                     <Icon
                         icon="material-symbols-light:image"
-                        class="mx-auto h-12 w-12 text-gray-400"
+                        class="mx-auto h-12 w-12 text-neutral-400"
                     />
                     <h3
-                        class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
+                        class="mt-2 text-sm font-medium text-neutral-900 dark:text-white"
                     >
                         No media files
                     </h3>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                         Get started by uploading your first media file.
                     </p>
                 </div>
@@ -86,7 +86,7 @@
                         <div
                             v-for="item in props.media"
                             :key="item.id"
-                            class="group relative aspect-square overflow-hidden rounded-lg bg-gray-100 transition-shadow hover:shadow-lg dark:bg-gray-700"
+                            class="group relative aspect-square overflow-hidden rounded-lg bg-neutral-100 transition-shadow hover:shadow-lg dark:bg-neutral-700"
                         >
                             <img
                                 v-if="item.type === 'image'"
@@ -100,7 +100,7 @@
                             >
                                 <Icon
                                     icon="material-symbols-light:description"
-                                    class="h-8 w-8 text-gray-400"
+                                    class="h-8 w-8 text-neutral-400"
                                 />
                             </div>
 
@@ -110,7 +110,7 @@
                                 <div class="flex space-x-2">
                                     <button
                                         @click="viewMedia(item)"
-                                        class="rounded-full bg-white p-2 text-gray-700 hover:bg-gray-100"
+                                        class="rounded-full bg-white p-2 text-neutral-700 hover:bg-neutral-100"
                                     >
                                         <Icon
                                             icon="material-symbols-light:visibility"
@@ -119,7 +119,7 @@
                                     </button>
                                     <button
                                         @click="deleteMedia(item)"
-                                        class="rounded-full bg-white p-2 text-red-600 hover:bg-gray-100"
+                                        class="rounded-full bg-white p-2 text-red-600 hover:bg-neutral-100"
                                     >
                                         <Icon
                                             icon="material-symbols-light:delete"

@@ -6,18 +6,18 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h2
-                        class="text-2xl font-bold text-gray-900 dark:text-white"
+                        class="text-2xl font-bold text-neutral-900 dark:text-white"
                     >
                         {{ menu.name }}
                     </h2>
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
                         Manage menu structure and settings
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
                     <button
                         @click="exportMenu"
-                        class="inline-flex items-center rounded-lg bg-gray-100 px-4 py-2 font-semibold text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                        class="inline-flex items-center rounded-lg bg-neutral-100 px-4 py-2 font-semibold text-neutral-700 transition-colors hover:bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-600"
                     >
                         <svg
                             class="mr-2 h-5 w-5"
@@ -36,7 +36,7 @@
                     </button>
                     <Link
                         :href="'/admin/menus'"
-                        class="inline-flex items-center rounded-lg bg-gray-100 px-4 py-2 font-semibold text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                        class="inline-flex items-center rounded-lg bg-neutral-100 px-4 py-2 font-semibold text-neutral-700 transition-colors hover:bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-600"
                     >
                         <svg
                             class="mr-2 h-5 w-5"
@@ -63,20 +63,20 @@
                 <div class="space-y-6 lg:col-span-8">
                     <!-- Menu Items Section -->
                     <div
-                        class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                        class="rounded-lg border border-neutral-200 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-800"
                     >
                         <div
-                            class="border-b border-gray-200 p-6 dark:border-gray-700"
+                            class="border-b border-neutral-200 p-6 dark:border-neutral-700"
                         >
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3
-                                        class="text-lg font-semibold text-gray-900 dark:text-white"
+                                        class="text-lg font-semibold text-neutral-900 dark:text-white"
                                     >
                                         Menu Structure
                                     </h3>
                                     <p
-                                        class="mt-1 text-sm text-gray-600 dark:text-gray-400"
+                                        class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
                                     >
                                         Drag and drop to reorder. Click to edit.
                                     </p>
@@ -108,7 +108,7 @@
                         <!-- Source Selector (collapsible) -->
                         <div
                             v-if="showSourceSelector"
-                            class="border-b border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-900"
+                            class="border-b border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-700 dark:bg-neutral-900"
                         >
                             <MenuSourceSelector
                                 :menu-id="menu.id"
@@ -133,7 +133,7 @@
                                 class="py-12 text-center"
                             >
                                 <svg
-                                    class="mx-auto h-12 w-12 text-gray-400"
+                                    class="mx-auto h-12 w-12 text-neutral-400"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -146,12 +146,12 @@
                                     />
                                 </svg>
                                 <h3
-                                    class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    class="mt-2 text-sm font-medium text-neutral-900 dark:text-white"
                                 >
                                     No menu items
                                 </h3>
                                 <p
-                                    class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Get started by adding your first menu item
                                 </p>
@@ -185,13 +185,13 @@
                 <div class="space-y-6 lg:col-span-4">
                     <!-- Menu Settings -->
                     <div
-                        class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                        class="rounded-lg border border-neutral-200 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-800"
                     >
                         <div
-                            class="border-b border-gray-200 p-6 dark:border-gray-700"
+                            class="border-b border-neutral-200 p-6 dark:border-neutral-700"
                         >
                             <h3
-                                class="text-lg font-semibold text-gray-900 dark:text-white"
+                                class="text-lg font-semibold text-neutral-900 dark:text-white"
                             >
                                 Menu Settings
                             </h3>
@@ -201,7 +201,7 @@
                             <div>
                                 <label
                                     for="menu-name"
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Name
                                 </label>
@@ -210,7 +210,7 @@
                                     v-model="menuForm.name"
                                     type="text"
                                     @blur="updateMenuSettings"
-                                    class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                    class="block py-2 px-3 w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
                                 />
                             </div>
 
@@ -218,7 +218,7 @@
                             <div>
                                 <label
                                     for="menu-description"
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Description
                                 </label>
@@ -227,7 +227,7 @@
                                     v-model="menuForm.description"
                                     rows="3"
                                     @blur="updateMenuSettings"
-                                    class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                    class="block w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
                                 />
                             </div>
 
@@ -235,7 +235,7 @@
                             <div>
                                 <label
                                     for="menu-location"
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Location
                                 </label>
@@ -243,7 +243,7 @@
                                     id="menu-location"
                                     v-model="menuForm.location"
                                     @change="updateMenuSettings"
-                                    class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                    class="block w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
                                 >
                                     <option value="">None</option>
                                     <option
@@ -263,11 +263,11 @@
                                     v-model="menuForm.is_active"
                                     type="checkbox"
                                     @change="updateMenuSettings"
-                                    class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                                 />
                                 <label
                                     for="menu-active"
-                                    class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                    class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                                 >
                                     Active
                                 </label>
@@ -276,7 +276,7 @@
                             <!-- Auto-save indicator -->
                             <div
                                 v-if="saving"
-                                class="flex items-center text-sm text-gray-600 dark:text-gray-400"
+                                class="flex items-center text-sm text-neutral-600 dark:text-neutral-400"
                             >
                                 <svg
                                     class="mr-2 h-4 w-4 animate-spin"

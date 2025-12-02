@@ -172,7 +172,7 @@ class AnalyticsService {
             // Create consent banner
             const banner = document.createElement('div');
             banner.className =
-                'fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-50 shadow-lg';
+                'fixed bottom-0 left-0 right-0 bg-neutral-900 text-white p-4 z-50 shadow-lg';
             banner.innerHTML = `
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="flex-1">
@@ -182,7 +182,7 @@ class AnalyticsService {
             </p>
           </div>
           <div class="flex gap-2">
-            <button id="reject-cookies" class="px-4 py-2 text-sm border border-gray-600 rounded hover:bg-gray-800">
+            <button id="reject-cookies" class="px-4 py-2 text-sm border border-neutral-600 rounded hover:bg-neutral-800">
               Reject
             </button>
             <button id="accept-cookies" class="px-4 py-2 text-sm bg-blue-600 rounded hover:bg-blue-700">

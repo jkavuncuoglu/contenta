@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domains\PageBuilder\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @use HasFactory<\Database\Factories\PageBuilder\LayoutFactory>
+ * Class Layout
+ *
+ * Represents a layout definition used by the legacy Page Builder.
  */
 class Layout extends Model
 {
@@ -21,36 +23,27 @@ class Layout extends Model
     protected $fillable = [
         'name',
         'slug',
-        'structure',
-        'description',
+        'config',
         'is_active',
     ];
 
     protected $casts = [
-        'structure' => 'array',
+        'config' => 'array',
         'is_active' => 'boolean',
     ];
 
-    protected $attributes = [
-        'is_active' => true,
-        'structure' => '{"areas": ["header", "main", "footer"]}',
-    ];
-
     /**
-     * Get the pages using this layout
+     * Pages using this layout
      *
-     * @return HasMany<Page, $this>
+     * @return HasMany<Page>
      */
     public function pages(): HasMany
     {
-        return $this->hasMany(Page::class);
+        return $this->hasMany(Page::class, 'layout_id');
     }
 
     /**
-     * Scope for active layouts
-     *
-     * @param Builder<Layout> $query
-     * @return Builder<Layout>
+     * Scope active layouts
      */
     public function scopeActive(Builder $query): Builder
     {
@@ -58,34 +51,37 @@ class Layout extends Model
     }
 
     /**
-     * Get default layout areas
+     * Return configured areas for this layout
      *
      * @return array<int, string>
      */
     public function getAreasAttribute(): array
     {
-        return $this->structure['areas'] ?? ['main'];
+        return $this->config['areas'] ?? [];
     }
 
     /**
-     * Check if layout has specific area
+     * Check whether layout has a specific area
      */
     public function hasArea(string $area): bool
     {
-        return in_array($area, $this->areas);
+        return in_array($area, $this->getAreasAttribute(), true);
     }
 
     /**
-     * Get layout configuration
-     *
-     * @return array<string, mixed>
+     * Ensure config attribute is always returned as array
      */
-    public function getConfigAttribute(): array
+    public function getConfigAttribute($value): array
     {
-        return [
-            'areas' => $this->areas,
-            'settings' => $this->structure['settings'] ?? [],
-            'css_classes' => $this->structure['css_classes'] ?? [],
-        ];
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if (is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            return is_array($decoded) ? $decoded : [];
+        }
+
+        return [];
     }
 }

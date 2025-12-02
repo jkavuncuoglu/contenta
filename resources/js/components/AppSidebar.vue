@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/sidebar';
 import categories from '@/routes/admin/categories';
 import dashboard from '@/routes/admin/dashboard';
-import pageBuilder from '@/routes/admin/page-builder';
+import pages from '@/routes/admin/pages';
 import posts from '@/routes/admin/posts';
 import tags from '@/routes/admin/tags';
 import { type NavItem } from '@/types';
@@ -29,7 +29,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Pages',
-        href: pageBuilder.index().url,
+        href: pages.index().url,
         icon: 'material-symbols-light:view-quilt',
     },
     {
