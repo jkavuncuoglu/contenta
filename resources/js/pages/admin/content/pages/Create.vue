@@ -11,7 +11,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { label: 'Create Page', href: '/admin/pages/create' },
 ]);
 
-const activeTab = ref<'editor' | 'settings'>('editor');
+const activeTab = ref<'editor' | 'settings' | 'seo'>('editor');
 const saving = ref(false);
 const showValidationSidebar = ref(true);
 
@@ -220,6 +220,17 @@ const errorTypeColor = (type: string) => {
                         ]"
                     >
                         Settings
+                    </button>
+                    <button
+                        @click="activeTab = 'seo'"
+                        :class="[
+                            activeTab === 'seo'
+                                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
+                            'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
+                        ]"
+                    >
+                        SEO
                     </button>
                 </nav>
             </div>
@@ -526,6 +537,38 @@ const errorTypeColor = (type: string) => {
                                     type="text"
                                     class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                 />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEO Tab -->
+                <div v-show="activeTab === 'seo'" class="space-y-6">
+                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
+                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
+                            SEO Optimization
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="rounded-md bg-blue-50 p-4 dark:bg-blue-900/20">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-medium text-blue-800 dark:text-blue-200">
+                                            Advanced SEO Features Coming Soon
+                                        </h3>
+                                        <div class="mt-2 text-sm text-blue-700 dark:text-blue-300">
+                                            <p>
+                                                This tab will include comprehensive SEO tools:
+                                                keyword analysis, readability scores, meta tag optimization,
+                                                schema.org editor, and more.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

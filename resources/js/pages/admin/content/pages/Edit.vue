@@ -42,7 +42,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { label: 'Edit Page', href: `/admin/pages/${props.page.id}/edit` },
 ]);
 
-const activeTab = ref<'editor' | 'settings'>('editor');
+const activeTab = ref<'editor' | 'settings' | 'seo' | 'revisions'>('editor');
 const saving = ref(false);
 const showValidationSidebar = ref(true);
 
@@ -319,6 +319,30 @@ const errorTypeColor = (type: string) => {
                             ]"
                         >
                             Settings
+                        </button>
+                        <button
+                            type="button"
+                            @click="activeTab = 'seo'"
+                            :class="[
+                                activeTab === 'seo'
+                                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                    : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
+                                'whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium',
+                            ]"
+                        >
+                            SEO
+                        </button>
+                        <button
+                            type="button"
+                            @click="activeTab = 'revisions'"
+                            :class="[
+                                activeTab === 'revisions'
+                                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                    : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
+                                'whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium',
+                            ]"
+                        >
+                            Revision History
                         </button>
                     </nav>
                 </div>
@@ -604,6 +628,120 @@ const errorTypeColor = (type: string) => {
                                     />
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEO Tab -->
+                <div v-show="activeTab === 'seo'" class="space-y-6">
+                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
+                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
+                            SEO Optimization
+                        </h3>
+                        <div class="rounded-md bg-blue-50 p-4 dark:bg-blue-900/20">
+                            <div class="flex">
+                                <div class="shrink-0">
+                                    <svg
+                                        class="h-5 w-5 text-blue-400"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </div>
+                                <div class="ml-3 flex-1">
+                                    <h3 class="text-sm font-medium text-blue-800 dark:text-blue-200">
+                                        Advanced SEO Features Coming Soon
+                                    </h3>
+                                    <div class="mt-2 text-sm text-blue-700 dark:text-blue-300">
+                                        <p>
+                                            Phase 7.2 will introduce comprehensive SEO tools including:
+                                        </p>
+                                        <ul class="mt-2 list-inside list-disc space-y-1">
+                                            <li>Keyword density analyzer with target keyword tracking</li>
+                                            <li>Meta title & description optimizer with character counters</li>
+                                            <li>Content quality & readability analysis</li>
+                                            <li>SEO-friendly URL slug validator</li>
+                                            <li>Internal linking suggestions</li>
+                                            <li>Schema.org markup editor</li>
+                                            <li>Real-time SEO score with actionable recommendations</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                                Basic SEO fields (meta title, description, keywords) are available in the
+                                <button
+                                    type="button"
+                                    @click="activeTab = 'settings'"
+                                    class="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                                >
+                                    Settings tab
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revision History Tab -->
+                <div v-show="activeTab === 'revisions'" class="space-y-6">
+                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
+                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
+                            Revision History
+                        </h3>
+                        <div class="rounded-md bg-green-50 p-4 dark:bg-green-900/20">
+                            <div class="flex">
+                                <div class="shrink-0">
+                                    <svg
+                                        class="h-5 w-5 text-green-400"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-medium text-green-800 dark:text-green-200">
+                                        Backend API Ready
+                                    </h3>
+                                    <div class="mt-2 text-sm text-green-700 dark:text-green-300">
+                                        <p>
+                                            The revision history API was implemented in Phase 2.5. The frontend UI
+                                            will be added in Phase 7.3.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center py-12 text-neutral-500 dark:text-neutral-400">
+                            <svg
+                                class="mx-auto h-12 w-12 text-neutral-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                            </svg>
+                            <h3 class="mt-2 text-sm font-medium">Revision History Interface</h3>
+                            <p class="mt-1 text-sm">
+                                View, compare, and restore previous versions of this page.
+                            </p>
+                            <p class="mt-1 text-xs">Full interface coming in Phase 7.3</p>
                         </div>
                     </div>
                 </div>

@@ -24,10 +24,63 @@
                 </div>
             </div>
 
+            <!-- Tabs -->
+            <div class="border-b border-neutral-200 dark:border-neutral-700">
+                <nav class="-mb-px flex space-x-8">
+                    <button
+                        type="button"
+                        @click="activeTab = 'editor'"
+                        :class="[
+                            activeTab === 'editor'
+                                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
+                            'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
+                        ]"
+                    >
+                        Editor
+                    </button>
+                    <button
+                        type="button"
+                        @click="activeTab = 'settings'"
+                        :class="[
+                            activeTab === 'settings'
+                                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
+                            'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
+                        ]"
+                    >
+                        Settings
+                    </button>
+                    <button
+                        type="button"
+                        @click="activeTab = 'seo'"
+                        :class="[
+                            activeTab === 'seo'
+                                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
+                            'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
+                        ]"
+                    >
+                        SEO
+                    </button>
+                    <button
+                        type="button"
+                        @click="activeTab = 'revisions'"
+                        :class="[
+                            activeTab === 'revisions'
+                                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
+                            'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
+                        ]"
+                    >
+                        Revision History
+                    </button>
+                </nav>
+            </div>
+
             <form @submit.prevent="handleSubmit" class="space-y-6">
-                <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                    <!-- Main content -->
-                    <div class="space-y-6 lg:col-span-2">
+                <!-- Editor Tab -->
+                <div v-show="activeTab === 'editor'" class="space-y-6">
                         <!-- Title -->
                         <div
                             class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
@@ -145,19 +198,15 @@
                                 {{ errors.excerpt[0] }}
                             </div>
                         </div>
-                    </div>
+                </div>
 
-                    <!-- Sidebar -->
-                    <div class="space-y-6">
-                        <!-- Publish -->
-                        <div
-                            class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
-                        >
-                            <h3
-                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
-                            >
-                                Publish
-                            </h3>
+                <!-- Settings Tab -->
+                <div v-show="activeTab === 'settings'" class="space-y-6">
+                    <!-- Publish Settings -->
+                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
+                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
+                            Publish
+                        </h3>
 
                             <div class="space-y-4">
                                 <div>
@@ -453,6 +502,59 @@
                                 </div>
                             </div>
                         </div>
+                </div>
+
+                <!-- SEO Tab -->
+                <div v-show="activeTab === 'seo'">
+                    <SEOTab
+                        :seo-analysis="seoAnalysis"
+                        v-model:target-keyword="seoTargetKeyword"
+                        @apply-slug="(value) => (form.slug = value)"
+                    />
+                </div>
+
+                <!-- Revision History Tab -->
+                <div v-show="activeTab === 'revisions'" class="space-y-6">
+                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
+                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
+                            Revision History
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="rounded-md bg-green-50 p-4 dark:bg-green-900/20">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-medium text-green-800 dark:text-green-200">
+                                            Backend API Ready
+                                        </h3>
+                                        <div class="mt-2 text-sm text-green-700 dark:text-green-300">
+                                            <p>
+                                                The revision history API was implemented in Phase 2.5.
+                                                The frontend UI will be added in Phase 7.3.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Placeholder -->
+                            <div class="text-center py-12">
+                                <svg class="mx-auto h-12 w-12 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <h3 class="mt-2 text-sm font-medium text-neutral-900 dark:text-white">Revision History</h3>
+                                <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                                    View, compare, and restore previous versions of this post.
+                                </p>
+                                <p class="mt-1 text-xs text-neutral-400">
+                                    Full interface coming in Phase 7.3
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -466,7 +568,9 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import MarkdownPageEditor from '@/components/PageBuilder/MarkdownPageEditor.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { marked } from 'marked';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, toRef } from 'vue';
+import { SEOTab } from '@/components/admin/seo';
+import { useSEOAnalysis } from '@/composables/seo/useSEOAnalysis';
 
 interface Props {
     post: {
@@ -494,6 +598,7 @@ const props = defineProps<Props>();
 const errors = ref<Record<string, string[]>>({});
 const loading = ref(false);
 const tagInput = ref('');
+const activeTab = ref<'editor' | 'settings' | 'seo' | 'revisions'>('editor');
 
 // Timezone handling for scheduled posts
 const publishDate = ref('');
@@ -588,6 +693,19 @@ const form = reactive({
     custom_fields: {},
     commit_message: '',
 });
+
+// SEO Analysis
+const seoTargetKeyword = ref('');
+const seoMetaDescription = ref('');
+
+// Initialize SEO analysis composable
+const seoAnalysis = useSEOAnalysis(
+    seoTargetKeyword,
+    toRef(form, 'title'),
+    toRef(form, 'content_markdown'),
+    toRef(form, 'slug'),
+    seoMetaDescription,
+);
 
 // Computed property to check if commit message is required
 const requiresCommitMessage = computed(() => {

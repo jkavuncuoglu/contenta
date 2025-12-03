@@ -24,10 +24,51 @@
                 </div>
             </div>
 
+            <!-- Tabs -->
+            <div class="border-b border-neutral-200 dark:border-neutral-700">
+                <nav class="-mb-px flex space-x-8">
+                    <button
+                        type="button"
+                        @click="activeTab = 'editor'"
+                        :class="[
+                            activeTab === 'editor'
+                                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
+                            'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
+                        ]"
+                    >
+                        Editor
+                    </button>
+                    <button
+                        type="button"
+                        @click="activeTab = 'settings'"
+                        :class="[
+                            activeTab === 'settings'
+                                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
+                            'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
+                        ]"
+                    >
+                        Settings
+                    </button>
+                    <button
+                        type="button"
+                        @click="activeTab = 'seo'"
+                        :class="[
+                            activeTab === 'seo'
+                                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
+                            'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
+                        ]"
+                    >
+                        SEO
+                    </button>
+                </nav>
+            </div>
+
             <form @submit.prevent="handleSubmit" class="space-y-6">
-                <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                    <!-- Main content -->
-                    <div class="space-y-6 lg:col-span-2">
+                <!-- Editor Tab -->
+                <div v-show="activeTab === 'editor'" class="space-y-6">
                         <!-- Title -->
                         <div
                             class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
@@ -137,19 +178,15 @@
                                 {{ errors.excerpt[0] }}
                             </div>
                         </div>
-                    </div>
+                </div>
 
-                    <!-- Sidebar -->
-                    <div class="space-y-6">
-                        <!-- Publish -->
-                        <div
-                            class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
-                        >
-                            <h3
-                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
-                            >
-                                Publish
-                            </h3>
+                <!-- Settings Tab -->
+                <div v-show="activeTab === 'settings'" class="space-y-6">
+                    <!-- Publish Settings -->
+                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
+                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
+                            Publish
+                        </h3>
 
                             <div class="space-y-4">
                                 <div>
@@ -458,7 +495,15 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                </div>
+
+                <!-- SEO Tab -->
+                <div v-show="activeTab === 'seo'">
+                    <SEOTab
+                        :seo-analysis="seoAnalysis"
+                        v-model:target-keyword="seoTargetKeyword"
+                        @apply-slug="(value) => (form.slug = value)"
+                    />
                 </div>
             </form>
         </div>
@@ -472,11 +517,14 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import type { PostForm } from '@/types';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { marked } from 'marked';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, toRef } from 'vue';
+import { SEOTab } from '@/components/admin/seo';
+import { useSEOAnalysis } from '@/composables/seo/useSEOAnalysis';
 
 const errors = ref<Record<string, string[]>>({});
 const loading = ref(false);
 const tagInput = ref('');
+const activeTab = ref<'editor' | 'settings' | 'seo'>('editor');
 
 // Timezone handling for scheduled posts
 const publishDate = ref('');
@@ -540,6 +588,19 @@ const form = reactive<PostForm>({
     storage_driver: 'database',
     commit_message: '',
 });
+
+// SEO Analysis
+const seoTargetKeyword = ref('');
+const seoMetaDescription = ref('');
+
+// Initialize SEO analysis composable
+const seoAnalysis = useSEOAnalysis(
+    seoTargetKeyword,
+    toRef(form, 'title'),
+    toRef(form, 'content_markdown'),
+    toRef(form, 'slug'),
+    seoMetaDescription,
+);
 
 // Computed property to check if commit message is required
 const requiresCommitMessage = computed(() => {
