@@ -16,14 +16,14 @@ return [
     // Navigation Domain
     App\Domains\Navigation\NavigationServiceProvider::class,
 
-    // PageBuilder Domain
-    App\Domains\PageBuilder\PageBuilderServiceProvider::class,
-
     // Settings Domain
     App\Domains\Settings\SettingsServiceProvider::class,
 
-    // Content Storage Domain
-    App\Domains\ContentStorage\ContentStorageServiceProvider::class,
+    // Content Storage Subdomain (under ContentManagement)
+    App\Domains\ContentManagement\ContentStorage\ContentStorageServiceProvider::class,
+
+    // Pages Subdomain (under ContentManagement)
+    App\Domains\ContentManagement\Pages\PageServiceProvider::class,
 
     // Themes Domain
     App\Domains\Themes\ThemeServiceProvider::class,

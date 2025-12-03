@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement;
 
+use App\Domains\ContentManagement\Posts\Models\Post;
+use App\Domains\ContentManagement\Posts\Observers\PostObserver;
 use App\Domains\ContentManagement\Posts\Services\PostService;
 use App\Domains\ContentManagement\Posts\Services\PostServiceContract;
 use App\Domains\ContentManagement\Services\ContentManagementService;
@@ -30,6 +32,9 @@ class ContentManagementServiceProvider extends ServiceProvider
         if (is_dir(__DIR__ . '/Database/migrations')) {
             $this->loadMigrationsFrom(__DIR__ . '/Database/migrations');
         }
+
+        // Register model observers
+        Post::observe(PostObserver::class);
     }
 }
 

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Domains\PageBuilder\Models\Page;
-use App\Domains\PageBuilder\Services\MarkdownRenderServiceContract;
-use App\Domains\PageBuilder\Services\PageRenderService;
+use App\Domains\ContentManagement\Pages\Models\Page;
+use App\Domains\ContentManagement\Services\MarkdownRenderServiceContract;
 use Inertia\Inertia;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -13,8 +12,7 @@ use Illuminate\Support\Facades\Cache;
 class PageController extends Controller
 {
     public function __construct(
-        private MarkdownRenderServiceContract $markdownRenderService,
-        private PageRenderService $pageRenderService
+        private MarkdownRenderServiceContract $markdownRenderService
     ) {}
 
     /**
@@ -24,10 +22,10 @@ class PageController extends Controller
     {
         try {
             $page = Page::where('slug', $slug)
-                ->where('status', 'published')
+                ->where('status', Page::STATUS_PUBLISHED)
                 ->firstOrFail();
 
-            // Get cached or render HTML on-the-fly
+            // Get content from storage and render
             $contentHtml = $this->getCachedOrRenderHtml($page);
 
             return Inertia::render('Page', [
@@ -35,19 +33,14 @@ class PageController extends Controller
                     'id' => $page->id,
                     'title' => $page->title,
                     'slug' => $page->slug,
-                    // keep legacy data structure if present
-                    'data' => $page->data,
-                    // Cached or on-the-fly rendered HTML
                     'content_html' => $contentHtml,
-                    // original markdown source (if available)
-                    'content_markdown' => $page->markdown_content ?? null,
                     'meta_title' => $page->meta_title,
                     'meta_description' => $page->meta_description,
                     'meta_keywords' => $page->meta_keywords,
+                    'schema_data' => $page->schema_data,
                 ],
             ])->toResponse($request);
         } catch (ModelNotFoundException $e) {
-            // Return a proper Inertia HTML response (status 404) so Inertia client doesn't receive plain JSON
             return Inertia::render('Page', [
                 'page' => null,
                 'message' => 'Page not found',
@@ -58,16 +51,18 @@ class PageController extends Controller
     /**
      * Get cached HTML or render on-the-fly
      */
-    private function getCachedOrRenderHtml(Page $page): ?string
+    private function getCachedOrRenderHtml(Page $page): string
     {
         $cacheKey = 'page.html.' . $page->id;
 
         return Cache::remember($cacheKey, 3600, function () use ($page) {
-            if ($page->isMarkdown()) {
-                return $this->markdownRenderService->renderPage($page);
-            } else {
-                return $this->pageRenderService->renderPage($page);
+            $content = $page->content;
+
+            if (!$content) {
+                return '<div class="text-center text-gray-500 py-12">No content available</div>';
             }
+
+            return $this->markdownRenderService->render($content->getContent());
         });
     }
 }

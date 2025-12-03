@@ -10,6 +10,8 @@ use App\Domains\ContentManagement\Posts\Models\Comment;
 use App\Domains\ContentManagement\Posts\Models\PostRevision;
 use App\Domains\ContentManagement\Tags\Models\Tag;
 use App\Domains\Security\UserManagement\Models\User;
+use App\Domains\ContentManagement\ContentStorage\ContentStorageManager;
+use App\Domains\ContentManagement\ContentStorage\ValueObjects\ContentData;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -65,6 +67,9 @@ class Post extends Model implements HasMedia
         'language',
         'template',
         'version',
+        // ContentStorage fields
+        'storage_driver',
+        'storage_path',
     ];
 
     protected $casts = [
@@ -221,5 +226,158 @@ class Post extends Model implements HasMedia
     {
         return LogOptions::defaults()
             ->logAll();
+    }
+
+    // ContentStorage Integration
+
+    /**
+     * Get content from storage backend
+     */
+    public function getContent(): ?ContentData
+    {
+        // If using database storage, return from database fields
+        if ($this->storage_driver === 'database' || $this->storage_driver === null) {
+            return new ContentData(
+                markdown: $this->content_markdown,
+                html: $this->content_html,
+                tableOfContents: $this->table_of_contents,
+            );
+        }
+
+        // Otherwise, fetch from ContentStorage
+        if (!$this->storage_path) {
+            return null;
+        }
+
+        /** @var ContentStorageManager $storageManager */
+        $storageManager = app(ContentStorageManager::class);
+
+        try {
+            $driver = $storageManager->driver($this->storage_driver);
+            $rawContent = $driver->read($this->storage_path);
+            $data = json_decode($rawContent, true);
+
+            return new ContentData(
+                markdown: $data['markdown'] ?? '',
+                html: $data['html'] ?? null,
+                tableOfContents: $data['table_of_contents'] ?? null,
+            );
+        } catch (\Exception $e) {
+            \Log::error('Failed to read post content from storage', [
+                'post_id' => $this->id,
+                'storage_driver' => $this->storage_driver,
+                'storage_path' => $this->storage_path,
+                'error' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
+    }
+
+    /**
+     * Set content to storage backend
+     */
+    public function setContent(ContentData $content): void
+    {
+        // If using database storage, set database fields
+        if ($this->storage_driver === 'database' || $this->storage_driver === null) {
+            $this->content_markdown = $content->markdown;
+            $this->content_html = $content->html;
+            $this->table_of_contents = $content->tableOfContents;
+            return;
+        }
+
+        // Otherwise, write to ContentStorage
+        if (!$this->storage_path) {
+            $this->storage_path = $this->generateStoragePath();
+        }
+
+        /** @var ContentStorageManager $storageManager */
+        $storageManager = app(ContentStorageManager::class);
+
+        try {
+            $driver = $storageManager->driver($this->storage_driver);
+            $driver->write($this->storage_path, json_encode([
+                'markdown' => $content->markdown,
+                'html' => $content->html,
+                'table_of_contents' => $content->tableOfContents,
+            ]));
+
+            // Clear database fields when using cloud storage
+            $this->content_markdown = null;
+            $this->content_html = null;
+            $this->table_of_contents = null;
+
+        } catch (\Exception $e) {
+            \Log::error('Failed to write post content to storage', [
+                'post_id' => $this->id,
+                'storage_driver' => $this->storage_driver,
+                'storage_path' => $this->storage_path,
+                'error' => $e->getMessage(),
+            ]);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Generate storage path for post content
+     */
+    public function generateStoragePath(): string
+    {
+        $date = $this->published_at ?? $this->created_at ?? now();
+        $slug = $this->slug ?? \Illuminate\Support\Str::slug($this->title);
+
+        return sprintf(
+            'posts/%s/%s/%s.md',
+            $date->format('Y'),
+            $date->format('m'),
+            $slug
+        );
+    }
+
+    /**
+     * Accessor: Get content_markdown from storage if needed
+     */
+    public function getContentMarkdownAttribute($value): ?string
+    {
+        // Return database value if using database storage
+        if ($this->storage_driver === 'database' || $this->storage_driver === null) {
+            return $value;
+        }
+
+        // Otherwise, fetch from ContentStorage
+        $content = $this->getContent();
+        return $content?->markdown;
+    }
+
+    /**
+     * Accessor: Get content_html from storage if needed
+     */
+    public function getContentHtmlAttribute($value): ?string
+    {
+        // Return database value if using database storage
+        if ($this->storage_driver === 'database' || $this->storage_driver === null) {
+            return $value;
+        }
+
+        // Otherwise, fetch from ContentStorage
+        $content = $this->getContent();
+        return $content?->html;
+    }
+
+    /**
+     * Accessor: Get table_of_contents from storage if needed
+     */
+    public function getTableOfContentsAttribute($value): ?array
+    {
+        // Return database value if using database storage
+        if ($this->storage_driver === 'database' || $this->storage_driver === null) {
+            return is_string($value) ? json_decode($value, true) : $value;
+        }
+
+        // Otherwise, fetch from ContentStorage
+        $content = $this->getContent();
+        return $content?->tableOfContents;
     }
 }

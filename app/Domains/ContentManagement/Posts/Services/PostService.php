@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\ContentManagement\Posts\Services;
 
 use App\Domains\ContentManagement\Posts\Models\Post;
+use App\Domains\ContentManagement\ContentStorage\ValueObjects\ContentData;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
@@ -134,7 +135,22 @@ class PostService implements PostServiceContract
         $newPost->slug = Str::slug($newTitle);
         $newPost->status = 'draft';
         $newPost->published_at = null;
+
+        // Generate new storage path if using cloud storage
+        if ($newPost->storage_driver !== 'database') {
+            $newPost->storage_path = $newPost->generateStoragePath();
+        }
+
         $newPost->save();
+
+        // Copy content to new location if using cloud storage
+        if ($post->storage_driver !== 'database' && $post->storage_path) {
+            $content = $post->getContent();
+            if ($content) {
+                $newPost->setContent($content);
+                $newPost->save();
+            }
+        }
 
         // Copy relationships
         if ($post->categories()->exists()) {

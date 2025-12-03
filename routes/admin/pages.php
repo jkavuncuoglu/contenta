@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\PageBuilder\Http\Controllers\Admin\PageController;
+use App\Domains\ContentManagement\Pages\Http\Controllers\Admin\PagesController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -8,20 +8,21 @@ Route::group([
     'as' => 'pages.',
 ], function () {
     // API Routes
-    Route::get('/api', [PageController::class, 'api'])->name('api');
+    Route::get('/api', [PagesController::class, 'api'])->name('api');
 
     // Page Management Routes
-    Route::get('/', [PageController::class, 'index'])->name('index');
-    Route::get('/create', [PageController::class, 'create'])->name('create');
-    Route::get('/{page}/edit', [PageController::class, 'edit'])->name('edit');
-    Route::post('/', [PageController::class, 'store'])->name('store');
-    Route::put('/{page}', [PageController::class, 'update'])->name('update');
-    Route::delete('/{page}', [PageController::class, 'destroy'])->name('destroy');
+    Route::get('/', [PagesController::class, 'index'])->name('index');
+    Route::get('/create', [PagesController::class, 'create'])->name('create');
+    Route::get('/{page}/edit', [PagesController::class, 'edit'])->name('edit');
+    Route::post('/', [PagesController::class, 'store'])->name('store');
+    Route::put('/{page}', [PagesController::class, 'update'])->name('update');
+    Route::delete('/{page}', [PagesController::class, 'destroy'])->name('destroy');
+    Route::get('/{page}', [PagesController::class, 'show'])->name('show');
 
     // Page Actions
-    Route::post('/{page}/publish', [PageController::class, 'publish'])->name('publish');
-    Route::post('/{page}/unpublish', [PageController::class, 'unpublish'])->name('unpublish');
-    Route::post('/{page}/duplicate', [PageController::class, 'duplicate'])->name('duplicate');
-    Route::post('/{page}/preview', [PageController::class, 'preview'])->name('preview');
-    Route::post('/validate', [PageController::class, 'validate'])->name('validate');
+    Route::post('/{page}/publish', [PagesController::class, 'publish'])->name('publish');
+    Route::post('/{page}/unpublish', [PagesController::class, 'unpublish'])->name('unpublish');
+    Route::post('/{page}/duplicate', [PagesController::class, 'duplicate'])->name('duplicate');
+    Route::post('/{page}/preview', [PagesController::class, 'preview'])->name('preview');
+    Route::post('/validate', [PagesController::class, 'validate'])->name('validate');
 });

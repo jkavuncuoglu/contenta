@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Settings\Services;
 
-use App\Domains\PageBuilder\Models\Page;
+use App\Domains\ContentManagement\Pages\Models\Page;
 use App\Domains\Settings\Models\Setting;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;

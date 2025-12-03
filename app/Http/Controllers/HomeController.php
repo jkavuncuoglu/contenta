@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Domains\PageBuilder\Models\Page;
-use App\Domains\PageBuilder\Services\MarkdownRenderServiceContract;
-use App\Domains\PageBuilder\Services\PageRenderService;
+use App\Domains\ContentManagement\Pages\Models\Page;
+use App\Domains\ContentManagement\Services\MarkdownRenderServiceContract;
 use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\Settings\Models\Setting;
 use App\Http\Controllers\BlogController;
@@ -19,8 +18,7 @@ class HomeController extends Controller
 {
     public function __construct(
         private readonly BlogController $blogController,
-        private readonly MarkdownRenderServiceContract $markdownRenderService,
-        private readonly PageRenderService $pageRenderService
+        private readonly MarkdownRenderServiceContract $markdownRenderService
     ) {}
 
     /**
@@ -28,13 +26,12 @@ class HomeController extends Controller
      */
     public function index(Request $request): Response
     {
-        // First, try to load the "home" or "/" page from PageBuilder
+        // First, try to load the "home" or "/" page
         $homePage = Page::whereIn('slug', ['home', '/'])
-            ->where('status', 'published')
+            ->where('status', Page::STATUS_PUBLISHED)
             ->first();
 
         if ($homePage) {
-            // Get cached or render HTML on-the-fly
             $contentHtml = $this->getCachedOrRenderHtml($homePage);
 
             return Inertia::render('Page', [
@@ -42,14 +39,11 @@ class HomeController extends Controller
                     'id' => $homePage->id,
                     'title' => $homePage->title,
                     'slug' => $homePage->slug,
-                    'data' => $homePage->data,
-                    // Cached or on-the-fly rendered HTML
                     'content_html' => $contentHtml,
-                    // original markdown source (if available)
-                    'content_markdown' => $homePage->markdown_content ?? null,
                     'meta_title' => $homePage->meta_title,
                     'meta_description' => $homePage->meta_description,
                     'meta_keywords' => $homePage->meta_keywords,
+                    'schema_data' => $homePage->schema_data,
                 ],
             ]);
         }
@@ -66,10 +60,9 @@ class HomeController extends Controller
         if (is_numeric($landingPage)) {
             try {
                 $page = Page::where('id', $landingPage)
-                    ->where('status', 'published')
+                    ->where('status', Page::STATUS_PUBLISHED)
                     ->firstOrFail();
 
-                // Get cached or render HTML on-the-fly
                 $contentHtml = $this->getCachedOrRenderHtml($page);
 
                 return Inertia::render('Page', [
@@ -77,14 +70,11 @@ class HomeController extends Controller
                         'id' => $page->id,
                         'title' => $page->title,
                         'slug' => $page->slug,
-                        'data' => $page->data,
-                        // Cached or on-the-fly rendered HTML
                         'content_html' => $contentHtml,
-                        // original markdown source (if available)
-                        'content_markdown' => $page->markdown_content ?? null,
                         'meta_title' => $page->meta_title,
                         'meta_description' => $page->meta_description,
                         'meta_keywords' => $page->meta_keywords,
+                        'schema_data' => $page->schema_data,
                     ],
                 ]);
             } catch (\Exception $e) {
@@ -106,16 +96,18 @@ class HomeController extends Controller
     /**
      * Get cached HTML or render on-the-fly
      */
-    private function getCachedOrRenderHtml(Page $page): ?string
+    private function getCachedOrRenderHtml(Page $page): string
     {
         $cacheKey = 'page.html.' . $page->id;
 
         return Cache::remember($cacheKey, 3600, function () use ($page) {
-            if ($page->isMarkdown()) {
-                return $this->markdownRenderService->renderPage($page);
-            } else {
-                return $this->pageRenderService->renderPage($page);
+            $content = $page->content;
+
+            if (!$content) {
+                return '<div class="text-center text-gray-500 py-12">No content available</div>';
             }
+
+            return $this->markdownRenderService->render($content->getContent());
         });
     }
 }

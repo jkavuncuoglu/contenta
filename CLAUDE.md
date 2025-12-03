@@ -6,7 +6,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Contenta is a Laravel 12 + Vue 3 (Inertia.js) application for content-centric platforms (CMS/knowledge base/publishing) using domain-driven architecture with opinionated separation under `app/Domains/*`.
 
-**IMPORTANT:** The project root directory is `./contenta`. All commands and paths should be executed from this directory.
+**IMPORTANT:** The project root directory is `/home/jkavuncuoglu/Projects/contenta/contenta`. All commands and paths should be executed from this directory.
+
+### Path Aliases
+
+- **`@/`** = Project root directory (`/home/jkavuncuoglu/Projects/contenta/contenta`)
+- **`@contenta/`** = Project root directory (alternate alias)
+
+When referencing files or creating documentation:
+- Use `@/FILENAME.md` for root-level documentation files
+- **CRITICAL:** All `.md` documentation files created by Claude **MUST** be placed in the project root (`@/`)
+- Never create `.md` files inside `src/`, `app/`, or other subdirectories unless explicitly requested
+- Examples:
+  - ✅ `@/PHASE2_CHECKPOINT.md`
+  - ✅ `@/PROGRESS_REPORT.md`
+  - ✅ `@/TASK_RENAME_PAGEBUILDER_TO_PAGES.md`
+  - ❌ `src/PHASE2_CHECKPOINT.md` (wrong - never do this)
+  - ❌ `app/PROGRESS.md` (wrong - never do this)
 
 ## Laravel Sail Usage
 

@@ -8,8 +8,8 @@ use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\TwoFactorAuthent
 use App\Domains\Settings\Http\Controllers\Admin\SiteSettingsController;
 use App\Domains\Settings\Http\Controllers\Admin\SecuritySettingsController;
 use App\Domains\Settings\Http\Controllers\Admin\ThemeSettingsController;
-use App\Domains\ContentStorage\Http\Controllers\Admin\ContentStorageSettingsController;
-use App\Domains\ContentStorage\Http\Controllers\Admin\ContentMigrationController;
+use App\Domains\ContentManagement\ContentStorage\Http\Controllers\Admin\ContentStorageSettingsController;
+use App\Domains\ContentManagement\ContentStorage\Http\Controllers\Admin\ContentMigrationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 

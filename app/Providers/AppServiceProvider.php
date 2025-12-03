@@ -8,6 +8,8 @@ use App\Domains\ContentManagement\Comments\Services\CommentsServiceContract;
 use App\Domains\ContentManagement\Comments\Services\CommentsService;
 use App\Domains\Settings\Services\SiteSettingsServiceContract;
 use App\Domains\Settings\Services\SiteSettingsService;
+use App\Domains\ContentManagement\Services\MarkdownRenderServiceContract;
+use App\Domains\ContentManagement\Services\MarkdownRenderService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(SiteSettingsServiceContract::class, function ($app) {
             return new SiteSettingsService();
         });
+
+        $this->app->singleton(MarkdownRenderServiceContract::class, function ($app) {
+            return new MarkdownRenderService(
+                $app->make(\App\Domains\ContentManagement\Services\ShortcodeParser\ShortcodeParserServiceContract::class)
+            );
+        });
     }
 
     /**
@@ -36,11 +44,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Register console commands after all service bindings are in place
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                \App\Console\Commands\MigrateToMarkdownCommand::class,
-            ]);
-        }
+        //
     }
 }
