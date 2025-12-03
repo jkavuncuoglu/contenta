@@ -47,10 +47,10 @@ const logout = () => {
                             :href="breadcrumb.href"
                             class="hover:text-foreground"
                         >
-                            {{ breadcrumb.title }}
+                            {{ breadcrumb.label }}
                         </Link>
                         <span v-else class="font-medium text-foreground">{{
-                            breadcrumb.title
+                            breadcrumb.label
                         }}</span>
                         <span v-if="index < breadcrumbs.length - 1" class="mx-2"
                             >/</span

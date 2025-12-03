@@ -116,24 +116,22 @@ const errorTypeColor = (type: string) => {
     <Head title="Create Page - Pages" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex gap-6">
-            <!-- Main Content Area -->
-            <div class="flex-1 space-y-6">
-                <!-- Page header -->
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1
-                            class="text-2xl font-semibold text-neutral-900 dark:text-white"
-                        >
-                            Create New Page
-                        </h1>
-                        <p
-                            class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
-                        >
-                            Create a new page using markdown and shortcodes
-                        </p>
-                    </div>
-                    <div class="flex gap-2">
+        <div class="space-y-6">
+            <!-- Page header -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1
+                        class="text-2xl font-semibold text-neutral-900 dark:text-white"
+                    >
+                        Create New Page
+                    </h1>
+                    <p
+                        class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
+                    >
+                        Create a new page using markdown and shortcodes
+                    </p>
+                </div>
+                <div class="flex gap-2">
                         <button
                             @click="
                                 showValidationSidebar = !showValidationSidebar
@@ -695,6 +693,5 @@ const errorTypeColor = (type: string) => {
                     </div>
                 </div>
             </div>
-        </div>
     </AppLayout>
 </template>
