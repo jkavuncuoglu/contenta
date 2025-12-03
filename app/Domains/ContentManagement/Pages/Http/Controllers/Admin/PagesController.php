@@ -359,6 +359,81 @@ class PagesController extends Controller
     }
 
     /**
+     * Get revision history for a page
+     */
+    public function revisions(Page $page, Request $request)
+    {
+        $page_param = is_numeric($request->input('page')) ? (int) $request->input('page') : 1;
+        $perPage = is_numeric($request->input('per_page')) ? (int) $request->input('per_page') : 10;
+
+        $revisions = $page->revisionHistory($page_param, $perPage);
+
+        return response()->json([
+            'revisions' => $revisions->toArray(),
+            'meta' => [
+                'total' => $revisions->total(),
+                'current_page' => $revisions->currentPage(),
+                'per_page' => $revisions->perPage(),
+                'has_more' => $revisions->hasMore(),
+            ],
+            'supports_revisions' => $page->supportsRevisions(),
+            'storage_driver' => $page->storage_driver ?? 'database',
+        ]);
+    }
+
+    /**
+     * Get a specific revision
+     */
+    public function showRevision(Page $page, string $revisionId)
+    {
+        $revision = $page->getRevisionById($revisionId);
+
+        if (!$revision) {
+            return response()->json([
+                'error' => 'Revision not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'revision' => $revision->toArray(),
+        ]);
+    }
+
+    /**
+     * Restore a specific revision
+     */
+    public function restoreRevision(Page $page, string $revisionId)
+    {
+        if (!$page->supportsRevisions()) {
+            return response()->json([
+                'error' => 'Revisions are not supported for this storage driver',
+            ], 400);
+        }
+
+        $success = $page->restoreRevisionById($revisionId);
+
+        if (!$success) {
+            return response()->json([
+                'error' => 'Failed to restore revision',
+            ], 500);
+        }
+
+        // Reload the page to get the restored content
+        $page->refresh();
+        $content = $page->content;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Revision restored successfully',
+            'page' => [
+                'id' => $page->id,
+                'content' => $content ? $content->getContent() : null,
+                'frontmatter' => $content ? $content->getFrontmatter() : null,
+            ],
+        ]);
+    }
+
+    /**
      * Get available storage drivers from settings
      *
      * @return array<int, array{value: string, label: string, description: string, configured: bool}>

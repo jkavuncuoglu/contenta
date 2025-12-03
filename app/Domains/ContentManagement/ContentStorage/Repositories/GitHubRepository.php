@@ -119,10 +119,10 @@ class GitHubRepository implements ContentRepositoryContract
         try {
             $fullPath = $this->buildFullPath($path);
             $markdown = $data->toMarkdown();
-            $message = $this->generateCommitMessage($path, 'update');
 
             // Check if file exists to get SHA (required for updates)
             $sha = null;
+            $isCreate = false;
             try {
                 $fileInfo = $this->client->api('repo')->contents()->show(
                     $this->owner,
@@ -131,11 +131,14 @@ class GitHubRepository implements ContentRepositoryContract
                     $this->branch
                 );
                 $sha = $fileInfo['sha'] ?? null;
-                $message = $this->generateCommitMessage($path, 'update');
             } catch (GitHubRuntimeException $e) {
-                // File doesn't exist, create new
-                $message = $this->generateCommitMessage($path, 'create');
+                // File doesn't exist, creating new
+                $isCreate = true;
             }
+
+            // Use custom commit message from frontmatter if provided, otherwise auto-generate
+            $message = $data->frontmatter['commit_message'] ??
+                $this->generateCommitMessage($path, $isCreate ? 'create' : 'update');
 
             $params = [
                 'message' => $message,

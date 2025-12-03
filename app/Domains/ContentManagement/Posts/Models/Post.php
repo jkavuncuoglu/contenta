@@ -12,6 +12,10 @@ use App\Domains\ContentManagement\Tags\Models\Tag;
 use App\Domains\Security\UserManagement\Models\User;
 use App\Domains\ContentManagement\ContentStorage\ContentStorageManager;
 use App\Domains\ContentManagement\ContentStorage\ValueObjects\ContentData;
+use App\Domains\ContentManagement\ContentStorage\Models\ContentData as RepositoryContentData;
+use App\Domains\ContentManagement\ContentStorage\Factories\RevisionProviderFactory;
+use App\Domains\ContentManagement\ContentStorage\Contracts\RevisionProviderInterface;
+use App\Domains\ContentManagement\ContentStorage\ValueObjects\RevisionCollection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -276,8 +280,11 @@ class Post extends Model implements HasMedia
 
     /**
      * Set content to storage backend
+     *
+     * @param ContentData $content The content to store
+     * @param array<string, mixed> $metadata Optional metadata (e.g., commit_message for Git storage)
      */
-    public function setContent(ContentData $content): void
+    public function setContent(ContentData $content, array $metadata = []): void
     {
         // If using database storage, set database fields
         if ($this->storage_driver === 'database' || $this->storage_driver === null) {
@@ -292,16 +299,39 @@ class Post extends Model implements HasMedia
             $this->storage_path = $this->generateStoragePath();
         }
 
+        // For Git-based storage, ensure commit message is set
+        if (in_array($this->storage_driver, ['github', 'gitlab', 'bitbucket'])) {
+            if (!isset($metadata['commit_message'])) {
+                $metadata['commit_message'] = "Update: {$this->title}";
+            }
+        }
+
         /** @var ContentStorageManager $storageManager */
         $storageManager = app(ContentStorageManager::class);
 
         try {
             $driver = $storageManager->driver($this->storage_driver);
-            $driver->write($this->storage_path, json_encode([
-                'markdown' => $content->markdown,
-                'html' => $content->html,
-                'table_of_contents' => $content->tableOfContents,
-            ]));
+
+            // Convert to repository ContentData format (markdown with frontmatter)
+            $frontmatter = [];
+            if ($content->html !== null) {
+                $frontmatter['html'] = $content->html;
+            }
+            if ($content->tableOfContents !== null) {
+                $frontmatter['table_of_contents'] = $content->tableOfContents;
+            }
+
+            // Add metadata (e.g., commit_message) to frontmatter for Git storage
+            if (!empty($metadata)) {
+                $frontmatter = array_merge($frontmatter, $metadata);
+            }
+
+            $repositoryContent = new RepositoryContentData(
+                content: $content->markdown,
+                frontmatter: $frontmatter
+            );
+
+            $driver->write($this->storage_path, $repositoryContent);
 
             // Clear database fields when using cloud storage
             $this->content_markdown = null;
@@ -379,5 +409,72 @@ class Post extends Model implements HasMedia
         // Otherwise, fetch from ContentStorage
         $content = $this->getContent();
         return $content?->tableOfContents;
+    }
+
+    // Cloud-Native Revision System
+
+    /**
+     * Get revision provider for this post
+     */
+    public function getRevisionProvider(): RevisionProviderInterface
+    {
+        /** @var RevisionProviderFactory $factory */
+        $factory = app(RevisionProviderFactory::class);
+        return $factory->forModel($this);
+    }
+
+    /**
+     * Get paginated revision history
+     *
+     * @param int $page Page number (1-indexed)
+     * @param int $perPage Items per page (default: 10)
+     * @return RevisionCollection
+     */
+    public function revisionHistory(int $page = 1, int $perPage = 10): RevisionCollection
+    {
+        if (!$this->storage_path) {
+            // No cloud storage path, return empty collection
+            return new RevisionCollection([], 0, $page, $perPage, false);
+        }
+
+        return $this->getRevisionProvider()->getRevisions($this->storage_path, $page, $perPage);
+    }
+
+    /**
+     * Get a specific revision
+     *
+     * @param string $revisionId Version ID, commit hash, or DB revision ID
+     * @return \App\Domains\ContentManagement\ContentStorage\ValueObjects\Revision|null
+     */
+    public function getRevisionById(string $revisionId)
+    {
+        if (!$this->storage_path) {
+            return null;
+        }
+
+        return $this->getRevisionProvider()->getRevision($this->storage_path, $revisionId);
+    }
+
+    /**
+     * Restore a specific revision
+     *
+     * @param string $revisionId Version ID or commit hash
+     * @return bool
+     */
+    public function restoreRevisionById(string $revisionId): bool
+    {
+        if (!$this->storage_path) {
+            return false;
+        }
+
+        return $this->getRevisionProvider()->restoreRevision($this->storage_path, $revisionId);
+    }
+
+    /**
+     * Check if this post's storage driver supports revisions
+     */
+    public function supportsRevisions(): bool
+    {
+        return $this->getRevisionProvider()->supportsRevisions();
     }
 }

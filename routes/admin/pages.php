@@ -25,4 +25,9 @@ Route::group([
     Route::post('/{page}/duplicate', [PagesController::class, 'duplicate'])->name('duplicate');
     Route::post('/{page}/preview', [PagesController::class, 'preview'])->name('preview');
     Route::post('/validate', [PagesController::class, 'validate'])->name('validate');
+
+    // Revision history routes
+    Route::get('/{page}/revisions', [PagesController::class, 'revisions'])->name('revisions');
+    Route::get('/{page}/revisions/{revisionId}', [PagesController::class, 'showRevision'])->name('revisions.show');
+    Route::post('/{page}/revisions/{revisionId}/restore', [PagesController::class, 'restoreRevision'])->name('revisions.restore');
 });

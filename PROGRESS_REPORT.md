@@ -103,7 +103,7 @@
 25. ✅ Deleted MigrateToMarkdownCommand wrapper
 
 **Remaining:**
-1. ⏳ Phase 2.5: Cloud-Native Revision System
+1. ✅ Phase 2.5: Cloud-Native Revision System (COMPLETE)
 2. ⏳ Phase 2.6: Cloud Storage Editor Integration
 3. ⏳ Phase 6: Update 168 frontend file references
 4. ⏳ Phase 7: Run full test suite
@@ -120,54 +120,108 @@
 
 ## Pending Phases
 
-### ⏳ Phase 2.5: Cloud-Native Revision System
-**Estimated Duration:** 4-6 hours
-**Status:** Planned
+### ✅ Phase 2.5: Cloud-Native Revision System
+**Duration:** 2 hours
+**Status:** Complete
 
 **Objective:** Replace database-driven revisions with cloud-native versioning
 
-**Key Features:**
-- Leverage S3/Azure/GCS bucket versioning
-- Use GitHub commit history as revisions
-- Paginated revision history (10 per page)
-- Preview and restore functionality
-- Storage-aware revision providers
+**Completed:**
+1. ✅ Created `RevisionProviderInterface` contract
+2. ✅ Created `Revision` value object
+3. ✅ Created `RevisionCollection` value object with pagination
+4. ✅ Implemented `DatabaseRevisionProvider`
+5. ✅ Implemented `S3RevisionProvider` (leverages S3 versioning)
+6. ✅ Implemented `GitHubRevisionProvider` (uses commit history)
+7. ✅ Implemented `AzureBlobRevisionProvider` (blob versioning)
+8. ✅ Implemented `GCSRevisionProvider` (object versioning)
+9. ✅ Created `RevisionProviderFactory` for provider instantiation
+10. ✅ Added revision methods to Post model:
+    - `getRevisionProvider()`
+    - `revisionHistory()`
+    - `getRevisionById()`
+    - `restoreRevisionById()`
+    - `supportsRevisions()`
+11. ✅ Added revision methods to Page model (same as Post)
+12. ✅ Added PostsController revision endpoints:
+    - `GET /admin/posts/{id}/revisions` - list revisions
+    - `GET /admin/posts/{id}/revisions/{revisionId}` - view revision
+    - `POST /admin/posts/{id}/revisions/{revisionId}/restore` - restore
+13. ✅ Added PagesController revision endpoints (same as Posts)
+14. ✅ Registered revision routes in `routes/admin/content.php`
+15. ✅ Registered revision routes in `routes/admin/pages.php`
 
-**Components:**
-- RevisionProviderInterface contract
-- Storage-specific providers (S3, Azure, GCS, GitHub)
-- RevisionProviderFactory
-- Revision & RevisionCollection value objects
-- RevisionHistory Vue component
-- Controller endpoints for revision management
+**Key Features Implemented:**
+- Cloud-native versioning using native provider APIs
+- Paginated revision history (10 per page, ordered desc by timestamp)
+- Storage-aware revision providers via factory pattern
+- Full restore functionality with validation
+- Support for 6 storage drivers (database, local, S3, Azure, GCS, GitHub)
+
+**Files Created:**
+- `app/Domains/ContentManagement/ContentStorage/Contracts/RevisionProviderInterface.php`
+- `app/Domains/ContentManagement/ContentStorage/ValueObjects/Revision.php`
+- `app/Domains/ContentManagement/ContentStorage/ValueObjects/RevisionCollection.php`
+- `app/Domains/ContentManagement/ContentStorage/RevisionProviders/DatabaseRevisionProvider.php`
+- `app/Domains/ContentManagement/ContentStorage/RevisionProviders/S3RevisionProvider.php`
+- `app/Domains/ContentManagement/ContentStorage/RevisionProviders/GitHubRevisionProvider.php`
+- `app/Domains/ContentManagement/ContentStorage/RevisionProviders/AzureBlobRevisionProvider.php`
+- `app/Domains/ContentManagement/ContentStorage/RevisionProviders/GCSRevisionProvider.php`
+- `app/Domains/ContentManagement/ContentStorage/Factories/RevisionProviderFactory.php`
+
+**Files Modified:**
+- `app/Domains/ContentManagement/Posts/Models/Post.php` (added revision methods)
+- `app/Domains/ContentManagement/Pages/Models/Page.php` (added revision methods)
+- `app/Domains/ContentManagement/Posts/Http/Controllers/Admin/PostsController.php` (added endpoints)
+- `app/Domains/ContentManagement/Pages/Http/Controllers/Admin/PagesController.php` (added endpoints)
+- `routes/admin/content.php` (added routes)
+- `routes/admin/pages.php` (added routes)
+
+**Remaining:**
+- ⏳ Frontend RevisionHistory Vue component (Phase 6)
+- ⏳ Frontend revision preview UI (Phase 6)
 
 **See:** `PHASE2.5_CLOUD_NATIVE_REVISIONS.md` for detailed implementation plan
 
 ---
 
-### ⏳ Phase 2.6: Cloud Storage Editor Integration
-**Estimated Duration:** 5-7 hours
-**Status:** Planned
+### ✅ Phase 2.6: Cloud Storage Editor Integration (Backend)
+**Duration:** 2 hours
+**Status:** Backend Complete, Frontend Deferred to Phase 6
 
 **Objective:** Enable direct content creation/updates to cloud storage from editor
 
-**Key Features:**
-- Direct write to S3/Azure/GCS from editor
-- Auto-commit to GitHub on save
-- Real-time validation before save
-- Auto-save for drafts (5 second interval)
-- Commit message input for Git-based storage
-- Storage error handling with rollback
+**Backend Completed:**
+1. ✅ Created `ValueObjects\ContentData` for controllers
+2. ✅ Enhanced `Post::setContent()` to accept metadata parameter
+3. ✅ Enhanced `GitHubRepository::write()` to use custom commit messages
+4. ✅ Updated `PostsController` to pass commit_message metadata
+5. ✅ Metadata flows: Controller → Model → Repository
+6. ✅ Custom commit messages work for GitHub storage
+7. ✅ Auto-generated fallback messages work
+8. ✅ Fixed bug from Phase 5 (missing ContentData class)
 
-**Components:**
-- Enhanced write() methods for all repositories
-- PageService/PostService cloud-aware save
-- Auto-save composable (useAutoSave)
-- Updated Edit.vue with cloud storage support
-- Validation before write
-- Storage exception handling
+**Frontend Work (Deferred to Phase 6):**
+⏳ Auto-save composable (useAutoSave)
+⏳ Validation UI composable (useShortcodeValidation)
+⏳ Commit message input in Edit.vue
+⏳ Storage driver selection in Create.vue
+⏳ Auto-save indicator
+⏳ Validation error display
 
-**See:** `PHASE2.6_CLOUD_STORAGE_EDITOR.md` for detailed implementation plan
+**Note on Pages:**
+Pages use different architecture (accessor/mutator pattern). Similar enhancements can be applied when Pages are tested with cloud storage.
+
+**Files Created:**
+- `app/Domains/ContentManagement/ContentStorage/ValueObjects/ContentData.php`
+
+**Files Modified:**
+- `app/Domains/ContentManagement/Posts/Models/Post.php` (metadata support)
+- `app/Domains/ContentManagement/ContentStorage/Repositories/GitHubRepository.php` (custom commit messages)
+- `app/Domains/ContentManagement/Posts/Http/Controllers/Admin/PostsController.php` (pass metadata)
+
+**See:** `PHASE2.6_COMPLETE.md` for detailed documentation
+**See:** `PHASE2.6_ANALYSIS.md` for architecture analysis
 
 ---
 
@@ -206,15 +260,23 @@
 
 ---
 
-### ⏳ Phase 5: Update/Create Controllers
-**Estimated Duration:** 2-3 hours
+### ✅ Phase 5: Update Controllers
+**Status:** Complete
+**Duration:** 1 hour
 
-**Changes Required:**
-- Update PostsController for ContentStorage
-- Create PagesController (merged from PageBuilder)
-- Update validation rules
-- Add storage backend selection
-- Remove layout-related code
+**Changes Completed:**
+- ✅ Updated PostsController for ContentStorage
+- ✅ Added `getAvailableStorageDrivers()` helper method
+- ✅ Added `requiresCommitMessage()` validation helper
+- ✅ Updated `create()` - passes storage drivers to frontend
+- ✅ Updated `edit()` - includes storage_driver and storage_path
+- ✅ Updated `store()` - validates storage_driver and commit_message
+- ✅ Updated `update()` - handles ContentStorage writes
+- ✅ Added transaction support with rollback
+- ✅ Added comprehensive error handling and logging
+- ✅ Git storage requires commit message validation
+
+**Note:** Pages controllers already updated in Phase 2
 
 ---
 
@@ -306,25 +368,25 @@
 ## Time Tracking
 
 **Estimated Total:** 20-30 hours (updated with new phases)
-**Completed:** ~2 hours
-**Remaining:** ~18-28 hours
+**Completed:** ~11 hours (Phases 0-5 + Phase 2.5 + Phase 2.6 backend)
+**Remaining:** ~9-19 hours
 
 **Phase Breakdown:**
 - Phase 0: ✅ 0.5 hours - Audit complete
 - Phase 1: ✅ 0.5 hours - ContentStorage moved
 - Phase 2: ✅ 3 hours - PageBuilder → Pages migration
-- Phase 2.5: ⏳ 4-6 hours - Cloud-native revisions
-- Phase 2.6: ⏳ 5-7 hours - Cloud storage editor
-- Phase 3: ⏳ 2-3 hours - Posts integration
-- Phase 4: ⏳ 1-2 hours - Database migrations
-- Phase 5: ⏳ 2-3 hours - Controllers update
-- Phase 6: ⏳ 4-5 hours - Frontend redesign
+- Phase 2.5: ✅ 2 hours - Cloud-native revisions complete
+- Phase 2.6: ✅ 2 hours - Cloud storage backend complete (frontend deferred)
+- Phase 3: ✅ 1.5 hours - Posts integration complete
+- Phase 4: ✅ 0.5 hours - Database migrations complete
+- Phase 5: ✅ 1 hour - Controllers update complete
+- Phase 6: ⏳ 4-5 hours - Frontend redesign (includes Phase 2.6 frontend)
 - Phase 7: ⏳ 2-3 hours - Testing
 - Phase 8: ⏳ 1-2 hours - Database config
 - Phase 9: ⏳ 2-3 hours - Final cleanup
 
 ---
 
-**Status:** On Track - Phase 2 Complete
+**Status:** On Track - Phases 0-5, 2.5, 2.6 Complete (Backend Fully Complete)
 **Blockers:** None
-**Next Session:** Begin Phase 2.5 (Cloud-Native Revisions) or Phase 3 (Posts Integration)
+**Next Session:** Phase 6 (Frontend Components + UI), Phase 7 (Testing), or Phase 8 (Database Config)

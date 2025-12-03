@@ -6,6 +6,9 @@ namespace App\Domains\ContentManagement\Pages\Models;
 
 use App\Domains\ContentManagement\ContentStorage\Models\ContentData;
 use App\Domains\ContentManagement\ContentStorage\Services\ContentStorageManager;
+use App\Domains\ContentManagement\ContentStorage\Factories\RevisionProviderFactory;
+use App\Domains\ContentManagement\ContentStorage\Contracts\RevisionProviderInterface;
+use App\Domains\ContentManagement\ContentStorage\ValueObjects\RevisionCollection;
 use App\Domains\Security\UserManagement\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -260,5 +263,72 @@ class Page extends Model
     {
         $this->status = self::STATUS_ARCHIVED;
         return $this->save();
+    }
+
+    // Cloud-Native Revision System
+
+    /**
+     * Get revision provider for this page
+     */
+    public function getRevisionProvider(): RevisionProviderInterface
+    {
+        /** @var RevisionProviderFactory $factory */
+        $factory = app(RevisionProviderFactory::class);
+        return $factory->forModel($this);
+    }
+
+    /**
+     * Get paginated revision history
+     *
+     * @param int $page Page number (1-indexed)
+     * @param int $perPage Items per page (default: 10)
+     * @return RevisionCollection
+     */
+    public function revisionHistory(int $page = 1, int $perPage = 10): RevisionCollection
+    {
+        if (!$this->storage_path) {
+            // No cloud storage path, return empty collection
+            return new RevisionCollection([], 0, $page, $perPage, false);
+        }
+
+        return $this->getRevisionProvider()->getRevisions($this->storage_path, $page, $perPage);
+    }
+
+    /**
+     * Get a specific revision
+     *
+     * @param string $revisionId Version ID, commit hash, or DB revision ID
+     * @return \App\Domains\ContentManagement\ContentStorage\ValueObjects\Revision|null
+     */
+    public function getRevisionById(string $revisionId)
+    {
+        if (!$this->storage_path) {
+            return null;
+        }
+
+        return $this->getRevisionProvider()->getRevision($this->storage_path, $revisionId);
+    }
+
+    /**
+     * Restore a specific revision
+     *
+     * @param string $revisionId Version ID or commit hash
+     * @return bool
+     */
+    public function restoreRevisionById(string $revisionId): bool
+    {
+        if (!$this->storage_path) {
+            return false;
+        }
+
+        return $this->getRevisionProvider()->restoreRevision($this->storage_path, $revisionId);
+    }
+
+    /**
+     * Check if this page's storage driver supports revisions
+     */
+    public function supportsRevisions(): bool
+    {
+        return $this->getRevisionProvider()->supportsRevisions();
     }
 }

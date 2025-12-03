@@ -20,6 +20,11 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::get('/{id}', [PostsController::class, 'show'])->name('show');
     Route::put('/{id}', [PostsController::class, 'update'])->name('update');
     Route::delete('/{id}', [PostsController::class, 'destroy'])->name('destroy');
+
+    // Revision history routes
+    Route::get('/{post}/revisions', [PostsController::class, 'revisions'])->name('revisions');
+    Route::get('/{post}/revisions/{revisionId}', [PostsController::class, 'showRevision'])->name('revisions.show');
+    Route::post('/{post}/revisions/{revisionId}/restore', [PostsController::class, 'restoreRevision'])->name('revisions.restore');
 });
 
 // Categories Management
