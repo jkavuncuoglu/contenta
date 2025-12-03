@@ -305,6 +305,64 @@
                             </div>
                         </div>
 
+                        <!-- Storage Info -->
+                        <div
+                            class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
+                        >
+                            <h3
+                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
+                            >
+                                Storage
+                            </h3>
+
+                            <div class="space-y-4">
+                                <!-- Storage Driver Display -->
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                                        Storage Driver
+                                    </label>
+                                    <div class="mt-1 inline-flex items-center rounded-md bg-neutral-100 px-3 py-1.5 text-sm font-medium text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200">
+                                        {{ props.post.storage_driver || 'database' }}
+                                    </div>
+                                    <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                                        Current storage backend for this post
+                                    </p>
+                                </div>
+
+                                <!-- Storage Path Display (if not database) -->
+                                <div v-if="props.post.storage_driver && props.post.storage_driver !== 'database'">
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                                        Storage Path
+                                    </label>
+                                    <div class="mt-1 rounded-md bg-neutral-50 px-3 py-2 font-mono text-xs text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300">
+                                        {{ props.post.storage_path || 'Not set' }}
+                                    </div>
+                                </div>
+
+                                <!-- Commit Message (for Git-based storage) -->
+                                <div v-if="requiresCommitMessage" class="space-y-2">
+                                    <label for="commit_message" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                                        Commit Message
+                                        <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        id="commit_message"
+                                        v-model="form.commit_message"
+                                        type="text"
+                                        required
+                                        placeholder="Update: post changes"
+                                        class="block w-full rounded-md border-neutral-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
+                                    />
+                                    <p class="text-xs text-neutral-500 dark:text-neutral-400">
+                                        Required for {{ props.post.storage_driver }} storage
+                                    </p>
+                                    <div v-if="errors.commit_message" class="text-sm text-red-600 dark:text-red-400">
+                                        {{ errors.commit_message[0] }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Categories -->
                         <div
                             class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
@@ -408,7 +466,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import MarkdownPageEditor from '@/components/PageBuilder/MarkdownPageEditor.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { marked } from 'marked';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 
 interface Props {
     post: {
@@ -424,6 +482,8 @@ interface Props {
         author?: { id: number; name: string };
         categories?: Array<{ id: number; name: string }>;
         tags?: Array<{ id: number; name: string }>;
+        storage_driver?: string;
+        storage_path?: string;
         created_at: string;
         updated_at: string;
     };
@@ -526,6 +586,13 @@ const form = reactive({
     categories: props.post.categories?.map((c) => c.id) || [],
     tags: props.post.tags?.map((t) => t.name) || [],
     custom_fields: {},
+    commit_message: '',
+});
+
+// Computed property to check if commit message is required
+const requiresCommitMessage = computed(() => {
+    const driver = props.post.storage_driver || 'database';
+    return ['github', 'gitlab', 'bitbucket'].includes(driver);
 });
 
 const theme = ref<'light' | 'dark'>(
@@ -607,6 +674,7 @@ const handleSubmit = async () => {
             content_html: htmlContent,
             table_of_contents: tableOfContents,
             published_at: publishedAtUTC,
+            commit_message: form.commit_message || undefined,
         },
         {
             onSuccess: () => {

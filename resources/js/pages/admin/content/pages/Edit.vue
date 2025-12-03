@@ -25,6 +25,8 @@ interface Page {
         brand?: string;
         price?: string;
     };
+    storage_driver?: string;
+    storage_path?: string;
     author?: {
         id: number;
         name: string;
@@ -54,6 +56,13 @@ const form = useForm({
     meta_description: props.page.meta_description || '',
     meta_keywords: props.page.meta_keywords || '',
     schema_data: props.page.schema_data || {},
+    commit_message: '',
+});
+
+// Computed property to check if commit message is required
+const requiresCommitMessage = computed(() => {
+    const driver = props.page.storage_driver || 'database';
+    return ['github', 'gitlab', 'bitbucket'].includes(driver);
 });
 
 // Use shortcode validation
@@ -418,6 +427,66 @@ const errorTypeColor = (type: string) => {
                                     <option value="published">Published</option>
                                     <option value="archived">Archived</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Storage Info -->
+                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
+                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
+                            Storage
+                        </h3>
+
+                        <div class="space-y-4">
+                            <!-- Storage Driver Display -->
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                                    Storage Driver
+                                </label>
+                                <div class="mt-1 inline-flex items-center rounded-md bg-neutral-100 px-3 py-1.5 text-sm font-medium text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200">
+                                    {{ props.page.storage_driver || 'database' }}
+                                </div>
+                                <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                                    Current storage backend for this page
+                                </p>
+                            </div>
+
+                            <!-- Storage Path Display (if not database) -->
+                            <div v-if="props.page.storage_driver && props.page.storage_driver !== 'database'">
+                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                                    Storage Path
+                                </label>
+                                <div class="mt-1 rounded-md bg-neutral-50 px-3 py-2 font-mono text-xs text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300">
+                                    {{ props.page.storage_path || 'Not set' }}
+                                </div>
+                            </div>
+
+                            <!-- Commit Message (for Git-based storage) -->
+                            <div v-if="requiresCommitMessage" class="space-y-2">
+                                <label
+                                    for="commit_message"
+                                    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                                >
+                                    Commit Message
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    id="commit_message"
+                                    v-model="form.commit_message"
+                                    type="text"
+                                    required
+                                    placeholder="Update: page changes"
+                                    class="block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
+                                />
+                                <p class="text-xs text-neutral-500 dark:text-neutral-400">
+                                    Required for {{ props.page.storage_driver }} storage
+                                </p>
+                                <div
+                                    v-if="form.errors.commit_message"
+                                    class="text-sm text-red-600 dark:text-red-400"
+                                >
+                                    {{ form.errors.commit_message }}
+                                </div>
                             </div>
                         </div>
                     </div>

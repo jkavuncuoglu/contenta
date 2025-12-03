@@ -121,7 +121,7 @@ function isExpanded(item: NavItem): boolean {
                     </button>
                 </SidebarMenuButton>
                 <template v-if="item.children && isExpanded(item)">
-                    <div class="rounded-lg rounded-t-none bg-neutral-100 py-2">
+                    <div class="rounded-lg rounded-t-none bg-neutral-100 dark:bg-neutral-800 py-2">
                         <NavMain
                             :items="item.children"
                             :level="(props.level ?? 0) + 1"

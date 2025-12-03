@@ -54,9 +54,17 @@
         <div class="flex items-center gap-2">
           <button
             @click="showLibrary = !showLibrary"
-            class="rounded-md bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+            class="rounded-md bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 ml-2"
           >
-            {{ showLibrary ? 'Hide' : 'Show' }} Shortcuts
+              <span class="hidden md:inline">
+                Shortcodes
+              </span>
+              <Iconify
+                  v-if="showLibrary"
+                  name="Shortcodes"
+                  class="ml-2 inline h-4 w-4 md:hidden"
+                  icon="material-symbols-light:deployed-code"
+                />
           </button>
         </div>
       </div>

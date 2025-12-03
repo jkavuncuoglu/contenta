@@ -299,6 +299,78 @@
                             </div>
                         </div>
 
+                        <!-- Storage Settings -->
+                        <div
+                            class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
+                        >
+                            <h3
+                                class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
+                            >
+                                Storage
+                            </h3>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label
+                                        for="storage_driver"
+                                        class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                                    >
+                                        Storage Driver
+                                    </label>
+                                    <select
+                                        id="storage_driver"
+                                        v-model="form.storage_driver"
+                                        class="mt-1 block w-full rounded-md border-neutral-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
+                                    >
+                                        <option value="database">Database (Default)</option>
+                                        <option value="local">Local Filesystem</option>
+                                        <option value="s3">Amazon S3</option>
+                                        <option value="azure">Azure Blob Storage</option>
+                                        <option value="gcs">Google Cloud Storage</option>
+                                        <option value="github">GitHub</option>
+                                    </select>
+                                    <p
+                                        class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
+                                    >
+                                        Choose where to store post content
+                                    </p>
+                                </div>
+
+                                <!-- Commit Message (for Git-based storage) -->
+                                <div
+                                    v-if="requiresCommitMessage"
+                                    class="space-y-2"
+                                >
+                                    <label
+                                        for="commit_message"
+                                        class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                                    >
+                                        Commit Message
+                                        <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        id="commit_message"
+                                        v-model="form.commit_message"
+                                        type="text"
+                                        required
+                                        placeholder="Add new post: [title]"
+                                        class="block w-full rounded-md border-neutral-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
+                                    />
+                                    <p
+                                        class="text-xs text-neutral-500 dark:text-neutral-400"
+                                    >
+                                        Required for {{ form.storage_driver }} storage
+                                    </p>
+                                    <div
+                                        v-if="errors.commit_message"
+                                        class="text-sm text-red-600 dark:text-red-400"
+                                    >
+                                        {{ errors.commit_message[0] }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Categories -->
                         <div
                             class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
@@ -400,7 +472,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import type { PostForm } from '@/types';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { marked } from 'marked';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 
 const errors = ref<Record<string, string[]>>({});
 const loading = ref(false);
@@ -465,6 +537,13 @@ const form = reactive<PostForm>({
     categories: [],
     tags: [],
     custom_fields: {},
+    storage_driver: 'database',
+    commit_message: '',
+});
+
+// Computed property to check if commit message is required
+const requiresCommitMessage = computed(() => {
+    return ['github', 'gitlab', 'bitbucket'].includes(form.storage_driver || '');
 });
 
 const generateSlug = () => {
@@ -542,6 +621,8 @@ const handleSubmit = async () => {
             content_html: htmlContent,
             table_of_contents: tableOfContents,
             published_at: publishedAtUTC,
+            storage_driver: form.storage_driver,
+            commit_message: form.commit_message || undefined,
         },
         {
             onSuccess: () => {
