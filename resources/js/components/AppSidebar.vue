@@ -103,13 +103,17 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Settings',
-        href: '/admin/settings/site',
         icon: 'material-symbols-light:settings',
         children: [
             {
                 title: 'Site Settings',
                 href: '/admin/settings/site',
                 icon: 'material-symbols-light:web',
+            },
+            {
+                title: 'Content Storage',
+                href: '/admin/settings/content-storage',
+                icon: 'material-symbols-light:storage',
             },
             {
                 title: 'Security',

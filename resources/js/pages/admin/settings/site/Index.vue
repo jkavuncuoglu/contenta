@@ -4,7 +4,6 @@ import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
-import Input from '@/components/ui/input/Input.vue';
 import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -66,9 +65,11 @@ const submit = () => {
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         title: 'Settings',
+        href: '/admin'
     },
     {
         title: 'Site',
+        href: '/admin/settings/site'
     },
 ];
 </script>
@@ -130,7 +131,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 Site Title
                             </label>
                             <div class="mt-1">
-                                <Input
+                                <input
                                     id="site_title"
                                     v-model="form.site_title"
                                     type="text"
@@ -163,7 +164,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 Tagline
                             </label>
                             <div class="mt-1">
-                                <Input
+                                <input
                                     id="site_tagline"
                                     v-model="form.site_tagline"
                                     type="text"
@@ -196,7 +197,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 Site Address (URL)
                             </label>
                             <div class="mt-1">
-                                <Input
+                                <input
                                     id="site_url"
                                     v-model="form.site_url"
                                     type="url"
@@ -228,7 +229,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                 Administration Email Address
                             </label>
                             <div class="mt-1">
-                                <Input
+                                <input
                                     id="admin_email"
                                     v-model="form.admin_email"
                                     type="email"
@@ -483,7 +484,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     Google Analytics Measurement ID
                                 </label>
                                 <div class="mt-1">
-                                    <Input
+                                    <input
                                         id="google_analytics_id"
                                         v-model="form.google_analytics_id"
                                         type="text"
@@ -518,7 +519,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     Google Tag Manager Container ID
                                 </label>
                                 <div class="mt-1">
-                                    <Input
+                                    <input
                                         id="google_tag_manager_id"
                                         v-model="form.google_tag_manager_id"
                                         type="text"
@@ -554,7 +555,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     Facebook Pixel ID
                                 </label>
                                 <div class="mt-1">
-                                    <Input
+                                    <input
                                         id="facebook_pixel_id"
                                         v-model="form.facebook_pixel_id"
                                         type="text"

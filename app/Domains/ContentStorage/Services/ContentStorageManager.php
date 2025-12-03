@@ -225,9 +225,12 @@ class ContentStorageManager extends Manager
                 break;
 
             case 's3':
+                $encryptedKey = Setting::get('content_storage', 's3_key');
+                $encryptedSecret = Setting::get('content_storage', 's3_secret');
+
                 $config = [
-                    'key' => Setting::getDecrypted('content_storage', 's3_key'),
-                    'secret' => Setting::getDecrypted('content_storage', 's3_secret'),
+                    'key' => $encryptedKey ? decrypt($encryptedKey) : null,
+                    'secret' => $encryptedSecret ? decrypt($encryptedSecret) : null,
                     'region' => Setting::get('content_storage', 's3_region', 'us-east-1'),
                     'bucket' => Setting::get('content_storage', 's3_bucket'),
                     'prefix' => Setting::get('content_storage', 's3_prefix', ''),
@@ -235,8 +238,10 @@ class ContentStorageManager extends Manager
                 break;
 
             case 'github':
+                $encryptedToken = Setting::get('content_storage', 'github_token');
+
                 $config = [
-                    'token' => Setting::getDecrypted('content_storage', 'github_token'),
+                    'token' => $encryptedToken ? decrypt($encryptedToken) : null,
                     'owner' => Setting::get('content_storage', 'github_owner'),
                     'repo' => Setting::get('content_storage', 'github_repo'),
                     'branch' => Setting::get('content_storage', 'github_branch', 'main'),
@@ -245,9 +250,11 @@ class ContentStorageManager extends Manager
                 break;
 
             case 'azure':
+                $encryptedKey = Setting::get('content_storage', 'azure_account_key');
+
                 $config = [
                     'account_name' => Setting::get('content_storage', 'azure_account_name'),
-                    'account_key' => Setting::getDecrypted('content_storage', 'azure_account_key'),
+                    'account_key' => $encryptedKey ? decrypt($encryptedKey) : null,
                     'container' => Setting::get('content_storage', 'azure_container'),
                 ];
                 break;

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import Icon from '@/components/Icon.vue';
+import { Icon } from '@iconify/vue';
+
 import {
     SidebarGroup,
     SidebarMenu,
@@ -28,6 +29,8 @@ function toggleChildren(itemKey: string) {
     }
     // Force reactivity for Set
     expandedItems.value = new Set(expandedItems.value);
+
+    console.debug(expandedItems.value.toString());
 }
 
 function isItemActive(item: NavItem): boolean {
@@ -107,13 +110,13 @@ function isExpanded(item: NavItem): boolean {
                             v-if="isExpanded(item)"
                             name="chevron-right"
                             icon="material-symbols-light:chevron-right"
-                            class="h-4 w-4 rotate-90 text-white"
+                            class="h-4 w-4 rotate-90 text-neutral-700 dark:text-neutral-100"
                         />
                         <Icon
                             v-else
                             name="chevron-right"
                             icon="material-symbols-light:chevron-right"
-                            class="h-4 w-4 text-white"
+                            class="h-4 w-4 text-neutral-700 dark:text-neutral-100"
                         />
                     </button>
                 </SidebarMenuButton>

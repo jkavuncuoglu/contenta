@@ -8,6 +8,8 @@ use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\TwoFactorAuthent
 use App\Domains\Settings\Http\Controllers\Admin\SiteSettingsController;
 use App\Domains\Settings\Http\Controllers\Admin\SecuritySettingsController;
 use App\Domains\Settings\Http\Controllers\Admin\ThemeSettingsController;
+use App\Domains\ContentStorage\Http\Controllers\Admin\ContentStorageSettingsController;
+use App\Domains\ContentStorage\Http\Controllers\Admin\ContentMigrationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -120,5 +122,22 @@ Route::group([
         Route::get('', [ThemeSettingsController::class, 'index'])->name('index');
         Route::get('colors', [ThemeSettingsController::class, 'show'])->name('show');
         Route::put('', [ThemeSettingsController::class, 'update'])->name('update');
+    });
+
+    Route::group([
+        'prefix' => 'content-storage',
+        'as' => 'content-storage.',
+    ], function () {
+        Route::get('', [ContentStorageSettingsController::class, 'index'])->name('index');
+        Route::put('', [ContentStorageSettingsController::class, 'update'])->name('update');
+        Route::post('test-connection', [ContentStorageSettingsController::class, 'testConnection'])->name('test-connection');
+
+        // Migration routes
+        Route::get('migrate', [ContentMigrationController::class, 'index'])->name('migrate.index');
+        Route::post('migrations', [ContentMigrationController::class, 'store'])->name('migrations.store');
+        Route::get('migrations', [ContentMigrationController::class, 'list'])->name('migrations.list');
+        Route::get('migrations/{id}', [ContentMigrationController::class, 'show'])->name('migrations.show');
+        Route::post('migrations/{id}/verify', [ContentMigrationController::class, 'verify'])->name('migrations.verify');
+        Route::post('migrations/{id}/rollback', [ContentMigrationController::class, 'rollback'])->name('migrations.rollback');
     });
 });
