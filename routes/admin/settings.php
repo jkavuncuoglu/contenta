@@ -108,10 +108,10 @@ Route::group([
         'prefix' => 'permissions',
         'as' => 'permissions.',
     ], function () {
-        Route::get('', [RolesController::class, 'index'])->name('index');
-        Route::post('roles', [RolesController::class, 'store'])->name('roles.store');
-        Route::put('roles/{role}', [RolesController::class, 'update'])->name('roles.update');
-        Route::delete('roles/{role}', [RolesController::class, 'destroy'])->name('roles.destroy');
+        Route::get('', [RolesController::class, 'index'])->middleware('permission:view roles')->name('index');
+        Route::post('roles', [RolesController::class, 'store'])->middleware('permission:create roles')->name('roles.store');
+        Route::put('roles/{role}', [RolesController::class, 'update'])->middleware('permission:update roles')->name('roles.update');
+        Route::delete('roles/{role}', [RolesController::class, 'destroy'])->middleware('permission:delete roles')->name('roles.destroy');
     });
 
     Route::group([

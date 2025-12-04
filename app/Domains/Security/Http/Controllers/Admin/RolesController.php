@@ -13,6 +13,14 @@ use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view roles')->only(['index']);
+        $this->middleware('permission:create roles')->only(['store']);
+        $this->middleware('permission:update roles')->only(['update']);
+        $this->middleware('permission:delete roles')->only(['destroy']);
+    }
+
     public function index(): Response
     {
         $roles = Role::with(['permissions:id,name'])->withCount('users')->orderBy('name')->get();
