@@ -7,11 +7,11 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1
-                        class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                        class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white"
                     >
                         Categories
                     </h1>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
                         Manage your content categories and their hierarchy
                     </p>
                 </div>
@@ -25,12 +25,12 @@
             </div>
 
             <!-- Categories List -->
-            <div class="rounded-lg bg-white shadow dark:bg-gray-800">
+            <div class="rounded-lg bg-white shadow dark:bg-neutral-800">
                 <div
-                    class="border-b border-gray-200 px-6 py-4 dark:border-gray-700"
+                    class="border-b border-neutral-200 px-6 py-4 dark:border-neutral-700"
                 >
                     <h3
-                        class="text-lg font-medium text-gray-900 dark:text-white"
+                        class="text-lg font-medium text-neutral-900 dark:text-white"
                     >
                         Categories ({{ categoriesArray.length }})
                     </h3>
@@ -39,14 +39,14 @@
                 <div v-if="!categoriesArray.length" class="p-12 text-center">
                     <Icon
                         icon="lucide:folder"
-                        class="mx-auto h-12 w-12 text-gray-400"
+                        class="mx-auto h-12 w-12 text-neutral-400"
                     />
                     <h3
-                        class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
+                        class="mt-2 text-sm font-medium text-neutral-900 dark:text-white"
                     >
                         No categories
                     </h3>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                         Get started by creating a new category.
                     </p>
                     <div class="mt-6">
@@ -63,32 +63,32 @@
                 <div v-else>
                     <div class="overflow-x-auto">
                         <table
-                            class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+                            class="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700"
                         >
-                            <thead class="bg-gray-50 dark:bg-gray-900">
+                            <thead class="bg-neutral-50 dark:bg-neutral-900">
                                 <tr>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                                        class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
                                     >
                                         Name
                                     </th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                                        class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
                                     >
                                         Slug
                                     </th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                                        class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
                                     >
                                         Parent
                                     </th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                                        class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
                                     >
                                         Posts
                                     </th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                                        class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
                                     >
                                         Created
                                     </th>
@@ -98,24 +98,24 @@
                                 </tr>
                             </thead>
                             <tbody
-                                class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800"
+                                class="divide-y divide-neutral-200 bg-white dark:divide-neutral-700 dark:bg-neutral-800"
                             >
                                 <tr
                                     v-for="category in categoriesArray"
                                     :key="category.id"
-                                    class="hover:bg-gray-50 dark:hover:bg-gray-700"
+                                    class="hover:bg-neutral-50 dark:hover:bg-neutral-700"
                                 >
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div>
                                                 <div
-                                                    class="text-sm font-medium text-gray-900 dark:text-white"
+                                                    class="text-sm font-medium text-neutral-900 dark:text-white"
                                                 >
                                                     {{ category.name }}
                                                 </div>
                                                 <div
                                                     v-if="category.description"
-                                                    class="max-w-xs truncate text-sm text-gray-500 dark:text-gray-400"
+                                                    class="max-w-xs truncate text-sm text-neutral-500 dark:text-neutral-400"
                                                 >
                                                     {{ category.description }}
                                                 </div>
@@ -123,22 +123,22 @@
                                         </div>
                                     </td>
                                     <td
-                                        class="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
+                                        class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500 dark:text-neutral-400"
                                     >
                                         {{ category.slug }}
                                     </td>
                                     <td
-                                        class="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
+                                        class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500 dark:text-neutral-400"
                                     >
                                         {{ category.parent?.name || '—' }}
                                     </td>
                                     <td
-                                        class="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
+                                        class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500 dark:text-neutral-400"
                                     >
                                         {{ category.posts_count || 0 }}
                                     </td>
                                     <td
-                                        class="px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
+                                        class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500 dark:text-neutral-400"
                                     >
                                         {{ formatDate(category.created_at) }}
                                     </td>

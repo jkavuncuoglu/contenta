@@ -32,7 +32,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     footerSections: () => [],
     socialLinks: () => [],
-    siteName: 'Contenta',
+    siteName: 'Contenta CMS',
     tagline: 'Professional content management made simple',
     copyrightText: undefined,
 });
@@ -55,7 +55,7 @@ const socialLinksToDisplay =
 
 <template>
     <footer
-        class="border-t border-gray-200 bg-gray-50 transition-colors dark:border-gray-800 dark:bg-gray-900"
+        class="border-t border-neutral-200 bg-neutral-50 transition-colors dark:border-neutral-800 dark:bg-neutral-900"
     >
         <div class="container mx-auto px-4 py-12 sm:px-6 md:py-16 lg:px-8">
             <!-- Main Footer Content -->
@@ -81,14 +81,12 @@ const socialLinksToDisplay =
                             }}</span>
                         </div>
                         <span
-                            class="text-2xl font-bold text-gray-900 dark:text-white"
+                            class="text-2xl font-bold text-neutral-900 dark:text-white"
                         >
                             {{ siteName }}
                         </span>
                     </div>
-                    <p class="mb-6 max-w-md text-gray-600 dark:text-gray-400">
-                        {{ tagline }}
-                    </p>
+                    <p class="mb-6 max-w-md text-neutral-600 dark:text-neutral-400" v-html="tagline" />
 
                     <!-- Social Links -->
                     <div class="flex space-x-4">
@@ -97,7 +95,7 @@ const socialLinksToDisplay =
                             :key="social.platform"
                             :href="social.url"
                             :aria-label="social.platform"
-                            class="rounded-lg p-2 text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-blue-600 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-blue-400"
+                            class="rounded-lg p-2 text-neutral-600 transition-all duration-200 hover:bg-neutral-100 hover:text-blue-600 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-blue-400"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
@@ -116,7 +114,7 @@ const socialLinksToDisplay =
                         :key="index"
                     >
                         <h3
-                            class="mb-4 text-sm font-semibold tracking-wider text-gray-900 uppercase dark:text-white"
+                            class="mb-4 text-sm font-semibold tracking-wider text-neutral-900 uppercase dark:text-white"
                         >
                             {{ section.title }}
                         </h3>
@@ -125,7 +123,7 @@ const socialLinksToDisplay =
                                 <Link
                                     :href="link.url"
                                     :target="link.target || '_self'"
-                                    class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                                    class="text-neutral-600 transition-colors hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400"
                                 >
                                     {{ link.title }}
                                 </Link>
@@ -142,7 +140,7 @@ const socialLinksToDisplay =
                     <!-- Company -->
                     <div>
                         <h3
-                            class="mb-4 text-sm font-semibold tracking-wider text-gray-900 uppercase dark:text-white"
+                            class="mb-4 text-sm font-semibold tracking-wider text-neutral-900 uppercase dark:text-white"
                         >
                             Company
                         </h3>
@@ -150,7 +148,7 @@ const socialLinksToDisplay =
                             <li>
                                 <Link
                                     href="/about"
-                                    class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                                    class="text-neutral-600 transition-colors hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400"
                                 >
                                     About Us
                                 </Link>
@@ -158,7 +156,7 @@ const socialLinksToDisplay =
                             <li>
                                 <Link
                                     href="/blog"
-                                    class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                                    class="text-neutral-600 transition-colors hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400"
                                 >
                                     Blog
                                 </Link>
@@ -166,7 +164,7 @@ const socialLinksToDisplay =
                             <li>
                                 <Link
                                     href="/contact"
-                                    class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                                    class="text-neutral-600 transition-colors hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400"
                                 >
                                     Contact
                                 </Link>
@@ -177,7 +175,7 @@ const socialLinksToDisplay =
                     <!-- Resources -->
                     <div>
                         <h3
-                            class="mb-4 text-sm font-semibold tracking-wider text-gray-900 uppercase dark:text-white"
+                            class="mb-4 text-sm font-semibold tracking-wider text-neutral-900 uppercase dark:text-white"
                         >
                             Resources
                         </h3>
@@ -185,7 +183,7 @@ const socialLinksToDisplay =
                             <li>
                                 <Link
                                     href="/docs"
-                                    class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                                    class="text-neutral-600 transition-colors hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400"
                                 >
                                     Documentation
                                 </Link>
@@ -193,7 +191,7 @@ const socialLinksToDisplay =
                             <li>
                                 <Link
                                     href="/help"
-                                    class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                                    class="text-neutral-600 transition-colors hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400"
                                 >
                                     Help Center
                                 </Link>
@@ -201,7 +199,7 @@ const socialLinksToDisplay =
                             <li>
                                 <Link
                                     href="/support"
-                                    class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                                    class="text-neutral-600 transition-colors hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400"
                                 >
                                     Support
                                 </Link>
@@ -212,7 +210,7 @@ const socialLinksToDisplay =
                     <!-- Legal -->
                     <div>
                         <h3
-                            class="mb-4 text-sm font-semibold tracking-wider text-gray-900 uppercase dark:text-white"
+                            class="mb-4 text-sm font-semibold tracking-wider text-neutral-900 uppercase dark:text-white"
                         >
                             Legal
                         </h3>
@@ -220,7 +218,7 @@ const socialLinksToDisplay =
                             <li>
                                 <Link
                                     href="/privacy"
-                                    class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                                    class="text-neutral-600 transition-colors hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400"
                                 >
                                     Privacy Policy
                                 </Link>
@@ -228,7 +226,7 @@ const socialLinksToDisplay =
                             <li>
                                 <Link
                                     href="/terms"
-                                    class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                                    class="text-neutral-600 transition-colors hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400"
                                 >
                                     Terms of Service
                                 </Link>
@@ -236,7 +234,7 @@ const socialLinksToDisplay =
                             <li>
                                 <Link
                                     href="/cookies"
-                                    class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                                    class="text-neutral-600 transition-colors hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400"
                                 >
                                     Cookie Policy
                                 </Link>
@@ -248,16 +246,16 @@ const socialLinksToDisplay =
 
             <!-- Bottom Bar -->
             <div
-                class="mt-12 border-t border-gray-200 pt-8 dark:border-gray-800"
+                class="mt-12 border-t border-neutral-200 pt-8 dark:border-neutral-800"
             >
                 <div
                     class="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0"
                 >
-                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                    <p class="text-sm text-neutral-600 dark:text-neutral-400">
                         {{ copyright }}
                     </p>
                     <div
-                        class="flex items-center space-x-6 text-sm text-gray-600 dark:text-gray-400"
+                        class="flex items-center space-x-6 text-sm text-neutral-600 dark:text-neutral-400"
                     >
                         <Link
                             href="/privacy"

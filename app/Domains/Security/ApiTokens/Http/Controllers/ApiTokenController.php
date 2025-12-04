@@ -4,7 +4,6 @@ namespace App\Domains\Security\ApiTokens\Http\Controllers;
 
 use App\Domains\Security\ApiTokens\Constants\TokenAbility;
 use App\Domains\Security\ApiTokens\Http\Requests\CreateApiTokenRequest;
-use App\Domains\Security\ApiTokens\Http\Requests\UpdateApiTokenRequest;
 use App\Domains\Security\ApiTokens\Services\ApiTokenService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -78,7 +77,6 @@ class ApiTokenController extends Controller
         ]);
     }
 
-
     /**
      * Delete a specific API token.
      */
@@ -87,7 +85,7 @@ class ApiTokenController extends Controller
         $user = auth()->user();
         $deleted = $this->apiTokenService->deleteToken($user, $tokenId);
 
-        if (!$deleted) {
+        if (! $deleted) {
             // Use 303 so Inertia follows redirect after DELETE
             return back(status: 303)->with('error', 'Token not found.');
         }

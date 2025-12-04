@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Categories\Tests\UnitTests;
 
-use App\Domains\ContentManagement\Categories\Models\Category;
 use App\Domains\ContentManagement\Categories\Services\CategoryService;
 use App\Domains\ContentManagement\Categories\Services\CategoryServiceContract;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,7 +21,6 @@ class CategoryServiceTest extends TestCase
         $this->service = app(CategoryServiceContract::class);
     }
 
-    
     public function test_it_is_bound_to_container(): void
     {
         // Act
@@ -32,7 +30,6 @@ class CategoryServiceTest extends TestCase
         $this->assertInstanceOf(CategoryService::class, $service);
     }
 
-    
     public function test_it_is_registered_as_singleton(): void
     {
         // Act

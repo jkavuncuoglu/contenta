@@ -15,12 +15,12 @@ interface CategoryServiceContract
     public function findCategoryById(int $id): ?Category;
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function createCategory(array $data): Category;
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function updateCategory(int $id, array $data): Category;
 

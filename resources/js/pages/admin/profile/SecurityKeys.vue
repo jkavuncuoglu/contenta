@@ -6,7 +6,7 @@
             <div class="flex gap-2">
                 <input
                     v-model="nickname"
-                    class="rounded border px-3 py-2 dark:border-gray-700 dark:bg-gray-800"
+                    class="rounded border px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                     placeholder="Key nickname (optional)"
                 />
                 <button
@@ -22,12 +22,12 @@
                 </button>
             </div>
 
-            <div v-if="loading" class="text-gray-500">
+            <div v-if="loading" class="text-neutral-500">
                 Loading credentials...
             </div>
             <div v-else>
                 <ul
-                    class="divide-y divide-gray-200 rounded border border-gray-200 dark:divide-gray-700 dark:border-gray-700"
+                    class="divide-y divide-neutral-200 rounded border border-neutral-200 dark:divide-neutral-700 dark:border-neutral-700"
                 >
                     <li
                         v-for="cred in credentials"
@@ -38,7 +38,7 @@
                             <p class="font-medium">
                                 {{ cred.name || cred.id }}
                             </p>
-                            <p class="text-sm text-gray-500">
+                            <p class="text-sm text-neutral-500">
                                 Added: {{ cred.created_at }}
                             </p>
                         </div>
@@ -50,7 +50,7 @@
                         </button>
                     </li>
                 </ul>
-                <p v-if="!credentials.length" class="text-gray-500">
+                <p v-if="!credentials.length" class="text-neutral-500">
                     No security keys registered.
                 </p>
             </div>

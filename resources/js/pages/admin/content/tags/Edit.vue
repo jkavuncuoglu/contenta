@@ -6,17 +6,17 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1
-                        class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                        class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white"
                     >
                         Edit Tag
                     </h1>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
                         Update tag information and settings
                     </p>
                 </div>
                 <Link
                     href="/admin/tags"
-                    class="inline-flex items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase hover:bg-gray-700"
+                    class="inline-flex items-center rounded-md border border-transparent bg-neutral-600 px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase hover:bg-neutral-700"
                 >
                     <Icon icon="lucide:arrow-left" class="mr-2 h-4 w-4" />
                     Back to Tags
@@ -47,12 +47,12 @@
                 @submit.prevent="handleSubmit"
                 class="space-y-6"
             >
-                <div class="rounded-lg bg-white shadow dark:bg-gray-800">
+                <div class="rounded-lg bg-white shadow dark:bg-neutral-800">
                     <div
-                        class="border-b border-gray-200 px-6 py-4 dark:border-gray-700"
+                        class="border-b border-neutral-200 px-6 py-4 dark:border-neutral-700"
                     >
                         <h3
-                            class="text-lg font-medium text-gray-900 dark:text-white"
+                            class="text-lg font-medium text-neutral-900 dark:text-white"
                         >
                             Tag Details
                         </h3>
@@ -63,7 +63,7 @@
                         <div>
                             <label
                                 for="name"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Name <span class="text-red-500">*</span>
                             </label>
@@ -72,7 +72,7 @@
                                 v-model="form.name"
                                 type="text"
                                 required
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700"
+                                class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700"
                                 placeholder="Enter tag name"
                                 @input="generateSlug"
                             />
@@ -88,7 +88,7 @@
                         <div>
                             <label
                                 for="slug"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Slug
                             </label>
@@ -96,11 +96,11 @@
                                 id="slug"
                                 v-model="form.slug"
                                 type="text"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700"
+                                class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700"
                                 placeholder="tag-slug"
                             />
                             <p
-                                class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 URL-friendly version of the name. Leave empty to
                                 auto-generate.
@@ -117,7 +117,7 @@
                         <div>
                             <label
                                 for="description"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Description
                             </label>
@@ -125,11 +125,11 @@
                                 id="description"
                                 v-model="form.description"
                                 rows="3"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700"
+                                class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700"
                                 placeholder="Brief description of this tag"
                             ></textarea>
                             <p
-                                class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 {{ (form.description || '').length }}/1000
                                 characters
@@ -146,7 +146,7 @@
                         <div>
                             <label
                                 for="color"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Color
                             </label>
@@ -155,17 +155,17 @@
                                     id="color"
                                     v-model="form.color"
                                     type="color"
-                                    class="h-10 w-20 rounded border border-gray-300 dark:border-gray-600"
+                                    class="h-10 w-20 rounded border border-neutral-300 dark:border-neutral-600"
                                 />
                                 <input
                                     v-model="form.color"
                                     type="text"
                                     placeholder="#000000"
-                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700"
+                                    class="block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700"
                                 />
                             </div>
                             <p
-                                class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 Choose a color to help identify this tag
                             </p>
@@ -180,12 +180,12 @@
                 </div>
 
                 <!-- SEO Section -->
-                <div class="rounded-lg bg-white shadow dark:bg-gray-800">
+                <div class="rounded-lg bg-white shadow dark:bg-neutral-800">
                     <div
-                        class="border-b border-gray-200 px-6 py-4 dark:border-gray-700"
+                        class="border-b border-neutral-200 px-6 py-4 dark:border-neutral-700"
                     >
                         <h3
-                            class="text-lg font-medium text-gray-900 dark:text-white"
+                            class="text-lg font-medium text-neutral-900 dark:text-white"
                         >
                             SEO Settings
                         </h3>
@@ -196,7 +196,7 @@
                         <div>
                             <label
                                 for="meta_title"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Meta Title
                             </label>
@@ -205,11 +205,11 @@
                                 v-model="form.meta_title"
                                 type="text"
                                 maxlength="255"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700"
+                                class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700"
                                 placeholder="SEO title for search engines"
                             />
                             <p
-                                class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 {{ (form.meta_title || '').length }}/255
                                 characters
@@ -226,7 +226,7 @@
                         <div>
                             <label
                                 for="meta_description"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Meta Description
                             </label>
@@ -235,11 +235,11 @@
                                 v-model="form.meta_description"
                                 rows="3"
                                 maxlength="500"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700"
+                                class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700"
                                 placeholder="Brief description for search engines"
                             ></textarea>
                             <p
-                                class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 {{ (form.meta_description || '').length }}/500
                                 characters
@@ -255,12 +255,12 @@
                 </div>
 
                 <!-- Usage Statistics -->
-                <div class="rounded-lg bg-white shadow dark:bg-gray-800">
+                <div class="rounded-lg bg-white shadow dark:bg-neutral-800">
                     <div
-                        class="border-b border-gray-200 px-6 py-4 dark:border-gray-700"
+                        class="border-b border-neutral-200 px-6 py-4 dark:border-neutral-700"
                     >
                         <h3
-                            class="text-lg font-medium text-gray-900 dark:text-white"
+                            class="text-lg font-medium text-neutral-900 dark:text-white"
                         >
                             Usage Statistics
                         </h3>
@@ -275,7 +275,7 @@
                                     {{ tag.posts_count || 0 }}
                                 </div>
                                 <div
-                                    class="text-sm text-gray-500 dark:text-gray-400"
+                                    class="text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Total Posts
                                 </div>
@@ -287,7 +287,7 @@
                                     {{ formatDate(tag.created_at) }}
                                 </div>
                                 <div
-                                    class="text-sm text-gray-500 dark:text-gray-400"
+                                    class="text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Created
                                 </div>
@@ -299,7 +299,7 @@
                                     {{ formatDate(tag.updated_at) }}
                                 </div>
                                 <div
-                                    class="text-sm text-gray-500 dark:text-gray-400"
+                                    class="text-sm text-neutral-500 dark:text-neutral-400"
                                 >
                                     Last Updated
                                 </div>
@@ -312,7 +312,7 @@
                 <div class="flex items-center justify-end space-x-4">
                     <Link
                         href="/admin/tags"
-                        class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                        class="inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-600"
                     >
                         Cancel
                     </Link>

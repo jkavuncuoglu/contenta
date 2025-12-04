@@ -7,11 +7,11 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1
-                        class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                        class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white"
                     >
                         Analytics
                     </h1>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
                         View your site analytics and statistics
                     </p>
                 </div>
@@ -20,25 +20,25 @@
             <!-- Stats Grid -->
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <div
-                    class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800"
+                    class="overflow-hidden rounded-lg bg-white shadow dark:bg-neutral-800"
                 >
                     <div class="p-5">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <Icon
                                     icon="lucide:eye"
-                                    class="h-6 w-6 text-gray-400"
+                                    class="h-6 w-6 text-neutral-400"
                                 />
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
                                     <dt
-                                        class="truncate text-sm font-medium text-gray-500 dark:text-gray-400"
+                                        class="truncate text-sm font-medium text-neutral-500 dark:text-neutral-400"
                                     >
                                         Total Views
                                     </dt>
                                     <dd
-                                        class="text-lg font-medium text-gray-900 dark:text-white"
+                                        class="text-lg font-medium text-neutral-900 dark:text-white"
                                     >
                                         {{ stats.totalViews || 0 }}
                                     </dd>
@@ -49,25 +49,25 @@
                 </div>
 
                 <div
-                    class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800"
+                    class="overflow-hidden rounded-lg bg-white shadow dark:bg-neutral-800"
                 >
                     <div class="p-5">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <Icon
                                     icon="lucide:users"
-                                    class="h-6 w-6 text-gray-400"
+                                    class="h-6 w-6 text-neutral-400"
                                 />
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
                                     <dt
-                                        class="truncate text-sm font-medium text-gray-500 dark:text-gray-400"
+                                        class="truncate text-sm font-medium text-neutral-500 dark:text-neutral-400"
                                     >
                                         Unique Visitors
                                     </dt>
                                     <dd
-                                        class="text-lg font-medium text-gray-900 dark:text-white"
+                                        class="text-lg font-medium text-neutral-900 dark:text-white"
                                     >
                                         {{ stats.uniqueVisitors || 0 }}
                                     </dd>
@@ -78,25 +78,25 @@
                 </div>
 
                 <div
-                    class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800"
+                    class="overflow-hidden rounded-lg bg-white shadow dark:bg-neutral-800"
                 >
                     <div class="p-5">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <Icon
                                     icon="lucide:file-text"
-                                    class="h-6 w-6 text-gray-400"
+                                    class="h-6 w-6 text-neutral-400"
                                 />
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
                                     <dt
-                                        class="truncate text-sm font-medium text-gray-500 dark:text-gray-400"
+                                        class="truncate text-sm font-medium text-neutral-500 dark:text-neutral-400"
                                     >
                                         Total Posts
                                     </dt>
                                     <dd
-                                        class="text-lg font-medium text-gray-900 dark:text-white"
+                                        class="text-lg font-medium text-neutral-900 dark:text-white"
                                     >
                                         {{ stats.totalPosts || 0 }}
                                     </dd>
@@ -107,25 +107,25 @@
                 </div>
 
                 <div
-                    class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800"
+                    class="overflow-hidden rounded-lg bg-white shadow dark:bg-neutral-800"
                 >
                     <div class="p-5">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <Icon
                                     icon="lucide:message-circle"
-                                    class="h-6 w-6 text-gray-400"
+                                    class="h-6 w-6 text-neutral-400"
                                 />
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
                                     <dt
-                                        class="truncate text-sm font-medium text-gray-500 dark:text-gray-400"
+                                        class="truncate text-sm font-medium text-neutral-500 dark:text-neutral-400"
                                     >
                                         Total Comments
                                     </dt>
                                     <dd
-                                        class="text-lg font-medium text-gray-900 dark:text-white"
+                                        class="text-lg font-medium text-neutral-900 dark:text-white"
                                     >
                                         {{ stats.totalComments || 0 }}
                                     </dd>
@@ -138,14 +138,14 @@
 
             <!-- Charts Placeholder -->
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <div class="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+                <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
                     <h3
-                        class="mb-4 text-lg font-medium text-gray-900 dark:text-white"
+                        class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
                     >
                         Visitors Over Time
                     </h3>
                     <div
-                        class="flex h-64 items-center justify-center text-gray-500 dark:text-gray-400"
+                        class="flex h-64 items-center justify-center text-neutral-500 dark:text-neutral-400"
                     >
                         <p>
                             Chart placeholder - integrate with your analytics
@@ -154,9 +154,9 @@
                     </div>
                 </div>
 
-                <div class="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+                <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
                     <h3
-                        class="mb-4 text-lg font-medium text-gray-900 dark:text-white"
+                        class="mb-4 text-lg font-medium text-neutral-900 dark:text-white"
                     >
                         Top Pages
                     </h3>
@@ -167,11 +167,11 @@
                             class="flex justify-between"
                         >
                             <span
-                                class="text-sm text-gray-600 dark:text-gray-300"
+                                class="text-sm text-neutral-600 dark:text-neutral-300"
                                 >{{ page.path }}</span
                             >
                             <span
-                                class="text-sm font-medium text-gray-900 dark:text-white"
+                                class="text-sm font-medium text-neutral-900 dark:text-white"
                                 >{{ page.views }}</span
                             >
                         </div>

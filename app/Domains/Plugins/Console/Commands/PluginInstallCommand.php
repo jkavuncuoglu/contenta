@@ -15,8 +15,9 @@ class PluginInstallCommand extends Command
     {
         $zipPath = $this->argument('zip-path');
 
-        if (!file_exists($zipPath)) {
+        if (! file_exists($zipPath)) {
             $this->error("File not found: {$zipPath}");
+
             return self::FAILURE;
         }
 
@@ -31,8 +32,8 @@ class PluginInstallCommand extends Command
                 $this->line('Security scan results:');
                 $this->line("Scanned files: {$result['scan_results']['scanned_files']}");
 
-                if (!empty($result['scan_results']['warnings'])) {
-                    $this->warn('Warnings detected: ' . count($result['scan_results']['warnings']));
+                if (! empty($result['scan_results']['warnings'])) {
+                    $this->warn('Warnings detected: '.count($result['scan_results']['warnings']));
                 }
             }
 

@@ -8,6 +8,7 @@ return [
     App\Domains\ContentManagement\Tags\TagServiceProvider::class,
     App\Domains\ContentManagement\Categories\CategoryServiceProvider::class,
     App\Domains\ContentManagement\ContentManagementServiceProvider::class,
+    App\Domains\ContentManagement\Services\ShortcodeParser\ShortcodeParserServiceProvider::class,
 
     // Media Domain
     App\Domains\Media\MediaServiceProvider::class,
@@ -15,11 +16,14 @@ return [
     // Navigation Domain
     App\Domains\Navigation\NavigationServiceProvider::class,
 
-    // PageBuilder Domain
-    App\Domains\PageBuilder\PageBuilderServiceProvider::class,
-
     // Settings Domain
     App\Domains\Settings\SettingsServiceProvider::class,
+
+    // Content Storage Subdomain (under ContentManagement)
+    App\Domains\ContentManagement\ContentStorage\ContentStorageServiceProvider::class,
+
+    // Pages Subdomain (under ContentManagement)
+    App\Domains\ContentManagement\Pages\PageServiceProvider::class,
 
     // Themes Domain
     App\Domains\Themes\ThemeServiceProvider::class,

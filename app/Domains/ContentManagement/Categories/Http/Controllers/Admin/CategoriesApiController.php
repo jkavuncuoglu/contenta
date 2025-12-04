@@ -2,8 +2,8 @@
 
 namespace App\Domains\ContentManagement\Categories\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Domains\ContentManagement\Categories\Models\Category;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -19,8 +19,8 @@ class CategoriesApiController extends Controller
             ->orderBy('name');
 
         // Search by name
-        if ($request->has('search') && !empty($request->search)) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+        if ($request->has('search') && ! empty($request->search)) {
+            $query->where('name', 'like', '%'.$request->search.'%');
         }
 
         $categories = $query->paginate($request->get('per_page', 50));

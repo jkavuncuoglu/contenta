@@ -1,12 +1,12 @@
 <?php
 
-use App\Domains\ContentManagement\Categories\Http\Controllers\Admin\CategoriesController;
 use App\Domains\ContentManagement\Categories\Http\Controllers\Admin\CategoriesApiController;
-use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsController;
-use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsApiController;
-use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsController;
-use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsApiController;
+use App\Domains\ContentManagement\Categories\Http\Controllers\Admin\CategoriesController;
 use App\Domains\ContentManagement\Comments\Http\Controllers\Admin\CommentsController;
+use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsApiController;
+use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsController;
+use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsApiController;
+use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsController;
 use App\Domains\Media\Http\Controllers\Admin\MediaController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +20,11 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::get('/{id}', [PostsController::class, 'show'])->name('show');
     Route::put('/{id}', [PostsController::class, 'update'])->name('update');
     Route::delete('/{id}', [PostsController::class, 'destroy'])->name('destroy');
+
+    // Revision history routes
+    Route::get('/{post}/revisions', [PostsController::class, 'revisions'])->name('revisions');
+    Route::get('/{post}/revisions/{revisionId}', [PostsController::class, 'showRevision'])->name('revisions.show');
+    Route::post('/{post}/revisions/{revisionId}/restore', [PostsController::class, 'restoreRevision'])->name('revisions.restore');
 });
 
 // Categories Management

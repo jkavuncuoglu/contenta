@@ -6,17 +6,17 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h2
-                        class="text-2xl font-bold text-gray-900 dark:text-white"
+                        class="text-2xl font-bold text-neutral-900 dark:text-white"
                     >
                         Create Menu
                     </h2>
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
                         Create a new navigation menu for your site
                     </p>
                 </div>
                 <Link
                     :href="'/admin/menus'"
-                    class="inline-flex items-center rounded-lg bg-gray-100 px-4 py-2 font-semibold text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                    class="inline-flex items-center rounded-lg bg-neutral-100 px-4 py-2 font-semibold text-neutral-700 transition-colors hover:bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-600"
                 >
                     <svg
                         class="mr-2 h-5 w-5"
@@ -40,14 +40,14 @@
             <div class="max-w-3xl">
                 <form
                     @submit.prevent="submit"
-                    class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                    class="rounded-lg border border-neutral-200 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-800"
                 >
                     <div class="space-y-6 p-6">
                         <!-- Name -->
                         <div>
                             <label
                                 for="name"
-                                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Menu Name <span class="text-red-500">*</span>
                             </label>
@@ -56,7 +56,7 @@
                                 v-model="form.name"
                                 type="text"
                                 required
-                                class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                class="block py-2 px-3 w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 placeholder-neutral-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
                                 placeholder="e.g., Main Navigation"
                             />
                             <p
@@ -66,7 +66,7 @@
                                 {{ errors.name }}
                             </p>
                             <p
-                                class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 A descriptive name for this menu (displayed in
                                 admin only)
@@ -77,7 +77,7 @@
                         <div>
                             <label
                                 for="slug"
-                                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Slug
                             </label>
@@ -85,7 +85,7 @@
                                 id="slug"
                                 v-model="form.slug"
                                 type="text"
-                                class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                class="block py-2 px-3 w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 placeholder-neutral-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
                                 placeholder="Auto-generated from name"
                             />
                             <p
@@ -95,7 +95,7 @@
                                 {{ errors.slug }}
                             </p>
                             <p
-                                class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 URL-friendly identifier (auto-generated if left
                                 empty)
@@ -106,7 +106,7 @@
                         <div>
                             <label
                                 for="description"
-                                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Description
                             </label>
@@ -114,7 +114,7 @@
                                 id="description"
                                 v-model="form.description"
                                 rows="3"
-                                class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                class="block w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 placeholder-neutral-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
                                 placeholder="Optional description of this menu's purpose"
                             />
                             <p
@@ -129,14 +129,14 @@
                         <div>
                             <label
                                 for="location"
-                                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                             >
                                 Menu Location
                             </label>
                             <select
                                 id="location"
                                 v-model="form.location"
-                                class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                class="block w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
                             >
                                 <option value="">None (Unassigned)</option>
                                 <option
@@ -154,7 +154,7 @@
                                 {{ errors.location }}
                             </p>
                             <p
-                                class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                                class="mt-1 text-sm text-neutral-500 dark:text-neutral-400"
                             >
                                 Where this menu will be displayed on your site
                             </p>
@@ -166,11 +166,11 @@
                                 id="is_active"
                                 v-model="form.is_active"
                                 type="checkbox"
-                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                             />
                             <label
                                 for="is_active"
-                                class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300"
                             >
                                 Active (display this menu on the site)
                             </label>
@@ -178,11 +178,11 @@
                     </div>
 
                     <div
-                        class="flex items-center justify-end gap-3 border-t border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-900"
+                        class="flex items-center justify-end gap-3 border-t border-neutral-200 bg-neutral-50 px-6 py-4 dark:border-neutral-700 dark:bg-neutral-900"
                     >
                         <Link
                             :href="'/admin/menus'"
-                            class="rounded-lg border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                            class="rounded-lg border border-neutral-300 bg-white px-4 py-2 font-medium text-neutral-700 transition-colors hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
                         >
                             Cancel
                         </Link>

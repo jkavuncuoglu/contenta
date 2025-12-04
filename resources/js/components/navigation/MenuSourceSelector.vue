@@ -1,12 +1,12 @@
 <template>
     <div class="space-y-4">
         <div class="flex items-center justify-between">
-            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">
+            <h4 class="text-sm font-semibold text-neutral-900 dark:text-white">
                 Add Menu Items
             </h4>
             <button
                 @click="$emit('close')"
-                class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+                class="text-neutral-400 hover:text-neutral-500 dark:hover:text-neutral-300"
             >
                 <svg
                     class="h-5 w-5"
@@ -25,7 +25,7 @@
         </div>
 
         <!-- Tabs -->
-        <div class="border-b border-gray-200 dark:border-gray-700">
+        <div class="border-b border-neutral-200 dark:border-neutral-700">
             <nav class="-mb-px flex space-x-8">
                 <button
                     v-for="tab in tabs"
@@ -35,7 +35,7 @@
                     :class="{
                         'border-blue-500 text-blue-600 dark:text-blue-400':
                             activeTab === tab.id,
-                        'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300':
+                        'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300':
                             activeTab !== tab.id,
                     }"
                 >
@@ -49,7 +49,7 @@
             <div>
                 <label
                     for="custom-title"
-                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                 >
                     Link Text
                 </label>
@@ -58,13 +58,13 @@
                     v-model="customLink.title"
                     type="text"
                     placeholder="Home"
-                    class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                    class="block w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
                 />
             </div>
             <div>
                 <label
                     for="custom-url"
-                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                 >
                     URL
                 </label>
@@ -73,7 +73,7 @@
                     v-model="customLink.url"
                     type="text"
                     placeholder="/about"
-                    class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                    class="block w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
                 />
             </div>
             <button
@@ -93,7 +93,7 @@
                     v-model="search"
                     type="text"
                     placeholder="Search..."
-                    class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                    class="block w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 text-neutral-900 focus:ring-2 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
                 />
             </div>
 
@@ -104,7 +104,7 @@
                     <div
                         class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"
                     ></div>
-                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
                         Loading...
                     </p>
                 </div>
@@ -114,16 +114,16 @@
                     <label
                         v-for="item in filteredItems"
                         :key="item.id"
-                        class="flex cursor-pointer items-center rounded-lg border border-gray-200 p-3 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700"
+                        class="flex cursor-pointer items-center rounded-lg border border-neutral-200 p-3 transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-700"
                     >
                         <input
                             v-model="selectedItems"
                             type="checkbox"
                             :value="item.id"
-                            class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
                         />
                         <span
-                            class="ml-3 text-sm text-gray-900 dark:text-white"
+                            class="ml-3 text-sm text-neutral-900 dark:text-white"
                         >
                             {{ item.title || item.name }}
                         </span>
@@ -131,7 +131,7 @@
 
                     <div
                         v-if="filteredItems.length === 0"
-                        class="py-8 text-center text-gray-500 dark:text-gray-400"
+                        class="py-8 text-center text-neutral-500 dark:text-neutral-400"
                     >
                         <p class="text-sm">No items found</p>
                     </div>
@@ -216,7 +216,7 @@ const fetchItems = async (type: string) => {
 
         switch (type) {
             case 'page':
-                endpoint = '/admin/page-builder/api/pages';
+                endpoint = '/admin/pages/api';
                 break;
             case 'post':
                 endpoint = '/admin/api/posts';

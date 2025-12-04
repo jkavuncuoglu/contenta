@@ -11,13 +11,12 @@ class AvatarService
     /**
      * Process and store an avatar upload.
      *
-     * @param UploadedFile $file
      * @return string The public URL of the stored avatar
      */
     public function processUpload(UploadedFile $file): string
     {
         // Generate a unique filename
-        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
 
         // Store the file
         $path = $file->storeAs('avatars', $filename, 'public');
@@ -33,13 +32,10 @@ class AvatarService
 
     /**
      * Delete an avatar file if it's not a URL.
-     *
-     * @param string|null $avatar
-     * @return void
      */
     public function deleteIfLocal(?string $avatar): void
     {
-        if (!$avatar || filter_var($avatar, FILTER_VALIDATE_URL)) {
+        if (! $avatar || filter_var($avatar, FILTER_VALIDATE_URL)) {
             return;
         }
 
@@ -51,13 +47,10 @@ class AvatarService
 
     /**
      * Validate if a URL is from a known avatar service.
-     *
-     * @param string $url
-     * @return bool
      */
     public function isValidAvatarUrl(string $url): bool
     {
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        if (! filter_var($url, FILTER_VALIDATE_URL)) {
             return false;
         }
 
@@ -81,4 +74,3 @@ class AvatarService
         );
     }
 }
-

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('plugins', function (Blueprint $table) {
             $table->enum('plugin_type', ['frontend', 'admin', 'universal'])
-                  ->default('universal')
-                  ->after('entry_point');
+                ->default('universal')
+                ->after('entry_point');
         });
     }
 

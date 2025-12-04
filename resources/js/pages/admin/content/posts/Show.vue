@@ -5,7 +5,7 @@
         <div class="prose">
             <h1>Post Details</h1>
             <p>Showing details for post with id: {{ id }}</p>
-            <pre class="mt-4 rounded bg-gray-100 p-4">{{
+            <pre class="mt-4 rounded bg-neutral-100 p-4">{{
                 JSON.stringify($props, null, 2)
             }}</pre>
         </div>

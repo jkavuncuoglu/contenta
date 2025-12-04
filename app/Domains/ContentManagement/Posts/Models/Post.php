@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Posts\Models;
 
-use App\Domains\ContentManagement\Posts\Aggregates\PostAggregate;
 use App\Domains\ContentManagement\Categories\Models\Category;
-use App\Domains\ContentManagement\Posts\Models\Comment;
-use App\Domains\ContentManagement\Posts\Models\PostRevision;
+use App\Domains\ContentManagement\ContentStorage\ContentStorageManager;
+use App\Domains\ContentManagement\ContentStorage\Contracts\RevisionProviderInterface;
+use App\Domains\ContentManagement\ContentStorage\Factories\RevisionProviderFactory;
+use App\Domains\ContentManagement\ContentStorage\Models\ContentData as RepositoryContentData;
+use App\Domains\ContentManagement\ContentStorage\ValueObjects\ContentData;
+use App\Domains\ContentManagement\ContentStorage\ValueObjects\RevisionCollection;
+use App\Domains\ContentManagement\Posts\Aggregates\PostAggregate;
 use App\Domains\ContentManagement\Tags\Models\Tag;
 use App\Domains\Security\UserManagement\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,9 +29,17 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Post extends Model implements HasMedia
 {
     use HasFactory;
-    use SoftDeletes;
     use InteractsWithMedia;
     use LogsActivity;
+    use SoftDeletes;
+
+    /**
+     * Create a new factory instance for the model
+     */
+    protected static function newFactory(): \Database\Factories\PostFactory
+    {
+        return \Database\Factories\PostFactory::new();
+    }
 
     protected $fillable = [
         'title',
@@ -57,6 +69,9 @@ class Post extends Model implements HasMedia
         'language',
         'template',
         'version',
+        // ContentStorage fields
+        'storage_driver',
+        'storage_path',
     ];
 
     protected $casts = [
@@ -75,6 +90,7 @@ class Post extends Model implements HasMedia
      * @var array<int, string>
      */
     protected static array $logAttributes = ['title', 'status', 'published_at'];
+
     protected static bool $logOnlyDirty = true;
 
     // Relationships
@@ -85,7 +101,6 @@ class Post extends Model implements HasMedia
     {
         return $this->belongsTo(User::class, 'author_id');
     }
-
 
     /**
      * @return BelongsTo<Post, $this>
@@ -181,7 +196,7 @@ class Post extends Model implements HasMedia
 
     // Scopes
     /**
-     * @param Builder<Post> $query
+     * @param  Builder<Post>  $query
      * @return Builder<Post>
      */
     public function scopePublished(Builder $query): Builder
@@ -190,7 +205,7 @@ class Post extends Model implements HasMedia
     }
 
     /**
-     * @param Builder<Post> $query
+     * @param  Builder<Post>  $query
      * @return Builder<Post>
      */
     public function scopeScheduled(Builder $query): Builder
@@ -200,7 +215,7 @@ class Post extends Model implements HasMedia
     }
 
     /**
-     * @param Builder<Post> $query
+     * @param  Builder<Post>  $query
      * @return Builder<Post>
      */
     public function scopeDraft(Builder $query): Builder
@@ -208,10 +223,258 @@ class Post extends Model implements HasMedia
         return $query->where('status', 'draft');
     }
 
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll();
+    }
+
+    // ContentStorage Integration
+
+    /**
+     * Get content from storage backend
+     */
+    public function getContent(): ?ContentData
+    {
+        // If using database storage, return from database fields
+        if ($this->storage_driver === 'database' || $this->storage_driver === null) {
+            return new ContentData(
+                markdown: $this->content_markdown,
+                html: $this->content_html,
+                tableOfContents: $this->table_of_contents,
+            );
+        }
+
+        // Otherwise, fetch from ContentStorage
+        if (! $this->storage_path) {
+            return null;
+        }
+
+        /** @var ContentStorageManager $storageManager */
+        $storageManager = app(ContentStorageManager::class);
+
+        try {
+            $driver = $storageManager->driver($this->storage_driver);
+            $rawContent = $driver->read($this->storage_path);
+            $data = json_decode($rawContent, true);
+
+            return new ContentData(
+                markdown: $data['markdown'] ?? '',
+                html: $data['html'] ?? null,
+                tableOfContents: $data['table_of_contents'] ?? null,
+            );
+        } catch (\Exception $e) {
+            \Log::error('Failed to read post content from storage', [
+                'post_id' => $this->id,
+                'storage_driver' => $this->storage_driver,
+                'storage_path' => $this->storage_path,
+                'error' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
+    }
+
+    /**
+     * Set content to storage backend
+     *
+     * @param  ContentData  $content  The content to store
+     * @param  array<string, mixed>  $metadata  Optional metadata (e.g., commit_message for Git storage)
+     */
+    public function setContent(ContentData $content, array $metadata = []): void
+    {
+        // If using database storage, set database fields
+        if ($this->storage_driver === 'database' || $this->storage_driver === null) {
+            $this->content_markdown = $content->markdown;
+            $this->content_html = $content->html;
+            $this->table_of_contents = $content->tableOfContents;
+
+            return;
+        }
+
+        // Otherwise, write to ContentStorage
+        if (! $this->storage_path) {
+            $this->storage_path = $this->generateStoragePath();
+        }
+
+        // For Git-based storage, ensure commit message is set
+        if (in_array($this->storage_driver, ['github', 'gitlab', 'bitbucket'])) {
+            if (! isset($metadata['commit_message'])) {
+                $metadata['commit_message'] = "Update: {$this->title}";
+            }
+        }
+
+        /** @var ContentStorageManager $storageManager */
+        $storageManager = app(ContentStorageManager::class);
+
+        try {
+            $driver = $storageManager->driver($this->storage_driver);
+
+            // Convert to repository ContentData format (markdown with frontmatter)
+            $frontmatter = [];
+            if ($content->html !== null) {
+                $frontmatter['html'] = $content->html;
+            }
+            if ($content->tableOfContents !== null) {
+                $frontmatter['table_of_contents'] = $content->tableOfContents;
+            }
+
+            // Add metadata (e.g., commit_message) to frontmatter for Git storage
+            if (! empty($metadata)) {
+                $frontmatter = array_merge($frontmatter, $metadata);
+            }
+
+            $repositoryContent = new RepositoryContentData(
+                content: $content->markdown,
+                frontmatter: $frontmatter
+            );
+
+            $driver->write($this->storage_path, $repositoryContent);
+
+            // Clear database fields when using cloud storage
+            $this->content_markdown = null;
+            $this->content_html = null;
+            $this->table_of_contents = null;
+
+        } catch (\Exception $e) {
+            \Log::error('Failed to write post content to storage', [
+                'post_id' => $this->id,
+                'storage_driver' => $this->storage_driver,
+                'storage_path' => $this->storage_path,
+                'error' => $e->getMessage(),
+            ]);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Generate storage path for post content
+     */
+    public function generateStoragePath(): string
+    {
+        $date = $this->published_at ?? $this->created_at ?? now();
+        $slug = $this->slug ?? \Illuminate\Support\Str::slug($this->title);
+
+        return sprintf(
+            'posts/%s/%s/%s.md',
+            $date->format('Y'),
+            $date->format('m'),
+            $slug
+        );
+    }
+
+    /**
+     * Accessor: Get content_markdown from storage if needed
+     */
+    public function getContentMarkdownAttribute($value): ?string
+    {
+        // Return database value if using database storage
+        if ($this->storage_driver === 'database' || $this->storage_driver === null) {
+            return $value;
+        }
+
+        // Otherwise, fetch from ContentStorage
+        $content = $this->getContent();
+
+        return $content?->markdown;
+    }
+
+    /**
+     * Accessor: Get content_html from storage if needed
+     */
+    public function getContentHtmlAttribute($value): ?string
+    {
+        // Return database value if using database storage
+        if ($this->storage_driver === 'database' || $this->storage_driver === null) {
+            return $value;
+        }
+
+        // Otherwise, fetch from ContentStorage
+        $content = $this->getContent();
+
+        return $content?->html;
+    }
+
+    /**
+     * Accessor: Get table_of_contents from storage if needed
+     */
+    public function getTableOfContentsAttribute($value): ?array
+    {
+        // Return database value if using database storage
+        if ($this->storage_driver === 'database' || $this->storage_driver === null) {
+            return is_string($value) ? json_decode($value, true) : $value;
+        }
+
+        // Otherwise, fetch from ContentStorage
+        $content = $this->getContent();
+
+        return $content?->tableOfContents;
+    }
+
+    // Cloud-Native Revision System
+
+    /**
+     * Get revision provider for this post
+     */
+    public function getRevisionProvider(): RevisionProviderInterface
+    {
+        /** @var RevisionProviderFactory $factory */
+        $factory = app(RevisionProviderFactory::class);
+
+        return $factory->forModel($this);
+    }
+
+    /**
+     * Get paginated revision history
+     *
+     * @param  int  $page  Page number (1-indexed)
+     * @param  int  $perPage  Items per page (default: 10)
+     */
+    public function revisionHistory(int $page = 1, int $perPage = 10): RevisionCollection
+    {
+        if (! $this->storage_path) {
+            // No cloud storage path, return empty collection
+            return new RevisionCollection([], 0, $page, $perPage, false);
+        }
+
+        return $this->getRevisionProvider()->getRevisions($this->storage_path, $page, $perPage);
+    }
+
+    /**
+     * Get a specific revision
+     *
+     * @param  string  $revisionId  Version ID, commit hash, or DB revision ID
+     * @return \App\Domains\ContentManagement\ContentStorage\ValueObjects\Revision|null
+     */
+    public function getRevisionById(string $revisionId)
+    {
+        if (! $this->storage_path) {
+            return null;
+        }
+
+        return $this->getRevisionProvider()->getRevision($this->storage_path, $revisionId);
+    }
+
+    /**
+     * Restore a specific revision
+     *
+     * @param  string  $revisionId  Version ID or commit hash
+     */
+    public function restoreRevisionById(string $revisionId): bool
+    {
+        if (! $this->storage_path) {
+            return false;
+        }
+
+        return $this->getRevisionProvider()->restoreRevision($this->storage_path, $revisionId);
+    }
+
+    /**
+     * Check if this post's storage driver supports revisions
+     */
+    public function supportsRevisions(): bool
+    {
+        return $this->getRevisionProvider()->supportsRevisions();
     }
 }

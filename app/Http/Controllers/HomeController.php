@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Domains\PageBuilder\Models\Page;
-use App\Domains\ContentManagement\Posts\Models\Post;
+use App\Domains\ContentManagement\Pages\Models\Page;
+use App\Domains\ContentManagement\Services\MarkdownRenderServiceContract;
 use App\Domains\Settings\Models\Setting;
-use App\Http\Controllers\BlogController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class HomeController extends Controller
 {
     public function __construct(
-        private readonly BlogController $blogController
+        private readonly BlogController $blogController,
+        private readonly MarkdownRenderServiceContract $markdownRenderService
     ) {}
 
     /**
@@ -23,21 +24,24 @@ class HomeController extends Controller
      */
     public function index(Request $request): Response
     {
-        // First, try to load the "home" page from PageBuilder
-        $homePage = Page::where('slug', 'home')
-            ->where('status', 'published')
+        // First, try to load the "home" or "/" page
+        $homePage = Page::whereIn('slug', ['home', '/'])
+            ->where('status', Page::STATUS_PUBLISHED)
             ->first();
 
         if ($homePage) {
+            $contentHtml = $this->getCachedOrRenderHtml($homePage);
+
             return Inertia::render('Page', [
                 'page' => [
                     'id' => $homePage->id,
                     'title' => $homePage->title,
                     'slug' => $homePage->slug,
-                    'data' => $homePage->data,
+                    'content_html' => $contentHtml,
                     'meta_title' => $homePage->meta_title,
                     'meta_description' => $homePage->meta_description,
                     'meta_keywords' => $homePage->meta_keywords,
+                    'schema_data' => $homePage->schema_data,
                 ],
             ]);
         }
@@ -54,18 +58,21 @@ class HomeController extends Controller
         if (is_numeric($landingPage)) {
             try {
                 $page = Page::where('id', $landingPage)
-                    ->where('status', 'published')
+                    ->where('status', Page::STATUS_PUBLISHED)
                     ->firstOrFail();
+
+                $contentHtml = $this->getCachedOrRenderHtml($page);
 
                 return Inertia::render('Page', [
                     'page' => [
                         'id' => $page->id,
                         'title' => $page->title,
                         'slug' => $page->slug,
-                        'data' => $page->data,
+                        'content_html' => $contentHtml,
                         'meta_title' => $page->meta_title,
                         'meta_description' => $page->meta_description,
                         'meta_keywords' => $page->meta_keywords,
+                        'schema_data' => $page->schema_data,
                     ],
                 ]);
             } catch (\Exception $e) {
@@ -82,5 +89,23 @@ class HomeController extends Controller
             'siteTitle' => $siteTitle,
             'siteTagline' => $siteTagline,
         ]);
+    }
+
+    /**
+     * Get cached HTML or render on-the-fly
+     */
+    private function getCachedOrRenderHtml(Page $page): string
+    {
+        $cacheKey = 'page.html.'.$page->id;
+
+        return Cache::remember($cacheKey, 3600, function () use ($page) {
+            $content = $page->content;
+
+            if (! $content) {
+                return '<div class="text-center text-gray-500 py-12">No content available</div>';
+            }
+
+            return $this->markdownRenderService->render($content->getContent());
+        });
     }
 }

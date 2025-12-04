@@ -13,7 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class UserResource extends JsonResource
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return array<string, mixed>
      */
     public function toArray($request): array
@@ -48,6 +48,7 @@ class UserResource extends JsonResource
     {
         /** @var User $user */
         $user = $this->resource;
+
         return $user->emails()->where('is_primary', true)->first();
     }
 }

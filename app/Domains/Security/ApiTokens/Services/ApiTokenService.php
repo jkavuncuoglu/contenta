@@ -21,7 +21,8 @@ class ApiTokenService
 
     /**
      * Create a new API token for the user.
-     * @param array<int, string> $abilities
+     *
+     * @param  array<int, string>  $abilities
      */
     public function createToken(User $user, string $name, array $abilities = ['*']): NewAccessToken
     {
@@ -46,17 +47,19 @@ class ApiTokenService
 
     /**
      * Update token abilities.
-     * @param array<int, string> $abilities
+     *
+     * @param  array<int, string>  $abilities
      */
     public function updateTokenAbilities(User $user, string $tokenId, array $abilities): bool
     {
         $token = $user->tokens()->find($tokenId);
 
-        if (!$token) {
+        if (! $token) {
             return false;
         }
 
         $token->abilities = $abilities;
+
         return $token->save();
     }
 
@@ -75,11 +78,12 @@ class ApiTokenService
     {
         $token = $user->tokens()->find($tokenId);
 
-        if (!$token) {
+        if (! $token) {
             return false;
         }
 
         $token->name = $name;
+
         return $token->save();
     }
 
@@ -91,5 +95,3 @@ class ApiTokenService
         return $user->tokens()->count() >= $maxTokens;
     }
 }
-
-

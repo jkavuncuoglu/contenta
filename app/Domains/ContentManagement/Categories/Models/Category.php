@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace App\Domains\ContentManagement\Categories\Models;
 
 use App\Domains\ContentManagement\Posts\Models\Post;
+use Database\Factories\CategoryFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Database\Factories\CategoryFactory;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 
 /**
  * @use HasFactory<CategoryFactory>
@@ -25,9 +25,9 @@ use Illuminate\Support\Collection;
 class Category extends Model implements HasMedia
 {
     use HasFactory;
-    use SoftDeletes;
     use InteractsWithMedia;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -74,7 +74,7 @@ class Category extends Model implements HasMedia
 
     // Scopes
     /**
-     * @param Builder<Category> $query
+     * @param  Builder<Category>  $query
      * @return Builder<Category>
      */
     public function scopeFeatured(Builder $query): Builder
@@ -83,7 +83,7 @@ class Category extends Model implements HasMedia
     }
 
     /**
-     * @param Builder<Category> $query
+     * @param  Builder<Category>  $query
      * @return Builder<Category>
      */
     public function scopeParent(Builder $query): Builder
@@ -92,7 +92,7 @@ class Category extends Model implements HasMedia
     }
 
     /**
-     * @param Builder<Category> $query
+     * @param  Builder<Category>  $query
      * @return Builder<Category>
      */
     public function scopeOrdered(Builder $query): Builder

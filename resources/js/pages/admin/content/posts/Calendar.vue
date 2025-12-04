@@ -7,18 +7,18 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1
-                        class="text-2xl font-semibold text-gray-900 dark:text-white"
+                        class="text-2xl font-semibold text-neutral-900 dark:text-white"
                     >
                         Content Calendar
                     </h1>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                         View and manage your content schedule
                     </p>
                 </div>
                 <div class="flex items-center gap-4">
                     <Link
                         href="/admin/posts"
-                        class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                        class="inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
                     >
                         <Icon name="list-bullet" class="mr-2 h-4 w-4" />
                         List View
@@ -34,32 +34,32 @@
             </div>
 
             <!-- Calendar controls -->
-            <div class="rounded-lg bg-white p-4 shadow dark:bg-gray-800">
+            <div class="rounded-lg bg-white p-4 shadow dark:bg-neutral-800">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <button
                             @click="previousMonth"
-                            class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            class="rounded p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700"
                             title="Previous month"
                         >
                             <Icon name="chevron-left" class="h-5 w-5" />
                         </button>
                         <button
                             @click="nextMonth"
-                            class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            class="rounded p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700"
                             title="Next month"
                         >
                             <Icon name="chevron-right" class="h-5 w-5" />
                         </button>
                         <button
                             @click="goToToday"
-                            class="rounded border border-gray-300 px-3 py-1 text-sm hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
+                            class="rounded border border-neutral-300 px-3 py-1 text-sm hover:bg-neutral-100 dark:border-neutral-600 dark:hover:bg-neutral-700"
                         >
                             Today
                         </button>
                     </div>
                     <h2
-                        class="text-lg font-semibold text-gray-900 dark:text-white"
+                        class="text-lg font-semibold text-neutral-900 dark:text-white"
                     >
                         {{ currentMonthYear }}
                     </h2>
@@ -68,19 +68,19 @@
                             <span
                                 class="inline-block h-3 w-3 rounded-full bg-green-500"
                             ></span>
-                            <span class="text-gray-600 dark:text-gray-400"
+                            <span class="text-neutral-600 dark:text-neutral-400"
                                 >Published</span
                             >
                             <span
                                 class="ml-4 inline-block h-3 w-3 rounded-full bg-yellow-500"
                             ></span>
-                            <span class="text-gray-600 dark:text-gray-400"
+                            <span class="text-neutral-600 dark:text-neutral-400"
                                 >Scheduled</span
                             >
                             <span
-                                class="ml-4 inline-block h-3 w-3 rounded-full bg-gray-400"
+                                class="ml-4 inline-block h-3 w-3 rounded-full bg-neutral-400"
                             ></span>
-                            <span class="text-gray-600 dark:text-gray-400"
+                            <span class="text-neutral-600 dark:text-neutral-400"
                                 >Draft</span
                             >
                         </div>
@@ -90,15 +90,15 @@
 
             <!-- Calendar grid -->
             <div
-                class="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800"
+                class="overflow-hidden rounded-lg bg-white shadow dark:bg-neutral-800"
             >
                 <div
-                    class="grid grid-cols-7 border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
+                    class="grid grid-cols-7 border-b border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900"
                 >
                     <div
                         v-for="day in weekDays"
                         :key="day"
-                        class="px-4 py-2 text-center text-xs font-semibold tracking-wide text-gray-700 uppercase dark:text-gray-300"
+                        class="px-4 py-2 text-center text-xs font-semibold tracking-wide text-neutral-700 uppercase dark:text-neutral-300"
                     >
                         {{ day }}
                     </div>
@@ -108,9 +108,9 @@
                         v-for="(day, index) in calendarDays"
                         :key="index"
                         :class="[
-                            'min-h-32 border-r border-b border-gray-200 p-2 dark:border-gray-700',
+                            'min-h-32 border-r border-b border-neutral-200 p-2 dark:border-neutral-700',
                             !day.isCurrentMonth &&
-                                'bg-gray-50 dark:bg-gray-900/50',
+                                'bg-neutral-50 dark:bg-neutral-900/50',
                             day.isToday && 'bg-blue-50 dark:bg-blue-900/20',
                         ]"
                     >
@@ -119,8 +119,8 @@
                                 :class="[
                                     'text-sm font-medium',
                                     day.isCurrentMonth
-                                        ? 'text-gray-900 dark:text-white'
-                                        : 'text-gray-400 dark:text-gray-600',
+                                        ? 'text-neutral-900 dark:text-white'
+                                        : 'text-neutral-400 dark:text-neutral-600',
                                     day.isToday &&
                                         'flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white',
                                 ]"
@@ -143,7 +143,7 @@
                                     {{ post.title }}
                                 </div>
                                 <div
-                                    class="text-[10px] text-gray-600 dark:text-gray-400"
+                                    class="text-[10px] text-neutral-600 dark:text-neutral-400"
                                 >
                                     {{ formatTime(post.published_at) }}
                                 </div>
@@ -154,9 +154,9 @@
             </div>
 
             <!-- Scheduled Posts List -->
-            <div class="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+            <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
                 <h3
-                    class="mb-4 text-lg font-semibold text-gray-900 dark:text-white"
+                    class="mb-4 text-lg font-semibold text-neutral-900 dark:text-white"
                 >
                     Upcoming Scheduled Posts
                 </h3>
@@ -171,9 +171,9 @@
                 >
                     <Icon
                         name="calendar"
-                        class="mx-auto h-12 w-12 text-gray-400"
+                        class="mx-auto h-12 w-12 text-neutral-400"
                     />
-                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
                         No scheduled posts
                     </p>
                 </div>
@@ -181,15 +181,15 @@
                     <div
                         v-for="post in scheduledPosts"
                         :key="post.id"
-                        class="flex items-center justify-between rounded-lg border border-gray-200 p-4 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700"
+                        class="flex items-center justify-between rounded-lg border border-neutral-200 p-4 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-700"
                     >
                         <div class="flex-1">
                             <h4
-                                class="font-medium text-gray-900 dark:text-white"
+                                class="font-medium text-neutral-900 dark:text-white"
                             >
                                 {{ post.title }}
                             </h4>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                            <p class="text-sm text-neutral-500 dark:text-neutral-400">
                                 Scheduled for
                                 {{ formatDateTime(post.published_at) }}
                             </p>
@@ -197,7 +197,7 @@
                         <div class="flex items-center gap-2">
                             <Link
                                 :href="`/admin/posts/${post.id}/edit`"
-                                class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                                class="rounded p-2 hover:bg-neutral-100 dark:hover:bg-neutral-600"
                                 title="Edit post"
                             >
                                 <Icon name="pencil" class="h-4 w-4" />
@@ -318,7 +318,7 @@ function getPostClass(status: string): string {
         case 'scheduled':
             return 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 border-l-2 border-yellow-500';
         default:
-            return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-l-2 border-gray-500';
+            return 'bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 border-l-2 border-neutral-500';
     }
 }
 

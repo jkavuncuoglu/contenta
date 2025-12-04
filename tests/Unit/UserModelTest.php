@@ -27,7 +27,7 @@ class UserModelTest extends TestCase
     public function test_user_can_be_instantiated(): void
     {
         // Arrange & Act
-        $user = new User();
+        $user = new User;
 
         // Assert
         $this->assertInstanceOf(User::class, $user);
@@ -49,7 +49,7 @@ class UserModelTest extends TestCase
     public function test_user_fillable_attributes_include_essential_fields(): void
     {
         // Arrange
-        $user = new User();
+        $user = new User;
 
         // Assert
         $this->assertContains('first_name', $user->getFillable());
@@ -61,7 +61,7 @@ class UserModelTest extends TestCase
     public function test_user_hidden_attributes_include_sensitive_data(): void
     {
         // Arrange
-        $user = new User();
+        $user = new User;
 
         // Assert
         $this->assertContains('password', $user->getHidden());

@@ -22,7 +22,7 @@ class HandleInertiaRequestsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->middleware = new HandleInertiaRequests();
+        $this->middleware = new HandleInertiaRequests;
     }
 
     public function test_version_returns_string_or_null(): void

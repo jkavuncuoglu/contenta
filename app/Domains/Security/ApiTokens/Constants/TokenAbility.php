@@ -5,7 +5,9 @@ namespace App\Domains\Security\ApiTokens\Constants;
 class TokenAbility
 {
     public const READ = 'read';
+
     public const WRITE = 'write';
+
     public const DELETE = 'delete';
 
     /**
@@ -36,4 +38,3 @@ class TokenAbility
         return array_values(self::all());
     }
 }
-

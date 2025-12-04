@@ -99,9 +99,9 @@ const breadcrumbItems: BreadcrumbItem[] = [
             <form @submit.prevent="submit" class="space-y-6">
                 <!-- Theme Mode Tabs -->
                 <div
-                    class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                    class="rounded-lg border border-neutral-200 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-800"
                 >
-                    <div class="border-b border-gray-200 dark:border-gray-700">
+                    <div class="border-b border-neutral-200 dark:border-neutral-700">
                         <nav class="-mb-px flex">
                             <button
                                 type="button"
@@ -110,7 +110,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     'flex items-center gap-2 border-b-2 px-6 py-4 text-sm font-medium transition-colors',
                                     activeTab === 'light'
                                         ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300',
+                                        : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
                                 ]"
                             >
                                 <Icon icon="ph:sun" class="h-5 w-5" />
@@ -123,7 +123,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     'flex items-center gap-2 border-b-2 px-6 py-4 text-sm font-medium transition-colors',
                                     activeTab === 'dark'
                                         ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300',
+                                        : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
                                 ]"
                             >
                                 <Icon icon="ph:moon" class="h-5 w-5" />
@@ -140,7 +140,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Primary Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Primary Color
                                 </label>
@@ -148,17 +148,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.light_primary"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.light_primary"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 py-2 px-3 py-2 px-3 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#3B82F6"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Main brand color for buttons, links
                                 </p>
@@ -167,7 +167,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Secondary Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Secondary Color
                                 </label>
@@ -175,17 +175,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.light_secondary"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.light_secondary"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#8B5CF6"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Accent highlights and badges
                                 </p>
@@ -194,7 +194,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Accent Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Accent Color
                                 </label>
@@ -202,17 +202,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.light_accent"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.light_accent"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#10B981"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Success states and CTAs
                                 </p>
@@ -221,7 +221,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Background Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Background Color
                                 </label>
@@ -229,17 +229,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.light_background"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.light_background"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#FFFFFF"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Main page background
                                 </p>
@@ -248,7 +248,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Surface Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Surface Color
                                 </label>
@@ -256,17 +256,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.light_surface"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.light_surface"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#F9FAFB"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Cards and panels
                                 </p>
@@ -275,7 +275,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Text Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Text Color
                                 </label>
@@ -283,17 +283,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.light_text"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.light_text"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#1F2937"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Primary text color
                                 </p>
@@ -302,7 +302,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Secondary Text Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Secondary Text
                                 </label>
@@ -310,17 +310,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.light_text_secondary"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.light_text_secondary"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#6B7280"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Muted text and labels
                                 </p>
@@ -336,7 +336,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Primary Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Primary Color
                                 </label>
@@ -344,17 +344,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.dark_primary"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.dark_primary"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#60A5FA"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Main brand color for buttons, links
                                 </p>
@@ -363,7 +363,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Secondary Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Secondary Color
                                 </label>
@@ -371,17 +371,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.dark_secondary"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.dark_secondary"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#A78BFA"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Accent highlights and badges
                                 </p>
@@ -390,7 +390,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Accent Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Accent Color
                                 </label>
@@ -398,17 +398,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.dark_accent"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.dark_accent"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#34D399"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Success states and CTAs
                                 </p>
@@ -417,7 +417,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Background Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Background Color
                                 </label>
@@ -425,17 +425,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.dark_background"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.dark_background"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#111827"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Main page background
                                 </p>
@@ -444,7 +444,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Surface Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Surface Color
                                 </label>
@@ -452,17 +452,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.dark_surface"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.dark_surface"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#1F2937"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Cards and panels
                                 </p>
@@ -471,7 +471,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Text Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Text Color
                                 </label>
@@ -479,17 +479,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.dark_text"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.dark_text"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#F9FAFB"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Primary text color
                                 </p>
@@ -498,7 +498,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             <!-- Secondary Text Color -->
                             <div>
                                 <label
-                                    class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    class="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                                 >
                                     Secondary Text
                                 </label>
@@ -506,17 +506,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                     <input
                                         type="color"
                                         v-model="form.dark_text_secondary"
-                                        class="h-12 w-16 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
+                                        class="h-12 w-16 cursor-pointer rounded border border-neutral-300 dark:border-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         v-model="form.dark_text_secondary"
-                                        class="flex-1 rounded-md border border-gray-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        class="flex-1 rounded-md border border-neutral-300 px-3 py-2 font-mono text-sm uppercase shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                         placeholder="#D1D5DB"
                                     />
                                 </div>
                                 <p
-                                    class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                                    class="mt-1 text-xs text-neutral-500 dark:text-neutral-400"
                                 >
                                     Muted text and labels
                                 </p>
@@ -530,7 +530,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     <button
                         type="button"
                         @click="resetToDefaults"
-                        class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                        class="rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
                     >
                         Reset to Defaults
                     </button>

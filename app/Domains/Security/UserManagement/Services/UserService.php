@@ -2,14 +2,12 @@
 
 namespace App\Domains\Security\UserManagement\Services;
 
-
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Collection;
 use App\Domains\Security\UserManagement\Inputs\UserUpdateInput;
 use App\Domains\Security\UserManagement\Models\User;
 use App\Domains\Security\UserManagement\Models\UserEmail;
 use App\Domains\Security\UserManagement\Resources\UserResource;
-use App\Domains\Security\UserManagement\Services\UserServiceContract;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 
 class UserService implements UserServiceContract
 {

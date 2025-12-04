@@ -605,90 +605,146 @@ Configure in **Settings** → **Site**:
 
 ---
 
-## 8. Page Builder
+## 8. Markdown Editor & Shortcodes
 
 ### 8.1 Overview
 
-The Page Builder provides a visual, drag-and-drop interface for creating pages without coding.
+The Markdown Editor provides a powerful text-based interface for creating pages and posts. It combines standard markdown syntax with custom shortcodes for complex layouts and components.
 
-### 8.2 Creating Pages
+**See Full Guide:** [Markdown Editor User Guide](MARKDOWN_EDITOR_GUIDE.md)
 
-1. Navigate to **Page Builder** → **Pages**
-2. Click "Create Page"
-3. Choose a layout
-4. Add blocks by dragging from sidebar
-5. Configure each block
-6. Preview and publish
+### 8.2 Creating Pages & Posts
 
-### 8.3 Layouts
+1. Navigate to **Admin** → **Content** → **Posts** or **Pages**
+2. Click "Create New Post" or "Create New Page"
+3. Write content using markdown and shortcodes
+4. Preview your content in real-time
+5. Browse available shortcodes from the sidebar library
+6. Save as draft or publish
 
-**Layout Structure:**
+### 8.3 Markdown Basics
+
+**Quick Reference:**
+
+```markdown
+# Heading 1
+## Heading 2
+### Heading 3
+
+**bold text**
+*italic text*
+[Link text](URL)
+![Image alt text](/path/to/image.jpg)
+
+- List item
+- List item
+
+1. Numbered item
+2. Numbered item
+
+> Quote text
 ```
-Layout
-├── Header region
-├── Main content region
-├── Sidebar region (optional)
-└── Footer region
+
+### 8.4 Shortcodes
+
+Shortcodes are pre-built components for complex layouts:
+
+**Common Shortcodes:**
+
+| Shortcode | Purpose | Example |
+|-----------|---------|---------|
+| `[#hero]` | Hero section | `[#hero title="Welcome"][/#hero]` |
+| `[#button]` | Call-to-action button | `[#button url="/signup"]{Sign Up}[/#button]` |
+| `[#columns]` | Multi-column layout | `[#columns ratio="1:1"]...[/#columns]` |
+| `[#features]` | Feature grid | `[#features columns="3"]...[/#features]` |
+| `[#cta]` | Call-to-action box | `[#cta title="Ready?"]...[/#cta]` |
+| `[#gallery]` | Image gallery | `[#gallery columns="3"]...[/#gallery]` |
+| `[#faq]` | FAQ accordion | `[#faq]...[/#faq]` |
+
+**See Full Reference:** `SHORTCUT_SYNTAX_SPEC.md` for all 27+ available shortcodes.
+
+### 8.5 Using the Shortcode Library
+
+The editor includes a built-in shortcode library:
+
+1. Click **"Shortcodes"** button in the editor sidebar
+2. Browse by category: Layout, Content, Media, Forms, etc.
+3. Click any shortcode to see:
+   - Description and use cases
+   - Available attributes
+   - Live examples
+   - Code snippets
+4. Click **"Insert"** to add to your content
+
+### 8.6 Layout Templates
+
+Pages support different layout templates via front matter:
+
+```markdown
+---
+layout: default
+title: My Page
+meta_description: Page description
+---
+
+Your content here...
 ```
 
-**Creating Custom Layouts:**
-1. Go to **Page Builder** → **Layouts**
-2. Define regions and constraints
-3. Set default block configurations
+**Available Layouts:**
+- `default` - Standard single-column
+- `full-width` - Full-width, no container
+- `sidebar-left` - Two-column with left sidebar
+- `sidebar-right` - Two-column with right sidebar
 
-### 8.4 Blocks
+### 8.7 Example Landing Page
 
-**Built-in Block Types:**
+```markdown
+[#hero
+  title="Welcome to Our Platform"
+  subtitle="Build amazing content"
+  primaryButtonText="Get Started"
+  primaryButtonUrl="/signup"
+]
+[/#hero]
 
-| Block | Description |
-|-------|-------------|
-| **Text** | Rich text editor |
-| **Heading** | H1-H6 headings |
-| **Image** | Single image with caption |
-| **Gallery** | Image grid/slider |
-| **Video** | Embedded video |
-| **Button** | Call-to-action button |
-| **Spacer** | Vertical spacing |
-| **Divider** | Horizontal line |
-| **Columns** | Multi-column layout |
-| **HTML** | Custom HTML code |
-| **Form** | Contact/custom forms |
+[#features title="Our Features" columns="3"]
+  [#feature icon="⚡" title="Fast"]
+  {Lightning-fast performance}
+  [/#feature]
 
-**Block Configuration:**
-Each block has:
-- Content settings
-- Style options (colors, spacing, etc.)
-- Visibility rules
-- Animation settings
+  [#feature icon="🔒" title="Secure"]
+  {Enterprise-grade security}
+  [/#feature]
 
-### 8.5 Page Settings
+  [#feature icon="✨" title="Easy"]
+  {Intuitive interface}
+  [/#feature]
+[/#features]
 
-**Page Metadata:**
-- Title and slug
-- Meta description
-- Schema.org structured data
-- Status (draft/published/archived)
+[#cta
+  title="Ready to Start?"
+  buttonText="Sign Up Free"
+  buttonUrl="/signup"
+]
+[/#cta]
+```
 
-**Page Revisions:**
-- Auto-save drafts
-- Manual revision creation
-- Restore previous versions
-- Revision comparison
+### 8.8 Page Settings
 
-**Publishing:**
-- Publish immediately
-- Schedule for future
-- Unpublish anytime
-- Duplicate page
+**Metadata:**
+- Title and slug (URL-friendly identifier)
+- Meta description (for SEO)
+- Featured image
+- Open Graph and Twitter Card data
+- Status (draft/scheduled/published/archived)
+- Published date/time
 
-### 8.6 Creating Custom Blocks
-
-Developers can create custom blocks:
-
-1. Create block component in `app/Domains/PageBuilder/Resources/Blocks/`
-2. Define configuration schema
-3. Register in `BlockController`
-4. Frontend component in `resources/js/components/blocks/`
+**Advanced:**
+- Custom fields (JSON)
+- Template override
+- Table of contents (auto-generated)
+- Reading time (calculated)
+- Comment settings
 
 ---
 

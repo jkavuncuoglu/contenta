@@ -2,7 +2,7 @@
     <div class="max-w-2xl">
         <h2 class="mb-4 text-xl font-bold">Two-Factor Authentication (TOTP)</h2>
 
-        <div v-if="loading" class="text-gray-500">Loading...</div>
+        <div v-if="loading" class="text-neutral-500">Loading...</div>
         <div v-else>
             <div v-if="enabled" class="space-y-4">
                 <p class="text-green-700 dark:text-green-400">
@@ -11,10 +11,10 @@
 
                 <div
                     v-if="qrSvg"
-                    class="rounded border bg-white p-4 dark:bg-gray-800"
+                    class="rounded border bg-white p-4 dark:bg-neutral-800"
                 >
                     <div class="prose dark:prose-invert" v-html="qrSvg"></div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-neutral-500">
                         Scan this QR code with your authenticator app if you
                         need to re-setup.
                     </p>
@@ -34,13 +34,13 @@
                     <div class="mt-2 flex gap-3">
                         <button
                             @click="regenerate"
-                            class="rounded bg-gray-700 px-3 py-2 text-white hover:bg-gray-800"
+                            class="rounded bg-neutral-700 px-3 py-2 text-white hover:bg-neutral-800"
                         >
                             Regenerate Codes
                         </button>
                         <button
                             @click="loadQr"
-                            class="rounded bg-gray-200 px-3 py-2 dark:bg-gray-700 dark:text-white"
+                            class="rounded bg-neutral-200 px-3 py-2 dark:bg-neutral-700 dark:text-white"
                         >
                             Show QR
                         </button>
@@ -57,21 +57,21 @@
             </div>
 
             <div v-else class="space-y-4">
-                <p class="text-gray-700 dark:text-gray-300">
+                <p class="text-neutral-700 dark:text-neutral-300">
                     Protect your account by enabling two-factor authentication.
                 </p>
                 <div
                     v-if="qrSvg"
-                    class="rounded border bg-white p-4 dark:bg-gray-800"
+                    class="rounded border bg-white p-4 dark:bg-neutral-800"
                 >
                     <div class="prose dark:prose-invert" v-html="qrSvg"></div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-neutral-500">
                         Scan the QR code and enter the 6-digit code to confirm.
                     </p>
                     <div class="mt-2 flex gap-2">
                         <input
                             v-model="code"
-                            class="w-40 rounded border px-3 py-2 dark:border-gray-700 dark:bg-gray-800"
+                            class="w-40 rounded border px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                             placeholder="123456"
                         />
                         <button

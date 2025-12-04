@@ -23,7 +23,6 @@ class MenuServiceTest extends TestCase
         $this->service = app(MenuServiceContract::class);
     }
 
-    
     public function test_it_can_create_menu(): void
     {
         // Arrange
@@ -42,7 +41,6 @@ class MenuServiceTest extends TestCase
         $this->assertEquals('test-menu', $menu->slug);
     }
 
-    
     public function test_it_can_update_menu(): void
     {
         // Arrange
@@ -56,7 +54,6 @@ class MenuServiceTest extends TestCase
         $this->assertEquals('updated', $updated->slug);
     }
 
-    
     public function test_it_can_delete_menu(): void
     {
         // Arrange
@@ -70,7 +67,6 @@ class MenuServiceTest extends TestCase
         $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
     }
 
-    
     public function test_it_can_create_menu_item(): void
     {
         // Arrange
@@ -90,7 +86,6 @@ class MenuServiceTest extends TestCase
         $this->assertEquals($menu->id, $item->menu_id);
     }
 
-
     public function test_it_can_get_available_locations(): void
     {
         // Act
@@ -102,7 +97,6 @@ class MenuServiceTest extends TestCase
         $this->assertCount(4, $locations);
     }
 
-    
     public function test_it_can_get_menu_by_location(): void
     {
         // Arrange
@@ -120,7 +114,6 @@ class MenuServiceTest extends TestCase
         $this->assertInstanceOf(Menu::class, $menu);
         $this->assertEquals('primary', $menu->location);
     }
-
 
     public function test_it_can_export_menu(): void
     {

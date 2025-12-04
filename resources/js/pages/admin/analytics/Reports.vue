@@ -3,7 +3,7 @@
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-6">
             <h1 class="text-xl font-semibold">Reports</h1>
-            <p class="mt-2 text-sm text-gray-600">
+            <p class="mt-2 text-sm text-neutral-600">
                 Generate and view reports here.
             </p>
         </div>

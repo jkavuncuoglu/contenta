@@ -3,7 +3,7 @@
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-6">
             <h1 class="text-xl font-semibold">User #{{ id }}</h1>
-            <pre class="mt-4 rounded bg-gray-100 p-4">{{
+            <pre class="mt-4 rounded bg-neutral-100 p-4">{{
                 JSON.stringify($props, null, 2)
             }}</pre>
         </div>

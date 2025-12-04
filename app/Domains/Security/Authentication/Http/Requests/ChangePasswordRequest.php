@@ -2,8 +2,8 @@
 
 namespace App\Domains\Security\Authentication\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Domains\Security\Authentication\Rules\StrongPassword;
+use Illuminate\Foundation\Http\FormRequest;
 
 class ChangePasswordRequest extends FormRequest
 {
@@ -25,7 +25,7 @@ class ChangePasswordRequest extends FormRequest
                 'required',
                 'uncompromised',
                 'confirmed',
-                new StrongPassword(),
+                new StrongPassword,
             ],
         ];
     }
@@ -37,7 +37,7 @@ class ChangePasswordRequest extends FormRequest
     {
         return [
             'password.uncompromised' => 'The password you entered has been found in a data leak. Please choose a different password.',
-            'password.confirmed' => 'The password confirmation does not match.'
+            'password.confirmed' => 'The password confirmation does not match.',
         ];
     }
 }

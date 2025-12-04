@@ -5,12 +5,12 @@
         :style="{ paddingLeft: `${level * 24}px` }"
     >
         <div
-            class="group flex cursor-move items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 transition-colors hover:border-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-blue-500"
+            class="group flex cursor-move items-center gap-3 rounded-lg border border-neutral-200 bg-white p-3 transition-colors hover:border-blue-500 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-blue-500"
             :class="{ 'opacity-50': !item.is_visible }"
         >
             <!-- Drag Handle -->
             <div
-                class="drag-handle cursor-move text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                class="drag-handle cursor-move text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
             >
                 <svg
                     class="h-5 w-5"
@@ -31,7 +31,7 @@
             <button
                 v-if="item.children && item.children.length > 0"
                 @click="expanded = !expanded"
-                class="h-5 w-5 flex-shrink-0 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                class="h-5 w-5 flex-shrink-0 text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"
             >
                 <svg
                     class="h-5 w-5 transition-transform"
@@ -53,18 +53,18 @@
             <!-- Icon -->
             <div
                 v-if="item.icon"
-                class="flex-shrink-0 text-gray-500 dark:text-gray-400"
+                class="flex-shrink-0 text-neutral-500 dark:text-neutral-400"
                 v-html="item.icon"
             ></div>
 
             <!-- Title and URL -->
             <div class="min-w-0 flex-1">
-                <div class="truncate font-medium text-gray-900 dark:text-white">
+                <div class="truncate font-medium text-neutral-900 dark:text-white">
                     {{ item.title }}
                 </div>
                 <div
                     v-if="item.url"
-                    class="truncate text-xs text-gray-500 dark:text-gray-400"
+                    class="truncate text-xs text-neutral-500 dark:text-neutral-400"
                 >
                     {{ item.url }}
                 </div>
@@ -82,7 +82,7 @@
                         item.type === 'category',
                     'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200':
                         item.type === 'tag',
-                    'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200':
+                    'bg-neutral-100 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200':
                         item.type === 'custom',
                 }"
             >
@@ -97,7 +97,7 @@
                 <button
                     v-if="level > 0"
                     @click.stop="$emit('outdent', item.id)"
-                    class="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    class="p-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
                     title="Move Left (Outdent)"
                 >
                     <svg
@@ -119,7 +119,7 @@
                 <button
                     v-if="canIndent"
                     @click.stop="$emit('indent', item.id)"
-                    class="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    class="p-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
                     title="Move Right (Indent)"
                 >
                     <svg
@@ -144,7 +144,7 @@
             >
                 <button
                     @click.stop="$emit('toggle-visibility', item.id)"
-                    class="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    class="p-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
                     :title="item.is_visible ? 'Hide' : 'Show'"
                 >
                     <svg

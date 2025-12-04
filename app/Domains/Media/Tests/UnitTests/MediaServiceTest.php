@@ -26,7 +26,6 @@ class MediaServiceTest extends TestCase
         Storage::fake('public');
     }
 
-
     public function test_it_can_get_paginated_media(): void
     {
         // Arrange
@@ -41,7 +40,6 @@ class MediaServiceTest extends TestCase
         $this->assertGreaterThan(0, $result->total());
     }
 
-    
     public function test_it_can_upload_media(): void
     {
         // Arrange
@@ -55,7 +53,6 @@ class MediaServiceTest extends TestCase
         $this->assertEquals('test-collection', $media->collection_name);
     }
 
-    
     public function test_it_can_delete_media(): void
     {
         // Arrange
@@ -71,7 +68,6 @@ class MediaServiceTest extends TestCase
         $this->assertDatabaseMissing('media', ['id' => $media->id]);
     }
 
-    
     public function test_it_can_get_media_by_id(): void
     {
         // Arrange
@@ -86,7 +82,6 @@ class MediaServiceTest extends TestCase
         $this->assertNotNull($result);
         $this->assertEquals($media->id, $result->id);
     }
-
 
     public function test_it_can_get_media_by_collection(): void
     {

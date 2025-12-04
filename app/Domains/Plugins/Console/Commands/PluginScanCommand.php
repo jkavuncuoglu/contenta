@@ -34,7 +34,7 @@ class PluginScanCommand extends Command
     }
 
     /**
-     * @param array<string, mixed> $results
+     * @param  array<string, mixed>  $results
      */
     private function displayScanResults(string $slug, array $results): void
     {
@@ -47,7 +47,7 @@ class PluginScanCommand extends Command
             $this->error('✗ Security threats detected!');
         }
 
-        if (!empty($results['threats'])) {
+        if (! empty($results['threats'])) {
             $this->error("\nThreats found:");
             foreach ($results['threats'] as $threat) {
                 $this->line("  - {$threat['file']}:{$threat['line']} - {$threat['issue']}");
@@ -55,7 +55,7 @@ class PluginScanCommand extends Command
             }
         }
 
-        if (!empty($results['warnings'])) {
+        if (! empty($results['warnings'])) {
             $this->warn("\nWarnings:");
             foreach ($results['warnings'] as $warning) {
                 $this->line("  - {$warning['file']}:{$warning['line']} - {$warning['issue']}");

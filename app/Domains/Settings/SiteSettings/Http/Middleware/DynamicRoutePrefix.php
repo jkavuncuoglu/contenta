@@ -24,10 +24,6 @@ class DynamicRoutePrefix
 
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
      */
     public function handle(Request $request, Closure $next): mixed
     {
@@ -83,7 +79,7 @@ class DynamicRoutePrefix
                 $newPath = implode('/', $segments);
 
                 // Update the request path
-                $request->server->set('REQUEST_URI', '/' . $newPath);
+                $request->server->set('REQUEST_URI', '/'.$newPath);
                 $request->initialize(
                     $request->query->all(),
                     $request->all(),

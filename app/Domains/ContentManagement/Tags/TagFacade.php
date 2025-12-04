@@ -12,4 +12,3 @@ class TagFacade extends Facade
         return TagServiceContract::class;
     }
 }
-

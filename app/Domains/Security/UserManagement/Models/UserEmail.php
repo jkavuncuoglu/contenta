@@ -27,6 +27,7 @@ class UserEmail extends Model
 
     /**
      * Get the user that owns the email address
+     *
      * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo

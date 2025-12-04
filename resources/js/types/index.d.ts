@@ -75,6 +75,8 @@ export interface PostForm {
     categories?: number[];
     tags: string[];
     custom_fields?: Record<string, unknown>;
+    storage_driver?: 'database' | 'local' | 's3' | 'azure' | 'gcs' | 'github' | 'gitlab' | 'bitbucket';
+    commit_message?: string;
 }
 
 export interface Post {

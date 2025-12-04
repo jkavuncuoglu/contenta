@@ -21,7 +21,7 @@ class SiteSettings extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'key', 'value', 'type', 'group', 'description'
+        'key', 'value', 'type', 'group', 'description',
     ];
 
     /**
@@ -47,7 +47,7 @@ class SiteSettings extends Model
         return Cache::remember("setting.{$key}", self::$cacheDuration, function () use ($key, $default) {
             $setting = self::where('key', $key)->first();
 
-            if (!$setting) {
+            if (! $setting) {
                 return $default;
             }
 
@@ -88,6 +88,7 @@ class SiteSettings extends Model
             foreach (self::all() as $setting) {
                 $settings[$setting->key] = self::castValue($setting->value, $setting->type);
             }
+
             return $settings;
         });
     }
@@ -104,6 +105,7 @@ class SiteSettings extends Model
             foreach (self::where('group', $group)->get() as $setting) {
                 $settings[$setting->key] = self::castValue($setting->value, $setting->type);
             }
+
             return $settings;
         });
     }

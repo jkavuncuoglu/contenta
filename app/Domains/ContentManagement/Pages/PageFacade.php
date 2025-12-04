@@ -2,16 +2,16 @@
 
 namespace App\Domains\ContentManagement\Pages;
 
-use App\Domains\PageBuilder\Services\PageBuilderServiceContract;
+use App\Domains\ContentManagement\Pages\Services\PageServiceContract;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Alias for PageBuilder facade for ContentManagement compatibility
+ * Page service facade for accessing page operations
  */
 class PageFacade extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return PageBuilderServiceContract::class;
+        return PageServiceContract::class;
     }
 }

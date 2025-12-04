@@ -23,7 +23,7 @@ class ThemeSettingsService implements ThemeSettingsServiceContract
     {
         $theme = $this->getActiveTheme();
 
-        if (!$theme) {
+        if (! $theme) {
             $theme = $this->ensureDefaultTheme();
         }
 
@@ -39,7 +39,7 @@ class ThemeSettingsService implements ThemeSettingsServiceContract
     {
         $theme = $this->getActiveTheme();
 
-        if (!$theme) {
+        if (! $theme) {
             $theme = $this->ensureDefaultTheme();
         }
 

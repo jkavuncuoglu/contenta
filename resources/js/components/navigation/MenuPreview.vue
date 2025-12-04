@@ -1,10 +1,10 @@
 <template>
     <div
-        class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
+        class="rounded-lg border border-neutral-200 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-800"
     >
-        <div class="border-b border-gray-200 p-6 dark:border-gray-700">
+        <div class="border-b border-neutral-200 p-6 dark:border-neutral-700">
             <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 class="text-lg font-semibold text-neutral-900 dark:text-white">
                     Live Preview
                 </h3>
                 <div class="flex items-center gap-2">
@@ -13,7 +13,7 @@
                         :class="{
                             'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300':
                                 viewMode === 'desktop',
-                            'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400':
+                            'bg-neutral-100 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400':
                                 viewMode !== 'desktop',
                         }"
                         class="rounded-md px-3 py-1 text-sm font-medium transition-colors"
@@ -38,7 +38,7 @@
                         :class="{
                             'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300':
                                 viewMode === 'mobile',
-                            'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400':
+                            'bg-neutral-100 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400':
                                 viewMode !== 'mobile',
                         }"
                         class="rounded-md px-3 py-1 text-sm font-medium transition-colors"
@@ -66,7 +66,7 @@
             <!-- Desktop Preview -->
             <div
                 v-if="viewMode === 'desktop'"
-                class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900"
+                class="rounded-lg border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700 dark:bg-neutral-900"
             >
                 <nav class="preview-nav">
                     <ul class="flex flex-wrap gap-1">
@@ -82,7 +82,7 @@
 
                 <!-- Empty State -->
                 <div v-if="visibleItems.length === 0" class="py-8 text-center">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
                         No visible menu items to preview
                     </p>
                 </div>
@@ -91,7 +91,7 @@
             <!-- Mobile Preview -->
             <div
                 v-if="viewMode === 'mobile'"
-                class="mx-auto rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900"
+                class="mx-auto rounded-lg border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700 dark:bg-neutral-900"
                 style="max-width: 375px"
             >
                 <nav class="preview-nav-mobile">
@@ -108,7 +108,7 @@
 
                 <!-- Empty State -->
                 <div v-if="visibleItems.length === 0" class="py-8 text-center">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
                         No visible menu items to preview
                     </p>
                 </div>

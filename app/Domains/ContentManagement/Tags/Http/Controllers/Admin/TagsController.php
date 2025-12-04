@@ -2,8 +2,8 @@
 
 namespace App\Domains\ContentManagement\Tags\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Domains\ContentManagement\Tags\Models\Tag;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -83,7 +83,7 @@ class TagsController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:tags,slug,' . $id,
+            'slug' => 'nullable|string|max:255|unique:tags,slug,'.$id,
             'description' => 'nullable|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
