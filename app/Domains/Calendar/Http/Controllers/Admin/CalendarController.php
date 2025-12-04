@@ -21,7 +21,7 @@ class CalendarController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:view calendar')->only(['index', 'data']);
+        $this->middleware('permission:view posts')->only(['index', 'data']);
     }
 
     /**

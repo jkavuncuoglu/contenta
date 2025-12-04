@@ -8,16 +8,24 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
+          // primary: use concrete Tailwind base colors for reliable rendering
+          // Light: blue-600 background with white text, Dark: slightly lighter blue
+          'bg-blue-600 text-white shadow-xs hover:bg-blue-700 focus-visible:ring-blue-200 dark:bg-blue-500 dark:hover:bg-blue-600',
         destructive:
-          'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+          // destructive: red style (leave as-is with reliable base colors)
+          'bg-red-600 text-white shadow-xs hover:bg-red-700 focus-visible:ring-red-200 dark:bg-red-500 dark:hover:bg-red-400',
         outline:
-          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+          // outline: transparent background with neutral borders, light and dark mode
+          'bg-transparent border border-neutral-200 text-neutral-900 shadow-xs hover:bg-neutral-50 hover:text-neutral-900 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-100',
         secondary:
-          'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
+          // secondary: subdued neutral/gray button that adapts to dark mode
+          'bg-neutral-100 text-neutral-900 shadow-xs hover:bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-600',
         ghost:
-          'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
-        link: 'text-primary underline-offset-4 hover:underline',
+          // ghost: minimal background, keep text color appropriate
+          'bg-transparent text-neutral-700 hover:bg-neutral-50 dark:text-neutral-200 dark:hover:bg-neutral-700',
+        link:
+          // link: text-only using blue as the interactive color
+          'text-blue-600 underline-offset-4 hover:underline dark:text-blue-400',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',

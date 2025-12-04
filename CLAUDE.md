@@ -142,7 +142,96 @@ Each domain encapsulates:
 - Models/Aggregates
 - Http/Controllers (UI + Admin endpoints)
 - Services (application layer)
-- Policies, Jobs, Events (future)
+- Policies, Jobs, Events
+- **Permissions** (database seeder for domain-specific permissions)
+
+### Permissions & Authorization
+
+**CRITICAL:** Every new domain MUST implement permissions using Spatie Laravel Permission.
+
+#### Required Steps for New Domains:
+
+1. **Create Permissions Seeder:**
+   ```bash
+   ./vendor/bin/sail artisan make:seeder {DomainName}PermissionsSeeder
+   ```
+
+2. **Define Domain Permissions:**
+   Follow the pattern: `{action} {domain resource}`
+
+   Examples:
+   - `view social accounts`
+   - `create social posts`
+   - `edit social accounts`
+   - `delete social posts`
+   - `publish social posts`
+
+3. **Create Domain-Specific Role:**
+   Each domain should have a manager role (e.g., "Social Media Manager")
+
+4. **Seeder Template:**
+   ```php
+   public function run(): void
+   {
+       app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
+       $permissions = [
+           'view {domain} {resource}',
+           'create {domain} {resource}',
+           'edit {domain} {resource}',
+           'delete {domain} {resource}',
+           // Add domain-specific permissions
+       ];
+
+       foreach ($permissions as $permission) {
+           Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
+       }
+
+       $role = Role::firstOrCreate(['name' => '{Domain} Manager', 'guard_name' => 'web']);
+       $role->syncPermissions($permissions);
+
+       // Grant to Admin role
+       $admin = Role::where('name', 'Admin')->where('guard_name', 'web')->first();
+       if ($admin) {
+           $admin->givePermissionTo($permissions);
+       }
+   }
+   ```
+
+5. **Protect Controllers:**
+   Add permission middleware in controller constructor:
+   ```php
+   public function __construct()
+   {
+       $this->middleware('permission:view {domain} {resource}')->only(['index', 'show']);
+       $this->middleware('permission:create {domain} {resource}')->only(['create', 'store']);
+       $this->middleware('permission:edit {domain} {resource}')->only(['edit', 'update']);
+       $this->middleware('permission:delete {domain} {resource}')->only(['destroy']);
+   }
+   ```
+
+6. **Run the Seeder:**
+   ```bash
+   ./vendor/bin/sail artisan db:seed --class={DomainName}PermissionsSeeder
+   ```
+
+#### Permission Naming Convention:
+- Format: `{verb} {domain-name} {resource-name}`
+- Use lowercase with spaces
+- Be specific and descriptive
+- Group by resource when possible
+
+#### Example Domain Permissions:
+
+**Social Media Domain:**
+- Account Management: `view/connect/edit/disconnect social accounts`, `refresh social tokens`
+- Post Management: `view/create/edit/delete/publish social posts`
+- Analytics: `view/sync social analytics`
+
+**Content Management Domain:**
+- Posts: `view/create/edit/delete/publish posts`
+- Pages: `view/create/edit/delete/publish pages`
+- Comments: `view/moderate/delete comments`
 
 ### Service Bindings
 Key services registered in `App\Providers\AppServiceProvider`:

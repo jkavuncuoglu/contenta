@@ -11,6 +11,7 @@ use App\Domains\Media\Services\MediaServiceContract;
 use App\Domains\Settings\Services\SiteSettingsService;
 use App\Domains\Settings\Services\SiteSettingsServiceContract;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,6 +46,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Inertia::share([
+            'app' => [
+                'name' => config('app.name'),
+                'env' => config('app.env'),
+                'version' => config('app.version'),
+            ],
+        ]);
     }
 }

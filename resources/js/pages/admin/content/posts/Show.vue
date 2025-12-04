@@ -24,7 +24,7 @@ interface Props {
 defineProps<Props>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Posts', href: '/admin/posts' },
-    { title: `Post #${typeof ({} as Props).id}` },
+    { label: 'Posts', href: '/admin/posts' },
+    { label: `Post #${typeof ({} as Props).id}` },
 ];
 </script>

@@ -169,7 +169,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Media', href: '/admin/media' },
+    { label: 'Media', href: '/admin/media' },
 ];
 
 const page = usePage();

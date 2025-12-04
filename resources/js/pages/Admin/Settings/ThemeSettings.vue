@@ -6,6 +6,7 @@ import { ref } from 'vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
+import { Button } from '@/components/ui/button';
 
 interface ThemeColors {
     id?: number;
@@ -81,8 +82,8 @@ const resetToDefaults = () => {
 };
 
 const breadcrumbItems: BreadcrumbItem[] = [
-    { title: 'Settings' },
-    { title: 'Theme Colors' },
+    { label: 'Settings' },
+    { label: 'Theme Colors' },
 ];
 </script>
 
@@ -95,6 +96,33 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 title="Theme Color Settings"
                 description="Customize the color scheme for light and dark modes"
             />
+
+            <!-- Preview Info -->
+            <div
+                class="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20"
+            >
+                <div class="flex">
+                    <Icon
+                        icon="ph:info"
+                        class="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400"
+                    />
+                    <div class="ml-3">
+                        <h3
+                            class="text-sm font-medium text-blue-800 dark:text-blue-300"
+                        >
+                            Preview Your Changes
+                        </h3>
+                        <p
+                            class="mt-1 text-sm text-blue-700 dark:text-blue-400"
+                        >
+                            After saving, the page will refresh to apply
+                            your new theme colors across the entire frontend.
+                            Changes will be visible in both light and dark
+                            modes.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             <form @submit.prevent="submit" class="space-y-6">
                 <!-- Theme Mode Tabs -->
@@ -553,33 +581,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             />
                             {{ form.processing ? 'Saving...' : 'Save Changes' }}
                         </button>
-                    </div>
-                </div>
-
-                <!-- Preview Info -->
-                <div
-                    class="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20"
-                >
-                    <div class="flex">
-                        <Icon
-                            icon="ph:info"
-                            class="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400"
-                        />
-                        <div class="ml-3">
-                            <h3
-                                class="text-sm font-medium text-blue-800 dark:text-blue-300"
-                            >
-                                Preview Your Changes
-                            </h3>
-                            <p
-                                class="mt-1 text-sm text-blue-700 dark:text-blue-400"
-                            >
-                                After saving, the page will refresh to apply
-                                your new theme colors across the entire site.
-                                Changes will be visible in both light and dark
-                                modes.
-                            </p>
-                        </div>
+                        <a
+                            href="/"
+                            target="_blank"
+                            title="Preview"
+                            class="inline-flex items-center rounded-md border border-neutral-300 dark:border-neutral-600 dark:text-neutral-400 g-transparent px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out hover:bg-neutral-700 focus:border-neutral-900 focus:ring focus:ring-neutral-300 focus:outline-none"
+                        >
+                            <Icon
+                                icon="material-symbols-light:eye-tracking-sharp"
+                                class="h-5 w-5"
+                            />
+                        </a>
                     </div>
                 </div>
             </form>

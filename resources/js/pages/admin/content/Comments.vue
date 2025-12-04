@@ -431,7 +431,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Comments', href: '/admin/comments' },
+    { label: 'Comments', href: '/admin/comments' },
 ];
 
 const page = usePage();

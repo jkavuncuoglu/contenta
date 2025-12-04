@@ -70,10 +70,12 @@ const submit = () => {
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Settings',
+        label: 'Settings',
+        href: '/admin/settings'
     },
     {
-        title: 'Security',
+        label: 'Security',
+        href: '/admin/settings/security'
     },
 ];
 </script>
@@ -152,7 +154,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
                                 <div class="flex items-center">
                                     <input
-                                        id="security_rate_limiting"
                                         v-model="form.security_rate_limiting"
                                         type="checkbox"
                                         class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"

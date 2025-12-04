@@ -43,10 +43,10 @@
                     class="divide-y divide-neutral-200 bg-white dark:divide-neutral-700 dark:bg-neutral-900"
                 >
                     <tr v-for="user in filteredUsers" :key="user.id">
-                        <td class="px-4 py-2">{{ user.name }}</td>
+                        <td class="px-4 py-2">{{ user.first_name }} {{user.last_name}}</td>
                         <td class="px-4 py-2">{{ user.email }}</td>
                         <td class="px-4 py-2 text-neutral-500">
-                            {{ (user.roles || []).join(', ') }}
+                            {{ (user.roles.map(role => ucWords(role.name)) || []).join(', ') }}
                         </td>
                         <td class="flex gap-2 px-4 py-2">
                             <button
@@ -80,6 +80,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+import { ucWords } from '@/lib/utils';
 
 interface User {
     id: number;
@@ -121,7 +122,7 @@ function deleteUser(user: User) {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Users',
+        label: 'Users',
         href: '/admin/users',
     },
 ];

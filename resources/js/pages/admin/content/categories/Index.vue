@@ -223,7 +223,7 @@ const props = defineProps({
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Categories',
+        label: 'Categories',
         href: '/admin/categories',
     },
 ];
