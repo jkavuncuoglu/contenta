@@ -23,6 +23,7 @@ Route::group([
     Route::group([
         'prefix' => 'users',
         'as' => 'users.',
+        'middleware' => ['permission:view users'],
     ], function () {
         Route::get('', [UserManagementController::class, 'index'])->name('index');
 
@@ -91,16 +92,32 @@ Route::group([
     Route::group([
         'prefix' => 'site',
         'as' => 'site.',
+        'middleware' => ['permission:view settings'],
     ], function () {
         Route::get('', [SiteSettingsController::class, 'index'])->name('index');
+    });
+
+    Route::group([
+        'prefix' => 'site',
+        'as' => 'site.',
+        'middleware' => ['permission:update site settings'],
+    ], function () {
         Route::put('', [SiteSettingsController::class, 'update'])->name('update');
     });
 
     Route::group([
         'prefix' => 'security',
         'as' => 'security.',
+        'middleware' => ['permission:view settings'],
     ], function () {
         Route::get('', [SecuritySettingsController::class, 'index'])->name('index');
+    });
+
+    Route::group([
+        'prefix' => 'security',
+        'as' => 'security.',
+        'middleware' => ['permission:update security settings'],
+    ], function () {
         Route::put('', [SecuritySettingsController::class, 'update'])->name('update');
     });
 
@@ -117,26 +134,50 @@ Route::group([
     Route::group([
         'prefix' => 'theme',
         'as' => 'theme.',
+        'middleware' => ['permission:view settings'],
     ], function () {
         Route::get('', [ThemeSettingsController::class, 'index'])->name('index');
         Route::get('colors', [ThemeSettingsController::class, 'show'])->name('show');
-        Route::put('', [ThemeSettingsController::class, 'update'])->name('update');
     });
 
     Route::group([
+        'prefix' => 'theme',
+        'as' => 'theme.',
+        'middleware' => ['permission:update theme settings'],
+    ], function () {
+        Route::put('', [ThemeSettingsController::class, 'update'])->name('update');
+    });
+
+    // View content storage permission
+    Route::group([
         'prefix' => 'content-storage',
         'as' => 'content-storage.',
+        'middleware' => ['permission:view content storage'],
     ], function () {
         Route::get('', [ContentStorageSettingsController::class, 'index'])->name('index');
+        Route::get('migrate', [ContentMigrationController::class, 'index'])->name('migrate.index');
+        Route::get('migrations', [ContentMigrationController::class, 'list'])->name('migrations.list');
+        Route::get('migrations/{id}', [ContentMigrationController::class, 'show'])->name('migrations.show');
+    });
+
+    // Update content storage settings permission
+    Route::group([
+        'prefix' => 'content-storage',
+        'as' => 'content-storage.',
+        'middleware' => ['permission:update content storage settings'],
+    ], function () {
         Route::put('', [ContentStorageSettingsController::class, 'update'])->name('update');
         Route::post('test-connection', [ContentStorageSettingsController::class, 'testConnection'])->name('test-connection');
         Route::post('create-path', [ContentStorageSettingsController::class, 'createPath'])->name('create-path');
+    });
 
-        // Migration routes
-        Route::get('migrate', [ContentMigrationController::class, 'index'])->name('migrate.index');
+    // Migrate content storage permission (super-admin only operations)
+    Route::group([
+        'prefix' => 'content-storage',
+        'as' => 'content-storage.',
+        'middleware' => ['permission:migrate content storage'],
+    ], function () {
         Route::post('migrations', [ContentMigrationController::class, 'store'])->name('migrations.store');
-        Route::get('migrations', [ContentMigrationController::class, 'list'])->name('migrations.list');
-        Route::get('migrations/{id}', [ContentMigrationController::class, 'show'])->name('migrations.show');
         Route::post('migrations/{id}/verify', [ContentMigrationController::class, 'verify'])->name('migrations.verify');
         Route::post('migrations/{id}/rollback', [ContentMigrationController::class, 'rollback'])->name('migrations.rollback');
     });

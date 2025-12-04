@@ -15,9 +15,7 @@ class OAuthController extends Controller
     public function __construct(
         protected OAuthServiceContract $oauthService
     ) {
-        $this->middleware('permission:connect social accounts')->only(['authorize', 'callback']);
-        $this->middleware('permission:refresh social tokens')->only(['refresh']);
-        $this->middleware('permission:disconnect social accounts')->only(['disconnect']);
+        // Permissions are handled at route level
     }
 
     /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Domains\SocialMedia\Http\Controllers\Admin\OAuthController;
 use App\Domains\SocialMedia\Http\Controllers\Admin\SocialAccountController;
-use App\Domains\SocialMedia\Http\Controllers\Admin\SocialAnalyticsController;
+// use App\Domains\SocialMedia\Http\Controllers\Admin\SocialAnalyticsController; // TODO: Create this controller
 use App\Domains\SocialMedia\Http\Controllers\Admin\SocialPostController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,12 +50,12 @@ Route::middleware(['web', 'auth'])->prefix('admin/social-media')->name('admin.so
         Route::post('/{post}/retry', [SocialPostController::class, 'retry'])->name('retry');
     });
 
-    // Analytics
-    Route::prefix('analytics')->name('analytics.')->group(function () {
-        Route::get('/', [SocialAnalyticsController::class, 'index'])->name('index');
-        Route::get('/account/{account}', [SocialAnalyticsController::class, 'account'])->name('account');
-        Route::post('/sync/{post}', [SocialAnalyticsController::class, 'sync'])->name('sync');
-    });
+    // Analytics (TODO: Implement SocialAnalyticsController)
+    // Route::prefix('analytics')->name('analytics.')->group(function () {
+    //     Route::get('/', [SocialAnalyticsController::class, 'index'])->name('index');
+    //     Route::get('/account/{account}', [SocialAnalyticsController::class, 'account'])->name('account');
+    //     Route::post('/sync/{post}', [SocialAnalyticsController::class, 'sync'])->name('sync');
+    // });
 
     // API Helpers (for frontend)
     Route::prefix('api')->name('api.')->group(function () {

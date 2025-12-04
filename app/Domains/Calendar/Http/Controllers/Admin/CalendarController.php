@@ -20,8 +20,7 @@ class CalendarController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('permission:view posts')->only(['index', 'data']);
+        // Permissions are handled at route level
     }
 
     /**
@@ -31,7 +30,7 @@ class CalendarController extends Controller
     {
         return Inertia::render('admin/calendar/Index', [
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'href' => route('admin.dashboard')],
+                ['label' => 'Dashboard', 'href' => route('admin.dashboard.index')],
                 ['label' => 'Calendar'],
             ],
         ]);
