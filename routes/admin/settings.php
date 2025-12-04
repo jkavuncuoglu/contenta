@@ -130,6 +130,7 @@ Route::group([
         Route::get('', [ContentStorageSettingsController::class, 'index'])->name('index');
         Route::put('', [ContentStorageSettingsController::class, 'update'])->name('update');
         Route::post('test-connection', [ContentStorageSettingsController::class, 'testConnection'])->name('test-connection');
+        Route::post('create-path', [ContentStorageSettingsController::class, 'createPath'])->name('create-path');
 
         // Migration routes
         Route::get('migrate', [ContentMigrationController::class, 'index'])->name('migrate.index');

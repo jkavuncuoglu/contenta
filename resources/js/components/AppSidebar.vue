@@ -128,6 +128,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Settings',
         icon: 'material-symbols-light:settings',
+        href: '/admin/settings/site',
         children: [
             {
                 title: 'Site Settings',

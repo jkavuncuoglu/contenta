@@ -20,14 +20,22 @@
                         href="/admin/posts/calendar"
                         class="inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
                     >
-                        <Icon name="calendar" class="mr-2 h-4 w-4" />
+                        <Icon
+                            name="calendar"
+                            icon="material-symbols-light:calendar-month"
+                            class="mr-2 h-4 w-4"
+                        />
                         Calendar
                     </Link>
                     <Link
                         href="/admin/posts/create"
                         class="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
                     >
-                        <Icon name="plus" class="mr-2 h-4 w-4" />
+                        <Icon
+                            name="Create New Post"
+                            icon="material-symbols-light:post-add"
+                            class="mr-2 h-5 w-5"
+                        />
                         New Post
                     </Link>
                 </div>
@@ -88,7 +96,11 @@
                                 ]"
                                 title="List view"
                             >
-                                <Icon name="list-bullet" class="h-4 w-4" />
+                                <Icon
+                                    name="Create New Post"
+                                    icon="material-symbols-light:list-alt-outline"
+                                    class="h-8 w-8"
+                                />
                             </button>
                             <button
                                 @click="viewMode = 'kanban'"
@@ -100,7 +112,11 @@
                                 ]"
                                 title="Kanban view"
                             >
-                                <Icon name="view-columns" class="h-4 w-4" />
+                                <Icon
+                                    name="Create New Post"
+                                    icon="material-symbols-light:view-kanban"
+                                    class="h-8 w-8"
+                                />
                             </button>
                         </div>
 
@@ -109,7 +125,7 @@
                             v-if="viewMode === 'list'"
                             v-model="statusFilter"
                             @change="loadPosts"
-                            class="block rounded-md border-neutral-300 text-sm shadow-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-300"
+                            class="block px-3 py-2 rounded-md border-neutral-300 text-sm shadow-sm dark:border-neutral-600 dark:bg-neutral-700 dark:text-neutral-300"
                         >
                             <option value="">All Statuses</option>
                             <option value="draft">Draft</option>
@@ -513,12 +529,12 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '@/components/Icon.vue';
+import { Icon } from '@iconify/vue'
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from 'vue';
 
-const breadcrumbs = [{ title: 'Posts', href: '/admin/posts' }];
+const breadcrumbs = [{ label: 'Posts', href: '/admin/posts' }];
 
 interface Post {
     id: number;

@@ -13,8 +13,8 @@ interface Props {
 const props = defineProps<Props>();
 
 const breadcrumbItems: BreadcrumbItem[] = [
-    { title: 'Settings', href: '/admin/settings/site' },
-    { title: 'Permissions', href: '/admin/settings/permissions' },
+    { label: 'Settings', href: '/admin/settings/site' },
+    { label: 'Permissions', href: '/admin/settings/permissions' },
 ];
 
 // Local copies

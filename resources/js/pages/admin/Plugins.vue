@@ -658,8 +658,8 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Admin', href: '/admin' },
-    { title: 'Plugins', href: '/admin/plugins' },
+    { label: 'Admin', href: '/admin' },
+    { label: 'Plugins', href: '/admin/plugins' },
 ];
 
 const fileInput = ref<HTMLInputElement | null>(null);

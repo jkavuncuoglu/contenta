@@ -27,7 +27,7 @@ class CategoriesController extends Controller
             ];
         });
 
-        return Inertia::render('admin/categories/Index', [
+        return Inertia::render('admin/content/categories/Index', [
             'categories' => $categories,
             'meta' => [
                 'current_page' => $paginator->currentPage(),

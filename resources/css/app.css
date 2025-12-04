@@ -508,3 +508,7 @@
         line-height: 1.75rem;
     }
 }
+
+input[type="checkbox"] {
+    accent-color: currentColor; /* matches your text color */
+}
