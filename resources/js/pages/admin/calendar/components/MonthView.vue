@@ -113,13 +113,13 @@ const getEventIcon = (event: CalendarEvent) => {
 </script>
 
 <template>
-  <div class="rounded-lg border border-gray-200 bg-white overflow-hidden">
+  <div class="rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden">
     <!-- Days of Week Header -->
-    <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-50">
+    <div class="grid grid-cols-7 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
       <div
         v-for="day in daysOfWeek"
         :key="day"
-        class="py-2 text-center text-sm font-semibold text-gray-700"
+        class="py-2 text-center text-sm font-semibold text-neutral-700 dark:text-neutral-50"
       >
         {{ day }}
       </div>
@@ -131,8 +131,8 @@ const getEventIcon = (event: CalendarEvent) => {
         v-for="(day, index) in calendarDays"
         :key="index"
         :class="[
-          'min-h-[120px] border-b border-r border-gray-200 p-2',
-          !day.isCurrentMonth && 'bg-gray-50',
+          'min-h-[120px] border-b border-r border-neutral-200 dark:border-neutral-800 p-2',
+          !day.isCurrentMonth && 'bg-neutral-50 dark:bg-neutral-900',
           index % 7 === 6 && 'border-r-0',
         ]"
       >
@@ -143,8 +143,8 @@ const getEventIcon = (event: CalendarEvent) => {
             isToday(day.date)
               ? 'bg-blue-600 font-bold text-white'
               : day.isCurrentMonth
-                ? 'text-gray-900'
-                : 'text-gray-400',
+                ? 'text-neutral-900 dark:text-neutral-100'
+                : 'text-neutral-400 dark:text-neutral-600',
           ]"
         >
           {{ day.date.getDate() }}
@@ -156,7 +156,7 @@ const getEventIcon = (event: CalendarEvent) => {
             v-for="event in day.events.slice(0, 3)"
             :key="`${event.type}-${event.id}`"
             :href="event.url"
-            class="block rounded px-2 py-1 text-xs font-medium text-white hover:opacity-90 transition-opacity"
+            class="block rounded px-2 py-1 text-xs font-medium text-white dark:text-neutral-950 hover:opacity-90 transition-opacity"
             :style="{ backgroundColor: event.color }"
           >
             <div class="flex items-center gap-1">
@@ -168,7 +168,7 @@ const getEventIcon = (event: CalendarEvent) => {
           <!-- More events indicator -->
           <div
             v-if="day.events.length > 3"
-            class="px-2 py-1 text-xs font-medium text-gray-600"
+            class="px-2 py-1 text-xs font-medium text-neutral-600"
           >
             +{{ day.events.length - 3 }} more
           </div>

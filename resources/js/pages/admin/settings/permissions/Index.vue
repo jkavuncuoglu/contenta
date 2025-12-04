@@ -4,7 +4,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem, Permission, Role } from '@/types';
 import { Icon } from '@iconify/vue';
 import { Head, router } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { ucWords } from '@/lib/utils';
 
 interface Props {
@@ -31,15 +31,32 @@ const formErrors = ref<Record<string, string[]>>({});
 interface RoleFormState {
     id: number | null;
     name: string;
+    guard_name: string;
     permissions: number[];
 }
-const roleForm = ref<RoleFormState>({ id: null, name: '', permissions: [] });
+const roleForm = ref<RoleFormState>({ id: null, name: '', guard_name: 'web', permissions: [] });
 
-// Group permissions
+// Filter permissions by selected guard
+const filteredPermissions = computed(() => {
+    return allPermissions.value.filter(
+        (p) => p.guard_name === roleForm.value.guard_name
+    );
+});
+
+// Group permissions (filtered by guard)
 const permissionGroups = computed(() => {
     const groups: Record<string, Permission[]> = {};
-    allPermissions.value.forEach((p) => {
-        const seg = p.name.split('.')[0] || 'general';
+    filteredPermissions.value.forEach((p) => {
+        // Support both old dot-notation and new space-separated format
+        let seg: string;
+        if (p.name.includes('.')) {
+            // Old format: "posts.view" -> "posts"
+            seg = p.name.split('.')[0] || 'general';
+        } else {
+            // New format: "view posts" -> "posts" (last word becomes the group)
+            const parts = p.name.split(' ');
+            seg = parts.length > 1 ? parts[parts.length - 1] : 'general';
+        }
         const key = seg.toLowerCase();
         (groups[key] ||= []).push(p);
     });
@@ -54,8 +71,25 @@ const permissionGroups = computed(() => {
         }));
 });
 
+// Watch for guard changes and filter out invalid permissions
+watch(() => roleForm.value.guard_name, (newGuard, oldGuard) => {
+    if (newGuard !== oldGuard) {
+        // Get all valid permission IDs for the new guard
+        const validPermissionIds = new Set(
+            allPermissions.value
+                .filter(p => p.guard_name === newGuard)
+                .map(p => p.id)
+        );
+
+        // Filter out any permissions that don't belong to the new guard
+        roleForm.value.permissions = roleForm.value.permissions.filter(
+            id => validPermissionIds.has(id)
+        );
+    }
+});
+
 const resetForm = () => {
-    roleForm.value = { id: null, name: '', permissions: [] };
+    roleForm.value = { id: null, name: '', guard_name: 'web', permissions: [] };
     formErrors.value = {};
     isEditing.value = false;
 };
@@ -64,10 +98,16 @@ const openCreate = () => {
     showModal.value = true;
 };
 const openEdit = (role: Role) => {
+    // Only load permissions that match the role's guard
+    const validPermissions = (role.permissions || [])
+        .filter((p) => p.guard_name === role.guard_name)
+        .map((p) => p.id);
+
     roleForm.value = {
         id: role.id,
         name: role.name,
-        permissions: (role.permissions || []).map((p) => p.id),
+        guard_name: role.guard_name,
+        permissions: validPermissions,
     };
     formErrors.value = {};
     isEditing.value = true;
@@ -102,9 +142,21 @@ const togglePermission = (id: number) => {
 const submit = () => {
     saving.value = true;
     formErrors.value = {};
+
+    // Filter permissions to only include those matching the role's guard
+    const validPermissionIds = new Set(
+        allPermissions.value
+            .filter((p) => p.guard_name === roleForm.value.guard_name)
+            .map((p) => p.id)
+    );
+    const filteredPermissions = roleForm.value.permissions.filter((id) =>
+        validPermissionIds.has(id)
+    );
+
     const payload = {
         name: roleForm.value.name,
-        permissions: roleForm.value.permissions,
+        guard_name: roleForm.value.guard_name,
+        permissions: filteredPermissions,
     };
     const creating = roleForm.value.id === null;
     const url = creating
@@ -340,6 +392,38 @@ const confirmDelete = (role: Role) => {
                                 {{ ucWords(formErrors.name[0]) }}
                             </p>
                         </div>
+                        <!-- Guard Name Selector -->
+                        <div>
+                            <label
+                                for="guard-name"
+                                class="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                                >Guard</label
+                            >
+                            <select
+                                v-if="!isEditing"
+                                id="guard-name"
+                                v-model="roleForm.guard_name"
+                                class="w-full rounded-md px-3 py-2 border-neutral-300 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
+                            >
+                                <option value="web">Web</option>
+                                <option value="api">API</option>
+                            </select>
+                            <div
+                                v-else
+                                class="w-full rounded-md px-3 py-2 border border-neutral-300 text-sm shadow-sm bg-neutral-100 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-400"
+                            >
+                                {{ roleForm.guard_name === 'web' ? 'Web' : 'API' }}
+                            </div>
+                            <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                                Guard type for this role. Cannot be changed after creation.
+                            </p>
+                            <p
+                                v-if="formErrors.guard_name"
+                                class="mt-1 text-xs text-red-600"
+                            >
+                                {{ ucWords(formErrors.guard_name[0]) }}
+                            </p>
+                        </div>
                         <div>
                             <div class="mb-4 flex items-center justify-between">
                                 <h3
@@ -353,11 +437,11 @@ const confirmDelete = (role: Role) => {
                                         class="text-xs text-blue-600 hover:underline disabled:opacity-40"
                                         @click="
                                             roleForm.permissions =
-                                                allPermissions.map((p) => p.id)
+                                                filteredPermissions.map((p) => p.id)
                                         "
                                         :disabled="
                                             roleForm.permissions.length ===
-                                            allPermissions.length
+                                            filteredPermissions.length
                                         "
                                     >
                                         Select All

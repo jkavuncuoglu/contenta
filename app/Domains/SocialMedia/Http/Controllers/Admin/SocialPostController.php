@@ -23,11 +23,7 @@ class SocialPostController extends Controller
     public function __construct(
         protected SocialMediaServiceContract $socialMediaService
     ) {
-        $this->middleware('permission:view social posts')->only(['index', 'show', 'scheduled']);
-        $this->middleware('permission:create social posts')->only(['create', 'store']);
-        $this->middleware('permission:edit social posts')->only(['edit', 'update']);
-        $this->middleware('permission:delete social posts')->only(['destroy']);
-        $this->middleware('permission:publish social posts')->only(['publish', 'cancel', 'retry']);
+        // Permissions are handled at route level
     }
 
     /**
@@ -78,7 +74,7 @@ class SocialPostController extends Controller
             'accounts' => $accounts,
             'filters' => $request->only(['status', 'platform', 'source_type']),
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'href' => route('admin.dashboard')],
+                ['label' => 'Dashboard', 'href' => route('admin.dashboard.index')],
                 ['label' => 'Social Media', 'href' => route('admin.social-media.accounts.index')],
                 ['label' => 'Posts'],
             ],
@@ -103,7 +99,7 @@ class SocialPostController extends Controller
         return Inertia::render('admin/social-media/posts/Create', [
             'accounts' => $accounts,
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'href' => route('admin.dashboard')],
+                ['label' => 'Dashboard', 'href' => route('admin.dashboard.index')],
                 ['label' => 'Social Media', 'href' => route('admin.social-media.accounts.index')],
                 ['label' => 'Posts', 'href' => route('admin.social-media.posts.index')],
                 ['label' => 'Create'],
@@ -173,7 +169,7 @@ class SocialPostController extends Controller
                 'updated_at' => $post->updated_at->toIso8601String(),
             ],
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'href' => route('admin.dashboard')],
+                ['label' => 'Dashboard', 'href' => route('admin.dashboard.index')],
                 ['label' => 'Social Media', 'href' => route('admin.social-media.accounts.index')],
                 ['label' => 'Posts', 'href' => route('admin.social-media.posts.index')],
                 ['label' => 'View'],
@@ -215,7 +211,7 @@ class SocialPostController extends Controller
             ],
             'accounts' => $accounts,
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'href' => route('admin.dashboard')],
+                ['label' => 'Dashboard', 'href' => route('admin.dashboard.index')],
                 ['label' => 'Social Media', 'href' => route('admin.social-media.accounts.index')],
                 ['label' => 'Posts', 'href' => route('admin.social-media.posts.index')],
                 ['label' => 'Edit'],

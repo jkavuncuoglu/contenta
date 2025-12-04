@@ -62,7 +62,7 @@ const submit = () => {
         </div>
         <div>
           <h1 class="text-3xl font-bold tracking-tight">Edit {{ config.name }} Account</h1>
-          <p class="mt-1 text-sm text-gray-600">
+          <p class="mt-1 text-sm text-neutral-600">
             {{ account.platform_display_name || account.platform_username || 'Connected Account' }}
           </p>
         </div>
@@ -71,9 +71,9 @@ const submit = () => {
       <!-- Form -->
       <form @submit.prevent="submit" class="space-y-6">
         <!-- Account Status -->
-        <div class="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 class="text-lg font-semibold text-gray-900">Account Status</h2>
-          <p class="mt-1 text-sm text-gray-600">
+        <div class="rounded-lg border border-neutral-200 bg-white p-6">
+          <h2 class="text-lg font-semibold text-neutral-900">Account Status</h2>
+          <p class="mt-1 text-sm text-neutral-600">
             Enable or disable this social media account.
           </p>
 
@@ -82,11 +82,11 @@ const submit = () => {
               <input
                 v-model="form.is_active"
                 type="checkbox"
-                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
               />
               <div>
-                <span class="text-sm font-medium text-gray-900">Account Active</span>
-                <p class="text-sm text-gray-500">
+                <span class="text-sm font-medium text-neutral-900">Account Active</span>
+                <p class="text-sm text-neutral-500">
                   When disabled, no posts will be published to this account.
                 </p>
               </div>
@@ -100,36 +100,36 @@ const submit = () => {
         <!-- Platform-Specific Settings -->
         <div
           v-if="account.platform === 'facebook' || account.platform === 'linkedin'"
-          class="rounded-lg border border-gray-200 bg-white p-6"
+          class="rounded-lg border border-neutral-200 bg-white p-6"
         >
-          <h2 class="text-lg font-semibold text-gray-900">Platform Settings</h2>
-          <p class="mt-1 text-sm text-gray-600">
+          <h2 class="text-lg font-semibold text-neutral-900">Platform Settings</h2>
+          <p class="mt-1 text-sm text-neutral-600">
             Configure platform-specific options.
           </p>
 
           <div class="mt-4 space-y-4">
             <div v-if="account.platform === 'facebook'">
-              <label class="block text-sm font-medium text-gray-700">Facebook Page ID</label>
+              <label class="block text-sm font-medium text-neutral-700">Facebook Page ID</label>
               <input
                 v-model="form.platform_settings.page_id"
                 type="text"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 placeholder="Enter your Facebook Page ID"
               />
-              <p class="mt-1 text-sm text-gray-500">
+              <p class="mt-1 text-sm text-neutral-500">
                 Required for posting to your Facebook Page.
               </p>
             </div>
 
             <div v-if="account.platform === 'linkedin'">
-              <label class="block text-sm font-medium text-gray-700">Author URN</label>
+              <label class="block text-sm font-medium text-neutral-700">Author URN</label>
               <input
                 v-model="form.platform_settings.author_urn"
                 type="text"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 placeholder="urn:li:person:12345"
               />
-              <p class="mt-1 text-sm text-gray-500">
+              <p class="mt-1 text-sm text-neutral-500">
                 LinkedIn person or organization URN.
               </p>
             </div>
@@ -140,7 +140,7 @@ const submit = () => {
         <div class="flex items-center justify-between">
           <a
             href="/admin/social-media/accounts"
-            class="text-sm font-medium text-gray-600 hover:text-gray-900"
+            class="text-sm font-medium text-neutral-600 hover:text-neutral-900"
           >
             Cancel
           </a>

@@ -15,8 +15,10 @@ class RolesController extends Controller
 {
     public function index(): Response
     {
-        $roles = Role::with(['permissions:id,name'])->withCount('users')->orderBy('name')->get();
-        $permissions = Permission::orderBy('name')->get(['id', 'name']);
+        $roles = Role::with(['permissions:id,name,guard_name'])->withCount('users')->orderBy('name')->get();
+
+        // Get all permissions grouped by guard for frontend filtering
+        $permissions = Permission::orderBy('name')->get(['id', 'name', 'guard_name']);
 
         return Inertia::render('admin/settings/permissions/Index', [
             'roles' => $roles,
@@ -29,14 +31,14 @@ class RolesController extends Controller
         $data = $request->validated();
         $role = Role::create([
             'name' => $data['name'],
-            'guard_name' => 'web',
+            'guard_name' => $data['guard_name'] ?? 'web',
         ]);
 
         if (! empty($data['permissions'])) {
             $role->syncPermissions($data['permissions']);
         }
 
-        return redirect()->route('settings.permissions.index')
+        return redirect()->route('admin.settings.permissions.index')
             ->with('success', 'Role created successfully.');
     }
 
@@ -48,11 +50,17 @@ class RolesController extends Controller
 
         $data = $request->validated();
         $role->name = $data['name'];
+
+        // Update guard_name if provided (and role is not super-admin)
+        if (isset($data['guard_name']) && $role->name !== 'super-admin') {
+            $role->guard_name = $data['guard_name'];
+        }
+
         $role->save();
 
         $role->syncPermissions($data['permissions'] ?? []);
 
-        return redirect()->route('settings.permissions.index')
+        return redirect()->route('admin.settings.permissions.index')
             ->with('success', 'Role updated successfully.');
     }
 
@@ -64,7 +72,7 @@ class RolesController extends Controller
 
         $role->delete();
 
-        return redirect()->route('settings.permissions.index')
+        return redirect()->route('admin.settings.permissions.index')
             ->with('success', 'Role deleted successfully.');
     }
 }

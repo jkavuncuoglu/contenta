@@ -19,10 +19,7 @@ class SocialAccountController extends Controller
     public function __construct(
         protected OAuthServiceContract $oauthService
     ) {
-        $this->middleware('permission:view social accounts')->only(['index', 'show']);
-        $this->middleware('permission:edit social accounts')->only(['edit', 'update']);
-        $this->middleware('permission:disconnect social accounts')->only(['destroy']);
-        $this->middleware('permission:refresh social tokens')->only(['verify']);
+        // Permissions are handled at route level
     }
 
     /**
@@ -57,7 +54,7 @@ class SocialAccountController extends Controller
         return Inertia::render('admin/social-media/accounts/Index', [
             'accounts' => $accounts,
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'href' => route('admin.dashboard')],
+                ['label' => 'Dashboard', 'href' => route('admin.dashboard.index')],
                 ['label' => 'Social Media', 'href' => route('admin.social-media.accounts.index')],
                 ['label' => 'Accounts'],
             ],
@@ -93,7 +90,7 @@ class SocialAccountController extends Controller
                 'posts' => $account->socialPosts,
             ],
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'href' => route('admin.dashboard')],
+                ['label' => 'Dashboard', 'href' => route('admin.dashboard.index')],
                 ['label' => 'Social Media', 'href' => route('admin.social-media.accounts.index')],
                 ['label' => 'Accounts', 'href' => route('admin.social-media.accounts.index')],
                 ['label' => $account->platform_display_name ?? ucfirst($account->platform)],
@@ -119,7 +116,7 @@ class SocialAccountController extends Controller
                 'platform_settings' => $account->platform_settings,
             ],
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'href' => route('admin.dashboard')],
+                ['label' => 'Dashboard', 'href' => route('admin.dashboard.index')],
                 ['label' => 'Social Media', 'href' => route('admin.social-media.accounts.index')],
                 ['label' => 'Accounts', 'href' => route('admin.social-media.accounts.index')],
                 ['label' => 'Edit'],

@@ -71,7 +71,7 @@ const handlePublishNow = () => {
       <!-- Header -->
       <div>
         <h1 class="text-3xl font-bold tracking-tight">Edit Social Media Post</h1>
-        <p class="mt-2 text-sm text-gray-600">
+        <p class="mt-2 text-sm text-neutral-600">
           Update your post and republish or reschedule it.
         </p>
       </div>
@@ -103,10 +103,10 @@ const handlePublishNow = () => {
         <PostForm v-model:form="form" :accounts="accounts" />
 
         <!-- Actions -->
-        <div class="mt-6 flex items-center justify-between rounded-lg border border-gray-200 bg-white p-6">
+        <div class="mt-6 flex items-center justify-between rounded-lg border border-neutral-200 bg-white p-6">
           <a
             href="/admin/social-media/posts"
-            class="text-sm font-medium text-gray-600 hover:text-gray-900"
+            class="text-sm font-medium text-neutral-600 hover:text-neutral-900"
           >
             Cancel
           </a>
@@ -115,7 +115,7 @@ const handlePublishNow = () => {
               v-if="post.status === 'scheduled'"
               type="button"
               :disabled="form.processing"
-              class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+              class="rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm transition-colors hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
               @click="handleSaveDraft"
             >
               Revert to Draft
@@ -172,15 +172,15 @@ const handlePublishNow = () => {
       </div>
 
       <!-- Read-Only View for Published Posts -->
-      <div v-else class="rounded-lg border border-gray-200 bg-gray-50 p-6">
+      <div v-else class="rounded-lg border border-neutral-200 bg-neutral-50 p-6">
         <h3 class="mb-4 text-lg font-semibold">Post Details</h3>
         <dl class="space-y-3">
           <div>
-            <dt class="text-sm font-medium text-gray-500">Content</dt>
-            <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ post.content }}</dd>
+            <dt class="text-sm font-medium text-neutral-500">Content</dt>
+            <dd class="mt-1 text-sm text-neutral-900 whitespace-pre-wrap">{{ post.content }}</dd>
           </div>
           <div v-if="post.media_urls && post.media_urls.length > 0">
-            <dt class="text-sm font-medium text-gray-500">Media</dt>
+            <dt class="text-sm font-medium text-neutral-500">Media</dt>
             <dd class="mt-1 space-y-1">
               <a
                 v-for="(url, index) in post.media_urls"
@@ -194,7 +194,7 @@ const handlePublishNow = () => {
             </dd>
           </div>
           <div v-if="post.link_url">
-            <dt class="text-sm font-medium text-gray-500">Link</dt>
+            <dt class="text-sm font-medium text-neutral-500">Link</dt>
             <dd class="mt-1">
               <a :href="post.link_url" target="_blank" class="text-sm text-blue-600 hover:underline">
                 {{ post.link_url }}
@@ -202,8 +202,8 @@ const handlePublishNow = () => {
             </dd>
           </div>
           <div>
-            <dt class="text-sm font-medium text-gray-500">Status</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ post.status }}</dd>
+            <dt class="text-sm font-medium text-neutral-500">Status</dt>
+            <dd class="mt-1 text-sm text-neutral-900">{{ post.status }}</dd>
           </div>
         </dl>
         <div class="mt-6">
