@@ -85,6 +85,8 @@ const form = useForm({
 
 const testingConnection = ref<{ [key: string]: boolean }>({});
 const testResults = ref<{ [key: string]: { success: boolean; message: string } }>({});
+const createPathLoading = ref<boolean>(false);
+const createPathResult = ref<{ success: boolean; message: string } | null>(null);
 
 const submit = () => {
     form.put('/admin/settings/content-storage', {
@@ -144,12 +146,44 @@ const testConnection = async (driver: string) => {
     }
 };
 
+const createLocalPath = async () => {
+    // Assumption: backend exposes POST /admin/settings/content-storage/create-path
+    // with payload { base_path: string }
+    if (!form.local_base_path || form.local_base_path.trim().length === 0) {
+        createPathResult.value = { success: false, message: 'Please provide a base path' };
+        return;
+    }
+
+    createPathLoading.value = true;
+    createPathResult.value = null;
+
+    try {
+        const response = await axios.post('/admin/settings/content-storage/create-path', {
+            base_path: form.local_base_path,
+        });
+
+        createPathResult.value = {
+            success: response.data.success ?? true,
+            message: response.data.message ?? 'Path created successfully',
+        };
+    } catch (err: any) {
+        createPathResult.value = {
+            success: false,
+            message: err.response?.data?.message || 'Failed to create path',
+        };
+    } finally {
+        createPathLoading.value = false;
+    }
+};
+
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Settings',
+        label: 'Settings',
+        href: '/admin/settings',
     },
     {
-        title: 'Content Storage',
+        label: 'Content Storage',
+        href: '/admin/settings/content-storage',
     },
 ];
 
@@ -307,12 +341,12 @@ const showSection = ref<string>('drivers');
                                         :key="driver.value"
                                         :value="driver.value"
                                     >
-                                        <div>
+                                        <template #default>
                                             <div class="font-medium">{{ driver.label }}</div>
-                                            <div class="text-xs text-neutral-500">
-                                                {{ driver.description }}
-                                            </div>
-                                        </div>
+                                        </template>
+                                        <template #description>
+                                            {{ driver.description }}
+                                        </template>
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
@@ -342,12 +376,12 @@ const showSection = ref<string>('drivers');
                                         :key="driver.value"
                                         :value="driver.value"
                                     >
-                                        <div>
+                                        <template #default>
                                             <div class="font-medium">{{ driver.label }}</div>
-                                            <div class="text-xs text-neutral-500">
-                                                {{ driver.description }}
-                                            </div>
-                                        </div>
+                                        </template>
+                                        <template #description>
+                                            {{ driver.description }}
+                                        </template>
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
@@ -375,18 +409,29 @@ const showSection = ref<string>('drivers');
                             >
                                 Base Path
                             </label>
-                            <div class="mt-1">
+                            <div class="mt-1 flex items-start gap-2">
                                 <Input
                                     id="local_base_path"
                                     v-model="form.local_base_path"
                                     type="text"
                                     placeholder="e.g., content"
-                                    class="block w-full"
+                                    class="py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
+                                <Button
+                                    type="button"
+                                    variant="default"
+                                    :disabled="createPathLoading || form.processing"
+                                    @click="createLocalPath"
+                                >
+                                    <Icon v-if="createPathLoading" icon="svg-spinners:ring-resize" class="mr-2 h-4 w-4" />
+                                    {{ createPathLoading ? 'Creating...' : 'Create Path' }}
+                                </Button>
                             </div>
-                            <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-                                Optional base path within storage/content directory
-                            </p>
+                            <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">Optional base path within storage/content directory</p>
+
+                            <div v-if="createPathResult" :class="['mt-2 rounded-md p-3', createPathResult.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800']">
+                                {{ createPathResult.message }}
+                            </div>
                         </div>
 
                         <div>
@@ -440,7 +485,7 @@ const showSection = ref<string>('drivers');
                                     id="s3_key"
                                     v-model="form.s3_key"
                                     type="text"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
 
@@ -455,7 +500,7 @@ const showSection = ref<string>('drivers');
                                     id="s3_secret"
                                     v-model="form.s3_secret"
                                     type="password"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -473,7 +518,7 @@ const showSection = ref<string>('drivers');
                                     v-model="form.s3_region"
                                     type="text"
                                     placeholder="us-east-1"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
 
@@ -488,7 +533,7 @@ const showSection = ref<string>('drivers');
                                     id="s3_bucket"
                                     v-model="form.s3_bucket"
                                     type="text"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -505,7 +550,7 @@ const showSection = ref<string>('drivers');
                                 v-model="form.s3_prefix"
                                 type="text"
                                 placeholder="e.g., content"
-                                class="mt-1 block w-full"
+                                class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                             />
                         </div>
 
@@ -559,7 +604,7 @@ const showSection = ref<string>('drivers');
                                 id="github_token"
                                 v-model="form.github_token"
                                 type="password"
-                                class="mt-1 block w-full"
+                                class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                             />
                             <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
                                 Generate a token with repo permissions at github.com/settings/tokens
@@ -579,7 +624,7 @@ const showSection = ref<string>('drivers');
                                     v-model="form.github_owner"
                                     type="text"
                                     placeholder="username or org"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
 
@@ -595,7 +640,7 @@ const showSection = ref<string>('drivers');
                                     v-model="form.github_repo"
                                     type="text"
                                     placeholder="my-content"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -613,7 +658,7 @@ const showSection = ref<string>('drivers');
                                     v-model="form.github_branch"
                                     type="text"
                                     placeholder="main"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
 
@@ -629,7 +674,7 @@ const showSection = ref<string>('drivers');
                                     v-model="form.github_base_path"
                                     type="text"
                                     placeholder="e.g., content"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -685,7 +730,7 @@ const showSection = ref<string>('drivers');
                                     id="azure_account_name"
                                     v-model="form.azure_account_name"
                                     type="text"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
 
@@ -700,7 +745,7 @@ const showSection = ref<string>('drivers');
                                     id="azure_account_key"
                                     v-model="form.azure_account_key"
                                     type="password"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -717,7 +762,7 @@ const showSection = ref<string>('drivers');
                                     id="azure_container"
                                     v-model="form.azure_container"
                                     type="text"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
 
@@ -733,7 +778,7 @@ const showSection = ref<string>('drivers');
                                     v-model="form.azure_prefix"
                                     type="text"
                                     placeholder="e.g., content"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -789,7 +834,7 @@ const showSection = ref<string>('drivers');
                                     id="gcs_project_id"
                                     v-model="form.gcs_project_id"
                                     type="text"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
 
@@ -804,7 +849,7 @@ const showSection = ref<string>('drivers');
                                     id="gcs_bucket"
                                     v-model="form.gcs_bucket"
                                     type="text"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -822,7 +867,7 @@ const showSection = ref<string>('drivers');
                                     v-model="form.gcs_key_file_path"
                                     type="text"
                                     placeholder="/path/to/service-account.json"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                                 <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
                                     Absolute path to your GCS service account JSON key file
@@ -841,7 +886,7 @@ const showSection = ref<string>('drivers');
                                     v-model="form.gcs_prefix"
                                     type="text"
                                     placeholder="e.g., content"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
                         </div>

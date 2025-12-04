@@ -85,9 +85,9 @@ const scanThemes = () => {
 <template>
     <AppLayout
         :breadcrumbs="[
-            { title: 'Dashboard', href: '/admin/dashboard' },
-            { title: 'Appearance' },
-            { title: 'Themes' },
+            { label: 'Dashboard', href: '/admin/dashboard' },
+            { label: 'Appearance' },
+            { label: 'Themes' },
         ]"
     >
         <div class="space-y-6 p-6">

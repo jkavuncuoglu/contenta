@@ -5,6 +5,7 @@ import type { BreadcrumbItem, Permission, Role } from '@/types';
 import { Icon } from '@iconify/vue';
 import { Head, router } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+import { ucWords } from '@/lib/utils';
 
 interface Props {
     roles: Role[];
@@ -13,8 +14,8 @@ interface Props {
 const props = defineProps<Props>();
 
 const breadcrumbItems: BreadcrumbItem[] = [
-    { title: 'Settings', href: '/admin/settings/site' },
-    { title: 'Permissions', href: '/admin/settings/permissions' },
+    { label: 'Settings', href: '/admin/settings/site' },
+    { label: 'Permissions', href: '/admin/settings/permissions' },
 ];
 
 // Local copies
@@ -328,7 +329,7 @@ const confirmDelete = (role: Role) => {
                                 :disabled="
                                     roleForm.name === 'super-admin' && isEditing
                                 "
-                                class="w-full rounded-md border-neutral-300 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
+                                class="w-full rounded-md px-3 py-2 border-neutral-300 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
                                 placeholder="e.g. editor"
                                 required
                             />
@@ -336,7 +337,7 @@ const confirmDelete = (role: Role) => {
                                 v-if="formErrors.name"
                                 class="mt-1 text-xs text-red-600"
                             >
-                                {{ formErrors.name[0] }}
+                                {{ ucWords(formErrors.name[0]) }}
                             </p>
                         </div>
                         <div>
@@ -436,10 +437,10 @@ const confirmDelete = (role: Role) => {
                                                 "
                                             />
                                             <span>{{
-                                                perm.name
+                                                ucWords(perm.name
                                                     .split('.')
                                                     .slice(1)
-                                                    .join(' ') || perm.name
+                                                    .join(' ') || perm.name)
                                             }}</span>
                                         </label>
                                     </div>

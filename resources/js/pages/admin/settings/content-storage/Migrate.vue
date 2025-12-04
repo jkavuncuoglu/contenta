@@ -202,13 +202,16 @@ onUnmounted(() => {
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Settings',
+        label: 'Settings',
+        href: '/admin/settings'
     },
     {
-        title: 'Content Storage',
+        label: 'Content Storage',
+        href: '/admin/settings/content-storage'
     },
     {
-        title: 'Migrate',
+        label: 'Migrate',
+        href: '#'
     },
 ];
 </script>
@@ -359,8 +362,15 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                             v-for="driver in availableDrivers"
                                             :key="driver.value"
                                             :value="driver.value"
+                                            class="dark:hover:bg-neutral-700 hover:bg-neutral-100"
+                                            :class="{'bg-neutral-100': driver.value === toDriver}"
                                         >
-                                            {{ driver.label }}
+                                            <template #default>
+                                                {{ driver.label }}
+                                            </template>
+                                            <template #description>
+                                                {{ driver.description }}
+                                            </template>
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -381,7 +391,12 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                             :key="driver.value"
                                             :value="driver.value"
                                         >
-                                            {{ driver.label }}
+                                            <template #default>
+                                                {{ driver.label }}
+                                            </template>
+                                            <template #description>
+                                                {{ driver.description }}
+                                            </template>
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>

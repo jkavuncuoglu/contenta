@@ -30,4 +30,10 @@ return [
 
     // Plugins Domain
     App\Domains\Plugins\PluginServiceProvider::class,
+
+    // Social Media Domain
+    App\Domains\SocialMedia\SocialMediaServiceProvider::class,
+
+    // Calendar Domain
+    App\Domains\Calendar\CalendarServiceProvider::class,
 ];

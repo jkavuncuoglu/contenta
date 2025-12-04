@@ -24,7 +24,7 @@ const props = defineProps<Props>();
 const id = props.id ?? '';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Users', href: '/admin/users' },
-    { title: `Edit User #${id}` },
+    { label: 'Users', href: '/admin/users' },
+    { label: `Edit User #${id}` },
 ];
 </script>

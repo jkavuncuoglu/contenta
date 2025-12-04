@@ -20,14 +20,22 @@
                         href="/admin/posts"
                         class="inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
                     >
-                        <Icon name="list-bullet" class="mr-2 h-4 w-4" />
+                        <Icon
+                            name="List View"
+                            icon="material-symbols-light:format-list-bulleted"
+                            class="mr-2 h-5 w-5"
+                        />
                         List View
                     </Link>
                     <Link
                         href="/admin/posts/create"
                         class="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
                     >
-                        <Icon name="plus" class="mr-2 h-4 w-4" />
+                        <Icon
+                            name="Create New Post"
+                            icon="material-symbols-light:post-add"
+                            class="mr-2 h-5 w-5"
+                        />
                         New Post
                     </Link>
                 </div>
@@ -211,15 +219,15 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '@/components/Icon.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from 'vue';
+import { Icon } from '@iconify/vue';
 
 const breadcrumbs = [
-    { title: 'Admin', href: '/admin' },
-    { title: 'Content', href: '/admin/posts' },
-    { title: 'Calendar', href: '/admin/posts/calendar' },
+    { label: 'Admin', href: '/admin' },
+    { label: 'Content', href: '/admin/posts' },
+    { label: 'Calendar', href: '/admin/posts/calendar' },
 ];
 
 interface Post {

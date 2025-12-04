@@ -208,6 +208,6 @@ interface Props {
 defineProps<Props>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Analytics', href: '/admin/analytics' },
+    { label: 'Analytics', href: '/admin/analytics' },
 ];
 </script>

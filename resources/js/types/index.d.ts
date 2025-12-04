@@ -6,7 +6,7 @@ export interface Auth {
 }
 
 export interface BreadcrumbItem {
-    title: string;
+    label: string;
     href: string;
 }
 

@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\File;
 
 class ContentStorageSettingsController extends Controller
 {
@@ -200,6 +201,38 @@ class ContentStorageSettingsController extends Controller
         $driver = $request->input('driver');
         $config = $request->input('config', []);
 
+        // If testing local driver, ensure the content disk root exists and any base_path provided
+        if ($driver === 'local') {
+            // Use storage_path('content') to match the 'content' disk
+            $contentRoot = storage_path('content');
+            if (! File::exists($contentRoot)) {
+                try {
+                    File::makeDirectory($contentRoot, 0755, true);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to prepare local storage directory: ' . $e->getMessage(),
+                    ], 500);
+                }
+            }
+
+            // If a base_path was provided in config, ensure it exists under the content root
+            if (! empty($config['base_path'])) {
+                $sub = ltrim((string) $config['base_path'], '/\\');
+                $subPath = $contentRoot . DIRECTORY_SEPARATOR . $sub;
+                if (! File::exists($subPath)) {
+                    try {
+                        File::makeDirectory($subPath, 0755, true);
+                    } catch (\Exception $e) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Failed to prepare local base path: ' . $e->getMessage(),
+                        ], 500);
+                    }
+                }
+            }
+        }
+
         try {
             $success = $this->storageManager->testDriver($driver, $config);
 
@@ -214,6 +247,58 @@ class ContentStorageSettingsController extends Controller
                 'success' => false,
                 'message' => "Connection failed: {$e->getMessage()}",
             ], 400);
+        }
+    }
+
+    /**
+     * Create a local base path under storage/app/content
+     */
+    public function createPath(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $request->validate([
+            'base_path' => 'required|string|max:255',
+        ]);
+
+        $base = trim((string) $request->input('base_path'));
+
+        // Prevent directory traversal
+        if (str_contains($base, '..')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid path',
+            ], 400);
+        }
+
+        // Normalize and ensure no leading slash
+        $base = ltrim($base, '/\\');
+
+        // Use the same base path as the 'content' filesystem disk (storage_path('content'))
+        $storageBase = storage_path('content');
+        $fullPath = $storageBase . DIRECTORY_SEPARATOR . $base;
+
+        try {
+            if (! File::exists($storageBase)) {
+                File::makeDirectory($storageBase, 0755, true);
+            }
+
+            if (File::exists($fullPath)) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Path already exists',
+                ]);
+            }
+
+            File::makeDirectory($fullPath, 0755, true);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Path created successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create path: ' . $e->getMessage(),
+            ], 500);
         }
     }
 }

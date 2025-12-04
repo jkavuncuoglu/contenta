@@ -7,7 +7,7 @@ import HeadingSmall from '@/components/HeadingSmall.vue';
 import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/layouts/AppLayout.vue';
-import { ucwords } from '@/app';
+import { ucWords } from '@/lib/utils';
 
 interface Settings {
     [key: string]: {
@@ -64,11 +64,11 @@ const submit = () => {
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Settings',
+        label: 'Settings',
         href: '/admin'
     },
     {
-        title: 'Site',
+        label: 'Site',
         href: '/admin/settings/site'
     },
 ];
@@ -303,7 +303,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                                         :key="value"
                                         :value="value"
                                     >
-                                        {{ ucwords(label) }}
+                                        {{ ucWords(label) }}
                                     </option>
                                 </select>
                             </div>

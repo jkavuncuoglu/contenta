@@ -16,7 +16,7 @@ import type { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Analytics', href: '/admin/analytics' },
-    { title: 'Reports' },
+    { label: 'Analytics', href: '/admin/analytics' },
+    { label: 'Reports' },
 ];
 </script>

@@ -37,7 +37,7 @@
                             v-model="filters.search"
                             type="text"
                             placeholder="Search tags..."
-                            class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700"
+                            class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                             @input="debouncedSearch"
                         />
                     </div>
@@ -51,7 +51,7 @@
                         <select
                             id="popular"
                             v-model="filters.popular"
-                            class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700"
+                            class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                             @change="handleFilterChange"
                         >
                             <option value="">All Tags</option>
@@ -69,7 +69,7 @@
                         <select
                             id="sort"
                             v-model="filters.sort_by"
-                            class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:border-neutral-600 dark:bg-neutral-700"
+                            class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                             @change="handleFilterChange"
                         >
                             <option value="name">Name</option>

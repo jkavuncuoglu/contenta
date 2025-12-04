@@ -8,10 +8,10 @@ import AppLayout from '@/layouts/AppLayout.vue';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Settings',
+        label: 'Settings',
     },
     {
-        title: 'Site',
+        label: 'Site',
     },
 ];
 </script>
