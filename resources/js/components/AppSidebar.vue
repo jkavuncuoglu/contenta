@@ -30,20 +30,20 @@ const mainNavItems: NavItem[] = [
         icon: 'material-symbols-light:bar-chart',
     },
     {
+        title: 'Calendar',
+        href: '/admin/calendar',
+        icon: 'material-symbols-light:calendar-month',
+    },
+    {
         title: 'Pages',
         href: pages.index().url,
         icon: 'material-symbols-light:view-quilt',
     },
     {
         title: 'Blog',
-        href: posts.calendar().url,
+        href: posts.index().url,
         icon: 'material-symbols-light:insert-text',
         children: [
-            {
-                title: 'Calendar',
-                href: posts.calendar().url,
-                icon: 'material-symbols-light:add-circle',
-            },
             {
                 title: 'Manage Posts',
                 href: posts.index().url,

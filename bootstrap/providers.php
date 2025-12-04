@@ -33,4 +33,7 @@ return [
 
     // Social Media Domain
     App\Domains\SocialMedia\SocialMediaServiceProvider::class,
+
+    // Calendar Domain
+    App\Domains\Calendar\CalendarServiceProvider::class,
 ];
