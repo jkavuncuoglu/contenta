@@ -78,7 +78,7 @@ const conflictCount = computed(() => props.conflicts.length)
                       }}
                     </span>
                   </div>
-                  <p class="mt-1 text-sm text-gray-700">{{ conflict.contentPreview }}</p>
+                  <p class="mt-1 text-sm text-neutral-700">{{ conflict.contentPreview }}</p>
                 </div>
                 <a
                   :href="`/admin/social-media/posts/${conflict.id}/edit`"

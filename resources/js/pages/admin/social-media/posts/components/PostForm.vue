@@ -61,7 +61,7 @@ const isOverLimit = computed(() => characterCount.value > characterLimit.value)
 const characterCountColor = computed(() => {
   if (isOverLimit.value) return 'text-red-600'
   if (characterCount.value > characterLimit.value * 0.9) return 'text-yellow-600'
-  return 'text-gray-500'
+  return 'text-neutral-500'
 })
 
 const newMediaUrl = ref('')
@@ -113,11 +113,11 @@ watch(
 <template>
   <div class="space-y-6">
     <!-- Account Selection -->
-    <div class="rounded-lg border border-gray-200 bg-white p-6">
-      <label class="block text-sm font-medium text-gray-700">Platform Account</label>
+    <div class="rounded-lg border border-neutral-200 bg-white p-6">
+      <label class="block text-sm font-medium text-neutral-700">Platform Account</label>
       <select
         v-model="localForm.social_account_id"
-        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         required
       >
         <option v-for="account in accounts" :key="account.id" :value="account.id">
@@ -125,15 +125,15 @@ watch(
           @{{ account.platform_username }}
         </option>
       </select>
-      <p class="mt-1 text-sm text-gray-500">
+      <p class="mt-1 text-sm text-neutral-500">
         Select which social media account to post to.
       </p>
     </div>
 
     <!-- Content -->
-    <div class="rounded-lg border border-gray-200 bg-white p-6">
+    <div class="rounded-lg border border-neutral-200 bg-white p-6">
       <div class="flex items-center justify-between">
-        <label class="block text-sm font-medium text-gray-700">Post Content</label>
+        <label class="block text-sm font-medium text-neutral-700">Post Content</label>
         <span :class="['text-sm font-medium', characterCountColor]">
           {{ characterCount }} / {{ characterLimit }}
         </span>
@@ -141,7 +141,7 @@ watch(
       <textarea
         v-model="localForm.content"
         rows="6"
-        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         :class="{ 'border-red-300 focus:border-red-500 focus:ring-red-500': isOverLimit }"
         placeholder="What do you want to share?"
         required
@@ -149,15 +149,15 @@ watch(
       <p v-if="isOverLimit" class="mt-1 text-sm text-red-600">
         Content exceeds the character limit for {{ selectedPlatformConfig?.name }}.
       </p>
-      <p v-else class="mt-1 text-sm text-gray-500">
+      <p v-else class="mt-1 text-sm text-neutral-500">
         Write your post content. Keep it within the character limit for your selected platform.
       </p>
     </div>
 
     <!-- Media URLs -->
-    <div class="rounded-lg border border-gray-200 bg-white p-6">
-      <label class="block text-sm font-medium text-gray-700">Media Attachments (Optional)</label>
-      <p class="mt-1 text-sm text-gray-500">
+    <div class="rounded-lg border border-neutral-200 bg-white p-6">
+      <label class="block text-sm font-medium text-neutral-700">Media Attachments (Optional)</label>
+      <p class="mt-1 text-sm text-neutral-500">
         Add up to {{ selectedPlatformConfig?.mediaLimit || 10 }} media URLs (images or videos).
       </p>
 
@@ -171,7 +171,7 @@ watch(
             :value="url"
             type="url"
             disabled
-            class="block flex-1 rounded-md border-gray-300 bg-gray-50 text-sm"
+            class="block flex-1 rounded-md border-neutral-300 bg-neutral-50 text-sm"
           />
           <button
             type="button"
@@ -187,7 +187,7 @@ watch(
             v-model="newMediaUrl"
             type="url"
             placeholder="https://example.com/image.jpg"
-            class="block flex-1 rounded-md border-gray-300 text-sm focus:border-blue-500 focus:ring-blue-500"
+            class="block flex-1 rounded-md border-neutral-300 text-sm focus:border-blue-500 focus:ring-blue-500"
             @keyup.enter="addMediaUrl"
           />
           <button
@@ -202,28 +202,28 @@ watch(
     </div>
 
     <!-- Link URL -->
-    <div class="rounded-lg border border-gray-200 bg-white p-6">
-      <label class="block text-sm font-medium text-gray-700">Link URL (Optional)</label>
+    <div class="rounded-lg border border-neutral-200 bg-white p-6">
+      <label class="block text-sm font-medium text-neutral-700">Link URL (Optional)</label>
       <input
         v-model="localForm.link_url"
         type="url"
-        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         placeholder="https://example.com"
       />
-      <p class="mt-1 text-sm text-gray-500">
+      <p class="mt-1 text-sm text-neutral-500">
         Add a link to include in your post.
       </p>
     </div>
 
     <!-- Scheduling -->
-    <div class="rounded-lg border border-gray-200 bg-white p-6">
-      <label class="block text-sm font-medium text-gray-700">Schedule (Optional)</label>
+    <div class="rounded-lg border border-neutral-200 bg-white p-6">
+      <label class="block text-sm font-medium text-neutral-700">Schedule (Optional)</label>
       <input
         v-model="localForm.scheduled_at"
         type="datetime-local"
-        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
       />
-      <p class="mt-1 text-sm text-gray-500">
+      <p class="mt-1 text-sm text-neutral-500">
         Leave empty to save as draft or publish immediately. Set a future date/time to schedule.
       </p>
 
@@ -234,7 +234,7 @@ watch(
         class="mt-4"
       />
 
-      <div v-if="checkingConflicts" class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+      <div v-if="checkingConflicts" class="mt-4 flex items-center gap-2 text-sm text-neutral-500">
         <Icon icon="mdi:loading" class="h-4 w-4 animate-spin" />
         <span>Checking for conflicts...</span>
       </div>

@@ -53,7 +53,7 @@ const handlePublishNow = () => {
       <!-- Header -->
       <div>
         <h1 class="text-3xl font-bold tracking-tight">Create Social Media Post</h1>
-        <p class="mt-2 text-sm text-gray-600">
+        <p class="mt-2 text-sm text-neutral-600">
           Compose a new post and publish it immediately or schedule it for later.
         </p>
       </div>
@@ -87,10 +87,10 @@ const handlePublishNow = () => {
         <PostForm v-model:form="form" :accounts="accounts" />
 
         <!-- Actions -->
-        <div class="mt-6 flex items-center justify-between rounded-lg border border-gray-200 bg-white p-6">
+        <div class="mt-6 flex items-center justify-between rounded-lg border border-neutral-200 bg-white p-6">
           <a
             href="/admin/social-media/posts"
-            class="text-sm font-medium text-gray-600 hover:text-gray-900"
+            class="text-sm font-medium text-neutral-600 hover:text-neutral-900"
           >
             Cancel
           </a>
@@ -98,7 +98,7 @@ const handlePublishNow = () => {
             <button
               type="button"
               :disabled="form.processing"
-              class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+              class="rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm transition-colors hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
               @click="handleSaveDraft"
             >
               Save as Draft

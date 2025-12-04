@@ -138,7 +138,7 @@ onMounted(() => {
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-3xl font-bold tracking-tight">Content Calendar</h1>
-          <p class="mt-2 text-sm text-gray-600">
+          <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
             View all your blog posts and social media posts in one unified calendar.
           </p>
         </div>
@@ -150,7 +150,7 @@ onMounted(() => {
               'rounded-md px-4 py-2 text-sm font-medium transition-colors',
               viewMode === 'month'
                 ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                : 'bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border border-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-700'
             ]"
             @click="viewMode = 'month'"
           >
@@ -162,7 +162,7 @@ onMounted(() => {
               'rounded-md px-4 py-2 text-sm font-medium transition-colors',
               viewMode === 'list'
                 ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                : 'bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-50 border border-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800'
             ]"
             @click="viewMode = 'list'"
           >
@@ -173,36 +173,36 @@ onMounted(() => {
       </div>
 
       <!-- Filters -->
-      <div class="rounded-lg border border-gray-200 bg-white p-4">
+      <div class="rounded-lg border border-neutral-200 bg-white  dark:bg-neutral-900 p-4">
         <div class="grid gap-4 md:grid-cols-5">
           <!-- Content Type Filters -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-medium text-gray-700">Content Type</label>
+            <label class="text-sm font-medium text-neutral-700 dark:text-neutral-50">Content Type</label>
             <label class="flex items-center gap-2">
               <input
                 v-model="filters.showBlog"
                 type="checkbox"
-                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                class="rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
               />
-              <span class="text-sm text-gray-700">Blog Posts</span>
+              <span class="text-sm text-neutral-700 dark:text-neutral-50">Blog Posts</span>
             </label>
             <label class="flex items-center gap-2">
               <input
                 v-model="filters.showSocial"
                 type="checkbox"
-                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                class="rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
               />
-              <span class="text-sm text-gray-700">Social Posts</span>
+              <span class="text-sm text-neutral-700 dark:text-neutral-50">Social Posts</span>
             </label>
           </div>
 
           <!-- Platform Filter -->
           <div>
-            <label class="block text-sm font-medium text-gray-700">Platform</label>
+            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-50">Platform</label>
             <select
               v-model="filters.platform"
               :disabled="!filters.showSocial"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+              class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
             >
               <option v-for="platform in platforms" :key="platform.value" :value="platform.value">
                 {{ platform.label }}
@@ -212,10 +212,10 @@ onMounted(() => {
 
           <!-- Status Filter -->
           <div>
-            <label class="block text-sm font-medium text-gray-700">Status</label>
+            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-50">Status</label>
             <select
               v-model="filters.status"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              class="mt-1 py-2 px-3 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
             >
               <option v-for="status in statuses" :key="status.value" :value="status.value">
                 {{ status.label }}
@@ -227,7 +227,7 @@ onMounted(() => {
           <div class="md:col-span-2 flex items-end gap-2">
             <button
               type="button"
-              class="flex-1 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              class="flex-1 rounded-md border border-neutral-300 bg-white dark:bg-neutral-900 px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-50 hover:bg-neutral-50 dark:hover:bg-neutral-700"
               @click="previousMonth"
             >
               <Icon icon="material-symbols-light:chevron-left" class="inline h-5 w-5" />
@@ -235,14 +235,14 @@ onMounted(() => {
             </button>
             <button
               type="button"
-              class="flex-1 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              class="flex-1 rounded-md border border-neutral-300 bg-white dark:bg-neutral-900 px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-50 hover:bg-neutral-50 dark:hover:bg-neutral-700"
               @click="goToToday"
             >
               Today
             </button>
             <button
               type="button"
-              class="flex-1 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              class="flex-1 rounded-md border border-neutral-300 bg-white dark:bg-neutral-900 px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-50 hover:bg-neutral-50 dark:hover:bg-neutral-700"
               @click="nextMonth"
             >
               Next
@@ -254,13 +254,13 @@ onMounted(() => {
 
       <!-- Current Month/Year -->
       <div class="text-center">
-        <h2 class="text-2xl font-bold text-gray-900">{{ formatMonthYear(currentDate) }}</h2>
+        <h2 class="text-2xl font-bold text-neutral-900">{{ formatMonthYear(currentDate) }}</h2>
       </div>
 
       <!-- Loading State -->
       <div v-if="loading" class="flex items-center justify-center py-12">
         <Icon icon="mdi:loading" class="h-8 w-8 animate-spin text-blue-600" />
-        <span class="ml-2 text-gray-600">Loading events...</span>
+        <span class="ml-2 text-neutral-600">Loading events...</span>
       </div>
 
       <!-- Calendar View -->
@@ -274,11 +274,11 @@ onMounted(() => {
       <!-- Empty State -->
       <div
         v-if="!loading && events.length === 0"
-        class="rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center"
+        class="rounded-lg border-2 border-dashed border-neutral-300 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-900 p-12 text-center"
       >
-        <Icon icon="material-symbols-light:calendar-month" class="mx-auto h-12 w-12 text-gray-400" />
-        <h3 class="mt-2 text-sm font-semibold text-gray-900">No events found</h3>
-        <p class="mt-1 text-sm text-gray-500">
+        <Icon icon="material-symbols-light:calendar-month" class="mx-auto h-12 w-12 text-neutral-400" />
+        <h3 class="mt-2 text-sm font-semibold text-neutral-900">No events found</h3>
+        <p class="mt-1 text-sm text-neutral-500">
           Try adjusting your filters or selecting a different month.
         </p>
       </div>

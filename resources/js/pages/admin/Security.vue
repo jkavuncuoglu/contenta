@@ -201,7 +201,7 @@
                                     id="p-2 hcaptcha-secret-key"
                                     v-model="settings.hcaptcha_secret_key"
                                     type="password"
-                                    class="dark:bg_GRAY-700 mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:text-white"
+                                    class="dark:bg_neutral-700 mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-neutral-600 dark:text-white"
                                     placeholder="0x0000000000000000000000000000000000000000"
                                 />
                             </div>

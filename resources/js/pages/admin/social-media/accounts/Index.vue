@@ -47,17 +47,17 @@ const availablePlatforms = platforms.filter((p) => !connectedPlatforms.has(p.key
       <!-- Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-3xl font-bold tracking-tight">Social Media Accounts</h1>
-          <p class="mt-2 text-sm text-gray-600">
+          <h1 class="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white">Social Media Accounts</h1>
+          <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
             Manage connected social media accounts for auto-posting and scheduling.
           </p>
         </div>
       </div>
 
       <!-- Connect New Account Section -->
-      <div v-if="availablePlatforms.length > 0" class="rounded-lg border border-gray-200 bg-white p-6">
-        <h2 class="text-lg font-semibold text-gray-900">Connect New Platform</h2>
-        <p class="mt-1 text-sm text-gray-600">
+      <div v-if="availablePlatforms.length > 0" class="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
+        <h2 class="text-lg font-semibold text-neutral-900 dark:text-white">Connect New Platform</h2>
+        <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
           Connect your social media accounts to enable auto-posting and scheduling.
         </p>
         <div class="mt-4 flex flex-wrap gap-3">
@@ -74,7 +74,7 @@ const availablePlatforms = platforms.filter((p) => !connectedPlatforms.has(p.key
 
       <!-- Connected Accounts -->
       <div v-if="accounts.length > 0" class="space-y-4">
-        <h2 class="text-lg font-semibold text-gray-900">Connected Accounts</h2>
+        <h2 class="text-lg font-semibold text-neutral-900 dark:text-white">Connected Accounts</h2>
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <AccountCard v-for="account in accounts" :key="account.id" :account="account" />
         </div>
@@ -83,10 +83,10 @@ const availablePlatforms = platforms.filter((p) => !connectedPlatforms.has(p.key
       <!-- Empty State -->
       <div
         v-if="accounts.length === 0"
-        class="rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center"
+        class="rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-50 p-12 text-center dark:border-neutral-700 dark:bg-neutral-800/50"
       >
         <svg
-          class="mx-auto h-12 w-12 text-gray-400"
+          class="mx-auto h-12 w-12 text-neutral-400 dark:text-neutral-600"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -98,8 +98,8 @@ const availablePlatforms = platforms.filter((p) => !connectedPlatforms.has(p.key
             d="M13 10V3L4 14h7v7l9-11h-7z"
           />
         </svg>
-        <h3 class="mt-2 text-sm font-semibold text-gray-900">No accounts connected</h3>
-        <p class="mt-1 text-sm text-gray-500">
+        <h3 class="mt-2 text-sm font-semibold text-neutral-900 dark:text-white">No accounts connected</h3>
+        <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
           Get started by connecting your first social media account.
         </p>
       </div>

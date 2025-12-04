@@ -41,7 +41,7 @@ const config = computed(
 )
 
 const statusConfig = {
-  draft: { label: 'Draft', color: 'bg-gray-100 text-gray-800' },
+  draft: { label: 'Draft', color: 'bg-neutral-100 text-neutral-800' },
   scheduled: { label: 'Scheduled', color: 'bg-blue-100 text-blue-800' },
   publishing: { label: 'Publishing', color: 'bg-yellow-100 text-yellow-800' },
   published: { label: 'Published', color: 'bg-green-100 text-green-800' },
@@ -111,7 +111,7 @@ const handleDelete = () => {
 </script>
 
 <template>
-  <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+  <div class="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
     <!-- Header -->
     <div class="flex items-start justify-between">
       <div class="flex items-center gap-3">
@@ -122,8 +122,8 @@ const handleDelete = () => {
           <Icon :icon="config.icon" class="h-5 w-5" :style="{ color: config.color }" />
         </div>
         <div>
-          <h3 class="font-semibold text-gray-900">{{ config.name }}</h3>
-          <p class="text-sm text-gray-500">@{{ post.account.platform_username }}</p>
+          <h3 class="font-semibold text-neutral-900">{{ config.name }}</h3>
+          <p class="text-sm text-neutral-500">@{{ post.account.platform_username }}</p>
         </div>
       </div>
 
@@ -136,11 +136,11 @@ const handleDelete = () => {
 
     <!-- Content Preview -->
     <div class="mt-4">
-      <p class="text-sm text-gray-700 whitespace-pre-wrap">{{ contentPreview }}</p>
+      <p class="text-sm text-neutral-700 whitespace-pre-wrap">{{ contentPreview }}</p>
     </div>
 
     <!-- Metadata -->
-    <div class="mt-4 flex flex-wrap gap-4 text-xs text-gray-500">
+    <div class="mt-4 flex flex-wrap gap-4 text-xs text-neutral-500">
       <div v-if="post.scheduled_at" class="flex items-center gap-1">
         <Icon icon="material-symbols-light:schedule" class="h-4 w-4" />
         <span>Scheduled: {{ formattedDate(post.scheduled_at) }}</span>
@@ -189,7 +189,7 @@ const handleDelete = () => {
       <Link
         v-if="canEdit"
         :href="`/admin/social-media/posts/${post.id}/edit`"
-        class="rounded-md bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
+        class="rounded-md bg-neutral-100 px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-200"
       >
         Edit
       </Link>
@@ -212,14 +212,14 @@ const handleDelete = () => {
       <button
         v-if="canCancel"
         type="button"
-        class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+        class="rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
         @click="handleCancel"
       >
         Cancel Schedule
       </button>
       <Link
         :href="`/admin/social-media/posts/${post.id}`"
-        class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+        class="rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
       >
         View Details
       </Link>

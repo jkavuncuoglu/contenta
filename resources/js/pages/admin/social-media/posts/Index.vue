@@ -111,7 +111,7 @@ const hasActiveFilters = computed(() => {
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-3xl font-bold tracking-tight">Social Media Posts</h1>
-          <p class="mt-2 text-sm text-gray-600">
+          <p class="mt-2 text-sm text-neutral-600">
             Create, schedule, and manage posts across all connected platforms.
           </p>
         </div>
@@ -127,13 +127,13 @@ const hasActiveFilters = computed(() => {
       </div>
 
       <!-- Filters -->
-      <div class="rounded-lg border border-gray-200 bg-white p-4">
+      <div class="rounded-lg border border-neutral-200 bg-white p-4">
         <div class="grid gap-4 md:grid-cols-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Status</label>
+            <label class="block text-sm font-medium text-neutral-700">Status</label>
             <select
               v-model="localFilters.status"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               @change="applyFilters"
             >
               <option v-for="status in statuses" :key="status.value" :value="status.value">
@@ -143,10 +143,10 @@ const hasActiveFilters = computed(() => {
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700">Platform</label>
+            <label class="block text-sm font-medium text-neutral-700">Platform</label>
             <select
               v-model="localFilters.platform"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               @change="applyFilters"
             >
               <option v-for="platform in platforms" :key="platform.value" :value="platform.value">
@@ -156,10 +156,10 @@ const hasActiveFilters = computed(() => {
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700">Source</label>
+            <label class="block text-sm font-medium text-neutral-700">Source</label>
             <select
               v-model="localFilters.source_type"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               @change="applyFilters"
             >
               <option v-for="source in sourceTypes" :key="source.value" :value="source.value">
@@ -172,7 +172,7 @@ const hasActiveFilters = computed(() => {
             <button
               v-if="hasActiveFilters"
               type="button"
-              class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+              class="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm hover:bg-neutral-50"
               @click="clearFilters"
             >
               Clear Filters
@@ -189,10 +189,10 @@ const hasActiveFilters = computed(() => {
       <!-- Empty State -->
       <div
         v-else
-        class="rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center"
+        class="rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-50 p-12 text-center"
       >
         <svg
-          class="mx-auto h-12 w-12 text-gray-400"
+          class="mx-auto h-12 w-12 text-neutral-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -204,8 +204,8 @@ const hasActiveFilters = computed(() => {
             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
           />
         </svg>
-        <h3 class="mt-2 text-sm font-semibold text-gray-900">No posts found</h3>
-        <p class="mt-1 text-sm text-gray-500">
+        <h3 class="mt-2 text-sm font-semibold text-neutral-900">No posts found</h3>
+        <p class="mt-1 text-sm text-neutral-500">
           {{ hasActiveFilters ? 'Try adjusting your filters.' : 'Get started by creating your first post.' }}
         </p>
         <div class="mt-6">
@@ -223,26 +223,26 @@ const hasActiveFilters = computed(() => {
       </div>
 
       <!-- Pagination -->
-      <div v-if="posts.last_page > 1" class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+      <div v-if="posts.last_page > 1" class="flex items-center justify-between border-t border-neutral-200 bg-white px-4 py-3 sm:px-6">
         <div class="flex flex-1 justify-between sm:hidden">
           <a
             v-if="posts.current_page > 1"
             :href="`/admin/social-media/posts?page=${posts.current_page - 1}`"
-            class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            class="relative inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
           >
             Previous
           </a>
           <a
             v-if="posts.current_page < posts.last_page"
             :href="`/admin/social-media/posts?page=${posts.current_page + 1}`"
-            class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            class="relative ml-3 inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
           >
             Next
           </a>
         </div>
         <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
           <div>
-            <p class="text-sm text-gray-700">
+            <p class="text-sm text-neutral-700">
               Showing
               <span class="font-medium">{{ (posts.current_page - 1) * posts.per_page + 1 }}</span>
               to
@@ -257,7 +257,7 @@ const hasActiveFilters = computed(() => {
               <a
                 v-if="posts.current_page > 1"
                 :href="`/admin/social-media/posts?page=${posts.current_page - 1}`"
-                class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                class="relative inline-flex items-center rounded-l-md px-2 py-2 text-neutral-400 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50"
               >
                 <span class="sr-only">Previous</span>
                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -271,7 +271,7 @@ const hasActiveFilters = computed(() => {
                 :class="[
                   page === posts.current_page
                     ? 'z-10 bg-blue-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600'
-                    : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50',
+                    : 'text-neutral-900 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50',
                   'relative inline-flex items-center px-4 py-2 text-sm font-semibold'
                 ]"
               >
@@ -280,7 +280,7 @@ const hasActiveFilters = computed(() => {
               <a
                 v-if="posts.current_page < posts.last_page"
                 :href="`/admin/social-media/posts?page=${posts.current_page + 1}`"
-                class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                class="relative inline-flex items-center rounded-r-md px-2 py-2 text-neutral-400 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50"
               >
                 <span class="sr-only">Next</span>
                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
