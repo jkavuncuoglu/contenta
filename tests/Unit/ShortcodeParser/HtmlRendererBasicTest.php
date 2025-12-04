@@ -1,14 +1,14 @@
 <?php
 
-use App\Domains\ContentManagement\Services\ShortcodeParser\Renderer\HtmlRenderer;
 use App\Domains\ContentManagement\Services\ShortcodeParser\Parser\Parser;
+use App\Domains\ContentManagement\Services\ShortcodeParser\Renderer\HtmlRenderer;
 use App\Domains\ContentManagement\Services\ShortcodeParser\Tokenizer\Tokenizer;
 
 test('renders hero block', function () {
     $input = '[#hero title="Welcome" subtitle="Get Started" description="Learn more"][/#hero]';
     $tokens = (new Tokenizer($input))->tokenize();
     $document = (new Parser($tokens))->parse();
-    $renderer = new HtmlRenderer();
+    $renderer = new HtmlRenderer;
     $html = $renderer->render($document);
 
     expect($html)->toContain('Welcome')
@@ -21,7 +21,7 @@ test('renders text block with markdown', function () {
     $input = '[#text]{# Heading\n\nThis is **bold**.}[/#text]';
     $tokens = (new Tokenizer($input))->tokenize();
     $document = (new Parser($tokens))->parse();
-    $renderer = new HtmlRenderer();
+    $renderer = new HtmlRenderer;
     $html = $renderer->render($document);
 
     expect($html)->toContain('<h1')
@@ -34,7 +34,7 @@ test('renders button block', function () {
     $input = '[#button url="/action" variant="primary"]{Click Me}[/#button]';
     $tokens = (new Tokenizer($input))->tokenize();
     $document = (new Parser($tokens))->parse();
-    $renderer = new HtmlRenderer();
+    $renderer = new HtmlRenderer;
     $html = $renderer->render($document);
 
     expect($html)->toContain('<a')
@@ -46,7 +46,7 @@ test('escapes HTML in attributes', function () {
     $input = '[#text className="<script>alert(\'xss\')</script>"][/#text]';
     $tokens = (new Tokenizer($input))->tokenize();
     $document = (new Parser($tokens))->parse();
-    $renderer = new HtmlRenderer();
+    $renderer = new HtmlRenderer;
     $html = $renderer->render($document);
 
     expect($html)->not->toContain('<script>')

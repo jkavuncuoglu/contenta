@@ -39,7 +39,7 @@ abstract class AbstractBlockRenderer implements BlockRendererInterface
     /**
      * Merge attributes with defaults
      *
-     * @param array<string, string> $attributes
+     * @param  array<string, string>  $attributes
      * @return array<string, mixed>
      */
     protected function mergeAttributes(array $attributes): array
@@ -66,7 +66,7 @@ abstract class AbstractBlockRenderer implements BlockRendererInterface
     /**
      * Build HTML tag
      *
-     * @param array<string, string> $attributes
+     * @param  array<string, string>  $attributes
      */
     protected function tag(string $tagName, array $attributes = [], ?string $content = null): string
     {

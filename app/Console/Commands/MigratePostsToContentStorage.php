@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\ContentManagement\ContentStorage\ContentStorageManager;
 use App\Domains\ContentManagement\ContentStorage\ValueObjects\ContentData;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -38,9 +38,10 @@ class MigratePostsToContentStorage extends Command
 
         // Validate storage driver
         $validDrivers = ['s3', 'azure', 'gcs', 'github', 'gitlab', 'bitbucket'];
-        if (!in_array($driver, $validDrivers)) {
+        if (! in_array($driver, $validDrivers)) {
             $this->error("Invalid storage driver: {$driver}");
-            $this->info("Valid drivers: " . implode(', ', $validDrivers));
+            $this->info('Valid drivers: '.implode(', ', $validDrivers));
+
             return self::FAILURE;
         }
 
@@ -51,6 +52,7 @@ class MigratePostsToContentStorage extends Command
 
         if ($totalPosts === 0) {
             $this->info('No posts need migration. All posts are already using cloud storage.');
+
             return self::SUCCESS;
         }
 
@@ -60,8 +62,9 @@ class MigratePostsToContentStorage extends Command
             $this->warn('DRY RUN MODE - No changes will be made');
         }
 
-        if (!$dryRun && !$this->confirm('Do you want to proceed with the migration?')) {
+        if (! $dryRun && ! $this->confirm('Do you want to proceed with the migration?')) {
             $this->info('Migration cancelled.');
+
             return self::SUCCESS;
         }
 
@@ -87,7 +90,7 @@ class MigratePostsToContentStorage extends Command
             ) {
                 foreach ($posts as $post) {
                     try {
-                        if (!$dryRun) {
+                        if (! $dryRun) {
                             DB::beginTransaction();
                         }
 
@@ -101,7 +104,7 @@ class MigratePostsToContentStorage extends Command
                         // Generate storage path
                         $storagePath = $post->generateStoragePath();
 
-                        if (!$dryRun) {
+                        if (! $dryRun) {
                             // Write to new storage backend
                             $storageDriver = $storageManager->driver($driver);
                             $storageDriver->write($storagePath, json_encode([
@@ -127,7 +130,7 @@ class MigratePostsToContentStorage extends Command
                         $migrated++;
 
                     } catch (\Exception $e) {
-                        if (!$dryRun) {
+                        if (! $dryRun) {
                             DB::rollBack();
                         }
 
@@ -153,7 +156,7 @@ class MigratePostsToContentStorage extends Command
         $this->newLine(2);
 
         // Display results
-        $this->info("Migration complete!");
+        $this->info('Migration complete!');
         $this->table(
             ['Metric', 'Count'],
             [
@@ -167,7 +170,7 @@ class MigratePostsToContentStorage extends Command
             $this->error("\n{$failed} posts failed to migrate:");
             $this->table(
                 ['Post ID', 'Title', 'Error'],
-                array_map(fn($error) => [
+                array_map(fn ($error) => [
                     $error['post_id'],
                     \Illuminate\Support\Str::limit($error['title'], 40),
                     \Illuminate\Support\Str::limit($error['error'], 60),
@@ -177,7 +180,7 @@ class MigratePostsToContentStorage extends Command
 
         if ($dryRun) {
             $this->info("\nThis was a dry run. No actual changes were made.");
-            $this->info("Run without --dry-run to perform the migration.");
+            $this->info('Run without --dry-run to perform the migration.');
         }
 
         return $failed > 0 ? self::FAILURE : self::SUCCESS;

@@ -1,10 +1,10 @@
 <?php
 
-use App\Domains\ContentManagement\Services\ShortcodeParser\Parser\Parser;
-use App\Domains\ContentManagement\Services\ShortcodeParser\Tokenizer\Tokenizer;
+use App\Domains\ContentManagement\Services\ShortcodeParser\AST\MarkdownNode;
 use App\Domains\ContentManagement\Services\ShortcodeParser\AST\ShortcodeNode;
 use App\Domains\ContentManagement\Services\ShortcodeParser\AST\TextNode;
-use App\Domains\ContentManagement\Services\ShortcodeParser\AST\MarkdownNode;
+use App\Domains\ContentManagement\Services\ShortcodeParser\Parser\Parser;
+use App\Domains\ContentManagement\Services\ShortcodeParser\Tokenizer\Tokenizer;
 
 test('parses shortcode with text content', function () {
     $input = '[#text]{Hello World}[/#text]';
@@ -52,6 +52,6 @@ test('validates mismatched tags', function () {
     $tokens = (new Tokenizer($input))->tokenize();
     $parser = new Parser($tokens);
 
-    expect(fn() => $parser->parse())
+    expect(fn () => $parser->parse())
         ->toThrow(Exception::class);
 });

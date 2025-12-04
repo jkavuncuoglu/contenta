@@ -21,7 +21,7 @@ test('handles escaped quotes in attribute values', function () {
     $tokenizer = new Tokenizer($input);
     $tokens = $tokenizer->tokenize();
 
-    $valueTokens = array_filter($tokens, fn($t) => $t->type === TokenType::ATTRIBUTE_VALUE);
+    $valueTokens = array_filter($tokens, fn ($t) => $t->type === TokenType::ATTRIBUTE_VALUE);
     $firstValue = reset($valueTokens);
 
     expect($firstValue->value)->toBe('He said "Hello"');
@@ -32,7 +32,7 @@ test('handles multiple quote styles', function () {
     $tokenizer = new Tokenizer($input);
     $tokens = $tokenizer->tokenize();
 
-    $valueTokens = array_filter($tokens, fn($t) => $t->type === TokenType::ATTRIBUTE_VALUE);
+    $valueTokens = array_filter($tokens, fn ($t) => $t->type === TokenType::ATTRIBUTE_VALUE);
 
     expect(count($valueTokens))->toBe(2);
 });
@@ -42,8 +42,8 @@ test('handles attributes with special characters', function () {
     $tokenizer = new Tokenizer($input);
     $tokens = $tokenizer->tokenize();
 
-    $attrNames = array_filter($tokens, fn($t) => $t->type === TokenType::ATTRIBUTE_NAME);
-    $names = array_map(fn($t) => $t->value, $attrNames);
+    $attrNames = array_filter($tokens, fn ($t) => $t->type === TokenType::ATTRIBUTE_NAME);
+    $names = array_map(fn ($t) => $t->value, $attrNames);
 
     expect($names)->toContain('data-value')
         ->and($names)->toContain('my_attribute');

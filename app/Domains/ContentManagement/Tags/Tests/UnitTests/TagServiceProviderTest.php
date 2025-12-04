@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class TagServiceProviderTest extends TestCase
 {
-    
     public function test_it_registers_tag_service_contract(): void
     {
         // Act
@@ -19,7 +18,6 @@ class TagServiceProviderTest extends TestCase
         // Assert
         $this->assertInstanceOf(TagService::class, $service);
     }
-
 
     public function test_it_loads_migrations(): void
     {

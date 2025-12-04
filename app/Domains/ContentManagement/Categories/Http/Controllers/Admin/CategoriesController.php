@@ -2,8 +2,8 @@
 
 namespace App\Domains\ContentManagement\Categories\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Domains\ContentManagement\Categories\Models\Category;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -84,7 +84,7 @@ class CategoriesController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $id,
+            'slug' => 'nullable|string|max:255|unique:categories,slug,'.$id,
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id',
             'sort_order' => 'nullable|integer',

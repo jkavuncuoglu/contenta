@@ -15,7 +15,7 @@ class DocumentNode extends Node
     }
 
     /**
-     * @param array<string, mixed> $metadata
+     * @param  array<string, mixed>  $metadata
      */
     public function setMetadata(array $metadata): void
     {

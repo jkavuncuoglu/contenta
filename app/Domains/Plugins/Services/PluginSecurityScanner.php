@@ -83,7 +83,7 @@ class PluginSecurityScanner
         $warnings = [];
         $scannedFiles = 0;
 
-        if (!is_dir($pluginPath)) {
+        if (! is_dir($pluginPath)) {
             return [
                 'safe' => false,
                 'threats' => [['file' => '', 'line' => 0, 'issue' => 'Plugin directory not found', 'code' => '']],
@@ -113,7 +113,7 @@ class PluginSecurityScanner
 
             // Check for dangerous functions
             foreach ($this->dangerousFunctions as $function) {
-                if (preg_match('/\b' . preg_quote($function, '/') . '\s*\(/i', $content, $matches, PREG_OFFSET_CAPTURE)) {
+                if (preg_match('/\b'.preg_quote($function, '/').'\s*\(/i', $content, $matches, PREG_OFFSET_CAPTURE)) {
                     $lineNumber = $this->getLineNumber($content, $matches[0][1]);
                     $threats[] = [
                         'file' => $this->getRelativePath($pluginPath, $filePath),
@@ -173,6 +173,6 @@ class PluginSecurityScanner
      */
     private function getRelativePath(string $basePath, string $fullPath): string
     {
-        return str_replace($basePath . '/', '', $fullPath);
+        return str_replace($basePath.'/', '', $fullPath);
     }
 }

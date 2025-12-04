@@ -19,14 +19,14 @@ interface PostServiceContract
     /**
      * Create a new post
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function createPost(array $data): Post;
 
     /**
      * Update a post
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function updatePost(Post $post, array $data): Post;
 
@@ -77,14 +77,14 @@ interface PostServiceContract
     /**
      * Attach categories to post
      *
-     * @param array<int, int> $categoryIds
+     * @param  array<int, int>  $categoryIds
      */
     public function attachCategories(Post $post, array $categoryIds): Post;
 
     /**
      * Attach tags to post
      *
-     * @param array<int, int> $tagIds
+     * @param  array<int, int>  $tagIds
      */
     public function attachTags(Post $post, array $tagIds): Post;
 

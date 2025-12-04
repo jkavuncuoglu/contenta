@@ -2,8 +2,8 @@
 
 namespace App\Domains\Plugins;
 
-use App\Domains\Plugins\Console\Commands\PluginDiscoverCommand;
 use App\Domains\Plugins\Console\Commands\PluginDisableCommand;
+use App\Domains\Plugins\Console\Commands\PluginDiscoverCommand;
 use App\Domains\Plugins\Console\Commands\PluginEnableCommand;
 use App\Domains\Plugins\Console\Commands\PluginInstallCommand;
 use App\Domains\Plugins\Console\Commands\PluginScanCommand;
@@ -39,7 +39,7 @@ class PluginServiceProvider extends ServiceProvider
             } catch (\Exception $e) {
                 // Silently fail during migrations or when tables don't exist yet
                 $message = $e->getMessage();
-                if (!str_contains($message, 'does not exist') && !str_contains($message, 'no such table')) {
+                if (! str_contains($message, 'does not exist') && ! str_contains($message, 'no such table')) {
                     throw $e;
                 }
             }

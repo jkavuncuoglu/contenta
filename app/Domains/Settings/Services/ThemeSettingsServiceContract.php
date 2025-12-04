@@ -16,7 +16,7 @@ interface ThemeSettingsServiceContract
     /**
      * Update theme settings
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function updateTheme(array $data): ThemeSettings;
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\ContentStorage\Services;
 
-use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\ContentManagement\ContentStorage\Exceptions\WriteException;
 use App\Domains\ContentManagement\Pages\Models\Page;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -25,10 +25,11 @@ class PathPatternResolver
     /**
      * Resolve path pattern to actual file path
      *
-     * @param string $pattern Path pattern with tokens
-     * @param string $contentType Content type (pages|posts)
-     * @param Model $model Page or Post model
+     * @param  string  $pattern  Path pattern with tokens
+     * @param  string  $contentType  Content type (pages|posts)
+     * @param  Model  $model  Page or Post model
      * @return string Resolved file path
+     *
      * @throws WriteException If path is invalid or unsafe
      */
     public function resolve(string $pattern, string $contentType, Model $model): string
@@ -53,7 +54,7 @@ class PathPatternResolver
     /**
      * Get directory path from full file path
      *
-     * @param string $path Full file path
+     * @param  string  $path  Full file path
      * @return string Directory path (without filename)
      */
     public function getDirectory(string $path): string
@@ -64,9 +65,8 @@ class PathPatternResolver
     /**
      * Check if pattern contains a specific token
      *
-     * @param string $pattern Path pattern
-     * @param string $token Token name (without braces)
-     * @return bool
+     * @param  string  $pattern  Path pattern
+     * @param  string  $token  Token name (without braces)
      */
     public function hasToken(string $pattern, string $token): bool
     {
@@ -76,7 +76,7 @@ class PathPatternResolver
     /**
      * Get all tokens used in a pattern
      *
-     * @param string $pattern Path pattern
+     * @param  string  $pattern  Path pattern
      * @return array<int, string> Array of token names (without braces)
      */
     public function getTokens(string $pattern): array
@@ -89,8 +89,8 @@ class PathPatternResolver
     /**
      * Build token map from content type and model
      *
-     * @param string $contentType Content type (pages|posts)
-     * @param Model $model Page or Post model
+     * @param  string  $contentType  Content type (pages|posts)
+     * @param  Model  $model  Page or Post model
      * @return array<string, string> Token map
      */
     private function buildTokenMap(string $contentType, Model $model): array
@@ -131,8 +131,8 @@ class PathPatternResolver
     /**
      * Replace tokens in pattern with values
      *
-     * @param string $pattern Path pattern
-     * @param array<string, string> $tokens Token map
+     * @param  string  $pattern  Path pattern
+     * @param  array<string, string>  $tokens  Token map
      * @return string Path with tokens replaced
      */
     private function replaceTokens(string $pattern, array $tokens): string
@@ -155,7 +155,8 @@ class PathPatternResolver
     /**
      * Validate path for security and correctness
      *
-     * @param string $path File path to validate
+     * @param  string  $path  File path to validate
+     *
      * @throws WriteException If path is invalid
      */
     private function validatePath(string $path): void
@@ -189,7 +190,7 @@ class PathPatternResolver
     /**
      * Sanitize a path component (filename or directory name)
      *
-     * @param string $component Path component to sanitize
+     * @param  string  $component  Path component to sanitize
      * @return string Sanitized component
      */
     public function sanitizeComponent(string $component): string
@@ -217,7 +218,7 @@ class PathPatternResolver
     /**
      * Build default pattern for content type
      *
-     * @param string $contentType Content type (pages|posts)
+     * @param  string  $contentType  Content type (pages|posts)
      * @return string Default pattern
      */
     public static function getDefaultPattern(string $contentType): string
@@ -251,8 +252,8 @@ class PathPatternResolver
     /**
      * Preview path pattern with sample data
      *
-     * @param string $pattern Path pattern
-     * @param string $contentType Content type
+     * @param  string  $pattern  Path pattern
+     * @param  string  $contentType  Content type
      * @return string Preview path
      */
     public static function preview(string $pattern, string $contentType): string

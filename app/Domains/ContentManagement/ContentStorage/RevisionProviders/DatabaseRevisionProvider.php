@@ -31,7 +31,7 @@ class DatabaseRevisionProvider implements RevisionProviderInterface
         $revisions = $query->skip(($page - 1) * $perPage)
             ->take($perPage)
             ->get()
-            ->map(fn($rev) => new Revision(
+            ->map(fn ($rev) => new Revision(
                 id: (string) $rev->id,
                 content: $rev->content_markdown ?? '',
                 message: $rev->change_summary ?? 'Database revision',
@@ -58,7 +58,7 @@ class DatabaseRevisionProvider implements RevisionProviderInterface
     {
         $rev = $this->model->revisions()->with('author')->find($revisionId);
 
-        if (!$rev) {
+        if (! $rev) {
             return null;
         }
 
@@ -81,7 +81,7 @@ class DatabaseRevisionProvider implements RevisionProviderInterface
     {
         $revision = $this->getRevision($storagePath, $revisionId);
 
-        if (!$revision) {
+        if (! $revision) {
             return false;
         }
 
@@ -97,7 +97,7 @@ class DatabaseRevisionProvider implements RevisionProviderInterface
     {
         $rev = $this->model->revisions()->with('author')->latest()->first();
 
-        if (!$rev) {
+        if (! $rev) {
             return null;
         }
 

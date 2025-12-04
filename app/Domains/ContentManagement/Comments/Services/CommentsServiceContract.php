@@ -12,7 +12,7 @@ interface CommentsServiceContract
     /**
      * Get paginated comments with filters
      *
-     * @param array<string, mixed> $filters
+     * @param  array<string, mixed>  $filters
      * @return LengthAwarePaginator<array-key, mixed>
      */
     public function getPaginatedComments(array $filters = [], int $perPage = 20): LengthAwarePaginator;
@@ -30,7 +30,7 @@ interface CommentsServiceContract
     /**
      * Bulk update comment statuses
      *
-     * @param array<int> $ids
+     * @param  array<int>  $ids
      */
     public function bulkUpdateStatus(array $ids, string $status): int;
 

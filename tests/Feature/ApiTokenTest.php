@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\assertDatabaseHas;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -125,8 +125,8 @@ test('token with read ability can access read endpoints', function () {
     $this->withHeaders([
         'Authorization' => "Bearer {$token}",
     ])
-    ->get('/api/posts')
-    ->assertOk();
+        ->get('/api/posts')
+        ->assertOk();
 });
 
 test('token with read ability cannot access write endpoints', function () {
@@ -135,8 +135,8 @@ test('token with read ability cannot access write endpoints', function () {
     $this->withHeaders([
         'Authorization' => "Bearer {$token}",
     ])
-    ->post('/api/posts')
-    ->assertForbidden();
+        ->post('/api/posts')
+        ->assertForbidden();
 });
 
 test('token with delete ability can access delete endpoints', function () {
@@ -145,8 +145,8 @@ test('token with delete ability can access delete endpoints', function () {
     $this->withHeaders([
         'Authorization' => "Bearer {$token}",
     ])
-    ->delete('/api/posts/1')
-    ->assertOk();
+        ->delete('/api/posts/1')
+        ->assertOk();
 });
 
 test('full access token can access all endpoints', function () {
@@ -167,4 +167,3 @@ test('full access token can access all endpoints', function () {
         ->delete('/api/posts/1')
         ->assertOk();
 });
-

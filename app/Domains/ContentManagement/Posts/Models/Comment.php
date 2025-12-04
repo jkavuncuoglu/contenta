@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Posts\Models;
 
-use App\Domains\ContentManagement\Posts\Models\Post;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,8 +16,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Comment extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $fillable = [
         'post_id',
@@ -62,7 +61,7 @@ class Comment extends Model
 
     // Scopes
     /**
-     * @param Builder<Comment> $query
+     * @param  Builder<Comment>  $query
      * @return Builder<Comment>
      */
     public function scopeApproved(Builder $query): Builder
@@ -71,7 +70,7 @@ class Comment extends Model
     }
 
     /**
-     * @param Builder<Comment> $query
+     * @param  Builder<Comment>  $query
      * @return Builder<Comment>
      */
     public function scopePending(Builder $query): Builder
@@ -80,7 +79,7 @@ class Comment extends Model
     }
 
     /**
-     * @param Builder<Comment> $query
+     * @param  Builder<Comment>  $query
      * @return Builder<Comment>
      */
     public function scopeSpam(Builder $query): Builder
@@ -89,7 +88,7 @@ class Comment extends Model
     }
 
     /**
-     * @param Builder<Comment> $query
+     * @param  Builder<Comment>  $query
      * @return Builder<Comment>
      */
     public function scopeParent(Builder $query): Builder

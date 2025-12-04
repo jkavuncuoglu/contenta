@@ -17,22 +17,23 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property-read array<string, bool> $can
  * @property \Illuminate\Support\Carbon|null $recovery_codes_regeneration_expires_at
  */
-class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, WebAuthnAuthenticatable
 {
+    use HasApiTokens;
+
     /** @use HasFactory<UserFactory> */
     use HasFactory;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
-    use HasApiTokens;
     use HasRoles;
     use LogsActivity;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
     use WebAuthnAuthentication;
 
     /**
@@ -109,6 +110,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
     }
 
     protected static array $logAttributes = ['name', 'is_active'];
+
     protected static bool $logOnlyDirty = true;
 
     // Append permission-related attributes to serialized output for Inertia
@@ -120,6 +122,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
 
     /**
      * Relationships
+     *
      * @return HasMany<Post, $this>
      */
     public function posts(): HasMany
@@ -129,6 +132,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
 
     /**
      * Get the user's email addresses
+     *
      * @return HasMany<UserEmail, $this>
      */
     public function emails(): HasMany
@@ -138,6 +142,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
 
     /**
      * Get the user's primary email address
+     *
      * @return HasMany<UserEmail, $this>
      */
     public function primaryEmail(): HasMany
@@ -150,7 +155,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
      */
     public function getFullNameAttribute(): string
     {
-        return trim(($this->first_name ?? '') . ' ' . ($this->last_name ?? '')) ?: $this->name;
+        return trim(($this->first_name ?? '').' '.($this->last_name ?? '')) ?: $this->name;
     }
 
     /**
@@ -179,7 +184,8 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
 
     /**
      * Scope for active users
-     * @param \Illuminate\Database\Eloquent\Builder<User> $query
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<User>  $query
      * @return \Illuminate\Database\Eloquent\Builder<User>
      */
     public function scopeActive($query)
@@ -301,7 +307,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
      */
     public function hasTwoFactorEnabled(): bool
     {
-        return !is_null($this->two_factor_secret) && !is_null($this->two_factor_confirmed_at);
+        return ! is_null($this->two_factor_secret) && ! is_null($this->two_factor_confirmed_at);
     }
 
     /**
@@ -332,7 +338,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
         $usedCodes[] = $code;
 
         $this->update([
-            'two_factor_used_recovery_codes' => array_unique($usedCodes)
+            'two_factor_used_recovery_codes' => array_unique($usedCodes),
         ]);
     }
 
@@ -341,7 +347,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
      */
     public function hasViewedRecoveryCodes(): bool
     {
-        return !is_null($this->two_factor_recovery_codes_viewed_at);
+        return ! is_null($this->two_factor_recovery_codes_viewed_at);
     }
 
     /**
@@ -350,7 +356,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
     public function markRecoveryCodesAsViewed(): void
     {
         $this->update([
-            'two_factor_recovery_codes_viewed_at' => now()
+            'two_factor_recovery_codes_viewed_at' => now(),
         ]);
     }
 
@@ -363,7 +369,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
 
         $this->update([
             'recovery_codes_regeneration_token' => $token,
-            'recovery_codes_regeneration_expires_at' => now()->addHour()
+            'recovery_codes_regeneration_expires_at' => now()->addHour(),
         ]);
 
         return $token;
@@ -386,7 +392,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
     {
         $this->update([
             'recovery_codes_regeneration_token' => null,
-            'recovery_codes_regeneration_expires_at' => null
+            'recovery_codes_regeneration_expires_at' => null,
         ]);
     }
 
@@ -404,7 +410,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
      */
     public function getAuthDisplayName(): string
     {
-        return trim($this->first_name . ' ' . $this->last_name) ?: ($this->username ?? $this->email ?? '');
+        return trim($this->first_name.' '.$this->last_name) ?: ($this->username ?? $this->email ?? '');
     }
 
     /**
@@ -413,7 +419,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
      */
     public function webAuthnData(): WebAuthnData
     {
-        $displayName = trim($this->first_name . ' ' . $this->last_name) ?: ($this->username ?? $this->email ?? 'User');
+        $displayName = trim($this->first_name.' '.$this->last_name) ?: ($this->username ?? $this->email ?? 'User');
 
         return WebAuthnData::make($this->email ?? '', $displayName);
     }
@@ -494,13 +500,13 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
             'getPermissionsViaRoleAttribute',
         ];
 
-        if (!in_array($method, $permissionAccessors, true)) {
+        if (! in_array($method, $permissionAccessors, true)) {
             // Let PHP handle other static calls (will trigger usual error)
             return null;
         }
 
         // If the first argument is an instance of this class, call the instance method
-        if (!empty($parameters) && $parameters[0] instanceof self) {
+        if (! empty($parameters) && $parameters[0] instanceof self) {
             $instance = $parameters[0];
             // Call the instance method (if exists)
             if (method_exists($instance, $method)) {
@@ -509,7 +515,7 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
         }
 
         // If the first argument is a numeric id, try to load the user and forward
-        if (!empty($parameters) && is_numeric($parameters[0])) {
+        if (! empty($parameters) && is_numeric($parameters[0])) {
             $instance = self::find($parameters[0]);
             if ($instance && method_exists($instance, $method)) {
                 return $instance->{$method}(...array_slice($parameters, 1));
@@ -533,12 +539,12 @@ class User extends Authenticatable implements WebAuthnAuthenticatable, MustVerif
     public function __call($method, $parameters)
     {
         $map = [
-            'getDirectPermissionsAttribute' => fn() => $this->getDirectPermissionsAttribute(),
-            'getPermissionsViaRolesAttribute' => fn() => $this->getPermissionsViaRolesAttribute(),
-            'getAllPermissionsAttribute' => fn() => $this->getAllPermissionsAttribute(),
-            'getCanAttribute' => fn() => $this->getCanAttribute(),
-            'getPermissionNamesAttribute' => fn() => $this->getPermissionNamesAttribute(),
-            'getPermissionsViaRoleAttribute' => fn() => $this->getPermissionsViaRoleAttribute(),
+            'getDirectPermissionsAttribute' => fn () => $this->getDirectPermissionsAttribute(),
+            'getPermissionsViaRolesAttribute' => fn () => $this->getPermissionsViaRolesAttribute(),
+            'getAllPermissionsAttribute' => fn () => $this->getAllPermissionsAttribute(),
+            'getCanAttribute' => fn () => $this->getCanAttribute(),
+            'getPermissionNamesAttribute' => fn () => $this->getPermissionNamesAttribute(),
+            'getPermissionsViaRoleAttribute' => fn () => $this->getPermissionsViaRoleAttribute(),
         ];
 
         if (isset($map[$method])) {

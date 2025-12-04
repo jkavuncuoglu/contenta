@@ -7,10 +7,10 @@ namespace App\Domains\ContentManagement\ContentStorage\ValueObjects;
 /**
  * Collection of revisions with pagination metadata
  */
-class RevisionCollection implements \IteratorAggregate, \Countable, \JsonSerializable
+class RevisionCollection implements \Countable, \IteratorAggregate, \JsonSerializable
 {
     /**
-     * @param array<Revision> $revisions
+     * @param  array<Revision>  $revisions
      */
     public function __construct(
         private array $revisions,
@@ -76,7 +76,7 @@ class RevisionCollection implements \IteratorAggregate, \Countable, \JsonSeriali
     public function toArray(): array
     {
         return [
-            'data' => array_map(fn($r) => $r->toArray(), $this->revisions),
+            'data' => array_map(fn ($r) => $r->toArray(), $this->revisions),
             'meta' => [
                 'total' => $this->total,
                 'current_page' => $this->currentPage,

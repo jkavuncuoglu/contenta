@@ -1,9 +1,9 @@
 <?php
 
-use App\Domains\ContentManagement\Services\ShortcodeParser\Parser\Parser;
-use App\Domains\ContentManagement\Services\ShortcodeParser\Tokenizer\Tokenizer;
 use App\Domains\ContentManagement\Services\ShortcodeParser\AST\DocumentNode;
 use App\Domains\ContentManagement\Services\ShortcodeParser\AST\ShortcodeNode;
+use App\Domains\ContentManagement\Services\ShortcodeParser\Parser\Parser;
+use App\Domains\ContentManagement\Services\ShortcodeParser\Tokenizer\Tokenizer;
 
 test('parses simple shortcode', function () {
     $input = '[#test][/#test]';

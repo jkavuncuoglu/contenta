@@ -1,22 +1,22 @@
 <?php
 
+use App\Domains\ContentManagement\ContentStorage\Http\Controllers\Admin\ContentMigrationController;
+use App\Domains\ContentManagement\ContentStorage\Http\Controllers\Admin\ContentStorageSettingsController;
 use App\Domains\Security\Http\Controllers\Admin\RolesController;
 use App\Domains\Security\UserManagement\Http\Controllers\UserManagementController;
+use App\Domains\Settings\Http\Controllers\Admin\SecuritySettingsController;
+use App\Domains\Settings\Http\Controllers\Admin\SiteSettingsController;
+use App\Domains\Settings\Http\Controllers\Admin\ThemeSettingsController;
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\PasswordController;
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\ProfileController;
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\TwoFactorAuthenticationController;
-use App\Domains\Settings\Http\Controllers\Admin\SiteSettingsController;
-use App\Domains\Settings\Http\Controllers\Admin\SecuritySettingsController;
-use App\Domains\Settings\Http\Controllers\Admin\ThemeSettingsController;
-use App\Domains\ContentManagement\ContentStorage\Http\Controllers\Admin\ContentStorageSettingsController;
-use App\Domains\ContentManagement\ContentStorage\Http\Controllers\Admin\ContentMigrationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::group([
     'prefix' => 'settings',
     'as' => 'settings.',
-    'middleware' => ['auth']
+    'middleware' => ['auth'],
 ], function () {
     Route::redirect('', 'settings/site');
 
@@ -46,7 +46,6 @@ Route::group([
                 Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
                 Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
             });
-
 
             Route::group([
                 'prefix' => 'password',

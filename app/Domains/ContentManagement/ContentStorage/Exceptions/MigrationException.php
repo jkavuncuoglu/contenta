@@ -12,9 +12,9 @@ class MigrationException extends StorageException
     /**
      * Create a new migration exception
      *
-     * @param string $message Error message
-     * @param int $code Error code
-     * @param \Throwable|null $previous Previous exception
+     * @param  string  $message  Error message
+     * @param  int  $code  Error code
+     * @param  \Throwable|null  $previous  Previous exception
      */
     public function __construct(string $message = 'Content migration failed', int $code = 0, ?\Throwable $previous = null)
     {
@@ -24,8 +24,7 @@ class MigrationException extends StorageException
     /**
      * Create exception for migration already in progress
      *
-     * @param string $contentType Content type being migrated
-     * @return static
+     * @param  string  $contentType  Content type being migrated
      */
     public static function alreadyRunning(string $contentType): static
     {
@@ -35,9 +34,8 @@ class MigrationException extends StorageException
     /**
      * Create exception for invalid source/destination
      *
-     * @param string $from Source driver
-     * @param string $to Destination driver
-     * @return static
+     * @param  string  $from  Source driver
+     * @param  string  $to  Destination driver
      */
     public static function invalidDriverCombination(string $from, string $to): static
     {
@@ -47,8 +45,7 @@ class MigrationException extends StorageException
     /**
      * Create exception for migration not found
      *
-     * @param int $migrationId Migration ID
-     * @return static
+     * @param  int  $migrationId  Migration ID
      */
     public static function notFound(int $migrationId): static
     {
@@ -58,8 +55,7 @@ class MigrationException extends StorageException
     /**
      * Create exception for migration interruption
      *
-     * @param string $reason Interruption reason
-     * @return static
+     * @param  string  $reason  Interruption reason
      */
     public static function interrupted(string $reason): static
     {
@@ -69,9 +65,8 @@ class MigrationException extends StorageException
     /**
      * Create exception for partial migration failure
      *
-     * @param int $failed Number of failed items
-     * @param int $total Total items
-     * @return static
+     * @param  int  $failed  Number of failed items
+     * @param  int  $total  Total items
      */
     public static function partialFailure(int $failed, int $total): static
     {

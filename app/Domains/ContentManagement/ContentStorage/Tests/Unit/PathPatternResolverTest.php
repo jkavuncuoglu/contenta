@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\ContentStorage\Tests\Unit;
 
-use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\ContentManagement\ContentStorage\Exceptions\WriteException;
 use App\Domains\ContentManagement\ContentStorage\Services\PathPatternResolver;
 use App\Domains\ContentManagement\Pages\Models\Page;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

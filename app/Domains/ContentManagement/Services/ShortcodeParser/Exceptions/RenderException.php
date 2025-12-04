@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Services\ShortcodeParser\Exceptions;
 
-class RenderException extends ParseException
-{
-}
+class RenderException extends ParseException {}

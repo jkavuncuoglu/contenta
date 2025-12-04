@@ -29,12 +29,11 @@ class ContentManagementServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Load migrations if migrations directory exists
-        if (is_dir(__DIR__ . '/Database/migrations')) {
-            $this->loadMigrationsFrom(__DIR__ . '/Database/migrations');
+        if (is_dir(__DIR__.'/Database/migrations')) {
+            $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         }
 
         // Register model observers
         Post::observe(PostObserver::class);
     }
 }
-

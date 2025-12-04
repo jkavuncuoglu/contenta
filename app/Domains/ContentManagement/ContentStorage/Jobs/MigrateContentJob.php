@@ -47,8 +47,8 @@ class MigrateContentJob implements ShouldQueue
     /**
      * Create a new job instance
      *
-     * @param ContentMigration $migration Migration record
-     * @param bool $deleteSource Delete source content after successful migration
+     * @param  ContentMigration  $migration  Migration record
+     * @param  bool  $deleteSource  Delete source content after successful migration
      */
     public function __construct(ContentMigration $migration, bool $deleteSource = false)
     {
@@ -64,7 +64,7 @@ class MigrateContentJob implements ShouldQueue
      */
     public function handle(MigrationService $migrationService): void
     {
-        Log::info("Migration job started", [
+        Log::info('Migration job started', [
             'migration_id' => $this->migration->id,
             'job_id' => $this->job?->uuid(),
         ]);
@@ -76,13 +76,13 @@ class MigrateContentJob implements ShouldQueue
             // Send success notification (if configured)
             $this->sendSuccessNotification();
 
-            Log::info("Migration job completed successfully", [
+            Log::info('Migration job completed successfully', [
                 'migration_id' => $this->migration->id,
                 'migrated' => $this->migration->migrated_items,
                 'failed' => $this->migration->failed_items,
             ]);
         } catch (\Exception $e) {
-            Log::error("Migration job failed", [
+            Log::error('Migration job failed', [
                 'migration_id' => $this->migration->id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -103,7 +103,7 @@ class MigrateContentJob implements ShouldQueue
         // Mark migration as failed if all retries exhausted
         $this->migration->markAsFailed($exception->getMessage());
 
-        Log::error("Migration job failed permanently", [
+        Log::error('Migration job failed permanently', [
             'migration_id' => $this->migration->id,
             'error' => $exception->getMessage(),
             'attempts' => $this->attempts(),
@@ -136,7 +136,7 @@ class MigrateContentJob implements ShouldQueue
     {
         // TODO: Implement notification to user/admin
         // For now, just log
-        Log::info("Migration completed notification", [
+        Log::info('Migration completed notification', [
             'migration_id' => $this->migration->id,
             'summary' => $this->migration->getSummary(),
         ]);
@@ -149,7 +149,7 @@ class MigrateContentJob implements ShouldQueue
     {
         // TODO: Implement notification to user/admin
         // For now, just log
-        Log::error("Migration failed notification", [
+        Log::error('Migration failed notification', [
             'migration_id' => $this->migration->id,
             'error' => $exception->getMessage(),
         ]);

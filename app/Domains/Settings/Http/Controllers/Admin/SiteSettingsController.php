@@ -77,7 +77,7 @@ class SiteSettingsController extends Controller
             'cookie_consent_enabled',
         ]));
 
-        if (!$updated) {
+        if (! $updated) {
             return redirect()->route('admin.settings.site.index')
                 ->with('error', 'Failed to update site settings');
         }

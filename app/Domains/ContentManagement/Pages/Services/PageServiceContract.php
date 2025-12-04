@@ -19,14 +19,14 @@ interface PageServiceContract
     /**
      * Create a new page
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function createPage(array $data): Page;
 
     /**
      * Update a page
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function updatePage(Page $page, array $data): Page;
 

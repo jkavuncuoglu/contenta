@@ -18,6 +18,7 @@ class PluginDiscoverCommand extends Command
 
         if (empty($discovered)) {
             $this->info('No new plugins found');
+
             return self::SUCCESS;
         }
 

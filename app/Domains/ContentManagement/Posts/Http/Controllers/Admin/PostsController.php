@@ -2,10 +2,9 @@
 
 namespace App\Domains\ContentManagement\Posts\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Domains\ContentManagement\Posts\Models\Post;
-use App\Domains\ContentManagement\ContentStorage\ContentStorageManager;
 use App\Domains\ContentManagement\ContentStorage\ValueObjects\ContentData;
+use App\Domains\ContentManagement\Posts\Models\Post;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -104,11 +103,11 @@ class PostsController extends Controller
                     'id' => $post->author->id,
                     'name' => $post->author->name ?? $post->author->username,
                 ] : null,
-                'categories' => $post->categories->map(fn($c) => [
+                'categories' => $post->categories->map(fn ($c) => [
                     'id' => $c->id,
                     'name' => $c->name,
                 ])->toArray(),
-                'tags' => $post->tags->map(fn($t) => [
+                'tags' => $post->tags->map(fn ($t) => [
                     'id' => $t->id,
                     'name' => $t->name,
                 ])->toArray(),
@@ -179,7 +178,7 @@ class PostsController extends Controller
             $post = Post::create($validated);
 
             // If using cloud storage, write content via ContentStorage
-            if ($validated['storage_driver'] !== 'database' && !empty($validated['content_markdown'])) {
+            if ($validated['storage_driver'] !== 'database' && ! empty($validated['content_markdown'])) {
                 $content = new ContentData(
                     markdown: $validated['content_markdown'],
                     html: $validated['content_html'] ?? null,
@@ -188,7 +187,7 @@ class PostsController extends Controller
 
                 // Prepare metadata for cloud storage
                 $metadata = [];
-                if (!empty($validated['commit_message'])) {
+                if (! empty($validated['commit_message'])) {
                     $metadata['commit_message'] = $validated['commit_message'];
                 }
 
@@ -221,7 +220,7 @@ class PostsController extends Controller
 
             return back()
                 ->withInput()
-                ->withErrors(['error' => 'Failed to create post: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'Failed to create post: '.$e->getMessage()]);
         }
     }
 
@@ -234,7 +233,7 @@ class PostsController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:posts,slug,' . $id,
+            'slug' => 'nullable|string|max:255|unique:posts,slug,'.$id,
             'content_markdown' => 'nullable|string',
             'content_html' => 'nullable|string',
             'table_of_contents' => 'nullable|array',
@@ -282,7 +281,7 @@ class PostsController extends Controller
 
                 // Prepare metadata for cloud storage
                 $metadata = [];
-                if (!empty($validated['commit_message'])) {
+                if (! empty($validated['commit_message'])) {
                     $metadata['commit_message'] = $validated['commit_message'];
                 }
 
@@ -316,7 +315,7 @@ class PostsController extends Controller
 
             return back()
                 ->withInput()
-                ->withErrors(['error' => 'Failed to update post: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'Failed to update post: '.$e->getMessage()]);
         }
     }
 
@@ -362,7 +361,7 @@ class PostsController extends Controller
     {
         $revision = $post->getRevisionById($revisionId);
 
-        if (!$revision) {
+        if (! $revision) {
             return response()->json([
                 'error' => 'Revision not found',
             ], 404);
@@ -378,7 +377,7 @@ class PostsController extends Controller
      */
     public function restoreRevision(Post $post, string $revisionId)
     {
-        if (!$post->supportsRevisions()) {
+        if (! $post->supportsRevisions()) {
             return response()->json([
                 'error' => 'Revisions are not supported for this storage driver',
             ], 400);
@@ -386,7 +385,7 @@ class PostsController extends Controller
 
         $success = $post->restoreRevisionById($revisionId);
 
-        if (!$success) {
+        if (! $success) {
             return response()->json([
                 'error' => 'Failed to restore revision',
             ], 500);

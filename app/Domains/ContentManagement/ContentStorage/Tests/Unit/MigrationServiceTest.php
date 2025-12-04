@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\ContentStorage\Tests\Unit;
 
-use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\ContentManagement\ContentStorage\Exceptions\MigrationException;
-use App\Domains\ContentManagement\ContentStorage\Models\ContentData;
 use App\Domains\ContentManagement\ContentStorage\Models\ContentMigration;
 use App\Domains\ContentManagement\ContentStorage\Services\ContentStorageManager;
 use App\Domains\ContentManagement\ContentStorage\Services\MigrationService;
 use App\Domains\ContentManagement\ContentStorage\Services\PathPatternResolver;
 use App\Domains\ContentManagement\Pages\Models\Page;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -24,7 +23,9 @@ class MigrationServiceTest extends TestCase
     use RefreshDatabase;
 
     private MigrationService $migrationService;
+
     private ContentStorageManager $storageManager;
+
     private PathPatternResolver $pathResolver;
 
     protected function setUp(): void

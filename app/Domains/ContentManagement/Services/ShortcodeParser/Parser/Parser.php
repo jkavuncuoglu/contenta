@@ -148,12 +148,14 @@ class Parser
                     // Parse nested shortcode
                     if ($this->check(TokenType::SHORTCODE_OPEN)) {
                         $shortcodeNode->addChild($this->parseShortcode());
+
                         continue;
                     }
 
                     // Parse text/markdown
                     if ($this->check(TokenType::TEXT)) {
                         $shortcodeNode->addChild($this->parseText());
+
                         continue;
                     }
 
@@ -163,6 +165,7 @@ class Parser
                         $shortcodeNode->addChild(
                             new CommentNode($commentToken->value, $commentToken->line, $commentToken->column)
                         );
+
                         continue;
                     }
 

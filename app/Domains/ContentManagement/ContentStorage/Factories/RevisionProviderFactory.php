@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\ContentStorage\Factories;
 
-use App\Domains\ContentManagement\ContentStorage\Contracts\RevisionProviderInterface;
 use App\Domains\ContentManagement\ContentStorage\ContentStorageManager;
+use App\Domains\ContentManagement\ContentStorage\Contracts\RevisionProviderInterface;
 use App\Domains\ContentManagement\ContentStorage\RevisionProviders\AzureBlobRevisionProvider;
 use App\Domains\ContentManagement\ContentStorage\RevisionProviders\DatabaseRevisionProvider;
 use App\Domains\ContentManagement\ContentStorage\RevisionProviders\GCSRevisionProvider;
 use App\Domains\ContentManagement\ContentStorage\RevisionProviders\GitHubRevisionProvider;
 use App\Domains\ContentManagement\ContentStorage\RevisionProviders\S3RevisionProvider;
-use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\ContentManagement\Pages\Models\Page;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use Illuminate\Database\Eloquent\Model;
 
 class RevisionProviderFactory
@@ -24,14 +24,14 @@ class RevisionProviderFactory
     /**
      * Create appropriate revision provider for the given storage driver
      *
-     * @param string $driver Storage driver name
-     * @param Model $model Post or Page model
-     * @return RevisionProviderInterface
+     * @param  string  $driver  Storage driver name
+     * @param  Model  $model  Post or Page model
+     *
      * @throws \InvalidArgumentException
      */
     public function make(string $driver, Model $model): RevisionProviderInterface
     {
-        return match($driver) {
+        return match ($driver) {
             'database', 'local' => new DatabaseRevisionProvider($model),
 
             's3' => new S3RevisionProvider(
@@ -84,12 +84,12 @@ class RevisionProviderFactory
     /**
      * Get revision provider for a model
      *
-     * @param Post|Page $model
-     * @return RevisionProviderInterface
+     * @param  Post|Page  $model
      */
     public function forModel(Model $model): RevisionProviderInterface
     {
         $driver = $model->storage_driver ?? 'database';
+
         return $this->make($driver, $model);
     }
 }

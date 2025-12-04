@@ -10,9 +10,9 @@ use App\Domains\ContentManagement\ContentStorage\Exceptions\StorageException;
 use App\Domains\ContentManagement\ContentStorage\Exceptions\WriteException;
 use App\Domains\ContentManagement\ContentStorage\Models\ContentData;
 use DateTimeImmutable;
-use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Core\Exception\NotFoundException;
 use Google\Cloud\Core\Exception\ServiceException as GcsServiceException;
+use Google\Cloud\Storage\StorageClient;
 
 /**
  * Google Cloud Storage Repository for storing content in GCS
@@ -84,7 +84,7 @@ class GcsRepository implements ContentRepositoryContract
             $metadata = $info['metadata'] ?? [];
             $updated = isset($info['updated'])
                 ? new DateTimeImmutable($info['updated'])
-                : new DateTimeImmutable();
+                : new DateTimeImmutable;
 
             $contentData = ContentData::fromMarkdown($markdown);
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Posts\Observers;
 
-use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\ContentManagement\ContentStorage\ContentStorageManager;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use Illuminate\Support\Str;
 
 class PostObserver

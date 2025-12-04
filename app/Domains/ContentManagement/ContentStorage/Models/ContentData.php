@@ -18,11 +18,11 @@ class ContentData
     /**
      * Create a new content data instance
      *
-     * @param string $content Raw markdown content (without frontmatter)
-     * @param array<string, mixed> $frontmatter Parsed YAML frontmatter
-     * @param string|null $hash SHA-256 hash for change detection
-     * @param int|null $size Content size in bytes
-     * @param DateTimeImmutable|null $modifiedAt Last modification timestamp
+     * @param  string  $content  Raw markdown content (without frontmatter)
+     * @param  array<string, mixed>  $frontmatter  Parsed YAML frontmatter
+     * @param  string|null  $hash  SHA-256 hash for change detection
+     * @param  int|null  $size  Content size in bytes
+     * @param  DateTimeImmutable|null  $modifiedAt  Last modification timestamp
      */
     public function __construct(
         public readonly string $content,
@@ -30,8 +30,7 @@ class ContentData
         public readonly ?string $hash = null,
         public readonly ?int $size = null,
         public readonly ?DateTimeImmutable $modifiedAt = null
-    ) {
-    }
+    ) {}
 
     /**
      * Create ContentData from markdown string with frontmatter
@@ -43,8 +42,8 @@ class ContentData
      * ---
      * # Content here...
      *
-     * @param string $markdown Full markdown with frontmatter
-     * @return self
+     * @param  string  $markdown  Full markdown with frontmatter
+     *
      * @throws ReadException If frontmatter parsing fails
      */
     public static function fromMarkdown(string $markdown): self
@@ -112,8 +111,9 @@ class ContentData
      * - Arrays (basic support)
      * - Comments (lines starting with #)
      *
-     * @param string $yaml YAML content
+     * @param  string  $yaml  YAML content
      * @return array<string, mixed> Parsed data
+     *
      * @throws \Exception If YAML parsing fails
      */
     private static function parseYaml(string $yaml): array
@@ -135,6 +135,7 @@ class ContentData
             // Handle multiline values (indented lines)
             if ($inMultiline && (str_starts_with($line, '  ') || str_starts_with($line, "\t"))) {
                 $multilineValue[] = trim($line);
+
                 continue;
             }
 
@@ -156,6 +157,7 @@ class ContentData
                     $currentKey = $key;
                     $inMultiline = true;
                     $multilineValue = [];
+
                     continue;
                 }
 
@@ -176,7 +178,7 @@ class ContentData
     /**
      * Parse a YAML value into appropriate PHP type
      *
-     * @param string $value Raw value string
+     * @param  string  $value  Raw value string
      * @return mixed Parsed value
      */
     private static function parseYamlValue(string $value): mixed
@@ -222,8 +224,8 @@ class ContentData
     /**
      * Build YAML string from associative array
      *
-     * @param array<string, mixed> $data Data to convert
-     * @param int $indent Indentation level
+     * @param  array<string, mixed>  $data  Data to convert
+     * @param  int  $indent  Indentation level
      * @return string YAML content
      */
     private function buildYaml(array $data, int $indent = 0): string
@@ -257,7 +259,7 @@ class ContentData
     /**
      * Format a value for YAML output
      *
-     * @param mixed $value Value to format
+     * @param  mixed  $value  Value to format
      * @return string Formatted value
      */
     private function formatYamlValue(mixed $value): string
@@ -291,8 +293,8 @@ class ContentData
     /**
      * Get frontmatter value by key
      *
-     * @param string $key Frontmatter key
-     * @param mixed $default Default value if key not found
+     * @param  string  $key  Frontmatter key
+     * @param  mixed  $default  Default value if key not found
      * @return mixed Value or default
      */
     public function get(string $key, mixed $default = null): mixed
@@ -303,8 +305,7 @@ class ContentData
     /**
      * Check if frontmatter has a key
      *
-     * @param string $key Frontmatter key
-     * @return bool
+     * @param  string  $key  Frontmatter key
      */
     public function has(string $key): bool
     {
@@ -338,7 +339,7 @@ class ContentData
     /**
      * Create a copy with updated content
      *
-     * @param string $content New content
+     * @param  string  $content  New content
      * @return self New instance with updated content
      */
     public function withContent(string $content): self
@@ -355,7 +356,7 @@ class ContentData
     /**
      * Create a copy with updated frontmatter
      *
-     * @param array<string, mixed> $frontmatter New frontmatter
+     * @param  array<string, mixed>  $frontmatter  New frontmatter
      * @return self New instance with updated frontmatter
      */
     public function withFrontmatter(array $frontmatter): self
@@ -372,7 +373,7 @@ class ContentData
     /**
      * Create a copy with merged frontmatter
      *
-     * @param array<string, mixed> $frontmatter Frontmatter to merge
+     * @param  array<string, mixed>  $frontmatter  Frontmatter to merge
      * @return self New instance with merged frontmatter
      */
     public function mergeFrontmatter(array $frontmatter): self

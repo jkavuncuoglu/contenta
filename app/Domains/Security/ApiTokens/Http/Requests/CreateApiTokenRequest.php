@@ -20,7 +20,7 @@ class CreateApiTokenRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'abilities' => ['sometimes', 'array'],
-            'abilities.*' => ['string', 'in:' . implode(',', TokenAbility::values())],
+            'abilities.*' => ['string', 'in:'.implode(',', TokenAbility::values())],
         ];
     }
 
@@ -36,4 +36,3 @@ class CreateApiTokenRequest extends FormRequest
         ];
     }
 }
-

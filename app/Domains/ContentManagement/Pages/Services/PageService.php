@@ -36,7 +36,7 @@ class PageService implements PageServiceContract
     /**
      * Create a new page
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function createPage(array $data): Page
     {
@@ -78,7 +78,7 @@ class PageService implements PageServiceContract
     /**
      * Update a page
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function updatePage(Page $page, array $data): Page
     {
@@ -100,6 +100,7 @@ class PageService implements PageServiceContract
 
         $freshPage = $page->fresh();
         assert($freshPage instanceof Page);
+
         return $freshPage;
     }
 
@@ -120,6 +121,7 @@ class PageService implements PageServiceContract
 
         $freshPage = $page->fresh();
         assert($freshPage instanceof Page);
+
         return $freshPage;
     }
 
@@ -132,6 +134,7 @@ class PageService implements PageServiceContract
 
         $freshPage = $page->fresh();
         assert($freshPage instanceof Page);
+
         return $freshPage;
     }
 
@@ -144,6 +147,7 @@ class PageService implements PageServiceContract
 
         $freshPage = $page->fresh();
         assert($freshPage instanceof Page);
+
         return $freshPage;
     }
 
@@ -154,7 +158,7 @@ class PageService implements PageServiceContract
     {
         $content = $page->content;
 
-        if (!$content) {
+        if (! $content) {
             return '';
         }
 
@@ -167,8 +171,8 @@ class PageService implements PageServiceContract
     public function duplicatePage(Page $page): Page
     {
         $newPage = $page->replicate();
-        $newPage->title = $page->title . ' (Copy)';
-        $newPage->slug = Str::slug($newPage->title) . '-' . Str::random(6);
+        $newPage->title = $page->title.' (Copy)';
+        $newPage->slug = Str::slug($newPage->title).'-'.Str::random(6);
         $newPage->status = Page::STATUS_DRAFT;
         $newPage->published_at = null;
         $newPage->save();

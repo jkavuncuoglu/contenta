@@ -2,9 +2,9 @@
 
 namespace App\Domains\ContentManagement\Categories;
 
-use Illuminate\Support\ServiceProvider;
 use App\Domains\ContentManagement\Categories\Services\CategoryService;
 use App\Domains\ContentManagement\Categories\Services\CategoryServiceContract;
+use Illuminate\Support\ServiceProvider;
 
 class CategoryServiceProvider extends ServiceProvider
 {
@@ -18,4 +18,3 @@ class CategoryServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
     }
 }
-

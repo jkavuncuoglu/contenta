@@ -69,8 +69,8 @@ class HandleInertiaRequests extends Middleware
                     'site_google_analytics_id',
                     'site_google_tag_manager_id',
                     'site_facebook_pixel_id',
-                    'site_cookie_consent_enabled'
-                ]
+                    'site_cookie_consent_enabled',
+                ],
             ]);
 
             return [
@@ -100,6 +100,7 @@ class HandleInertiaRequests extends Middleware
     {
         try {
             $theme = ThemeSettings::active();
+
             return $theme ? $theme->getAllColors() : [];
         } catch (\Exception $e) {
             return [];
@@ -147,7 +148,7 @@ class HandleInertiaRequests extends Middleware
         foreach ($rootItems as $root) {
             $sections[] = [
                 'title' => $root->title,
-                'links' => $root->children->map(fn($child) => [
+                'links' => $root->children->map(fn ($child) => [
                     'id' => $child->id,
                     'title' => $child->title,
                     'url' => $child->getResolvedUrl() ?: $child->url,

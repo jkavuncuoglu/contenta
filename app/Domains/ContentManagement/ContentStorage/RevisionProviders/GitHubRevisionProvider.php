@@ -54,7 +54,7 @@ class GitHubRevisionProvider implements RevisionProviderInterface
                             'sha' => $commit['sha'],
                             'short_sha' => substr($commit['sha'], 0, 7),
                             'url' => $commit['html_url'] ?? null,
-                            'parents' => array_map(fn($p) => $p['sha'], $commit['parents'] ?? []),
+                            'parents' => array_map(fn ($p) => $p['sha'], $commit['parents'] ?? []),
                             'committer' => $commit['commit']['committer']['name'] ?? null,
                         ]),
                         isCurrent: false,
@@ -124,7 +124,7 @@ class GitHubRevisionProvider implements RevisionProviderInterface
                     'sha' => $commit['sha'],
                     'short_sha' => substr($commit['sha'], 0, 7),
                     'url' => $commit['html_url'] ?? null,
-                    'parents' => array_map(fn($p) => $p['sha'], $commit['parents'] ?? []),
+                    'parents' => array_map(fn ($p) => $p['sha'], $commit['parents'] ?? []),
                     'stats' => $commit['stats'] ?? null,
                     'files_changed' => count($commit['files'] ?? []),
                 ]),
@@ -151,7 +151,7 @@ class GitHubRevisionProvider implements RevisionProviderInterface
             // Get the old commit details for the message
             $oldCommit = $this->getRevision($storagePath, $revisionId);
 
-            if (!$oldCommit) {
+            if (! $oldCommit) {
                 return false;
             }
 
@@ -189,6 +189,7 @@ class GitHubRevisionProvider implements RevisionProviderInterface
     public function getLatestRevision(string $storagePath): ?Revision
     {
         $revisions = $this->getRevisions($storagePath, 1, 1);
+
         return $revisions->first();
     }
 }

@@ -22,6 +22,7 @@ class AzureBlobRevisionProvider implements RevisionProviderInterface
         // Check if container has versioning enabled
         try {
             $properties = $this->repository->getContainerClient()->getProperties();
+
             return $properties->getIsVersioningEnabled() ?? false;
         } catch (\Exception $e) {
             Log::warning('Failed to check Azure Blob versioning', [
@@ -49,6 +50,7 @@ class AzureBlobRevisionProvider implements RevisionProviderInterface
             foreach ($versions as $version) {
                 if ($count < $start) {
                     $count++;
+
                     continue;
                 }
 
@@ -167,6 +169,7 @@ class AzureBlobRevisionProvider implements RevisionProviderInterface
     public function getLatestRevision(string $storagePath): ?Revision
     {
         $revisions = $this->getRevisions($storagePath, 1, 1);
+
         return $revisions->first();
     }
 }

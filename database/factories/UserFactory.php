@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     protected $model = User::class;
+
     /**
      * The current password being used by the factory.
      */
@@ -43,7 +44,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn () => [ 'email_verified_at' => null ]);
+        return $this->state(fn () => ['email_verified_at' => null]);
     }
 
     /**

@@ -83,7 +83,7 @@ class AzureRepository implements ContentRepositoryContract
                 size: $properties->getProperties()->getContentLength(),
                 modifiedAt: $lastModified instanceof \DateTime
                     ? DateTimeImmutable::createFromMutable($lastModified)
-                    : new DateTimeImmutable()
+                    : new DateTimeImmutable
             );
         } catch (ServiceException $e) {
             if ($e->getCode() === 404) {
@@ -105,7 +105,7 @@ class AzureRepository implements ContentRepositoryContract
             $blobName = $this->buildBlobName($path);
             $markdown = $data->toMarkdown();
 
-            $options = new CreateBlockBlobOptions();
+            $options = new CreateBlockBlobOptions;
             $options->setContentType('text/markdown');
             $options->setMetadata([
                 'content-hash' => $data->hash,
@@ -171,7 +171,7 @@ class AzureRepository implements ContentRepositoryContract
                 $prefix .= '/';
             }
 
-            $options = new ListBlobsOptions();
+            $options = new ListBlobsOptions;
             $options->setPrefix($prefix);
 
             $files = [];

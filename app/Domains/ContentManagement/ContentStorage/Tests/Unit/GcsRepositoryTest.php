@@ -6,7 +6,6 @@ use App\Domains\ContentManagement\ContentStorage\Exceptions\ReadException;
 use App\Domains\ContentManagement\ContentStorage\Exceptions\WriteException;
 use App\Domains\ContentManagement\ContentStorage\Models\ContentData;
 use App\Domains\ContentManagement\ContentStorage\Repositories\GcsRepository;
-use Google\Cloud\Core\Exception\NotFoundException;
 use Google\Cloud\Storage\Bucket;
 use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Storage\StorageObject;
@@ -87,6 +86,7 @@ test('writes content to gcs', function () {
         ->once()
         ->andReturnUsing(function ($content, $options) use (&$capturedArgs) {
             $capturedArgs = compact('content', 'options');
+
             return m::mock(StorageObject::class);
         });
 
@@ -291,6 +291,7 @@ test('stores content hash in object metadata', function () {
         ->shouldReceive('upload')
         ->andReturnUsing(function ($content, $options) use (&$capturedOptions) {
             $capturedOptions = $options;
+
             return m::mock(StorageObject::class);
         });
 
@@ -313,6 +314,7 @@ test('sets correct content type for markdown', function () {
         ->shouldReceive('upload')
         ->andReturnUsing(function ($content, $options) use (&$capturedOptions) {
             $capturedOptions = $options;
+
             return m::mock(StorageObject::class);
         });
 

@@ -72,7 +72,7 @@ class PluginsController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to install plugin: ' . $e->getMessage(),
+                'message' => 'Failed to install plugin: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -86,11 +86,11 @@ class PluginsController extends Controller
             // Check if plugin is installed
             $plugin = \App\Domains\Plugins\Models\Plugin::where('slug', $slug)->first();
 
-            if (!$plugin) {
+            if (! $plugin) {
                 // Plugin not installed, install and enable it
                 $result = $this->pluginService->installAndEnable($slug);
 
-                if (!$result['success']) {
+                if (! $result['success']) {
                     return response()->json([
                         'success' => false,
                         'message' => $result['message'],
@@ -191,7 +191,7 @@ class PluginsController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => count($discovered) . ' plugin(s) discovered',
+                'message' => count($discovered).' plugin(s) discovered',
                 'discovered' => $discovered,
             ]);
         } catch (\Exception $e) {

@@ -12,9 +12,9 @@ class ReadException extends StorageException
     /**
      * Create a new read exception
      *
-     * @param string $message Error message
-     * @param int $code Error code
-     * @param \Throwable|null $previous Previous exception
+     * @param  string  $message  Error message
+     * @param  int  $code  Error code
+     * @param  \Throwable|null  $previous  Previous exception
      */
     public function __construct(string $message = 'Failed to read content', int $code = 0, ?\Throwable $previous = null)
     {
@@ -24,8 +24,7 @@ class ReadException extends StorageException
     /**
      * Create exception for missing content
      *
-     * @param string $path Content path
-     * @return static
+     * @param  string  $path  Content path
      */
     public static function notFound(string $path): static
     {
@@ -35,9 +34,8 @@ class ReadException extends StorageException
     /**
      * Create exception for invalid frontmatter
      *
-     * @param string $path Content path
-     * @param string $reason Parsing error reason
-     * @return static
+     * @param  string  $path  Content path
+     * @param  string  $reason  Parsing error reason
      */
     public static function invalidFrontmatter(string $path, string $reason): static
     {
@@ -47,8 +45,7 @@ class ReadException extends StorageException
     /**
      * Create exception for read permission error
      *
-     * @param string $path Content path
-     * @return static
+     * @param  string  $path  Content path
      */
     public static function permissionDenied(string $path): static
     {
@@ -58,9 +55,8 @@ class ReadException extends StorageException
     /**
      * Create exception for corrupted content
      *
-     * @param string $path Content path
-     * @param string $reason Corruption reason
-     * @return static
+     * @param  string  $path  Content path
+     * @param  string  $reason  Corruption reason
      */
     public static function corrupted(string $path, string $reason): static
     {
@@ -70,9 +66,8 @@ class ReadException extends StorageException
     /**
      * Create exception for general read failure
      *
-     * @param string $path Content path
-     * @param string $reason Failure reason
-     * @return static
+     * @param  string  $path  Content path
+     * @param  string  $reason  Failure reason
      */
     public static function failed(string $path, string $reason): static
     {

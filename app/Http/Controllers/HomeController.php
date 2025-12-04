@@ -6,9 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Domains\ContentManagement\Pages\Models\Page;
 use App\Domains\ContentManagement\Services\MarkdownRenderServiceContract;
-use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\Settings\Models\Setting;
-use App\Http\Controllers\BlogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
@@ -98,12 +96,12 @@ class HomeController extends Controller
      */
     private function getCachedOrRenderHtml(Page $page): string
     {
-        $cacheKey = 'page.html.' . $page->id;
+        $cacheKey = 'page.html.'.$page->id;
 
         return Cache::remember($cacheKey, 3600, function () use ($page) {
             $content = $page->content;
 
-            if (!$content) {
+            if (! $content) {
                 return '<div class="text-center text-gray-500 py-12">No content available</div>';
             }
 

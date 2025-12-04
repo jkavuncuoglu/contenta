@@ -8,7 +8,6 @@ use App\Domains\ContentManagement\Pages\Models\Page;
 use App\Domains\ContentManagement\Pages\Observers\PageObserver;
 use App\Domains\ContentManagement\Pages\Services\PageService;
 use App\Domains\ContentManagement\Pages\Services\PageServiceContract;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class PageServiceProvider extends ServiceProvider

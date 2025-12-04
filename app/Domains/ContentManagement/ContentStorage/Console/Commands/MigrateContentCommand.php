@@ -69,23 +69,24 @@ class MigrateContentCommand extends Command
         // Validate content type
         if (! in_array($contentType, ['pages', 'posts'])) {
             $this->error("Invalid content type: {$contentType}. Must be 'pages' or 'posts'.");
+
             return Command::FAILURE;
         }
 
         // Display migration info
-        $this->info("Content Migration");
-        $this->line("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        $this->info('Content Migration');
+        $this->line('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         $this->line("Content Type: <fg=cyan>{$contentType}</>");
         $this->line("From: <fg=yellow>{$fromDriver}</>");
         $this->line("To: <fg=green>{$toDriver}</>");
-        $this->line("Mode: ".($async ? '<fg=magenta>Async (Queue)</>' : '<fg=blue>Synchronous</>'));
+        $this->line('Mode: '.($async ? '<fg=magenta>Async (Queue)</>' : '<fg=blue>Synchronous</>'));
         if ($deleteSource) {
-            $this->line("⚠️  Source content will be <fg=red>deleted</> after migration");
+            $this->line('⚠️  Source content will be <fg=red>deleted</> after migration');
         }
         if ($dryRun) {
-            $this->line("🔍 <fg=yellow>DRY RUN MODE</> - No actual changes will be made");
+            $this->line('🔍 <fg=yellow>DRY RUN MODE</> - No actual changes will be made');
         }
-        $this->line("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        $this->line('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         $this->newLine();
 
         // Dry run preview
@@ -97,6 +98,7 @@ class MigrateContentCommand extends Command
         if (! $force) {
             if (! $this->confirm('Do you want to proceed with the migration?', true)) {
                 $this->info('Migration cancelled.');
+
                 return Command::SUCCESS;
             }
         }
@@ -132,6 +134,7 @@ class MigrateContentCommand extends Command
             return Command::SUCCESS;
         } catch (\Exception $e) {
             $this->error("Migration failed: {$e->getMessage()}");
+
             return Command::FAILURE;
         }
     }
@@ -165,7 +168,7 @@ class MigrateContentCommand extends Command
                 }
 
                 if ($totalItems > 5) {
-                    $this->line("  ... and ".($totalItems - 5)." more");
+                    $this->line('  ... and '.($totalItems - 5).' more');
                 }
             }
 
@@ -175,6 +178,7 @@ class MigrateContentCommand extends Command
             return Command::SUCCESS;
         } catch (\Exception $e) {
             $this->error("Dry run failed: {$e->getMessage()}");
+
             return Command::FAILURE;
         }
     }
@@ -258,8 +262,8 @@ class MigrateContentCommand extends Command
 
         $this->newLine();
         $this->line("Verified: <fg=green>{$result['verified']}</>");
-        $this->line("Mismatched: <fg=".($result['mismatched'] > 0 ? 'red' : 'green').">{$result['mismatched']}</>");
-        $this->line("Missing: <fg=".($result['missing'] > 0 ? 'red' : 'green').">{$result['missing']}</>");
+        $this->line('Mismatched: <fg='.($result['mismatched'] > 0 ? 'red' : 'green').">{$result['mismatched']}</>");
+        $this->line('Missing: <fg='.($result['missing'] > 0 ? 'red' : 'green').">{$result['missing']}</>");
 
         if (! empty($result['errors'])) {
             $this->warn("\nErrors found:");
@@ -267,7 +271,7 @@ class MigrateContentCommand extends Command
                 $this->line("  • {$error['path']}: {$error['error']}");
             }
             if (count($result['errors']) > 10) {
-                $this->line("  ... and ".(count($result['errors']) - 10)." more errors");
+                $this->line('  ... and '.(count($result['errors']) - 10).' more errors');
             }
         }
     }

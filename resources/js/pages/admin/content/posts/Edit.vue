@@ -41,18 +41,6 @@
                     </button>
                     <button
                         type="button"
-                        @click="activeTab = 'settings'"
-                        :class="[
-                            activeTab === 'settings'
-                                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                                : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
-                            'border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap',
-                        ]"
-                    >
-                        Settings
-                    </button>
-                    <button
-                        type="button"
                         @click="activeTab = 'seo'"
                         :class="[
                             activeTab === 'seo'
@@ -80,7 +68,10 @@
 
             <form @submit.prevent="handleSubmit" class="space-y-6">
                 <!-- Editor Tab -->
-                <div v-show="activeTab === 'editor'" class="space-y-6">
+                <div v-show="activeTab === 'editor'">
+                    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                        <!-- Main Content Area -->
+                        <div class="lg:col-span-2 space-y-6">
                         <!-- Title -->
                         <div
                             class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800"
@@ -198,10 +189,127 @@
                                 {{ errors.excerpt[0] }}
                             </div>
                         </div>
-                </div>
+                        </div>
+                        <!-- End Main Content Area -->
 
-                <!-- Settings Tab -->
-                <div v-show="activeTab === 'settings'" class="space-y-6">
+                        <!-- Sidebar -->
+                        <div class="space-y-6">
+                            <!-- Validation Panel -->
+                            <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
+                                <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
+                                    Validation
+                                </h3>
+
+                                <!-- Validating indicator -->
+                                <div
+                                    v-if="validating"
+                                    class="mb-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400"
+                                >
+                                    <svg
+                                        class="h-4 w-4 animate-spin"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            class="opacity-25"
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            stroke-width="4"
+                                        ></circle>
+                                        <path
+                                            class="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                        ></path>
+                                    </svg>
+                                    Validating...
+                                </div>
+
+                                <!-- No errors state -->
+                                <div
+                                    v-else-if="validationErrors.length === 0"
+                                    class="flex items-center gap-2 rounded-lg bg-green-50 p-3 text-sm text-green-800 dark:bg-green-900/20 dark:text-green-400"
+                                >
+                                    <svg
+                                        class="h-5 w-5 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        ></path>
+                                    </svg>
+                                    <span>No validation errors</span>
+                                </div>
+
+                                <!-- Error list -->
+                                <div v-else class="space-y-3">
+                                    <div
+                                        class="mb-2 flex items-center gap-2 text-sm font-medium text-neutral-900 dark:text-white"
+                                    >
+                                        <svg
+                                            class="h-5 w-5 text-red-500"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path
+                                                fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                clip-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                        <span
+                                            >{{ validationErrors.length }}
+                                            {{
+                                                validationErrors.length === 1
+                                                    ? 'Error'
+                                                    : 'Errors'
+                                            }}
+                                            Found</span
+                                        >
+                                    </div>
+
+                                    <div
+                                        v-for="(error, index) in validationErrors"
+                                        :key="index"
+                                        class="rounded-lg border p-3"
+                                        :class="errorTypeColor(error.type)"
+                                    >
+                                        <div class="flex items-start gap-2">
+                                            <span class="flex-shrink-0 text-lg">{{
+                                                errorTypeIcon(error.type)
+                                            }}</span>
+                                            <div class="min-w-0 flex-1">
+                                                <p class="text-sm font-medium capitalize">
+                                                    {{ error.type }} Error
+                                                </p>
+                                                <p class="mt-1 text-sm break-words">
+                                                    {{ error.message }}
+                                                </p>
+                                                <p
+                                                    v-if="error.line || error.column"
+                                                    class="mt-1 text-xs opacity-75"
+                                                >
+                                                    <span v-if="error.line"
+                                                        >Line {{ error.line }}</span
+                                                    >
+                                                    <span v-if="error.line && error.column"
+                                                        >,
+                                                    </span>
+                                                    <span v-if="error.column"
+                                                        >Column {{ error.column }}</span
+                                                    >
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                     <!-- Publish Settings -->
                     <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
                         <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
@@ -502,7 +610,12 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
+                        <!-- End Sidebar -->
+                    </div>
+                    <!-- End Grid -->
                 </div>
+                <!-- End Editor Tab -->
 
                 <!-- SEO Tab -->
                 <div v-show="activeTab === 'seo'">
@@ -514,48 +627,11 @@
                 </div>
 
                 <!-- Revision History Tab -->
-                <div v-show="activeTab === 'revisions'" class="space-y-6">
-                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
-                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
-                            Revision History
-                        </h3>
-                        <div class="space-y-4">
-                            <div class="rounded-md bg-green-50 p-4 dark:bg-green-900/20">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <div class="ml-3">
-                                        <h3 class="text-sm font-medium text-green-800 dark:text-green-200">
-                                            Backend API Ready
-                                        </h3>
-                                        <div class="mt-2 text-sm text-green-700 dark:text-green-300">
-                                            <p>
-                                                The revision history API was implemented in Phase 2.5.
-                                                The frontend UI will be added in Phase 7.3.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Placeholder -->
-                            <div class="text-center py-12">
-                                <svg class="mx-auto h-12 w-12 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <h3 class="mt-2 text-sm font-medium text-neutral-900 dark:text-white">Revision History</h3>
-                                <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                                    View, compare, and restore previous versions of this post.
-                                </p>
-                                <p class="mt-1 text-xs text-neutral-400">
-                                    Full interface coming in Phase 7.3
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div v-show="activeTab === 'revisions'">
+                    <RevisionHistoryTab
+                        :content-id="post.id"
+                        content-type="post"
+                    />
                 </div>
             </form>
         </div>
@@ -571,6 +647,8 @@ import { marked } from 'marked';
 import { computed, reactive, ref, toRef } from 'vue';
 import { SEOTab } from '@/components/admin/seo';
 import { useSEOAnalysis } from '@/composables/seo/useSEOAnalysis';
+import { useShortcodeValidation } from '@/composables/useShortcodeValidation';
+import { RevisionHistoryTab } from '@/components/admin/revisions';
 
 interface Props {
     post: {
@@ -598,7 +676,7 @@ const props = defineProps<Props>();
 const errors = ref<Record<string, string[]>>({});
 const loading = ref(false);
 const tagInput = ref('');
-const activeTab = ref<'editor' | 'settings' | 'seo' | 'revisions'>('editor');
+const activeTab = ref<'editor' | 'seo' | 'revisions'>('editor');
 
 // Timezone handling for scheduled posts
 const publishDate = ref('');
@@ -707,6 +785,39 @@ const seoAnalysis = useSEOAnalysis(
     seoMetaDescription,
 );
 
+// Shortcode Validation
+const { validating, validationErrors, isValid } = useShortcodeValidation(
+    toRef(form, 'content_markdown'),
+    800, // debounce 800ms
+);
+
+// Validation error helpers
+const errorTypeIcon = (type: string) => {
+    switch (type) {
+        case 'render':
+            return '⚠️';
+        case 'parse':
+            return '❌';
+        case 'fatal':
+            return '🔴';
+        default:
+            return 'ℹ️';
+    }
+};
+
+const errorTypeColor = (type: string) => {
+    switch (type) {
+        case 'render':
+            return 'text-yellow-700 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20';
+        case 'parse':
+            return 'text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20';
+        case 'fatal':
+            return 'text-red-800 dark:text-red-300 bg-red-100 dark:bg-red-900/30';
+        default:
+            return 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20';
+    }
+};
+
 // Computed property to check if commit message is required
 const requiresCommitMessage = computed(() => {
     const driver = props.post.storage_driver || 'database';
@@ -766,6 +877,12 @@ const generateTOC = (markdown: string) => {
 };
 
 const handleSubmit = async () => {
+    // Prevent saving if there are validation errors
+    if (!isValid.value) {
+        alert('Please fix all validation errors before saving.');
+        return;
+    }
+
     loading.value = true;
     errors.value = {};
 

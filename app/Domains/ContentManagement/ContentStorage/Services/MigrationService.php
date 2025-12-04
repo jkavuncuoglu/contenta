@@ -9,7 +9,6 @@ use App\Domains\ContentManagement\ContentStorage\Exceptions\MigrationException;
 use App\Domains\ContentManagement\ContentStorage\Exceptions\ReadException;
 use App\Domains\ContentManagement\ContentStorage\Exceptions\WriteException;
 use App\Domains\ContentManagement\ContentStorage\Models\ContentMigration;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -44,10 +43,11 @@ class MigrationService
     /**
      * Start a new migration
      *
-     * @param string $contentType Content type (pages|posts)
-     * @param string $fromDriver Source driver name
-     * @param string $toDriver Destination driver name
+     * @param  string  $contentType  Content type (pages|posts)
+     * @param  string  $fromDriver  Source driver name
+     * @param  string  $toDriver  Destination driver name
      * @return ContentMigration Migration record
+     *
      * @throws MigrationException If migration already in progress
      */
     public function startMigration(
@@ -81,7 +81,7 @@ class MigrationService
             'failed_items' => 0,
         ]);
 
-        Log::info("Migration started", [
+        Log::info('Migration started', [
             'migration_id' => $migration->id,
             'content_type' => $contentType,
             'from' => $fromDriver,
@@ -94,8 +94,8 @@ class MigrationService
     /**
      * Execute migration
      *
-     * @param ContentMigration $migration Migration record
-     * @param bool $deleteSource Delete source content after successful migration
+     * @param  ContentMigration  $migration  Migration record
+     * @param  bool  $deleteSource  Delete source content after successful migration
      * @return ContentMigration Updated migration record
      */
     public function executeMigration(
@@ -117,12 +117,13 @@ class MigrationService
             if ($totalItems === 0) {
                 $migration->update(['total_items' => 0]);
                 $migration->markAsCompleted();
+
                 return $migration;
             }
 
             $migration->update(['total_items' => $totalItems]);
 
-            Log::info("Migration execution started", [
+            Log::info('Migration execution started', [
                 'migration_id' => $migration->id,
                 'total_items' => $totalItems,
             ]);
@@ -151,19 +152,19 @@ class MigrationService
                     // Update progress
                     $migration->incrementMigrated();
 
-                    Log::debug("Item migrated successfully", [
+                    Log::debug('Item migrated successfully', [
                         'migration_id' => $migration->id,
                         'source_path' => $sourcePath,
                         'dest_path' => $destPath,
                     ]);
-                } catch (ReadException | WriteException $e) {
+                } catch (ReadException|WriteException $e) {
                     // Log error and continue
                     $migration->incrementFailed(1, [
                         'path' => $sourcePath,
                         'error' => $e->getMessage(),
                     ]);
 
-                    Log::warning("Item migration failed", [
+                    Log::warning('Item migration failed', [
                         'migration_id' => $migration->id,
                         'path' => $sourcePath,
                         'error' => $e->getMessage(),
@@ -174,7 +175,7 @@ class MigrationService
             // Mark as completed
             $migration->markAsCompleted();
 
-            Log::info("Migration completed", [
+            Log::info('Migration completed', [
                 'migration_id' => $migration->id,
                 'migrated' => $migration->migrated_items,
                 'failed' => $migration->failed_items,
@@ -185,7 +186,7 @@ class MigrationService
             // Mark as failed
             $migration->markAsFailed($e->getMessage());
 
-            Log::error("Migration failed", [
+            Log::error('Migration failed', [
                 'migration_id' => $migration->id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -200,7 +201,7 @@ class MigrationService
      *
      * Migrates content back from destination to source.
      *
-     * @param ContentMigration $migration Original migration record
+     * @param  ContentMigration  $migration  Original migration record
      * @return ContentMigration New rollback migration record
      */
     public function rollbackMigration(ContentMigration $migration): ContentMigration
@@ -209,7 +210,7 @@ class MigrationService
             throw MigrationException::notFound($migration->id);
         }
 
-        Log::info("Starting migration rollback", [
+        Log::info('Starting migration rollback', [
             'original_migration_id' => $migration->id,
         ]);
 
@@ -229,8 +230,8 @@ class MigrationService
      *
      * Compares content hashes between source and destination.
      *
-     * @param ContentMigration $migration Migration to verify
-     * @param int $sampleSize Number of random items to verify (0 = all)
+     * @param  ContentMigration  $migration  Migration to verify
+     * @param  int  $sampleSize  Number of random items to verify (0 = all)
      * @return array{verified: int, mismatched: int, missing: int, errors: array}
      */
     public function verifyMigration(ContentMigration $migration, int $sampleSize = 10): array
@@ -269,6 +270,7 @@ class MigrationService
                         'path' => $sourcePath,
                         'error' => 'Missing in destination',
                     ];
+
                     continue;
                 }
 
@@ -320,8 +322,8 @@ class MigrationService
     /**
      * Get migration history
      *
-     * @param string|null $contentType Filter by content type
-     * @param int $limit Number of records to return
+     * @param  string|null  $contentType  Filter by content type
+     * @param  int  $limit  Number of records to return
      * @return \Illuminate\Database\Eloquent\Collection<int, ContentMigration>
      */
     public function getMigrationHistory(?string $contentType = null, int $limit = 10): \Illuminate\Database\Eloquent\Collection
@@ -340,9 +342,8 @@ class MigrationService
     /**
      * Get repository for driver and content type
      *
-     * @param string $driver Driver name
-     * @param string $contentType Content type
-     * @return ContentRepositoryContract
+     * @param  string  $driver  Driver name
+     * @param  string  $contentType  Content type
      */
     private function getRepository(string $driver, string $contentType): ContentRepositoryContract
     {
@@ -358,9 +359,9 @@ class MigrationService
     /**
      * Resolve destination path from source path
      *
-     * @param string $sourcePath Source path
-     * @param string $contentType Content type
-     * @param \App\Domains\ContentStorage\Models\ContentData $contentData Content data
+     * @param  string  $sourcePath  Source path
+     * @param  string  $contentType  Content type
+     * @param  \App\Domains\ContentStorage\Models\ContentData  $contentData  Content data
      * @return string Destination path
      */
     private function resolveDestinationPath(
@@ -381,9 +382,12 @@ class MigrationService
             );
 
             // Create a mock model for path resolution
-            $model = new class extends \Illuminate\Database\Eloquent\Model {
+            $model = new class extends \Illuminate\Database\Eloquent\Model
+            {
                 public $id;
+
                 public $slug;
+
                 private $contentData;
 
                 public function setData($id, $slug, $contentData)
@@ -399,6 +403,7 @@ class MigrationService
                     if (property_exists($this, $name)) {
                         return $this->{$name};
                     }
+
                     return $this->contentData?->get($name);
                 }
 
@@ -420,7 +425,7 @@ class MigrationService
     /**
      * Extract slug from file path
      *
-     * @param string $path File path
+     * @param  string  $path  File path
      * @return string Slug
      */
     private function extractSlugFromPath(string $path): string
@@ -438,7 +443,7 @@ class MigrationService
     /**
      * Cancel a running migration
      *
-     * @param ContentMigration $migration Migration to cancel
+     * @param  ContentMigration  $migration  Migration to cancel
      * @return bool Success
      */
     public function cancelMigration(ContentMigration $migration): bool
@@ -449,7 +454,7 @@ class MigrationService
 
         $migration->markAsFailed('Cancelled by user');
 
-        Log::info("Migration cancelled", [
+        Log::info('Migration cancelled', [
             'migration_id' => $migration->id,
         ]);
 

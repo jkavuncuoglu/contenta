@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 class TagService implements TagServiceContract
 {
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function create(array $data): Tag
     {
@@ -16,7 +16,7 @@ class TagService implements TagServiceContract
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function update(Tag $tag, array $data): bool
     {
@@ -34,12 +34,13 @@ class TagService implements TagServiceContract
     }
 
     /**
-     * @param array<string, mixed> $filters
+     * @param  array<string, mixed>  $filters
      * @return Collection<int, Tag>
      */
     public function list(array $filters = []): Collection
     {
         $query = Tag::query();
+
         // Add filter logic here if needed
         return $query->get();
     }

@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Domains\Plugins\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Plugin extends Model
 {
     use HasFactory;
 
     public const TYPE_FRONTEND = 'frontend';
+
     public const TYPE_ADMIN = 'admin';
+
     public const TYPE_UNIVERSAL = 'universal';
 
     protected $fillable = [
@@ -54,11 +56,11 @@ class Plugin extends Model
      */
     public function getEntryPointPath(): ?string
     {
-        if (!$this->entry_point) {
+        if (! $this->entry_point) {
             return null;
         }
 
-        return $this->getDirectoryPath() . '/' . $this->entry_point;
+        return $this->getDirectoryPath().'/'.$this->entry_point;
     }
 
     /**
@@ -66,12 +68,12 @@ class Plugin extends Model
      */
     public function hasSecurityIssues(): bool
     {
-        if (!$this->scan_results) {
+        if (! $this->scan_results) {
             return false;
         }
 
-        return !empty($this->scan_results['threats']) ||
-               !empty($this->scan_results['warnings']);
+        return ! empty($this->scan_results['threats']) ||
+               ! empty($this->scan_results['warnings']);
     }
 
     /**

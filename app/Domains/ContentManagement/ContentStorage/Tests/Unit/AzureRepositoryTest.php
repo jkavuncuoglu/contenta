@@ -8,7 +8,6 @@ use App\Domains\ContentManagement\ContentStorage\Models\ContentData;
 use App\Domains\ContentManagement\ContentStorage\Repositories\AzureRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Microsoft\Azure\Storage\Blob\BlobRestProxy;
-use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
 use Mockery as m;
 use Tests\TestCase;
 
@@ -87,6 +86,7 @@ test('writes content to azure blob storage', function () {
         ->once()
         ->andReturnUsing(function ($container, $blobName, $content, $options) use (&$capturedArgs) {
             $capturedArgs = compact('container', 'blobName', 'content', 'options');
+
             return m::mock();
         });
 
@@ -297,6 +297,7 @@ test('stores content hash in blob metadata', function () {
         ->shouldReceive('createBlockBlob')
         ->andReturnUsing(function ($container, $blobName, $content, $options) use (&$capturedOptions) {
             $capturedOptions = $options;
+
             return m::mock();
         });
 
@@ -318,6 +319,7 @@ test('sets correct content type for markdown', function () {
         ->shouldReceive('createBlockBlob')
         ->andReturnUsing(function ($container, $blobName, $content, $options) use (&$capturedOptions) {
             $capturedOptions = $options;
+
             return m::mock();
         });
 

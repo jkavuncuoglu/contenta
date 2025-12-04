@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\ContentStorage\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Content Migration Model
@@ -55,14 +55,17 @@ class ContentMigration extends Model
 
     // Status constants
     const STATUS_PENDING = 'pending';
+
     const STATUS_RUNNING = 'running';
+
     const STATUS_COMPLETED = 'completed';
+
     const STATUS_FAILED = 'failed';
 
     /**
      * Scope for pending migrations
      *
-     * @param Builder<ContentMigration> $query
+     * @param  Builder<ContentMigration>  $query
      * @return Builder<ContentMigration>
      */
     public function scopePending(Builder $query): Builder
@@ -73,7 +76,7 @@ class ContentMigration extends Model
     /**
      * Scope for running migrations
      *
-     * @param Builder<ContentMigration> $query
+     * @param  Builder<ContentMigration>  $query
      * @return Builder<ContentMigration>
      */
     public function scopeRunning(Builder $query): Builder
@@ -84,7 +87,7 @@ class ContentMigration extends Model
     /**
      * Scope for completed migrations
      *
-     * @param Builder<ContentMigration> $query
+     * @param  Builder<ContentMigration>  $query
      * @return Builder<ContentMigration>
      */
     public function scopeCompleted(Builder $query): Builder
@@ -95,7 +98,7 @@ class ContentMigration extends Model
     /**
      * Scope for failed migrations
      *
-     * @param Builder<ContentMigration> $query
+     * @param  Builder<ContentMigration>  $query
      * @return Builder<ContentMigration>
      */
     public function scopeFailed(Builder $query): Builder
@@ -106,8 +109,7 @@ class ContentMigration extends Model
     /**
      * Scope for specific content type
      *
-     * @param Builder<ContentMigration> $query
-     * @param string $contentType
+     * @param  Builder<ContentMigration>  $query
      * @return Builder<ContentMigration>
      */
     public function scopeForContentType(Builder $query, string $contentType): Builder
@@ -172,7 +174,7 @@ class ContentMigration extends Model
     /**
      * Mark migration as failed
      *
-     * @param string $reason Failure reason
+     * @param  string  $reason  Failure reason
      */
     public function markAsFailed(string $reason): void
     {
@@ -192,7 +194,7 @@ class ContentMigration extends Model
     /**
      * Increment migrated items counter
      *
-     * @param int $count Number of items migrated
+     * @param  int  $count  Number of items migrated
      */
     public function incrementMigrated(int $count = 1): void
     {
@@ -202,8 +204,8 @@ class ContentMigration extends Model
     /**
      * Increment failed items counter
      *
-     * @param int $count Number of items failed
-     * @param array<string, mixed>|null $errorDetails Error details
+     * @param  int  $count  Number of items failed
+     * @param  array<string, mixed>|null  $errorDetails  Error details
      */
     public function incrementFailed(int $count = 1, ?array $errorDetails = null): void
     {

@@ -21,7 +21,7 @@ interface SiteSettingsServiceContract
     /**
      * Update multiple settings
      *
-     * @param array<string, mixed> $settings
+     * @param  array<string, mixed>  $settings
      */
     public function updateSettings(array $settings): bool;
 

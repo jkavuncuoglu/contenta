@@ -21,7 +21,7 @@ interface BlockRendererInterface
     /**
      * Validate the shortcode attributes
      *
-     * @param array<string, string> $attributes
+     * @param  array<string, string>  $attributes
      */
     public function validate(array $attributes): bool;
 

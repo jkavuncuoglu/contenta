@@ -104,6 +104,7 @@ test('writes new content to github', function () {
         ->once()
         ->andReturnUsing(function ($owner, $repo, $path, $params) use (&$capturedArgs) {
             $capturedArgs = compact('owner', 'repo', 'path', 'params');
+
             return ['content' => ['sha' => 'def456']];
         });
 
@@ -151,6 +152,7 @@ test('updates existing content on github', function () {
         ->once()
         ->andReturnUsing(function ($owner, $repo, $path, $params) use (&$capturedArgs) {
             $capturedArgs = compact('owner', 'repo', 'path', 'params');
+
             return ['content' => ['sha' => 'new-sha']];
         });
 
@@ -227,6 +229,7 @@ test('deletes content from github', function () {
         ->once()
         ->andReturnUsing(function ($owner, $repo, $path, $params) use (&$capturedArgs) {
             $capturedArgs = compact('owner', 'repo', 'path', 'params');
+
             return ['commit' => ['sha' => 'commit-sha']];
         });
 
@@ -473,6 +476,7 @@ test('generates appropriate commit messages', function () {
         ->shouldReceive('createFile')
         ->andReturnUsing(function ($owner, $repo, $path, $params) use (&$capturedMessage) {
             $capturedMessage = $params['message'];
+
             return ['content' => ['sha' => 'new-sha']];
         });
 
@@ -505,6 +509,7 @@ test('handles base64 encoding correctly', function () {
         ->shouldReceive('createFile')
         ->andReturnUsing(function ($owner, $repo, $path, $params) use (&$capturedContent) {
             $capturedContent = $params['content'];
+
             return ['content' => ['sha' => 'new-sha']];
         });
 

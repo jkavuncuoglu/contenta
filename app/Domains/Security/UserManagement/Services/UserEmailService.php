@@ -2,9 +2,7 @@
 
 namespace App\Domains\Security\UserManagement\Services;
 
-use App\Domains\Security\UserManagement\Models\User;
 use App\Domains\Security\UserManagement\Models\UserEmail;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -72,6 +70,7 @@ class UserEmailService implements UserEmailServiceContract
     {
         $token = Str::random(60);
         $userEmail->update(['verification_token' => $token]);
+
         return $token;
     }
 
@@ -79,6 +78,7 @@ class UserEmailService implements UserEmailServiceContract
     {
         $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         $userEmail->update(['email_verification_code' => $code]);
+
         return $code;
     }
 
@@ -97,7 +97,7 @@ class UserEmailService implements UserEmailServiceContract
     {
         $userEmail = $this->getByUserEmail($email);
 
-        if (!$userEmail->verified_at) {
+        if (! $userEmail->verified_at) {
             throw ValidationException::withMessages([
                 'error' => 'Email is not verified.',
             ]);

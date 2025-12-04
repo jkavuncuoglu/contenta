@@ -7,7 +7,7 @@ namespace App\Domains\ContentManagement\Services\ShortcodeParser\AST;
 class ShortcodeNode extends Node
 {
     /**
-     * @param array<string, string> $attributes
+     * @param  array<string, string>  $attributes
      */
     public function __construct(
         public readonly string $tag,

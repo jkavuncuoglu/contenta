@@ -88,7 +88,7 @@ class SecuritySettingsController extends Controller
             'recaptcha_threshold',
         ]));
 
-        if (!$updated) {
+        if (! $updated) {
             return redirect()->route('admin.settings.security.index')
                 ->with('error', 'Failed to update security settings');
         }
@@ -100,7 +100,7 @@ class SecuritySettingsController extends Controller
     /**
      * Update security settings in the database
      *
-     * @param array<string, mixed> $settings
+     * @param  array<string, mixed>  $settings
      */
     private function updateSecuritySettings(array $settings): bool
     {

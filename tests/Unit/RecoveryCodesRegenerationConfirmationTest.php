@@ -6,7 +6,6 @@ use App\Domains\Security\UserManagement\Models\User;
 use App\Mail\RecoveryCodesRegenerationConfirmation;
 use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Tests\TestCase;
 

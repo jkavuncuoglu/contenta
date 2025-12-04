@@ -52,7 +52,7 @@ class GitHubRepository implements ContentRepositoryContract
         $this->branch = $config['branch'] ?? 'main';
         $this->basePath = $config['base_path'] ?? '';
 
-        $this->client = new GitHubClient();
+        $this->client = new GitHubClient;
         $this->client->authenticate($config['token'], null, GitHubClient::AUTH_ACCESS_TOKEN);
     }
 
@@ -85,7 +85,7 @@ class GitHubRepository implements ContentRepositoryContract
                 ['sha' => $this->branch, 'path' => $fullPath, 'per_page' => 1]
             );
 
-            $lastModified = new DateTimeImmutable();
+            $lastModified = new DateTimeImmutable;
             if (! empty($commits[0]['commit']['committer']['date'])) {
                 $lastModified = new DateTimeImmutable($commits[0]['commit']['committer']['date']);
             }

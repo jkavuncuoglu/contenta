@@ -166,7 +166,7 @@ class S3RevisionProvider implements RevisionProviderInterface
             // Copy the old version to become the current version
             $this->repository->getClient()->copyObject([
                 'Bucket' => $this->repository->getBucket(),
-                'CopySource' => urlencode($this->repository->getBucket() . '/' . $storagePath) . '?versionId=' . $revisionId,
+                'CopySource' => urlencode($this->repository->getBucket().'/'.$storagePath).'?versionId='.$revisionId,
                 'Key' => $storagePath,
             ]);
 
@@ -191,6 +191,7 @@ class S3RevisionProvider implements RevisionProviderInterface
     public function getLatestRevision(string $storagePath): ?Revision
     {
         $revisions = $this->getRevisions($storagePath, 1, 1);
+
         return $revisions->first();
     }
 }

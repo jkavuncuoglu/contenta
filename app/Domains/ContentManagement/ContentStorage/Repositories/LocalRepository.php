@@ -33,8 +33,8 @@ class LocalRepository implements ContentRepositoryContract
     /**
      * Create a new local repository
      *
-     * @param string $disk Storage disk name (default: 'content')
-     * @param string $basePath Base path within disk (default: '')
+     * @param  string  $disk  Storage disk name (default: 'content')
+     * @param  string  $basePath  Base path within disk (default: '')
      */
     public function __construct(string $disk = 'content', string $basePath = '')
     {
@@ -80,7 +80,7 @@ class LocalRepository implements ContentRepositoryContract
         } catch (ReadException $e) {
             throw $e;
         } catch (\Exception $e) {
-            Log::error("Failed to read from local storage", [
+            Log::error('Failed to read from local storage', [
                 'driver' => 'local',
                 'path' => $path,
                 'error' => $e->getMessage(),
@@ -114,7 +114,7 @@ class LocalRepository implements ContentRepositoryContract
                 throw WriteException::networkFailure('local', 'Failed to write file');
             }
 
-            Log::info("Content written to local storage", [
+            Log::info('Content written to local storage', [
                 'driver' => 'local',
                 'path' => $path,
                 'size' => strlen($markdown),
@@ -124,7 +124,7 @@ class LocalRepository implements ContentRepositoryContract
         } catch (WriteException $e) {
             throw $e;
         } catch (\Exception $e) {
-            Log::error("Failed to write to local storage", [
+            Log::error('Failed to write to local storage', [
                 'driver' => 'local',
                 'path' => $path,
                 'error' => $e->getMessage(),
@@ -166,7 +166,7 @@ class LocalRepository implements ContentRepositoryContract
                 throw WriteException::networkFailure('local', 'Failed to delete file');
             }
 
-            Log::info("Content deleted from local storage", [
+            Log::info('Content deleted from local storage', [
                 'driver' => 'local',
                 'path' => $path,
             ]);
@@ -175,7 +175,7 @@ class LocalRepository implements ContentRepositoryContract
         } catch (WriteException $e) {
             throw $e;
         } catch (\Exception $e) {
-            Log::error("Failed to delete from local storage", [
+            Log::error('Failed to delete from local storage', [
                 'driver' => 'local',
                 'path' => $path,
                 'error' => $e->getMessage(),
@@ -211,7 +211,7 @@ class LocalRepository implements ContentRepositoryContract
 
             return array_values($mdFiles);
         } catch (\Exception $e) {
-            Log::error("Failed to list files in local storage", [
+            Log::error('Failed to list files in local storage', [
                 'driver' => 'local',
                 'directory' => $directory,
                 'error' => $e->getMessage(),
@@ -241,7 +241,7 @@ class LocalRepository implements ContentRepositoryContract
 
             return $exists;
         } catch (\Exception $e) {
-            Log::error("Local storage connection test failed", [
+            Log::error('Local storage connection test failed', [
                 'driver' => 'local',
                 'disk' => $this->disk,
                 'error' => $e->getMessage(),
@@ -262,7 +262,7 @@ class LocalRepository implements ContentRepositoryContract
     /**
      * Build full path with base path
      *
-     * @param string $path Relative path
+     * @param  string  $path  Relative path
      * @return string Full path
      */
     private function buildFullPath(string $path): string
@@ -276,8 +276,6 @@ class LocalRepository implements ContentRepositoryContract
 
     /**
      * Get disk instance
-     *
-     * @return \Illuminate\Contracts\Filesystem\Filesystem
      */
     public function getDisk(): \Illuminate\Contracts\Filesystem\Filesystem
     {
@@ -286,8 +284,6 @@ class LocalRepository implements ContentRepositoryContract
 
     /**
      * Get base path
-     *
-     * @return string
      */
     public function getBasePath(): string
     {

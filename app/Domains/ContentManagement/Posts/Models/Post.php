@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Posts\Models;
 
-use App\Domains\ContentManagement\Posts\Aggregates\PostAggregate;
 use App\Domains\ContentManagement\Categories\Models\Category;
-use App\Domains\ContentManagement\Posts\Models\Comment;
-use App\Domains\ContentManagement\Posts\Models\PostRevision;
+use App\Domains\ContentManagement\ContentStorage\ContentStorageManager;
+use App\Domains\ContentManagement\ContentStorage\Contracts\RevisionProviderInterface;
+use App\Domains\ContentManagement\ContentStorage\Factories\RevisionProviderFactory;
+use App\Domains\ContentManagement\ContentStorage\Models\ContentData as RepositoryContentData;
+use App\Domains\ContentManagement\ContentStorage\ValueObjects\ContentData;
+use App\Domains\ContentManagement\ContentStorage\ValueObjects\RevisionCollection;
+use App\Domains\ContentManagement\Posts\Aggregates\PostAggregate;
 use App\Domains\ContentManagement\Tags\Models\Tag;
 use App\Domains\Security\UserManagement\Models\User;
-use App\Domains\ContentManagement\ContentStorage\ContentStorageManager;
-use App\Domains\ContentManagement\ContentStorage\ValueObjects\ContentData;
-use App\Domains\ContentManagement\ContentStorage\Models\ContentData as RepositoryContentData;
-use App\Domains\ContentManagement\ContentStorage\Factories\RevisionProviderFactory;
-use App\Domains\ContentManagement\ContentStorage\Contracts\RevisionProviderInterface;
-use App\Domains\ContentManagement\ContentStorage\ValueObjects\RevisionCollection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,9 +29,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Post extends Model implements HasMedia
 {
     use HasFactory;
-    use SoftDeletes;
     use InteractsWithMedia;
     use LogsActivity;
+    use SoftDeletes;
 
     /**
      * Create a new factory instance for the model
@@ -92,6 +90,7 @@ class Post extends Model implements HasMedia
      * @var array<int, string>
      */
     protected static array $logAttributes = ['title', 'status', 'published_at'];
+
     protected static bool $logOnlyDirty = true;
 
     // Relationships
@@ -102,7 +101,6 @@ class Post extends Model implements HasMedia
     {
         return $this->belongsTo(User::class, 'author_id');
     }
-
 
     /**
      * @return BelongsTo<Post, $this>
@@ -198,7 +196,7 @@ class Post extends Model implements HasMedia
 
     // Scopes
     /**
-     * @param Builder<Post> $query
+     * @param  Builder<Post>  $query
      * @return Builder<Post>
      */
     public function scopePublished(Builder $query): Builder
@@ -207,7 +205,7 @@ class Post extends Model implements HasMedia
     }
 
     /**
-     * @param Builder<Post> $query
+     * @param  Builder<Post>  $query
      * @return Builder<Post>
      */
     public function scopeScheduled(Builder $query): Builder
@@ -217,14 +215,13 @@ class Post extends Model implements HasMedia
     }
 
     /**
-     * @param Builder<Post> $query
+     * @param  Builder<Post>  $query
      * @return Builder<Post>
      */
     public function scopeDraft(Builder $query): Builder
     {
         return $query->where('status', 'draft');
     }
-
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -249,7 +246,7 @@ class Post extends Model implements HasMedia
         }
 
         // Otherwise, fetch from ContentStorage
-        if (!$this->storage_path) {
+        if (! $this->storage_path) {
             return null;
         }
 
@@ -281,8 +278,8 @@ class Post extends Model implements HasMedia
     /**
      * Set content to storage backend
      *
-     * @param ContentData $content The content to store
-     * @param array<string, mixed> $metadata Optional metadata (e.g., commit_message for Git storage)
+     * @param  ContentData  $content  The content to store
+     * @param  array<string, mixed>  $metadata  Optional metadata (e.g., commit_message for Git storage)
      */
     public function setContent(ContentData $content, array $metadata = []): void
     {
@@ -291,17 +288,18 @@ class Post extends Model implements HasMedia
             $this->content_markdown = $content->markdown;
             $this->content_html = $content->html;
             $this->table_of_contents = $content->tableOfContents;
+
             return;
         }
 
         // Otherwise, write to ContentStorage
-        if (!$this->storage_path) {
+        if (! $this->storage_path) {
             $this->storage_path = $this->generateStoragePath();
         }
 
         // For Git-based storage, ensure commit message is set
         if (in_array($this->storage_driver, ['github', 'gitlab', 'bitbucket'])) {
-            if (!isset($metadata['commit_message'])) {
+            if (! isset($metadata['commit_message'])) {
                 $metadata['commit_message'] = "Update: {$this->title}";
             }
         }
@@ -322,7 +320,7 @@ class Post extends Model implements HasMedia
             }
 
             // Add metadata (e.g., commit_message) to frontmatter for Git storage
-            if (!empty($metadata)) {
+            if (! empty($metadata)) {
                 $frontmatter = array_merge($frontmatter, $metadata);
             }
 
@@ -378,6 +376,7 @@ class Post extends Model implements HasMedia
 
         // Otherwise, fetch from ContentStorage
         $content = $this->getContent();
+
         return $content?->markdown;
     }
 
@@ -393,6 +392,7 @@ class Post extends Model implements HasMedia
 
         // Otherwise, fetch from ContentStorage
         $content = $this->getContent();
+
         return $content?->html;
     }
 
@@ -408,6 +408,7 @@ class Post extends Model implements HasMedia
 
         // Otherwise, fetch from ContentStorage
         $content = $this->getContent();
+
         return $content?->tableOfContents;
     }
 
@@ -420,19 +421,19 @@ class Post extends Model implements HasMedia
     {
         /** @var RevisionProviderFactory $factory */
         $factory = app(RevisionProviderFactory::class);
+
         return $factory->forModel($this);
     }
 
     /**
      * Get paginated revision history
      *
-     * @param int $page Page number (1-indexed)
-     * @param int $perPage Items per page (default: 10)
-     * @return RevisionCollection
+     * @param  int  $page  Page number (1-indexed)
+     * @param  int  $perPage  Items per page (default: 10)
      */
     public function revisionHistory(int $page = 1, int $perPage = 10): RevisionCollection
     {
-        if (!$this->storage_path) {
+        if (! $this->storage_path) {
             // No cloud storage path, return empty collection
             return new RevisionCollection([], 0, $page, $perPage, false);
         }
@@ -443,12 +444,12 @@ class Post extends Model implements HasMedia
     /**
      * Get a specific revision
      *
-     * @param string $revisionId Version ID, commit hash, or DB revision ID
+     * @param  string  $revisionId  Version ID, commit hash, or DB revision ID
      * @return \App\Domains\ContentManagement\ContentStorage\ValueObjects\Revision|null
      */
     public function getRevisionById(string $revisionId)
     {
-        if (!$this->storage_path) {
+        if (! $this->storage_path) {
             return null;
         }
 
@@ -458,12 +459,11 @@ class Post extends Model implements HasMedia
     /**
      * Restore a specific revision
      *
-     * @param string $revisionId Version ID or commit hash
-     * @return bool
+     * @param  string  $revisionId  Version ID or commit hash
      */
     public function restoreRevisionById(string $revisionId): bool
     {
-        if (!$this->storage_path) {
+        if (! $this->storage_path) {
             return false;
         }
 

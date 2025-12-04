@@ -58,6 +58,7 @@ class GCSRevisionProvider implements RevisionProviderInterface
 
                 if ($count < $start) {
                     $count++;
+
                     continue;
                 }
 
@@ -82,7 +83,7 @@ class GCSRevisionProvider implements RevisionProviderInterface
                             'metageneration' => $info['metageneration'],
                             'content_type' => $info['contentType'],
                         ]),
-                        isCurrent: !isset($info['timeDeleted']),
+                        isCurrent: ! isset($info['timeDeleted']),
                     );
                 } catch (\Exception $e) {
                     Log::error('Failed to fetch GCS version content', [
@@ -134,7 +135,7 @@ class GCSRevisionProvider implements RevisionProviderInterface
                     'metageneration' => $info['metageneration'],
                     'content_type' => $info['contentType'],
                 ]),
-                isCurrent: !isset($info['timeDeleted']),
+                isCurrent: ! isset($info['timeDeleted']),
             );
 
         } catch (\Exception $e) {
@@ -179,6 +180,7 @@ class GCSRevisionProvider implements RevisionProviderInterface
     public function getLatestRevision(string $storagePath): ?Revision
     {
         $revisions = $this->getRevisions($storagePath, 1, 1);
+
         return $revisions->first();
     }
 }

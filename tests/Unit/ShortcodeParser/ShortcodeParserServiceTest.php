@@ -3,7 +3,7 @@
 use App\Domains\ContentManagement\Services\ShortcodeParser\ShortcodeParserService;
 
 beforeEach(function () {
-    $this->service = new ShortcodeParserService();
+    $this->service = new ShortcodeParserService;
 });
 
 test('parses and renders simple shortcode', function () {

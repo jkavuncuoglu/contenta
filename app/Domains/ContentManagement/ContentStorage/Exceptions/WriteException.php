@@ -12,9 +12,9 @@ class WriteException extends StorageException
     /**
      * Create a new write exception
      *
-     * @param string $message Error message
-     * @param int $code Error code
-     * @param \Throwable|null $previous Previous exception
+     * @param  string  $message  Error message
+     * @param  int  $code  Error code
+     * @param  \Throwable|null  $previous  Previous exception
      */
     public function __construct(string $message = 'Failed to write content', int $code = 0, ?\Throwable $previous = null)
     {
@@ -24,8 +24,7 @@ class WriteException extends StorageException
     /**
      * Create exception for write permission error
      *
-     * @param string $path Content path
-     * @return static
+     * @param  string  $path  Content path
      */
     public static function permissionDenied(string $path): static
     {
@@ -35,8 +34,7 @@ class WriteException extends StorageException
     /**
      * Create exception for disk space issues
      *
-     * @param string $path Content path
-     * @return static
+     * @param  string  $path  Content path
      */
     public static function insufficientSpace(string $path): static
     {
@@ -46,9 +44,8 @@ class WriteException extends StorageException
     /**
      * Create exception for path validation failure
      *
-     * @param string $path Invalid path
-     * @param string $reason Validation error reason
-     * @return static
+     * @param  string  $path  Invalid path
+     * @param  string  $reason  Validation error reason
      */
     public static function invalidPath(string $path, string $reason): static
     {
@@ -58,8 +55,7 @@ class WriteException extends StorageException
     /**
      * Create exception for path collision
      *
-     * @param string $path Conflicting path
-     * @return static
+     * @param  string  $path  Conflicting path
      */
     public static function pathExists(string $path): static
     {
@@ -69,9 +65,8 @@ class WriteException extends StorageException
     /**
      * Create exception for network/API failures
      *
-     * @param string $driver Driver name
-     * @param string $reason Failure reason
-     * @return static
+     * @param  string  $driver  Driver name
+     * @param  string  $reason  Failure reason
      */
     public static function networkFailure(string $driver, string $reason): static
     {
@@ -81,9 +76,8 @@ class WriteException extends StorageException
     /**
      * Create exception for general write failure
      *
-     * @param string $path Content path
-     * @param string $reason Failure reason
-     * @return static
+     * @param  string  $path  Content path
+     * @param  string  $reason  Failure reason
      */
     public static function failed(string $path, string $reason): static
     {

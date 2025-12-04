@@ -52,7 +52,7 @@ class CommentsController extends Controller
     {
         $comment = $this->commentsService->getCommentById($id);
 
-        if (!$comment) {
+        if (! $comment) {
             return response()->json([
                 'success' => false,
                 'message' => 'Comment not found',
@@ -95,7 +95,7 @@ class CommentsController extends Controller
 
         $updated = $this->commentsService->updateStatus($id, $validated['status']);
 
-        if (!$updated) {
+        if (! $updated) {
             return redirect()->route('admin.comments.index')
                 ->with('error', 'Comment not found');
         }
@@ -130,7 +130,7 @@ class CommentsController extends Controller
     {
         $deleted = $this->commentsService->deleteComment($id);
 
-        if (!$deleted) {
+        if (! $deleted) {
             return redirect()->route('admin.comments.index')
                 ->with('error', 'Comment not found');
         }

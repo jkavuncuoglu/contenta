@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domains\ContentManagement\Posts\Services;
 
 use App\Domains\ContentManagement\Posts\Models\Post;
-use App\Domains\ContentManagement\ContentStorage\ValueObjects\ContentData;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
@@ -31,7 +30,7 @@ class PostService implements PostServiceContract
     /**
      * Create a new post
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function createPost(array $data): Post
     {
@@ -49,7 +48,7 @@ class PostService implements PostServiceContract
     /**
      * Update a post
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function updatePost(Post $post, array $data): Post
     {
@@ -60,6 +59,7 @@ class PostService implements PostServiceContract
         $post->update($data);
         $freshPost = $post->fresh();
         assert($freshPost instanceof Post);
+
         return $freshPost;
     }
 
@@ -83,6 +83,7 @@ class PostService implements PostServiceContract
 
         $freshPost = $post->fresh();
         assert($freshPost instanceof Post);
+
         return $freshPost;
     }
 
@@ -97,6 +98,7 @@ class PostService implements PostServiceContract
 
         $freshPost = $post->fresh();
         assert($freshPost instanceof Post);
+
         return $freshPost;
     }
 
@@ -112,6 +114,7 @@ class PostService implements PostServiceContract
 
         $freshPost = $post->fresh();
         assert($freshPost instanceof Post);
+
         return $freshPost;
     }
 
@@ -197,26 +200,28 @@ class PostService implements PostServiceContract
     /**
      * Attach categories to post
      *
-     * @param array<int, int> $categoryIds
+     * @param  array<int, int>  $categoryIds
      */
     public function attachCategories(Post $post, array $categoryIds): Post
     {
         $post->categories()->sync($categoryIds);
         $freshPost = $post->fresh();
         assert($freshPost instanceof Post);
+
         return $freshPost;
     }
 
     /**
      * Attach tags to post
      *
-     * @param array<int, int> $tagIds
+     * @param  array<int, int>  $tagIds
      */
     public function attachTags(Post $post, array $tagIds): Post
     {
         $post->tags()->sync($tagIds);
         $freshPost = $post->fresh();
         assert($freshPost instanceof Post);
+
         return $freshPost;
     }
 
@@ -316,6 +321,7 @@ class PostService implements PostServiceContract
 
         $freshPost = $post->fresh();
         assert($freshPost instanceof Post);
+
         return $freshPost;
     }
 
@@ -327,7 +333,7 @@ class PostService implements PostServiceContract
         $updateData = ['status' => $status];
 
         // If publishing, set published_at if not already set
-        if ($status === 'published' && !$post->published_at) {
+        if ($status === 'published' && ! $post->published_at) {
             $updateData['published_at'] = now();
         }
 
@@ -335,6 +341,7 @@ class PostService implements PostServiceContract
 
         $freshPost = $post->fresh();
         assert($freshPost instanceof Post);
+
         return $freshPost;
     }
 }

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\ContentStorage\Tests\Unit;
 
-use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\ContentManagement\ContentStorage\Exceptions\ReadException;
-use App\Domains\ContentManagement\ContentStorage\Exceptions\WriteException;
 use App\Domains\ContentManagement\ContentStorage\Models\ContentData;
 use App\Domains\ContentManagement\ContentStorage\Repositories\DatabaseRepository;
 use App\Domains\ContentManagement\Pages\Models\Page;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

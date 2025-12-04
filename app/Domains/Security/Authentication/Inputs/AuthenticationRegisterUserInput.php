@@ -8,19 +8,29 @@ use Illuminate\Support\Facades\Hash;
 class AuthenticationRegisterUserInput
 {
     public string $first_name;
+
     public string $last_name;
+
     public string $email;
+
     public string $username;
+
     public ?string $bio;
+
     public ?string $avatar;
+
     public ?string $timezone;
+
     public ?string $language;
+
     public string $is_active;
+
     public ?Carbon $email_verified_at;
+
     public string $password;
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function __construct(array $data)
     {

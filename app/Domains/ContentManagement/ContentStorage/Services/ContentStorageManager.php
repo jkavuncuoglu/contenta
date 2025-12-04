@@ -28,8 +28,8 @@ class ContentStorageManager extends Manager
     /**
      * Get repository for specific content type (pages/posts)
      *
-     * @param string $contentType Content type (pages|posts)
-     * @return ContentRepositoryContract
+     * @param  string  $contentType  Content type (pages|posts)
+     *
      * @throws StorageException If driver configuration is invalid
      */
     public function forContentType(string $contentType): ContentRepositoryContract
@@ -44,8 +44,8 @@ class ContentStorageManager extends Manager
     /**
      * Test a driver connection with provided configuration
      *
-     * @param string $driver Driver name
-     * @param array<string, mixed> $config Driver configuration
+     * @param  string  $driver  Driver name
+     * @param  array<string, mixed>  $config  Driver configuration
      * @return bool True if connection successful
      */
     public function testDriver(string $driver, array $config = []): bool
@@ -61,8 +61,6 @@ class ContentStorageManager extends Manager
 
     /**
      * Get the default driver name
-     *
-     * @return string
      */
     public function getDefaultDriver(): string
     {
@@ -72,7 +70,7 @@ class ContentStorageManager extends Manager
     /**
      * Get configured driver for content type from settings
      *
-     * @param string $contentType Content type (pages|posts)
+     * @param  string  $contentType  Content type (pages|posts)
      * @return string Driver name
      */
     protected function getConfiguredDriver(string $contentType): string
@@ -85,8 +83,7 @@ class ContentStorageManager extends Manager
     /**
      * Create database driver instance
      *
-     * @param array<string, mixed> $config
-     * @return ContentRepositoryContract
+     * @param  array<string, mixed>  $config
      */
     protected function createDatabaseDriver(array $config = []): ContentRepositoryContract
     {
@@ -98,8 +95,7 @@ class ContentStorageManager extends Manager
     /**
      * Create local filesystem driver instance
      *
-     * @param array<string, mixed> $config
-     * @return ContentRepositoryContract
+     * @param  array<string, mixed>  $config
      */
     protected function createLocalDriver(array $config = []): ContentRepositoryContract
     {
@@ -112,8 +108,7 @@ class ContentStorageManager extends Manager
     /**
      * Create S3 driver instance
      *
-     * @param array<string, mixed> $config
-     * @return ContentRepositoryContract
+     * @param  array<string, mixed>  $config
      */
     protected function createS3Driver(array $config = []): ContentRepositoryContract
     {
@@ -134,8 +129,7 @@ class ContentStorageManager extends Manager
     /**
      * Create GitHub driver instance
      *
-     * @param array<string, mixed> $config
-     * @return ContentRepositoryContract
+     * @param  array<string, mixed>  $config
      */
     protected function createGithubDriver(array $config = []): ContentRepositoryContract
     {
@@ -156,8 +150,8 @@ class ContentStorageManager extends Manager
     /**
      * Create Azure Blob Storage driver instance
      *
-     * @param array<string, mixed> $config
-     * @return ContentRepositoryContract
+     * @param  array<string, mixed>  $config
+     *
      * @throws StorageException If driver not yet implemented
      */
     protected function createAzureDriver(array $config = []): ContentRepositoryContract
@@ -179,8 +173,8 @@ class ContentStorageManager extends Manager
     /**
      * Create Google Cloud Storage driver instance
      *
-     * @param array<string, mixed> $config
-     * @return ContentRepositoryContract
+     * @param  array<string, mixed>  $config
+     *
      * @throws StorageException If driver not yet implemented
      */
     protected function createGcsDriver(array $config = []): ContentRepositoryContract
@@ -202,7 +196,7 @@ class ContentStorageManager extends Manager
     /**
      * Get driver configuration from settings
      *
-     * @param string $driver Driver name
+     * @param  string  $driver  Driver name
      * @return array<string, mixed> Configuration array
      */
     protected function getConfig(string $driver): array
@@ -277,9 +271,8 @@ class ContentStorageManager extends Manager
     /**
      * Instantiate a driver instance with configuration
      *
-     * @param string $driver Driver name
-     * @param array<string, mixed> $config Configuration override
-     * @return ContentRepositoryContract
+     * @param  string  $driver  Driver name
+     * @param  array<string, mixed>  $config  Configuration override
      */
     private function instantiateDriver(string $driver, array $config = []): ContentRepositoryContract
     {

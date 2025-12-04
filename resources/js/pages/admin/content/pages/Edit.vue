@@ -5,6 +5,9 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { computed, ref, toRef } from 'vue';
 import { useShortcodeValidation } from '@/composables/useShortcodeValidation';
+import { SEOTab } from '@/components/admin/seo';
+import { useSEOAnalysis } from '@/composables/seo/useSEOAnalysis';
+import { RevisionHistoryTab } from '@/components/admin/revisions';
 
 interface Page {
     id: number;
@@ -42,9 +45,8 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
     { label: 'Edit Page', href: `/admin/pages/${props.page.id}/edit` },
 ]);
 
-const activeTab = ref<'editor' | 'settings' | 'seo' | 'revisions'>('editor');
+const activeTab = ref<'editor' | 'seo' | 'revisions'>('editor');
 const saving = ref(false);
-const showValidationSidebar = ref(true);
 
 const form = useForm({
     title: props.page.title || '',
@@ -69,6 +71,18 @@ const requiresCommitMessage = computed(() => {
 const { validating, validationErrors, isValid } = useShortcodeValidation(
     toRef(form, 'markdown_content'),
     800 // debounce 800ms
+);
+
+// SEO Analysis
+const seoTargetKeyword = ref('');
+
+// Initialize SEO analysis composable
+const seoAnalysis = useSEOAnalysis(
+    seoTargetKeyword,
+    toRef(form, 'title'),
+    toRef(form, 'markdown_content'),
+    toRef(form, 'slug'),
+    toRef(form, 'meta_description'),
 );
 
 const layoutTemplates = [
@@ -310,17 +324,6 @@ const errorTypeColor = (type: string) => {
                             Markdown Editor
                         </button>
                         <button
-                            @click="activeTab = 'settings'"
-                            :class="[
-                                activeTab === 'settings'
-                                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                                    : 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300',
-                                'whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium',
-                            ]"
-                        >
-                            Settings
-                        </button>
-                        <button
                             type="button"
                             @click="activeTab = 'seo'"
                             :class="[
@@ -348,7 +351,10 @@ const errorTypeColor = (type: string) => {
                 </div>
 
                 <!-- Tab Content -->
-                <div v-show="activeTab === 'editor'" class="space-y-6">
+                <div v-show="activeTab === 'editor'">
+                    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                        <!-- Main Content Area -->
+                        <div class="lg:col-span-2 space-y-6">
                     <!-- Basic Info -->
                     <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
                         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -403,16 +409,133 @@ const errorTypeColor = (type: string) => {
                             {{ form.errors.markdown_content }}
                         </p>
                     </div>
-                </div>
+                        </div>
+                        <!-- End Main Content Area -->
 
-                <!-- Settings Tab -->
-                <div v-show="activeTab === 'settings'" class="space-y-6">
-                    <!-- Layout Settings -->
-                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
-                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
-                            Layout Settings
-                        </h3>
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <!-- Sidebar -->
+                        <div class="space-y-6">
+                            <!-- Validation Panel -->
+                            <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
+                                <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
+                                    Validation
+                                </h3>
+
+                                <!-- Validating indicator -->
+                                <div
+                                    v-if="validating"
+                                    class="mb-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400"
+                                >
+                                    <svg
+                                        class="h-4 w-4 animate-spin"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            class="opacity-25"
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            stroke-width="4"
+                                        ></circle>
+                                        <path
+                                            class="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                        ></path>
+                                    </svg>
+                                    Validating...
+                                </div>
+
+                                <!-- No errors state -->
+                                <div
+                                    v-else-if="validationErrors.length === 0"
+                                    class="flex items-center gap-2 rounded-lg bg-green-50 p-3 text-sm text-green-800 dark:bg-green-900/20 dark:text-green-400"
+                                >
+                                    <svg
+                                        class="h-5 w-5 flex-shrink-0"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"
+                                        ></path>
+                                    </svg>
+                                    <span>No validation errors</span>
+                                </div>
+
+                                <!-- Error list -->
+                                <div v-else class="space-y-3">
+                                    <div
+                                        class="mb-2 flex items-center gap-2 text-sm font-medium text-neutral-900 dark:text-white"
+                                    >
+                                        <svg
+                                            class="h-5 w-5 text-red-500"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path
+                                                fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                clip-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                        <span
+                                            >{{ validationErrors.length }}
+                                            {{
+                                                validationErrors.length === 1
+                                                    ? 'Error'
+                                                    : 'Errors'
+                                            }}
+                                            Found</span
+                                        >
+                                    </div>
+
+                                    <div
+                                        v-for="(error, index) in validationErrors"
+                                        :key="index"
+                                        class="rounded-lg border p-3"
+                                        :class="errorTypeColor(error.type)"
+                                    >
+                                        <div class="flex items-start gap-2">
+                                            <span class="flex-shrink-0 text-lg">{{
+                                                errorTypeIcon(error.type)
+                                            }}</span>
+                                            <div class="min-w-0 flex-1">
+                                                <p class="text-sm font-medium capitalize">
+                                                    {{ error.type }} Error
+                                                </p>
+                                                <p class="mt-1 text-sm break-words">
+                                                    {{ error.message }}
+                                                </p>
+                                                <p
+                                                    v-if="error.line || error.column"
+                                                    class="mt-1 text-xs opacity-75"
+                                                >
+                                                    <span v-if="error.line"
+                                                        >Line {{ error.line }}</span
+                                                    >
+                                                    <span v-if="error.line && error.column"
+                                                        >,
+                                                    </span>
+                                                    <span v-if="error.column"
+                                                        >Column {{ error.column }}</span
+                                                    >
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Layout Settings -->
+                            <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
+                                <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
+                                    Layout Settings
+                                </h3>
+                                <div class="space-y-4">
                             <div>
                                 <label
                                     for="layout_template"
@@ -423,7 +546,7 @@ const errorTypeColor = (type: string) => {
                                 <select
                                     id="layout_template"
                                     v-model="form.layout_template"
-                                    class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
+                                    class=" mt-1 block w-full py-2 px-3 rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 >
                                     <option
                                         v-for="template in layoutTemplates"
@@ -445,7 +568,7 @@ const errorTypeColor = (type: string) => {
                                 <select
                                     id="status"
                                     v-model="form.status"
-                                    class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
+                                    class=" mt-1 block w-full py-2 px-3 rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 >
                                     <option value="draft">Draft</option>
                                     <option value="published">Published</option>
@@ -532,7 +655,7 @@ const errorTypeColor = (type: string) => {
                                     id="meta_title"
                                     v-model="form.meta_title"
                                     type="text"
-                                    class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
+                                    class=" mt-1 block w-full py-2 px-3 rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
 
@@ -547,7 +670,7 @@ const errorTypeColor = (type: string) => {
                                     id="meta_description"
                                     v-model="form.meta_description"
                                     rows="3"
-                                    class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
+                                    class=" mt-1 block w-full py-2 px-3 rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 ></textarea>
                             </div>
 
@@ -563,7 +686,7 @@ const errorTypeColor = (type: string) => {
                                     v-model="form.meta_keywords"
                                     type="text"
                                     placeholder="keyword1, keyword2, keyword3"
-                                    class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
+                                    class=" mt-1 block w-full py-2 px-3 rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 />
                             </div>
                         </div>
@@ -585,7 +708,7 @@ const errorTypeColor = (type: string) => {
                                 <select
                                     id="schema_type"
                                     v-model="form.schema_data.type"
-                                    class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
+                                    class=" mt-1 block w-full py-2 px-3 rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                 >
                                     <option
                                         v-for="type in schemaTypes"
@@ -609,7 +732,7 @@ const errorTypeColor = (type: string) => {
                                         id="schema_headline"
                                         v-model="form.schema_data.headline"
                                         type="text"
-                                        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
+                                        class=" mt-1 block w-full py-2 px-3 rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                     />
                                 </div>
 
@@ -624,126 +747,34 @@ const errorTypeColor = (type: string) => {
                                         id="schema_author"
                                         v-model="form.schema_data.author"
                                         type="text"
-                                        class="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
+                                        class=" mt-1 block w-full py-2 px-3 rounded-md border-neutral-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white sm:text-sm"
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
+                        </div>
+                        <!-- End Sidebar -->
+                    </div>
+                    <!-- End Grid -->
                 </div>
+                <!-- End Editor Tab -->
 
                 <!-- SEO Tab -->
-                <div v-show="activeTab === 'seo'" class="space-y-6">
-                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
-                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
-                            SEO Optimization
-                        </h3>
-                        <div class="rounded-md bg-blue-50 p-4 dark:bg-blue-900/20">
-                            <div class="flex">
-                                <div class="shrink-0">
-                                    <svg
-                                        class="h-5 w-5 text-blue-400"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
-                                </div>
-                                <div class="ml-3 flex-1">
-                                    <h3 class="text-sm font-medium text-blue-800 dark:text-blue-200">
-                                        Advanced SEO Features Coming Soon
-                                    </h3>
-                                    <div class="mt-2 text-sm text-blue-700 dark:text-blue-300">
-                                        <p>
-                                            Phase 7.2 will introduce comprehensive SEO tools including:
-                                        </p>
-                                        <ul class="mt-2 list-inside list-disc space-y-1">
-                                            <li>Keyword density analyzer with target keyword tracking</li>
-                                            <li>Meta title & description optimizer with character counters</li>
-                                            <li>Content quality & readability analysis</li>
-                                            <li>SEO-friendly URL slug validator</li>
-                                            <li>Internal linking suggestions</li>
-                                            <li>Schema.org markup editor</li>
-                                            <li>Real-time SEO score with actionable recommendations</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-6 text-center">
-                            <p class="text-sm text-neutral-500 dark:text-neutral-400">
-                                Basic SEO fields (meta title, description, keywords) are available in the
-                                <button
-                                    type="button"
-                                    @click="activeTab = 'settings'"
-                                    class="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
-                                >
-                                    Settings tab
-                                </button>
-                            </p>
-                        </div>
-                    </div>
+                <div v-show="activeTab === 'seo'">
+                    <SEOTab
+                        :seo-analysis="seoAnalysis"
+                        v-model:target-keyword="seoTargetKeyword"
+                        @apply-slug="(value) => (form.slug = value)"
+                    />
                 </div>
 
                 <!-- Revision History Tab -->
-                <div v-show="activeTab === 'revisions'" class="space-y-6">
-                    <div class="rounded-lg bg-white p-6 shadow dark:bg-neutral-800">
-                        <h3 class="mb-4 text-lg font-medium text-neutral-900 dark:text-white">
-                            Revision History
-                        </h3>
-                        <div class="rounded-md bg-green-50 p-4 dark:bg-green-900/20">
-                            <div class="flex">
-                                <div class="shrink-0">
-                                    <svg
-                                        class="h-5 w-5 text-green-400"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
-                                </div>
-                                <div class="ml-3">
-                                    <h3 class="text-sm font-medium text-green-800 dark:text-green-200">
-                                        Backend API Ready
-                                    </h3>
-                                    <div class="mt-2 text-sm text-green-700 dark:text-green-300">
-                                        <p>
-                                            The revision history API was implemented in Phase 2.5. The frontend UI
-                                            will be added in Phase 7.3.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-6 text-center py-12 text-neutral-500 dark:text-neutral-400">
-                            <svg
-                                class="mx-auto h-12 w-12 text-neutral-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                            </svg>
-                            <h3 class="mt-2 text-sm font-medium">Revision History Interface</h3>
-                            <p class="mt-1 text-sm">
-                                View, compare, and restore previous versions of this page.
-                            </p>
-                            <p class="mt-1 text-xs">Full interface coming in Phase 7.3</p>
-                        </div>
-                    </div>
+                <div v-show="activeTab === 'revisions'">
+                    <RevisionHistoryTab
+                        :content-id="page.id"
+                        content-type="page"
+                    />
                 </div>
             </div>
 

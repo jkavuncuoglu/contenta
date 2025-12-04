@@ -3,8 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
 use Illuminate\Http\Request;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -17,7 +17,6 @@ class Handler extends ExceptionHandler
      * proper Inertia responses instead of plain JSON.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $e
      * @return bool
      */
     protected function shouldReturnJson($request, Throwable $e)
@@ -30,4 +29,3 @@ class Handler extends ExceptionHandler
         return parent::shouldReturnJson($request, $e);
     }
 }
-

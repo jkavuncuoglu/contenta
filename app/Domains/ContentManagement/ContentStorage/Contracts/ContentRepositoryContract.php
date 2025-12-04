@@ -17,8 +17,9 @@ interface ContentRepositoryContract
     /**
      * Read content from storage with frontmatter parsed
      *
-     * @param string $path Relative path to content (e.g., "pages/about-us.md" or "pages/1")
+     * @param  string  $path  Relative path to content (e.g., "pages/about-us.md" or "pages/1")
      * @return ContentData Content with parsed frontmatter and metadata
+     *
      * @throws \App\Domains\ContentStorage\Exceptions\ReadException If content cannot be read
      */
     public function read(string $path): ContentData;
@@ -26,9 +27,10 @@ interface ContentRepositoryContract
     /**
      * Write content to storage with frontmatter
      *
-     * @param string $path Relative path where content should be written
-     * @param ContentData $data Content with frontmatter to write
+     * @param  string  $path  Relative path where content should be written
+     * @param  ContentData  $data  Content with frontmatter to write
      * @return bool True on success, false on failure
+     *
      * @throws \App\Domains\ContentStorage\Exceptions\WriteException If content cannot be written
      */
     public function write(string $path, ContentData $data): bool;
@@ -36,7 +38,7 @@ interface ContentRepositoryContract
     /**
      * Check if content exists at the given path
      *
-     * @param string $path Relative path to check
+     * @param  string  $path  Relative path to check
      * @return bool True if exists, false otherwise
      */
     public function exists(string $path): bool;
@@ -44,8 +46,9 @@ interface ContentRepositoryContract
     /**
      * Delete content at the given path
      *
-     * @param string $path Relative path to content
+     * @param  string  $path  Relative path to content
      * @return bool True on success, false on failure
+     *
      * @throws \App\Domains\ContentStorage\Exceptions\WriteException If content cannot be deleted
      */
     public function delete(string $path): bool;
@@ -53,7 +56,7 @@ interface ContentRepositoryContract
     /**
      * List all content in a directory
      *
-     * @param string $directory Directory path (empty string for root)
+     * @param  string  $directory  Directory path (empty string for root)
      * @return array<int, string> Array of relative paths
      */
     public function list(string $directory = ''): array;

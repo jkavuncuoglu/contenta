@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Pages\Models;
 
+use App\Domains\ContentManagement\ContentStorage\Contracts\RevisionProviderInterface;
+use App\Domains\ContentManagement\ContentStorage\Factories\RevisionProviderFactory;
 use App\Domains\ContentManagement\ContentStorage\Models\ContentData;
 use App\Domains\ContentManagement\ContentStorage\Services\ContentStorageManager;
-use App\Domains\ContentManagement\ContentStorage\Factories\RevisionProviderFactory;
-use App\Domains\ContentManagement\ContentStorage\Contracts\RevisionProviderInterface;
 use App\Domains\ContentManagement\ContentStorage\ValueObjects\RevisionCollection;
 use App\Domains\Security\UserManagement\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,7 +45,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class Page extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $table = 'pages';
 
@@ -93,7 +93,9 @@ class Page extends Model
 
     // Status constants
     const STATUS_DRAFT = 'draft';
+
     const STATUS_PUBLISHED = 'published';
+
     const STATUS_ARCHIVED = 'archived';
 
     /**
@@ -101,12 +103,13 @@ class Page extends Model
      */
     public function getContentAttribute(): ?ContentData
     {
-        if (!$this->storage_path) {
+        if (! $this->storage_path) {
             return null;
         }
 
         try {
             $storage = app(ContentStorageManager::class)->driver($this->storage_driver);
+
             return $storage->read($this->storage_path);
         } catch (\Exception $e) {
             \Log::error('Failed to read page content', [
@@ -115,6 +118,7 @@ class Page extends Model
                 'storage_path' => $this->storage_path,
                 'error' => $e->getMessage(),
             ]);
+
             return null;
         }
     }
@@ -124,7 +128,7 @@ class Page extends Model
      */
     public function setContentAttribute(ContentData $content): void
     {
-        if (!$this->storage_path) {
+        if (! $this->storage_path) {
             // Generate storage path on first save
             $this->storage_path = $this->generateStoragePath();
         }
@@ -146,6 +150,7 @@ class Page extends Model
             $parent = static::find($this->parent_id);
             if ($parent && $parent->storage_path) {
                 $parentPath = dirname($parent->storage_path);
+
                 return "{$parentPath}/{$this->slug}.md";
             }
         }
@@ -196,7 +201,7 @@ class Page extends Model
     /**
      * Scope for published pages
      *
-     * @param Builder<Page> $query
+     * @param  Builder<Page>  $query
      * @return Builder<Page>
      */
     public function scopePublished(Builder $query): Builder
@@ -207,7 +212,7 @@ class Page extends Model
     /**
      * Scope for draft pages
      *
-     * @param Builder<Page> $query
+     * @param  Builder<Page>  $query
      * @return Builder<Page>
      */
     public function scopeDraft(Builder $query): Builder
@@ -218,7 +223,7 @@ class Page extends Model
     /**
      * Scope for archived pages
      *
-     * @param Builder<Page> $query
+     * @param  Builder<Page>  $query
      * @return Builder<Page>
      */
     public function scopeArchived(Builder $query): Builder
@@ -244,6 +249,7 @@ class Page extends Model
     {
         $this->status = self::STATUS_PUBLISHED;
         $this->published_at = now();
+
         return $this->save();
     }
 
@@ -253,6 +259,7 @@ class Page extends Model
     public function unpublish(): bool
     {
         $this->status = self::STATUS_DRAFT;
+
         return $this->save();
     }
 
@@ -262,6 +269,7 @@ class Page extends Model
     public function archive(): bool
     {
         $this->status = self::STATUS_ARCHIVED;
+
         return $this->save();
     }
 
@@ -274,19 +282,19 @@ class Page extends Model
     {
         /** @var RevisionProviderFactory $factory */
         $factory = app(RevisionProviderFactory::class);
+
         return $factory->forModel($this);
     }
 
     /**
      * Get paginated revision history
      *
-     * @param int $page Page number (1-indexed)
-     * @param int $perPage Items per page (default: 10)
-     * @return RevisionCollection
+     * @param  int  $page  Page number (1-indexed)
+     * @param  int  $perPage  Items per page (default: 10)
      */
     public function revisionHistory(int $page = 1, int $perPage = 10): RevisionCollection
     {
-        if (!$this->storage_path) {
+        if (! $this->storage_path) {
             // No cloud storage path, return empty collection
             return new RevisionCollection([], 0, $page, $perPage, false);
         }
@@ -297,12 +305,12 @@ class Page extends Model
     /**
      * Get a specific revision
      *
-     * @param string $revisionId Version ID, commit hash, or DB revision ID
+     * @param  string  $revisionId  Version ID, commit hash, or DB revision ID
      * @return \App\Domains\ContentManagement\ContentStorage\ValueObjects\Revision|null
      */
     public function getRevisionById(string $revisionId)
     {
-        if (!$this->storage_path) {
+        if (! $this->storage_path) {
             return null;
         }
 
@@ -312,12 +320,11 @@ class Page extends Model
     /**
      * Restore a specific revision
      *
-     * @param string $revisionId Version ID or commit hash
-     * @return bool
+     * @param  string  $revisionId  Version ID or commit hash
      */
     public function restoreRevisionById(string $revisionId): bool
     {
-        if (!$this->storage_path) {
+        if (! $this->storage_path) {
             return false;
         }
 

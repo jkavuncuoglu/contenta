@@ -32,8 +32,9 @@ class Tag extends Model
 {
     /** @use HasFactory<TagFactory> */
     use HasFactory;
-    use SoftDeletes;
+
     use LogsActivity;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -55,7 +56,7 @@ class Tag extends Model
 
     // Scopes
     /**
-     * @param Builder<Tag> $query
+     * @param  Builder<Tag>  $query
      * @return Builder<Tag>
      */
     public function scopePopular(Builder $query, int $limit = 10): Builder
@@ -66,7 +67,7 @@ class Tag extends Model
     }
 
     /**
-     * @param Builder<Tag> $query
+     * @param  Builder<Tag>  $query
      * @return Builder<Tag>
      */
     public function scopeWithPostCount(Builder $query): Builder

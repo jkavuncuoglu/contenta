@@ -14,9 +14,9 @@ class StorageException extends Exception
     /**
      * Create a new storage exception
      *
-     * @param string $message Error message
-     * @param int $code Error code
-     * @param \Throwable|null $previous Previous exception
+     * @param  string  $message  Error message
+     * @param  int  $code  Error code
+     * @param  \Throwable|null  $previous  Previous exception
      */
     public function __construct(string $message = 'Storage operation failed', int $code = 0, ?\Throwable $previous = null)
     {
@@ -26,8 +26,7 @@ class StorageException extends Exception
     /**
      * Create exception for invalid driver
      *
-     * @param string $driver Driver name
-     * @return static
+     * @param  string  $driver  Driver name
      */
     public static function invalidDriver(string $driver): static
     {
@@ -37,8 +36,7 @@ class StorageException extends Exception
     /**
      * Create exception for missing configuration
      *
-     * @param string $key Configuration key
-     * @return static
+     * @param  string  $key  Configuration key
      */
     public static function missingConfiguration(string $key): static
     {
@@ -48,9 +46,8 @@ class StorageException extends Exception
     /**
      * Create exception for connection failure
      *
-     * @param string $driver Driver name
-     * @param string $reason Failure reason
-     * @return static
+     * @param  string  $driver  Driver name
+     * @param  string  $reason  Failure reason
      */
     public static function connectionFailed(string $driver, string $reason): static
     {

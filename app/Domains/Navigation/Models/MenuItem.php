@@ -18,6 +18,7 @@ class MenuItem extends Model
 {
     /** @use HasFactory<MenuItemFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     protected $fillable = [
@@ -86,10 +87,10 @@ class MenuItem extends Model
         // Resolve URL based on object type
         if ($this->object_type && $this->object_id) {
             return match ($this->object_type) {
-                'page' => '/page/' . $this->object_id,
-                'post' => '/post/' . $this->object_id,
-                'category' => '/category/' . $this->object_id,
-                'tag' => '/tag/' . $this->object_id,
+                'page' => '/page/'.$this->object_id,
+                'post' => '/post/'.$this->object_id,
+                'category' => '/category/'.$this->object_id,
+                'tag' => '/tag/'.$this->object_id,
                 default => null,
             };
         }
@@ -115,14 +116,14 @@ class MenuItem extends Model
             'is_visible' => $this->is_visible,
             'attributes' => $this->attributes,
             'metadata' => $this->metadata,
-            'children' => $this->children->map(fn(MenuItem $child) => $child->toTree())->toArray(),
+            'children' => $this->children->map(fn (MenuItem $child) => $child->toTree())->toArray(),
         ];
     }
 
     /**
      * Reorder items
      *
-     * @param array<int, array<string, mixed>> $items
+     * @param  array<int, array<string, mixed>>  $items
      */
     public static function reorder(array $items, ?int $parentId = null): void
     {
@@ -132,7 +133,7 @@ class MenuItem extends Model
                 'parent_id' => $parentId,
             ]);
 
-            if (!empty($item['children'])) {
+            if (! empty($item['children'])) {
                 self::reorder($item['children'], $item['id']);
             }
         }

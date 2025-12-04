@@ -57,7 +57,7 @@ test('handles unicode characters', function () {
     $tokenizer = new Tokenizer($input);
     $tokens = $tokenizer->tokenize();
 
-    $valueTokens = array_filter($tokens, fn($t) => $t->type === TokenType::ATTRIBUTE_VALUE);
+    $valueTokens = array_filter($tokens, fn ($t) => $t->type === TokenType::ATTRIBUTE_VALUE);
     $firstValue = reset($valueTokens);
 
     expect($firstValue->value)->toBe('Hello 世界 🌍');

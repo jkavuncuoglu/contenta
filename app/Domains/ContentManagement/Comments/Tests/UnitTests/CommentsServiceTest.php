@@ -21,7 +21,6 @@ class CommentsServiceTest extends TestCase
         $this->service = app(CommentsServiceContract::class);
     }
 
-    
     public function test_it_is_bound_to_container(): void
     {
         // Act
@@ -31,7 +30,6 @@ class CommentsServiceTest extends TestCase
         $this->assertInstanceOf(CommentsService::class, $service);
     }
 
-    
     public function test_it_is_registered_as_singleton(): void
     {
         // Act

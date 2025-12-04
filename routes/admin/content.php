@@ -1,12 +1,12 @@
 <?php
 
-use App\Domains\ContentManagement\Categories\Http\Controllers\Admin\CategoriesController;
 use App\Domains\ContentManagement\Categories\Http\Controllers\Admin\CategoriesApiController;
-use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsController;
-use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsApiController;
-use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsController;
-use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsApiController;
+use App\Domains\ContentManagement\Categories\Http\Controllers\Admin\CategoriesController;
 use App\Domains\ContentManagement\Comments\Http\Controllers\Admin\CommentsController;
+use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsApiController;
+use App\Domains\ContentManagement\Posts\Http\Controllers\Admin\PostsController;
+use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsApiController;
+use App\Domains\ContentManagement\Tags\Http\Controllers\Admin\TagsController;
 use App\Domains\Media\Http\Controllers\Admin\MediaController;
 use Illuminate\Support\Facades\Route;
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\Pages\Http\Controllers\Admin;
 
-use App\Domains\ContentManagement\ContentStorage\Models\ContentData;
 use App\Domains\ContentManagement\Pages\Models\Page;
 use App\Domains\ContentManagement\Pages\Services\PageServiceContract;
 use App\Domains\ContentManagement\Services\MarkdownRenderServiceContract;
@@ -39,8 +38,8 @@ class PagesController extends Controller
         // Search by title
         if ($request->has('search')) {
             $search = $request->input('search');
-            if (is_string($search) && !empty($search)) {
-                $query->where('title', 'like', '%' . $search . '%');
+            if (is_string($search) && ! empty($search)) {
+                $query->where('title', 'like', '%'.$search.'%');
             }
         }
 
@@ -115,7 +114,7 @@ class PagesController extends Controller
             $baseSlug = $validated['slug'];
             $counter = 1;
             while (Page::where('slug', $validated['slug'])->exists()) {
-                $validated['slug'] = $baseSlug . '-' . $counter;
+                $validated['slug'] = $baseSlug.'-'.$counter;
                 $counter++;
             }
         }
@@ -164,8 +163,8 @@ class PagesController extends Controller
         // Search by title
         if ($request->has('search')) {
             $search = $request->input('search');
-            if (is_string($search) && !empty($search)) {
-                $query->where('title', 'like', '%' . $search . '%');
+            if (is_string($search) && ! empty($search)) {
+                $query->where('title', 'like', '%'.$search.'%');
             }
         }
 
@@ -186,7 +185,7 @@ class PagesController extends Controller
                 'sometimes',
                 'string',
                 'max:255',
-                Rule::unique('pages', 'slug')->ignore($page->id)
+                Rule::unique('pages', 'slug')->ignore($page->id),
             ],
             'content' => 'sometimes|nullable|string',
             'storage_driver' => 'sometimes|string|in:database,local,s3,github,azure,gcs',
@@ -199,14 +198,14 @@ class PagesController extends Controller
         ]);
 
         // Generate slug if title changed but slug not provided
-        if (isset($validated['title']) && !isset($validated['slug'])) {
+        if (isset($validated['title']) && ! isset($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['title']);
 
             // Ensure uniqueness
             $baseSlug = $validated['slug'];
             $counter = 1;
             while (Page::where('slug', $validated['slug'])->where('id', '!=', $page->id)->exists()) {
-                $validated['slug'] = $baseSlug . '-' . $counter;
+                $validated['slug'] = $baseSlug.'-'.$counter;
                 $counter++;
             }
         }
@@ -237,7 +236,7 @@ class PagesController extends Controller
 
             return redirect()->back()->with('success', 'Page published successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to publish page: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to publish page: '.$e->getMessage());
         }
     }
 
@@ -280,12 +279,12 @@ class PagesController extends Controller
             $previewHtml = $this->markdownRenderer->render($markdown);
 
             return response()->json([
-                'html' => $previewHtml
+                'html' => $previewHtml,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Failed to generate preview',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 422);
         }
     }
@@ -321,14 +320,14 @@ class PagesController extends Controller
                 for ($i = $contextStart; $i <= $contextEnd; $i++) {
                     $lineNum = $i + 1;
                     $prefix = ($lineNum === $errorLine) ? '>>> ' : '    ';
-                    $context[] = $prefix . "Line {$lineNum}: " . ($lines[$i] ?? '');
+                    $context[] = $prefix."Line {$lineNum}: ".($lines[$i] ?? '');
                 }
 
                 $contextText = implode("\n", $context);
 
                 $errors[] = [
                     'type' => 'parse',
-                    'message' => $e->getMessage() . "\n\nContext:\n" . $contextText,
+                    'message' => $e->getMessage()."\n\nContext:\n".$contextText,
                     'line' => $e->sourceLine,
                     'column' => $e->sourceColumn,
                 ];
@@ -388,7 +387,7 @@ class PagesController extends Controller
     {
         $revision = $page->getRevisionById($revisionId);
 
-        if (!$revision) {
+        if (! $revision) {
             return response()->json([
                 'error' => 'Revision not found',
             ], 404);
@@ -404,7 +403,7 @@ class PagesController extends Controller
      */
     public function restoreRevision(Page $page, string $revisionId)
     {
-        if (!$page->supportsRevisions()) {
+        if (! $page->supportsRevisions()) {
             return response()->json([
                 'error' => 'Revisions are not supported for this storage driver',
             ], 400);
@@ -412,7 +411,7 @@ class PagesController extends Controller
 
         $success = $page->restoreRevisionById($revisionId);
 
-        if (!$success) {
+        if (! $success) {
             return response()->json([
                 'error' => 'Failed to restore revision',
             ], 500);

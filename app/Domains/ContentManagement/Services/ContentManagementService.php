@@ -2,10 +2,10 @@
 
 namespace App\Domains\ContentManagement\Services;
 
-use App\Domains\ContentManagement\Posts\PostFacade;
-use App\Domains\ContentManagement\Pages\PageFacade;
-use App\Domains\ContentManagement\Tags\TagFacade;
 use App\Domains\ContentManagement\Categories\CategoryFacade;
+use App\Domains\ContentManagement\Pages\PageFacade;
+use App\Domains\ContentManagement\Posts\PostFacade;
+use App\Domains\ContentManagement\Tags\TagFacade;
 
 class ContentManagementService implements ContentManagementServiceContract
 {
@@ -29,4 +29,3 @@ class ContentManagementService implements ContentManagementServiceContract
         return CategoryFacade::class;
     }
 }
-

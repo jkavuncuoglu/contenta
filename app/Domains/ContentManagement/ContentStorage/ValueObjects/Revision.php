@@ -54,7 +54,7 @@ readonly class Revision
     public function getContentPreview(int $length = 200): string
     {
         return strlen($this->content) > $length
-            ? substr($this->content, 0, $length) . '...'
+            ? substr($this->content, 0, $length).'...'
             : $this->content;
     }
 }

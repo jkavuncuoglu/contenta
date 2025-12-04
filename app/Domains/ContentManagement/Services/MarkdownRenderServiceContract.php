@@ -11,7 +11,7 @@ interface MarkdownRenderServiceContract
     /**
      * Render markdown content to HTML
      *
-     * @param string $markdown The markdown content with shortcodes
+     * @param  string  $markdown  The markdown content with shortcodes
      * @return string The rendered HTML content
      */
     public function render(string $markdown): string;
@@ -19,15 +19,13 @@ interface MarkdownRenderServiceContract
     /**
      * Validate markdown syntax
      *
-     * @param string $markdown The markdown to validate
+     * @param  string  $markdown  The markdown to validate
      * @return bool True if valid
      */
     public function validate(string $markdown): bool;
 
     /**
      * Get the shortcode parser instance
-     *
-     * @return ShortcodeParserServiceContract
      */
     public function getParser(): ShortcodeParserServiceContract;
 }

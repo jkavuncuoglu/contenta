@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\ContentStorage\Tests\Unit;
 
-use App\Domains\ContentManagement\ContentStorage\Exceptions\ReadException;
 use App\Domains\ContentManagement\ContentStorage\Models\ContentData;
 use PHPUnit\Framework\TestCase;
 

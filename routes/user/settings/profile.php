@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Domains\Settings\SiteSettings\Http\Controllers\Settings\ProfileController;
-
+use Illuminate\Support\Facades\Route;
 
 Route::group([
     'prefix' => 'profile',

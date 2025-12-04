@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domains\ContentManagement\ContentStorage\Repositories;
 
-use App\Domains\ContentManagement\Posts\Models\Post;
 use App\Domains\ContentManagement\ContentStorage\Contracts\ContentRepositoryContract;
 use App\Domains\ContentManagement\ContentStorage\Exceptions\ReadException;
 use App\Domains\ContentManagement\ContentStorage\Exceptions\WriteException;
 use App\Domains\ContentManagement\ContentStorage\Models\ContentData;
 use App\Domains\ContentManagement\Pages\Models\Page;
+use App\Domains\ContentManagement\Posts\Models\Post;
 use DateTimeImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +32,7 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Create a new database repository
      *
-     * @param string $contentType Content type (pages|posts)
+     * @param  string  $contentType  Content type (pages|posts)
      */
     public function __construct(string $contentType = 'pages')
     {
@@ -113,7 +113,7 @@ class DatabaseRepository implements ContentRepositoryContract
 
             DB::commit();
 
-            Log::info("Content written to database", [
+            Log::info('Content written to database', [
                 'driver' => 'database',
                 'content_type' => $this->contentType,
                 'id' => $model->id ?? $id,
@@ -123,7 +123,7 @@ class DatabaseRepository implements ContentRepositoryContract
             return true;
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Failed to write content to database", [
+            Log::error('Failed to write content to database', [
                 'driver' => 'database',
                 'content_type' => $this->contentType,
                 'path' => $path,
@@ -165,7 +165,7 @@ class DatabaseRepository implements ContentRepositoryContract
             // Soft delete the model
             $model->delete();
 
-            Log::info("Content deleted from database", [
+            Log::info('Content deleted from database', [
                 'driver' => 'database',
                 'content_type' => $this->contentType,
                 'id' => $id,
@@ -173,7 +173,7 @@ class DatabaseRepository implements ContentRepositoryContract
 
             return true;
         } catch (\Exception $e) {
-            Log::error("Failed to delete content from database", [
+            Log::error('Failed to delete content from database', [
                 'driver' => 'database',
                 'content_type' => $this->contentType,
                 'path' => $path,
@@ -215,7 +215,7 @@ class DatabaseRepository implements ContentRepositoryContract
 
             return $exists;
         } catch (\Exception $e) {
-            Log::error("Database connection test failed", [
+            Log::error('Database connection test failed', [
                 'driver' => 'database',
                 'content_type' => $this->contentType,
                 'error' => $e->getMessage(),
@@ -239,7 +239,7 @@ class DatabaseRepository implements ContentRepositoryContract
      * Path format: "pages/123" or "posts/456"
      * For paths without IDs (like "posts/2025/12/slug.md"), returns 0
      *
-     * @param string $path Path string
+     * @param  string  $path  Path string
      * @return int Model ID or 0 if no ID found
      */
     private function extractIdFromPath(string $path): int
@@ -260,7 +260,7 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Build path from model ID
      *
-     * @param int $id Model ID
+     * @param  int  $id  Model ID
      * @return string Path (e.g., "pages/123")
      */
     private function buildPath(int $id): string
@@ -271,8 +271,7 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Find model by ID
      *
-     * @param int $id Model ID
-     * @return Model|null
+     * @param  int  $id  Model ID
      */
     private function findModel(int $id): ?Model
     {
@@ -286,7 +285,7 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Create new model from ContentData
      *
-     * @param ContentData $data Content data with frontmatter
+     * @param  ContentData  $data  Content data with frontmatter
      * @return Model New model instance
      */
     private function createModelFromData(ContentData $data): Model
@@ -310,7 +309,7 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Get markdown content from model
      *
-     * @param Model $model Page or Post model
+     * @param  Model  $model  Page or Post model
      * @return string Markdown content
      */
     private function getMarkdownContent(Model $model): string
@@ -329,8 +328,8 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Set markdown content on model
      *
-     * @param Model $model Page or Post model
-     * @param string $content Markdown content
+     * @param  Model  $model  Page or Post model
+     * @param  string  $content  Markdown content
      */
     private function setMarkdownContent(Model $model, string $content): void
     {
@@ -346,7 +345,7 @@ class DatabaseRepository implements ContentRepositoryContract
      *
      * Creates YAML frontmatter compatible with ContentData
      *
-     * @param Model $model Page or Post model
+     * @param  Model  $model  Page or Post model
      * @return array<string, mixed> Frontmatter data
      */
     private function buildFrontmatter(Model $model): array
@@ -365,7 +364,6 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Build frontmatter for Page model
      *
-     * @param Page $model
      * @return array<string, mixed>
      */
     private function buildPageFrontmatter(Page $model): array
@@ -404,7 +402,6 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Build frontmatter for Post model
      *
-     * @param Post $model
      * @return array<string, mixed>
      */
     private function buildPostFrontmatter(Post $model): array
@@ -455,8 +452,8 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Update model attributes from frontmatter
      *
-     * @param Model $model Page or Post model
-     * @param array<string, mixed> $frontmatter Frontmatter data
+     * @param  Model  $model  Page or Post model
+     * @param  array<string, mixed>  $frontmatter  Frontmatter data
      */
     private function updateModelFromFrontmatter(Model $model, array $frontmatter): void
     {
@@ -470,8 +467,7 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Update Page model from frontmatter
      *
-     * @param Page $model
-     * @param array<string, mixed> $frontmatter
+     * @param  array<string, mixed>  $frontmatter
      */
     private function updatePageFromFrontmatter(Page $model, array $frontmatter): void
     {
@@ -508,8 +504,7 @@ class DatabaseRepository implements ContentRepositoryContract
     /**
      * Update Post model from frontmatter
      *
-     * @param Post $model
-     * @param array<string, mixed> $frontmatter
+     * @param  array<string, mixed>  $frontmatter
      */
     private function updatePostFromFrontmatter(Post $model, array $frontmatter): void
     {

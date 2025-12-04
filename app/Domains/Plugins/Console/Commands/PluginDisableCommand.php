@@ -18,9 +18,11 @@ class PluginDisableCommand extends Command
         try {
             $pluginService->disable($slug);
             $this->info("Plugin '{$slug}' disabled successfully");
+
             return self::SUCCESS;
         } catch (\Exception $e) {
             $this->error("Failed to disable plugin: {$e->getMessage()}");
+
             return self::FAILURE;
         }
     }
