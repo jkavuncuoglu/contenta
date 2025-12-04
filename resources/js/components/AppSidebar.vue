@@ -18,8 +18,10 @@ import pages from '@/routes/admin/pages';
 import posts from '@/routes/admin/posts';
 import tags from '@/routes/admin/tags';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import AppLogo from './AppLogo.vue';
+
+const props = usePage().props;
 
 const mainNavItems: NavItem[] = [
     {
@@ -80,6 +82,28 @@ const mainNavItems: NavItem[] = [
         icon: 'material-symbols-light:perm-media',
     },
     {
+        title: 'Social Media',
+        href: '/admin/social-media/accounts',
+        icon: 'material-symbols-light:share',
+        children: [
+            {
+                title: 'Analytics',
+                href: '/admin/social-media/analytics',
+                icon: 'material-symbols-light:analytics',
+            },
+            {
+                title: 'Posts',
+                href: '/admin/social-media/posts',
+                icon: 'material-symbols-light:post',
+            },
+            {
+                title: 'Accounts',
+                href: '/admin/social-media/accounts',
+                icon: 'material-symbols-light:link',
+            },
+        ],
+    },
+    {
         title: 'Appearance',
         href: '/admin/themes',
         icon: 'material-symbols-light:palette',
@@ -137,12 +161,12 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
     {
         title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
+        href: 'https://github.com/jkavuncuoglu/contenta',
         icon: 'material-symbols-light:folder',
     },
     {
         title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
+        href: 'https://github.com/jkavuncuoglu/contenta/wiki',
         icon: 'material-symbols-light:bookOpen',
     },
 ];
@@ -170,6 +194,8 @@ const footerNavItems: NavItem[] = [
             <NavFooter :items="footerNavItems" />
             <NavUser />
         </SidebarFooter>
+
+        <div class="text-center w-full text-xs border-t border-t-neutral-800 py-2">{{props.app.name}} v{{props.app.version}}</div>
     </Sidebar>
     <slot />
 </template>
